@@ -1,0 +1,139 @@
+//总css
+    @color: #2d76ed;
+	@bgk: #f7f7f7;
+	@font_color: #6c757d;
+	@border: #dee2e6;
+    @btnhover: #1559c8;
+    .iconfont {
+		cursor: pointer;
+	}
+table {
+    width: 100%;
+    border: 1px solid #dee2e6;
+    .table_td_cont{
+        td{
+            height: 60px;
+        }
+    }
+    tr {
+        td,
+        th {
+            height: 42px;
+            border-bottom: 1px solid #dee2e6;
+            text-align: center;
+            vertical-align: middle;
+        }
+        &:first-child {
+            background: #f7f7f7;
+        }
+    }
+}
+//应用图片
+.sl_dt_img {
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: left !important;
+    }
+    img {
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        margin-right: 12px;
+        cursor: pointer;
+    }
+    span {
+        display: block;
+        width: 50px;
+        height: 28px;
+        border: 1px solid @border;
+        line-height: 28px;
+        text-align: center;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+}
+
+// 提示信息
+.sl_t_dis {
+    position: relative;
+    height: 16px;
+    margin-left: 8px;
+    margin-top: 2px;
+    &:hover .sl_t_is {
+        display: block;
+    }
+    &:hover .sl_t_san {
+        display: block;
+    }
+    .sl_t_is {
+        background: #30353d;
+        color: #e2e2e3;
+        padding: 10px 15px;
+        position: absolute;
+        text-align: center;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        line-height: 24px;
+        border-radius: 6px;
+        display: none;
+        font-size: 12px;
+    }
+    .sl_t_san {
+        display: none;
+        border: 5px solid transparent;
+        border-top: 5px solid #30353d;
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.sl_table_flex {
+    display: flex;
+    justify-content: center;
+}
+//上下三角排序
+.table_tandb {
+    width: 20px;
+    height: 100%;
+    position: relative;
+    span {
+        display: block;
+        border: 6px solid transparent;
+        position: absolute;
+        cursor: pointer;
+        &.bandb_one {
+            border-top: 6px solid @color !important;
+        }
+        &.bandb_two {
+            border-bottom: 6px solid @color !important;
+        }
+        &:first-child {
+            border-top: 6px solid @font_color;
+            top: 14px;
+            left: 3px;
+        }
+        &:last-child {
+            border-bottom: 6px solid @font_color;
+            bottom: -9px;
+            right: 5px;
+        }
+    }
+}
+
+//应用名称
+.sl_dt_name {
+    color: @color;
+    cursor: pointer;
+}
+
+// 分页
+.page_index {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    line-height: 32px;
+}
