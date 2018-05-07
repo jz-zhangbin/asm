@@ -69,8 +69,7 @@
 					}
 				}
 			}
-		}  
-		
+		}   
 	}
 </style>
 
@@ -223,8 +222,10 @@
 			</div>
 			<usersign v-if="!userType"></usersign>
 		</div>
-		<!-- 饼状图 -->
-		<pie v-if="pieShow"></pie>
+		<!-- 饼状图 --> 
+		<transition name="el-fade-in-linear">
+			<pie v-if="pieShow"></pie>
+		</transition> 
 	</div>
 </template>
 
@@ -359,8 +360,8 @@
 			brokenClick(index) { //添加折线图
 				$('.table_datr_broken').remove() //删除所有折线 
 				if(this.createBrokenIndex != index) {
-					let domstring = ` <tr class="table_datr_broken" style="height: 390px; background: #f7f7f7;" >
-                            <td colspan="6" style="position:relative">
+					let domstring = ` <tr class="table_datr_broken" style="height: 390px;background: #f7f7f7;" >
+                            <td colspan="6" style="position:relative"> 
                               <div style="position: absolute; top:0; left: 0;width: 1200px;height: 390px;" id="myChart"></div>  
                             </td> 
                           </tr>`

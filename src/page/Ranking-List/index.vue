@@ -198,10 +198,10 @@
 
 <script>
 	import method1 from "@commonJS/excel";
+	import excel from '@commonJS/excelFn' 
 	import usersign from '@components/User-Sign'
 	import banner from '@components/Banner'
 	import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
-	import qs from 'qs'
 	export default {
 		data() {
 			return {
@@ -315,7 +315,8 @@
 			},
 			excelOut() {
 				//表格导出
-				method1("ta");
+				excel('ta',1500,`<tr><th>#</th><th>关键词</th><th>流行度</th><th>搜索指数</th></tr>`,[5,4],'tab')
+				
 			},
 			AjaxInit(id,pageindex) {//初始化列表ajax
 				let url = '/api/v1/IntellSearchApi/HotKeyword/GetHotKeywordList'

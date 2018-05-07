@@ -15,7 +15,27 @@
 			margin: 100px auto;
 			padding: 30px 30px 0;
 			position: relative;
+			animation:animation1 .5s ease-out;
+			-webkit-animation:animation1 .5s ease-out;
 		}
+		@keyframes animation1 {
+			0%{
+				margin: 0 auto;
+				transform: scale(0.8);
+			}
+			100%{
+				margin: 100px auto;
+				transform: scale(1);
+			}
+		}
+		@-webkit-keyframes animation1 { 
+			0%{
+				margin: 0 auto;
+			}
+			100%{
+				margin: 100px auto;
+			}
+		} 
 		#myChart1 {
 			width: 100%;
 			height: 400px;
