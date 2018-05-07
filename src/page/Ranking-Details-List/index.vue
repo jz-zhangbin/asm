@@ -5,12 +5,19 @@
 		color: @font_color;
 		.rdl_name {
 			min-width: 1200px;
-			margin: 25px 45px;
-			font-size: 24px;
+			padding: 25px 45px;
+			box-sizing: border-box; 
+			div{
+				border-bottom: 1px solid @border;
+				font-size: 24px; 
+				height: 40px;
+				width: 100%;
+			}
 		}
 		.rdl_body {
 			min-width: 1200px;
-			margin: 0 45px;
+			box-sizing: border-box;
+			padding: 0 45px;
 		}
 		.rdl_body_top {
 			width: 100%;
@@ -99,7 +106,9 @@
 		<v-search-top></v-search-top>
 		<!-- 搜索结果 -->
 		<div class="rdl_name">
-			[{{keyName}}]的搜索结果
+			<div>
+				[{{keyName}}]的搜索结果
+			</div>
 		</div>
 		<div class="rdl_body">
 			<div class="rdl_body_top">
@@ -177,10 +186,10 @@
 								</div>
 							</td>
 							<!-- 当列表为空时 -->
+							<td v-if="ele.nameList.length == 0" >-</td>
 							<td v-if="ele.nameList.length == 0">-</td>
 							<td v-if="ele.nameList.length == 0">-</td>
-							<td v-if="ele.nameList.length == 0">-</td>
-							<td v-if="ele.nameList.length == 0">暂无搜索关联词</td>
+							<td v-if="ele.nameList.length == 0" style="height: 150px">暂无搜索关联词</td>
 							<td style="width: 11%">
 								<div class="sl_t_dis" v-if="ele.show">
 									<i class="iconfont icon-plus-add" @click="addCiClick(index)"></i>

@@ -1,9 +1,9 @@
 <style lang='less' scoped>
 	@import url('../../base/commonJS/css.less'); 
 	.rl_index {
-		width: 100%; 
+		 
 		.sl_main {
-			width: 100%;
+			 
 		}
 		.sl_center {
 			min-width: 1200px;
@@ -45,7 +45,7 @@
 		}  
 		.sl_table {
 			min-width: 1200px;
-			margin: 0 45px;
+			padding: 0 45px;
 			box-sizing: border-box; 
 		} 
 		.sl_from_top{
@@ -207,7 +207,7 @@
 			return {
 				userType: true, //用户的登录状态
 				ajaxType: true, // 当用户滚动到底部，限制只有请求成功后，再次滑到底部再次请求
-				ajaxnum: 0, //一个加载2000，10次时结束滚动事件
+				ajaxnum: 2, //一共加载2000，10次时结束滚动事件
 				timer: null,
 				loadingShow: false, //是否显示loading
 				initloading: false,//初次加载是否完成
@@ -225,11 +225,7 @@
 
 		computed: {},
 
-		created() {},
-
-		updated() {},
-
-		mounted() {
+		created() {
 			if(sessionStorage.getItem('countryList')  != null && sessionStorage.getItem('countryList') != undefined) { 
 				this.options =  JSON.parse(sessionStorage.getItem('countryList'))
 				this.value = this.options[0].nationId;
@@ -261,7 +257,11 @@
 					this.userType = false
 				}
 			})
+		},
 
+		updated() {},
+
+		mounted() { 
 			//数据模拟滚动到最下面请求20条
 			let _this = this;
 			// 滚动事件
@@ -322,7 +322,7 @@
 				let url = '/api/v1/IntellSearchApi/HotKeyword/GetHotKeywordList'
 				let data = {
 					pageIndex: pageindex,
-					pageSize: 200,
+					pageSize: 100,
 					requestPar: {
 						nationId: id
 						}
@@ -345,6 +345,7 @@
 					this.tableData.push(...res.data.data) 
 					this.ajaxType = true;
 					this.loadingShow = false;
+					this.ajaxnum ++
 				}) 
 			}
 		}

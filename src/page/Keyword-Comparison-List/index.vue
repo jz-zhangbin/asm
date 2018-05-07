@@ -55,7 +55,7 @@
 					}
 					p {
 						margin-bottom: 4px;
-						min-width: 490px;
+						min-width: 440px;
 						span {
 							display: inline-block;
 						}

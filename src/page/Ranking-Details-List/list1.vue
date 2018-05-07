@@ -90,7 +90,7 @@
 <template>
 	<div class="key_list1_index">
 		<div class="kl_top">
-			<el-select v-model="value">
+			<el-select v-model="value" @change="changeFun(value)">
 				<el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
 				</el-option>
 			</el-select>
@@ -203,7 +203,7 @@
 				</tr>
 				<!-- 暂无关键词 -->
 				<tr>
-					<td colspan="6">该关键词暂无竞价数据</td>
+					<td colspan="6" style="height: 150px">该关键词暂无竞价数据</td>
 				</tr>
 				<!-- 插入折线图 -->
 				<!-- <tr class="table_datr_broken">
@@ -239,11 +239,7 @@
 			return {
 				value: "",
 				currentPage3: 1, //当前页 
-				total: 98, //总数
-				options2: [{
-					value: "1",
-					label: "今天"
-				}],
+				total: 98, //总数 
 				options3: [{
 						value: "1",
 						label: ''
@@ -265,16 +261,7 @@
 						label: "近30天"
 					}
 				],
-				pieShow: false,
-				options: [{
-						value: "zh",
-						label: "中国"
-					},
-					{
-						value: "usa",
-						label: "美国"
-					}
-				],
+				pieShow: false, 
 				value: "",
 				showList: [{
 						//控制排序的三角
@@ -343,6 +330,9 @@
 		methods: {
 			pieClick() {
 				this.pieShow = true;
+			},
+			changeFun(value) {
+				console.log(value)
 			},
 			paiClick(num, name) {
 				console.log(num,name)

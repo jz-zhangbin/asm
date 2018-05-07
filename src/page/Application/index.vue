@@ -3,7 +3,8 @@
 	.apl_index {
 		.apl_body {
 			min-width: 1200px;
-			margin: 0 45px;
+			padding: 0 45px;
+			box-sizing: border-box;
 		}
 		.apl_body_top {
 			width: 100%;
@@ -266,8 +267,8 @@
 					<el-option v-for="item in options1" :key="item.value" :label="item.label" :value="item.value">
 					</el-option>
 				</el-select>
-				<div class="apl_checketout" @click="excelOut">
-					<span>
+				<div class="apl_checketout">
+					<span  @click="excelOut">
 						<i class="iconfont icon-download"></i> 导出
 					</span>
 				</div>

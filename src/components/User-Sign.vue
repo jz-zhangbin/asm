@@ -7,7 +7,7 @@
 	@border: #dee2e6;
 	@btnhover: #1559c8;
 	.sl_user_tp {
-		min-width: 1200px;
+		//min-width: 1200px;
 		margin: 25px auto 0;
 		display: flex;
 		flex-direction: column;

@@ -1,8 +1,7 @@
 import method1 from './excel'
 function excel(fid,num,inner,arr,id) {
     if($('#'+id)) {
-        $('#'+id).remove()
-        console.log(1)
+        $('#'+id).remove() 
     } 
     var tab = document.createElement('table') 
     let th = inner
