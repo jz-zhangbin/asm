@@ -10,19 +10,10 @@ Vue.prototype.$https = https
 
 import ls from '@commonJS/localStorage'
 Vue.prototype.$ls = ls
-
-/**
- * 按需引入，减小打包体积
- *  import ElementUI from 'element-ui'
- * //import 'element-ui/lib/theme-chalk/index.css'
- * import '../theme/index.css' 
- * Vue.use(ElementUI)
- */
-import { Select, Option, Pagination } from 'element-ui'
-Vue.use(Select)
-Vue.use(Option)
-Vue.use(Pagination)
-
+ 
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
 /**
  * 粒子效果
  */
