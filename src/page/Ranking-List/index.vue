@@ -211,8 +211,7 @@
 			return {
 				userType: true, //用户的登录状态
 				ajaxType: true, // 当用户滚动到底部，限制只有请求成功后，再次滑到底部再次请求
-				ajaxnum: 2, //一共加载2000，10次时结束滚动事件
-				timer: null,
+				ajaxnum: 2, //一共加载2000，10次时结束滚动事件 
 				loadingShow: false, //是否显示loading
 				initloading: false, //初次加载是否完成
 				bannerName: '竞价热词榜',
@@ -283,8 +282,7 @@
 			});
 		},
 
-		destroyed() {
-			clearInterval(this.timer) //清楚定时器
+		destroyed() { 
 		},
 
 		methods: {
@@ -297,18 +295,10 @@
 					}
 				})
 			},
-			fromTop() { //回到顶部
-				//$(window).scrollTop(0)
-				clearInterval(this.timer)
-				let ls = $(window).scrollTop()
-				this.timer = setInterval(() => {
-					if(ls <= 1) {
-						clearInterval(this.timer)
-					}
-					ls *= 0.8
-					console.log(ls)
-					$(window).scrollTop(ls)
-				}, 5)
+			fromTop() { //回到顶部 
+				$('html,body').animate({  
+					scrollTop: 0  
+				}, 800); 
 			},
 			addCiClick(index, num, name) { //操作关键词
 				if(num == 0) {

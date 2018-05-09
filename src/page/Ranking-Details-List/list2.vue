@@ -73,7 +73,7 @@
 						操作
 					</th>
 				</tr>
-				<tr v-for="(ele,index) in tableMoreData.data" :key="index" class="table_td_cont" v-if="tableMoreData.resultCode == 1000">
+				<tr v-for="(ele,index) in tableMoreData" :key="index" class="table_td_cont" v-if="tableMoreCode.resultCode==1000">
 					<td style="width: 40%" class="sl_dt_name" @click="routerClick(ele.keywordName)">{{ele.keywordName}}</td>
 					<td style="width: 8%">{{ele.popularityIndex}}</td>
 					<td style="width: 22%">{{ele.searchIndex}}</td>
@@ -98,15 +98,15 @@
 					</td>
 				</tr>
 				<!-- 当列表未空时 -->
-				<tr v-if="tableMoreData.resultCode == 404">
+				<tr v-if="tableMoreCode.resultCode==404">
 					<td colspan="5" style="height: 150px">暂无更多关联词</td>
 				</tr>
 			</table>
 			<!-- 分页 -->
-			<div class="page_index" v-if="userType">
+			<div class="page_index" v-if="userType && tableMoreCode.data">
 				<div>{{pagedata}}</div>
 				<div>
-					<el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="tableMoreData.totalCount">
+					<el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="tableMoreCode.data.totalCount">
 					</el-pagination>
 				</div>
 			</div>
@@ -131,16 +131,17 @@
 		props: {
 			valueData: {},
 			userType: {},
-			tableMoreData: {}
+			tableMoreData: {},
+			tableMoreCode: {}
 		},
 
 		computed: {
 			pagedata() {
-				if(this.currentPage3 * 20 <= this.tableMoreData.totalCount) {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.tableMoreData.totalCount
+				if(this.currentPage3 * 20 <= this.tableMoreCode.data.totalCount) {
+					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.tableMoreCode.data.totalCount
 					return ls
 				} else {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.tableMoreData.totalCount + ', 共' + this.tableMoreData.totalCount
+					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.tableMoreCode.data.totalCount + ', 共' + this.tableMoreCode.data.totalCount
 					return ls
 				}
 			}
@@ -158,10 +159,10 @@
 
 			addCiClick(index, num, name) { //收藏操作
 				if(num == 0) {
-					this.tableMoreData.data[index].hotKeywordTemStatus = 1
+					this.tableMoreData[index].hotKeywordTemStatus = 1
 					this.AjaxRemove(name, 0) //添加
 				} else {
-					this.tableMoreData.data[index].hotKeywordTemStatus = 0
+					this.tableMoreData[index].hotKeywordTemStatus = 0
 					this.AjaxRemove(name, 1) //删除
 				}
 			},

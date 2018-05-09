@@ -232,6 +232,8 @@
 				:is="currentView" 
 				:valueData="countryNow" 
 				:tableMoreData='tableMoreData' 
+				:tableMoreCode='tableMoreCode'
+				:tableInnerCode='tableInnerCode'
 				:userType="userType" 
 				:tableInner='tableInner'>
 			</component>
@@ -256,7 +258,7 @@
 					},
 					{
 						name: '更多关联词',
-						com: list2
+						com: list2 
 					}
 				],
 				userType: true,
@@ -266,20 +268,20 @@
 				propDate: 0, //当前自己选中的日期
 				keyName: "", //应用名称 
 				countryNow: "", //当前国家 
-				tableData: { //关键词详情  
-					// 	keywordName: "",
-					// 	popularityIndex: '',
-					// 	searchIndex: '',
-					// 	currentAppNum: '', 
-					// 	show: true,
+				tableData: { //关键词详情   
 					associatedWords: []
 				},
-				tableMoreData: { //更多关联词列表
-					totalCount: 0
-				},
-				tableInner: { //历史关联词列表
-					totalCount: 0
-				},
+				tableMoreData: {}, //更多关联词列表  
+				tableMoreCode: {},
+				tableInner: {}, //历史关联词列表 
+				tableInnerCode: {}, 
+				loading: null,
+				loadingopaction: {
+					lock: true,
+					text: 'Loading',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+				}
 			};
 		},
 
@@ -288,6 +290,8 @@
 			list2
 		},
 
+		created() { 
+		},
 		computed: {
 			...mapState({
 				countryList: state => state.Home.countryList,
@@ -307,11 +311,7 @@
 				//console.log(ls)
 			})
 		},
-
-		created() {},
-
-		updated() {},
-
+ 
 		mounted() {
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
@@ -333,12 +333,11 @@
 					}
 				})
 		},
-
-		destroyed() {},
-
+ 
 		methods: {
 
 			AjaxHistoryList(pageIndex, nationId, beginTime, endTime) { // 历史列表
+				this.loading = this.$loading(this.loadingopaction)
 				let GetHistoryAppListUrl = '/api/v1/IntellSearchApi/KeywordDetail/GetHistoryAppList'
 				let data = {
 					pageIndex: pageIndex,
@@ -353,11 +352,14 @@
 				this.$https.post(GetHistoryAppListUrl, JSON.stringify(data))
 					.then(res => {
 						//res.data.resultCode = 404
-						this.tableInner = res.data
+						this.tableInnerCode = res.data
+						this.tableInner = res.data.data.list
+						this.loading.close() 
 					})
 			},
 
 			AJaxKeyWord(nationId) { //关键词详情信息
+				this.loading = this.$loading(this.loadingopaction)
 				let keyWordDateUrl = '/api/v1/IntellSearchApi/KeywordDetail/Getkeywordinfo'
 				let obj = {
 					nationId,
@@ -378,10 +380,12 @@
 						}
 
 						this.keyName = this.$route.query.key
+						this.loading.close()
 					})
 			},
 
 			AJaxKeyWordMore(pageIndex, nationId) { //更多关联词
+				this.loading = this.$loading(this.loadingopaction)
 				let url = '/api/v1/IntellSearchApi/KeywordDetail/GetAssociatedWords'
 				let obj = {
 					pageIndex,
@@ -393,8 +397,11 @@
 				}
 				this.$https.post(url, JSON.stringify(obj))
 					.then(res => {
-						//res.data.resultCode = 404
-						this.tableMoreData = res.data
+						//res.data.resultCode = 404 
+						this.tableMoreCode = res.data
+						this.tableMoreData = res.data.data.list
+						this.loading.close()
+						console.log(this.tableMoreCode)
 					})
 			},
 

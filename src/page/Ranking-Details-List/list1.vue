@@ -151,25 +151,25 @@
 					<th style="width: 14%" class="sl_table_po">
 						<div class="sl_table_flex">
 							总榜
-							<div class="table_tandb">
+							<!-- <div class="table_tandb">
 								<span @click="paiClick(2,'one')" :class="{bandb_one: showList[2].one}"></span>
 								<span @click="paiClick(2,'two')" :class="{bandb_two: showList[2].two}"></span>
-							</div>
+							</div> -->
 						</div>
 					</th>
 					<th style="width: 14%" class="sl_table_po">
 						<div class="sl_table_flex">
 							分类榜
-							<div class="table_tandb">
+							<!-- <div class="table_tandb">
 								<span @click="paiClick(3,'one')" :class="{bandb_one: showList[3].one}"></span>
 								<span @click="paiClick(3,'two')" :class="{bandb_two: showList[3].two}"></span>
-							</div>
+							</div> -->
 						</div>
 					</th>
 				</tr>
 
 				<!-- 表格内容 -->
-				<tr class="table_data_tr" v-for="(ele,index) in tableInner.data" :key="index" v-if="tableInner.resultCode == 1000">
+				<tr class="table_data_tr" v-for="(ele,index) in tableInner" :key="index" v-if="tableInnerCode.resultCode == 1000">
 					<td>
 						<div class="table_datr_td" @click="routerClick">
 							<img :src="ele.appInfoModel.appImgUrl" alt="">
@@ -187,15 +187,15 @@
 					<td>{{ele.estimatePrice}}</td>
 					<td>{{ele.searchRank}}</td>
 					<td class="table_datr_p">
-						<p>{{ele.appInfoModel.totalRank}}</p>
+						<p>{{ele.appInfoModel.totalRank == 0 ? '-' : ele.appInfoModel.totalRank}}</p>
 					</td>
 					<td class="table_datr_p">
-						<p>{{ele.appInfoModel.classificationRank}}</p>
+						<p>{{ele.appInfoModel.classificationRank == 0 ? '-' : ele.appInfoModel.classificationRank}}</p>
 						<p>{{ele.appInfoModel.appTypeName}}</p>
 					</td>
 				</tr>
 				<!-- 暂无关键词 -->
-				<tr v-if="tableInner.resultCode == 404">
+				<tr v-if="tableInnerCode.resultCode == 404">
 					<td colspan="6" style="height: 150px">该关键词暂无竞价数据</td>
 				</tr>
 				<!-- 插入折线图 -->
@@ -206,7 +206,7 @@
             </tr> -->
 			</table>
 			<!-- 分页 -->
-			<div class="page_index" v-if="userType">
+			<div class="page_index" v-if="userType && tableInnerCode.data">
 				<div>{{pagedata}}</div>
 				<div>
 					<el-pagination background 
@@ -215,7 +215,7 @@
 						:current-page.sync="currentPage3" 
 						:page-size="20" 
 						layout="prev, pager, next, jumper" 
-						:total="tableInner.totalCount">
+						:total="tableInnerCode.data.totalCount">
 					</el-pagination>
 				</div>
 			</div>
@@ -267,7 +267,8 @@
 		props: {
 			valueData: {},
 			userType: {},
-			tableInner: {}
+			tableInner: {},
+			tableInnerCode: {}
 		},
 		components: {
 			pie,
@@ -276,11 +277,11 @@
 
 		computed: {
 			pagedata() {
-				if(this.currentPage3 * 20 <= this.tableInner.totalCount) {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.tableInner.totalCount
+				if(this.currentPage3 * 20 <= this.tableInnerCode.data.totalCount) {
+					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.tableInnerCode.data.totalCount
 					return ls
 				} else {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.tableInner.totalCount + ', 共' + this.tableInner.totalCount
+					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.tableInnerCode.data.totalCount + ', 共' + this.tableInnerCode.data.totalCount
 					return ls
 				}
 			}
