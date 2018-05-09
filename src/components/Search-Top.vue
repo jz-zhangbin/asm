@@ -295,23 +295,27 @@
 
 <script>
 import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
+import {mapState} from 'vuex'
 	export default {
 		data() {
 			return {
 				st_bgk: -1,
-				overList: false, //当前国家列表是否应该消失
-				countryNow: {}, //当前是哪个国家
+				overList: false, //当前国家列表是否应该消失 
 				searchData: "", //搜索内容
-				userName: "",
-				countryList: [],
+				userName: "", 
 				show2: false,
-				show3: false
+				show3: false,
+				countryNow: {}
 			};
 		},
 
 		components: {},
 
-		computed: {},
+		computed: {
+			...mapState({
+				countryList: state => state.Home.countryList, 
+			})
+		},
 
 		created() {
 			
@@ -320,17 +324,10 @@ import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
 		updated() {},
 
 		mounted() {
-			if(sessionStorage.getItem('countryList')  != null && sessionStorage.getItem('countryList') != undefined) { 
-				this.countryList = JSON.parse(sessionStorage.getItem('countryList'))
-				this.countryNow = this.countryList[0];
-			}else{
-				CountryInit() 
-				.then(res=>{
-					this.countryList = res.data.data
-					this.countryNow = this.countryList[0];
-					sessionStorage.setItem('countryList' , JSON.stringify(this.countryList))
-				})
-			} 
+			this.$store.dispatch('GET_COUNTRYLIST')
+			.then(()=>{
+				this.countryNow = this.$store.state.Home.countryList[0]
+			})
 
 			if(localStorage.getItem('user') != null && localStorage.getItem('user') != undefined) {
 				this.userName = JSON.parse(localStorage.getItem('user')).name
@@ -377,8 +374,15 @@ import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
 				this.domHeight("st_chain_list", 0);
 			},
 			//搜索跳转
-			searchRouteLink(data) {
-				this.$router.push({path: '/rankingDetails-List' , query : { key : 12345} })
+			searchRouteLink() {
+				if(this.searchData == '') {
+					this.$message({
+						message: '搜索关键词不能为空！！！',
+						type: 'warning'
+					});
+				}else{
+					this.$router.push({path: '/rankingDetails-List' , query : { key : this.searchData , country: this.countryNow.nationId} })					
+				}
 			},  
 			domHeight(dom, num) {
 				$("." + dom).animate({

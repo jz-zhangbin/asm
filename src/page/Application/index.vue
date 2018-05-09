@@ -254,8 +254,8 @@
 			<!-- 选择器 -->
 			<div class="apl_body_cur">
 				<p class="sl_center_p">地区</p>
-				<el-select v-model="value" placeholder="请选择">
-					<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+				<el-select v-model="countryNow" placeholder="请选择" @change="changeFun(countryNow)">
+					<el-option v-for="item in countryList" :key="item.nationId" :label="item.nationCHSName" :value="item.nationId">
 					</el-option>
 				</el-select>
 			</div>
@@ -263,12 +263,12 @@
 				<h2>历史竞价关键词</h2>
 			</div>
 			<div class="apl_body_date">
-				<el-select v-model="value1">
-					<el-option v-for="item in options1" :key="item.value" :label="item.label" :value="item.value">
+				<el-select v-model="value1"  @change="changeDateFun(value1)">
+					<el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
 					</el-option>
 				</el-select>
 				<div class="apl_checketout">
-					<span  @click="excelOut">
+					<span  @click="excelOut"  v-if="userType">
 						<i class="iconfont icon-download"></i> 导出
 					</span>
 				</div>
@@ -407,7 +407,7 @@
 				</table>
 			</div> 
 			<!-- 分页 -->
-			<div class="page_index">
+			<div class="page_index"  v-if="userType">
 				<div>{{pagedata}}</div>
 				<div>
 					<el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="total">
@@ -422,13 +422,15 @@
 <script>
 	import usersign from '@components/User-Sign'
 	import method1 from "@commonJS/excel";
+	import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
+	import {mapState} from 'vuex'
+	import { datefn } from '@commonJS/functionJS'
 	export default {
 		data() {
 			return {
 				currentPage3: 1, //当前页
 				userType: false, //用户登录状态
 				total: 98, //总数
-				userType: false, //用户登录状态
 				appData: {
 					img: require("../../images/moni/appimg_05_03.png"),
 					name: "Find My Family, Friends, Phone",
@@ -439,39 +441,10 @@
 					zongbang: "186",
 					fenleibang: "16",
 					show: true
-				},
-				options: [{
-						value: "zh",
-						label: "中国"
-					},
-					{
-						value: "usa",
-						label: "美国"
-					}
-				],
-				value: "",
+				}, 
+				countryNow: "",
 				value1: "",
-				options1: [{
-						value: "1",
-						label: "2018-4-23 至 2018-5-1"
-					},
-					{
-						value: "2",
-						label: "昨天"
-					},
-					{
-						value: "3",
-						label: "近7天"
-					},
-					{
-						value: "4",
-						label: "近15天"
-					},
-					{
-						value: "5",
-						label: "近30天"
-					}
-				],
+				options3: [ ],
 				showList: [{
 						//控制排序的三角
 						one: true,
@@ -508,6 +481,9 @@
 		},
 
 		computed: {
+			...mapState({
+				countryList: state => state.Home.countryList, 
+			}),
 			pagedata() {
 				if(this.currentPage3 * 20 <= this.total) {
 					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.total
@@ -524,13 +500,33 @@
 		updated() {},
 
 		mounted() {
-			this.value = this.options[0].value;
-			this.value1 = this.options1[0].value;
+			this.$store.dispatch('GET_COUNTRYLIST')
+			.then(()=>{
+				this.countryNow = this.$store.state.Home.countryList[0].nationId
+			}) 
+
+			this.options3  = datefn(1) 
+			this.value1 = this.options3[0].value
+
+			UserSignType()
+			.then(res=>{ 
+				if(res.data.data.userLoginStatus == 1) {//登陆状态
+					this.userType = true
+				}else{//未登陆
+					this.userType = false
+				}
+			})
 		},
 
 		destroyed() {},
 
 		methods: {
+			changeFun(value) {//切换国家
+				console.log(value)
+			},
+			changeDateFun(value) {//切换日期
+				console.log(value)
+			},
 			paiClick(num, name) {
 				//排序的按钮
 				this.showList.map((ele, index) => {
@@ -545,6 +541,7 @@
 			},
 			handleSizeChange(val) {
 				console.log(`每页 ${val} 条`);
+				//$(window).scrollTop($('#ta2').offset().top)
 			},
 			handleCurrentChange(val) {
 				console.log(`当前页: ${val}`);

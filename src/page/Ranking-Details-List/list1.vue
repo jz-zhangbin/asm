@@ -1,5 +1,5 @@
-<style lang='less' scoped> 
-	@import url('../../base/commonJS/css.less'); 
+<style lang='less' scoped>
+	@import url('../../base/commonJS/css.less');
 	.key_list1_index {
 		width: 100%;
 		.kl_top {
@@ -26,7 +26,7 @@
 			table {
 				width: 100%;
 				border: 1px solid #dee2e6;
-				tr { 
+				tr {
 					//表格内容
 					&.table_data_tr {
 						td {
@@ -69,7 +69,7 @@
 					}
 				}
 			}
-		}   
+		}
 	}
 </style>
 
@@ -96,13 +96,13 @@
 			</el-select>
 			<div class="kl_top_right">
 				<span class="kltr_btn" @click="pieClick">
-          <i class="iconfont icon-tongji5"></i>
-          展示量占比图
-          </span>
-				<span class="kltr_btn" @click="excelOut">
-          <i class="iconfont icon-download"></i>
-          导出
-        </span>
+		          <i class="iconfont icon-tongji5"></i>
+		          展示量占比图
+	          </span>
+				<span class="kltr_btn" @click="excelOut" v-if="userType">
+		          <i class="iconfont icon-download"></i>
+		          导出
+		        </span>
 			</div>
 		</div>
 		<div class="kl_table">
@@ -119,9 +119,7 @@
 							</div>
 							<div class="sl_t_dis">
 								<i class="iconfont icon-wenhao-fill"> </i>
-								<span class="sl_t_is" style="width:260px;">
-                    该APP在该关键词的总体广告展示量中获得的广告展示量比
-                  </span>
+								<span class="sl_t_is" style="width:260px;">该APP在该关键词的总体广告展示量中获得的广告展示量比</span>
 								<span class="sl_t_san"></span>
 							</div>
 						</div>
@@ -131,9 +129,7 @@
 							预测出价
 							<div class="sl_t_dis">
 								<i class="iconfont icon-wenhao-fill"> </i>
-								<span class="sl_t_is" style="width:260px;">
-                        该APP竞价该关键词的预计投放价格
-                    </span>
+								<span class="sl_t_is" style="width:260px;">该APP竞价该关键词的预计投放价格</span>
 								<span class="sl_t_san"></span>
 							</div>
 						</div>
@@ -147,9 +143,7 @@
 							</div>
 							<div class="sl_t_dis">
 								<i class="iconfont icon-wenhao-fill"> </i>
-								<span class="sl_t_is" style="width:260px;"> 
-                        该APP在该关键词的App Store搜索结果中的排名
-                    </span>
+								<span class="sl_t_is" style="width:260px;">该APP在该关键词的App Store搜索结果中的排名</span>
 								<span class="sl_t_san"></span>
 							</div>
 						</div>
@@ -175,34 +169,33 @@
 				</tr>
 
 				<!-- 表格内容 -->
-				<tr class="table_data_tr" v-for="(ele,index) in tableInner" :key="index">
+				<tr class="table_data_tr" v-for="(ele,index) in tableInner.data" :key="index" v-if="tableInner.resultCode == 1000">
 					<td>
 						<div class="table_datr_td" @click="routerClick">
-							<img :src="ele.img" alt="">
+							<img :src="ele.appInfoModel.appImgUrl" alt="">
 							<p>
-								<span>{{ele.name}}</span>
-								<span>ID: &nbsp;{{ele.ID}}</span>
-								<span>开发商: &nbsp;{{ele.made}}</span>
+								<span>{{ele.appInfoModel.appName}}</span>
+								<span>ID: &nbsp;{{ele.appInfoModel.appStoreId}}</span>
+								<span>开发商: &nbsp;{{ele.appInfoModel.aristName}}</span>
 							</p>
 						</div>
 					</td>
 					<td>
-						{{ele.amount}}
+						{{ele.ratio}}
 						<i class="iconfont icon-icon-test" style="color: #2d76ed;" @click="brokenClick(index)"></i>
 					</td>
-					<td>--</td>
-					<td>--</td>
+					<td>{{ele.estimatePrice}}</td>
+					<td>{{ele.searchRank}}</td>
 					<td class="table_datr_p">
-						<p>{{ele.zong.pai}}</p>
-						<p>{{ele.zong.money}}</p>
+						<p>{{ele.appInfoModel.totalRank}}</p>
 					</td>
 					<td class="table_datr_p">
-						<p>{{ele.fen.pai}}</p>
-						<p>{{ele.fen.type}} {{ele.fen.money}}</p>
+						<p>{{ele.appInfoModel.classificationRank}}</p>
+						<p>{{ele.appInfoModel.appTypeName}}</p>
 					</td>
 				</tr>
 				<!-- 暂无关键词 -->
-				<tr>
+				<tr v-if="tableInner.resultCode == 404">
 					<td colspan="6" style="height: 150px">该关键词暂无竞价数据</td>
 				</tr>
 				<!-- 插入折线图 -->
@@ -213,55 +206,39 @@
             </tr> -->
 			</table>
 			<!-- 分页 -->
-			<div class="page_index">
+			<div class="page_index" v-if="userType">
 				<div>{{pagedata}}</div>
 				<div>
-					<el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="total">
+					<el-pagination background 
+						@size-change="handleSizeChange" 
+						@current-change="handleCurrentChange" 
+						:current-page.sync="currentPage3" 
+						:page-size="20" 
+						layout="prev, pager, next, jumper" 
+						:total="tableInner.totalCount">
 					</el-pagination>
 				</div>
 			</div>
 			<usersign v-if="!userType"></usersign>
 		</div>
-		<!-- 饼状图 --> 
+		<!-- 饼状图 -->
 		<transition name="el-fade-in-linear">
 			<pie v-if="pieShow"></pie>
-		</transition> 
+		</transition>
 	</div>
 </template>
 
 <script>
-	import method1 from "@commonJS/excel";
+	import excel from '@commonJS/excelFn'
 	import pie from "./pie-chart";
 	import usersign from '@components/User-Sign'
 	import { datefn } from '@commonJS/functionJS'
 	export default {
 		data() {
 			return {
-				value: "",
-				currentPage3: 1, //当前页 
-				total: 98, //总数 
-				options3: [{
-						value: "1",
-						label: ''
-					},
-					{
-						value: "2",
-						label: "昨天"
-					},
-					{
-						value: "3",
-						label: "近7天"
-					},
-					{
-						value: "4",
-						label: "近15天"
-					},
-					{
-						value: "5",
-						label: "近30天"
-					}
-				],
-				pieShow: false, 
+				currentPage3: 1, //当前页  
+				options3: [],
+				pieShow: false,
 				value: "",
 				showList: [{
 						//控制排序的三角
@@ -282,7 +259,7 @@
 					}
 				],
 				//tableInner: [],
-				createBrokenIndex: null,//折线图下标
+				createBrokenIndex: null, //折线图下标
 				myChart: null,
 			};
 		},
@@ -299,11 +276,11 @@
 
 		computed: {
 			pagedata() {
-				if(this.currentPage3 * 20 <= this.total) {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.total
+				if(this.currentPage3 * 20 <= this.tableInner.totalCount) {
+					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.tableInner.totalCount
 					return ls
 				} else {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.total + ', 共' + this.total
+					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.tableInner.totalCount + ', 共' + this.tableInner.totalCount
 					return ls
 				}
 			}
@@ -313,29 +290,32 @@
 
 		watch: {
 			valueData() {
-				//console.log(this.valueData, '国家切换请求' , this.$parent.routerQuery)//监听父级中select数据，更新页面
+				this.$parent.propDate = this.value
 			}
 		},
 
 		updated() {},
 
-		mounted() {  
-			this.options3[0].value  = datefn()
+		mounted() {
+			this.options3 = datefn(1)
 			this.value = this.options3[0].value
-			
 		},
 
 		destroyed() {},
 
 		methods: {
+
 			pieClick() {
 				this.pieShow = true;
 			},
-			changeFun(value) {
-				console.log(value)
+
+			changeFun(value) { //切换时间进行请求
+				this.$parent.propDate = this.value
+				this.$emit('peiDate', value)
 			},
+
 			paiClick(num, name) {
-				console.log(num,name)
+				console.log(num, name)
 				//排序的按钮
 				this.showList.map((ele, index) => {
 					ele.one = false;
@@ -343,10 +323,12 @@
 				});
 				this.showList[num][name] = true;
 			},
+
 			excelOut() {
 				//表格导出
-				method1("ta2");
+				excel('ta2', 20, `<tr><th>应用</th><th>展示量占比</th><th>预测出价</th><th>搜索排名</th><th>总榜</th><th>分榜</th></tr>`, [], 'tab')
 			},
+
 			brokenClick(index) { //添加折线图
 				$('.table_datr_broken').remove() //删除所有折线 
 				if(this.createBrokenIndex != index) {
@@ -386,12 +368,16 @@
 			},
 
 			handleSizeChange(val) {
-				console.log(`每页 ${val} 条`);
+				this.$emit('pageDate', val)
+				$(window).scrollTop($('#ta2').offset().top)
 			},
+
 			handleCurrentChange(val) {
-				console.log(`当前页: ${val}`);
+				this.$emit('pageDate', val)
+				$(window).scrollTop($('#ta2').offset().top)
 			},
-			routerClick() {//应用跳转
+
+			routerClick() { //应用跳转
 				this.$router.push('/application')
 			}
 		}
