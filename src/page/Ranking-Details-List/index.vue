@@ -230,6 +230,7 @@
 				@peiDate='peiDate' 
 				@pageMoreDate='pageMoreDate' 
 				:is="currentView" 
+				ref="childr"
 				:valueData="countryNow" 
 				:tableMoreData='tableMoreData' 
 				:tableMoreCode='tableMoreCode'
@@ -301,7 +302,7 @@
 		watch: {
 			$route() {
 				this.AJaxKeyWord(this.$route.query.country)
-				this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime)
+				this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime , 'ratio' , 0)
 				this.AJaxKeyWordMore(1, this.$route.query.country)
 			}
 		},
@@ -312,7 +313,7 @@
 			})
 		},
  
-		mounted() {
+		mounted() { 
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
 					this.countryNow = this.$store.state.Home.countryList[0].nationId
@@ -320,7 +321,7 @@
 
 			this.AJaxKeyWord(this.$route.query.country)
 
-			this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime)
+			this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime , 'ratio' , 0)
 
 			this.AJaxKeyWordMore(1, this.$route.query.country)
 
@@ -336,9 +337,19 @@
  
 		methods: {
 
-			AjaxHistoryList(pageIndex, nationId, beginTime, endTime) { // 历史列表
+			AjaxHistoryList(pageIndex, nationId, beginTime, endTime , sortName , upordown) { // 历史列表
 				this.loading = this.$loading(this.loadingopaction)
 				let GetHistoryAppListUrl = '/api/v1/IntellSearchApi/KeywordDetail/GetHistoryAppList'
+				var sortObj = {}
+				if(sortName == 'ratio') {
+					sortObj = {
+						ratio: upordown
+					}
+				}else if(sortName == 'searchRank') {
+					sortObj = {
+						searchRank : upordown
+					}
+				}
 				let data = {
 					pageIndex: pageIndex,
 					pageSize: 20,
@@ -347,7 +358,8 @@
 						nationId: nationId,
 						beginTime: beginTime,
 						endTime: endTime
-					}
+					},
+					orderByParDic: sortObj
 				}
 				this.$https.post(GetHistoryAppListUrl, JSON.stringify(data))
 					.then(res => {
@@ -400,8 +412,7 @@
 						//res.data.resultCode = 404 
 						this.tableMoreCode = res.data
 						this.tableMoreData = res.data.data.list
-						this.loading.close()
-						console.log(this.tableMoreCode)
+						this.loading.close() 
 					})
 			},
 
@@ -418,7 +429,7 @@
 			changeFun(value) { //切换国家
 				this.AJaxKeyWord(value)
 
-				this.AjaxHistoryList(1, value, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime)
+				this.AjaxHistoryList(1, value, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime , 'ratio' , 0)
 
 				this.AJaxKeyWordMore(1, value)
 			},
@@ -438,12 +449,12 @@
 				this.currentView = this.components_list[index].com
 			},
 
-			peiDate(num) { //切换日期进行请求
-				this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime)
+			peiDate(num,sortData) { //切换日期进行请求 
+				this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime , sortData.one , sortData.two)
 			},
 
-			pageDate(num) { //分页请求
-				this.AjaxHistoryList(num, this.countryNow, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime)
+			pageDate(num,sortData) { //分页请求
+				this.AjaxHistoryList(num, this.countryNow, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime ,  sortData.one , sortData.two)
 			},
 
 			pageMoreDate(num) {

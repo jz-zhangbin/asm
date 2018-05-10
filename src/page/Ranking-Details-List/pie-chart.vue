@@ -58,6 +58,7 @@
 </template>
 
 <script> 
+	import { datefn } from '@commonJS/functionJS'
 	export default {
 		data() {
 			return {
@@ -73,95 +74,96 @@
 
 		updated() {},
 
-		mounted() {
-			//echarts加载
+		mounted() { 
+			this.AjaxPie() 
 			// 基于准备好的dom，初始化echarts实例
-			let myChart = this.$echarts.init(document.getElementById("myChart1"));
-			// 绘制图表
-			myChart.setOption({
-				title: {
-					text: "某站点用户访问来源",
-					subtext: "纯属虚构",
-					x: "center"
-				},
-				tooltip: {
-					trigger: "item",
-					formatter: "{a} <br/>{b} : {c} ({d}%)"
-				},
-				legend: {
-					orient: "vertical",
-					left: "left",
-					data: ["微信", "qq", "支付宝", "火山小视频", "抖音", "钉钉", "网易"]
-				},
-				toolbox: {
-					show: true,
-					feature: {
-						mark: {
-							show: true
-						},
-						dataView: {
-							show: true,
-							readOnly: false
-						},
-						magicType: {
-							show: true,
-							type: ['pie', 'funnel']
-						},
-						restore: {
-							show: true
-						},
-						saveAsImage: {
-							show: true
-						}
-					}
-				},
-				series: [{
-					name: "访问来源",
-					type: "pie",
-					radius: "55%",
-					center: ["50%", "60%"],
-					data: [{
-							value: 20,
-							name: "微信"
-						},
-						{
-							value: 20,
-							name: "qq"
-						},
-						{
-							value: 20,
-							name: "支付宝"
-						},
-						{
-							value: 20,
-							name: "火山小视频"
-						},
-						{
-							value: 20,
-							name: "抖音"
-						},
-						{
-							value: 20,
-							name: "钉钉"
-						},
-						{
-							value: 20,
-							name: "网易"
-						},
-					],
-					itemStyle: {
-						emphasis: {
-							shadowBlur: 10,
-							shadowOffsetX: 0,
-							shadowColor: "rgba(0, 0, 0, 0.5)"
-						}
-					}
-				}]
-			});
+			
 		},
 
 		destroyed() {},
 
-		methods: {}
+		methods: {
+			AjaxPie() {
+				let url = 'api/v1/IntellSearchApi/KeywordDetail/GetAllAppsRatio'
+				let obj = {
+					nationId: this.$parent.$parent.countryNow, 
+					keywordName: this.$parent.$parent.tableData.keywordName,
+					begingTime: datefn(1)[this.$parent.$parent.propDate].data.beginTime,
+					endTime:  datefn(1)[this.$parent.$parent.propDate].data.endTime
+				}
+
+				this.$https.post( url , JSON.stringify(obj) )
+				.then((res) => { 
+					this.echartsInit(res.data)
+				})
+			},
+			echartsInit(res) {
+				let nameList = []
+				let dataList = [] 
+				for(var i in res.data.appsRatioByKeyword) {
+					nameList.push(i)
+					let obj = {
+						value: res.data.appsRatioByKeyword[i],
+						name: i
+					}
+					dataList.push(obj)
+				}
+				console.log(nameList,dataList)
+				let myChart = this.$echarts.init(document.getElementById("myChart1"));
+				// 绘制图表
+				myChart.setOption({
+					title: {
+						text: res.data.keywordName + '展示量占比图',
+						subtext: "巨掌ASM",
+						x: "center"
+					},
+					tooltip: {
+						trigger: "item",
+						formatter: "{a} <br/>{b} : {c} ({d}%)"
+					},
+					legend: {
+						orient: "vertical",
+						left: "left",
+						data: nameList
+					},
+					toolbox: {
+						show: true,
+						feature: {
+							mark: {
+								show: true
+							},
+							dataView: {
+								show: true,
+								readOnly: false
+							},
+							magicType: {
+								show: true,
+								type: ['pie', 'funnel']
+							},
+							restore: {
+								show: true
+							},
+							saveAsImage: {
+								show: true
+							}
+						}
+					},
+					series: [{
+						name: "访问来源",
+						type: "pie",
+						radius: "55%",
+						center: ["50%", "60%"],
+						data:  dataList,
+						itemStyle: {
+							emphasis: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: "rgba(0, 0, 0, 0.5)"
+							}
+						}
+					}]
+				});
+			}
+		} 
 	};
 </script>

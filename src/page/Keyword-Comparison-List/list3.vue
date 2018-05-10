@@ -15,6 +15,13 @@
 				}
 			}
 		}
+		.page_index{
+			div{
+				width: 50%;
+				display: flex;
+				justify-content: center !important;
+			}
+		}
 		.table_data_tr {
 			th,
 			td {
@@ -161,7 +168,10 @@
 		</div>
 		<!-- 分页 -->
 		<div class="page_index">
-			<div>{{pagedata}}</div>
+			<div>
+				<el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="total">
+				</el-pagination>
+			</div>
 			<div>
 				<el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="total">
 				</el-pagination>
@@ -213,15 +223,6 @@
 		components: {},
 
 		computed: {
-			pagedata() {
-				if(this.currentPage3 * 20 <= this.total) {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.total
-					return ls
-				} else {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.total + ', 共' + this.total
-					return ls
-				}
-			}
 		},
 
 		created() {},

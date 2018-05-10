@@ -143,8 +143,8 @@
 			<banner :bannerName='bannerName'></banner>
 			<div class="kc_top">
 				<p class="sl_center_p">地区</p>
-				<el-select v-model="value" placeholder="请选择">
-					<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+				<el-select v-model="countryNow" placeholder="请选择">
+					<el-option v-for="item in countryList" :key="item.nationId" :label="item.nationCHSName" :value="item.nationId">
 					</el-option>
 				</el-select>
 			</div>
@@ -152,20 +152,14 @@
 			<div class="kc_center">
 				<p>选择APP</p>
 				<div class="kc_ct_search">
-					<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索">
+					<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor">
 					<div class="kc_over">
 						<ul>
-							<li>
-								<img src="../../images/moni/appimg_03.png" alt="">
-								<span>今日头条-娱乐新闻</span>
-								<b>tianjinjuzhangguanggao</b>
-							</li>
-							<li>2</li>
-							<li>3</li>
-							<li>4</li>
-							<li>5</li>
-							<li>6</li>
-							<li>7</li>
+							<li v-for="(ele,index) in list" :key="index" @click="routerClick(index)">
+								<img :src="ele.appImgUrl" alt="">
+								<span>{{ele.appName}}</span>
+								<b>{{ele.aristName}}</b>
+							</li> 
 						</ul>
 					</div>
 				</div>
@@ -179,20 +173,22 @@
 
 <script>
 	import banner from '@components/Banner'
+	import { mapState } from 'vuex'
+	import qs from "qs"
 	export default {
 		data() {
-			return {
-				options: [{
-						value: "zh",
-						label: "中国"
-					},
-					{
-						value: "usa",
-						label: "美国"
-					}
-				],
-				value: "",
-				bannerName: '竞品对比'
+			return { 
+				countryNow: "",
+				bannerName: '竞品对比',
+				APPinfor: '',
+				list: [],
+				loading: null,
+				loadingopaction: {
+					lock: true,
+					text: 'Loading',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+				}
 			};
 		},
 
@@ -200,14 +196,22 @@
 			banner
 		},
 
-		computed: {},
+		computed: {
+			...mapState({
+				countryList: state => state.Home.countryList,
+			})
+		},
 
-		created() {},
+		created() {
+			this.$store.dispatch('GET_COUNTRYLIST')
+				.then(() => {
+					this.countryNow = this.$store.state.Home.countryList[0].nationId 
+				})
+		},
 
 		updated() {},
 
-		mounted() {
-			this.value = this.options[0].value;
+		mounted() { 
 			$(document).bind("click", function(e) {
 				var target = $(e.target);
 				if(target.closest(".btnclass").length == 0) {
@@ -223,12 +227,34 @@
 		destroyed() {},
 
 		methods: {
+			routerClick(index) {
+				this.$router.push({path: '/keyword-comparison-list',query: {key: this.countryNow , data: this.list[index]}})
+			},
 			btnClick() {
-				$(".kc_over").animate({
-						height: "242px"
-					},
-					200
-				);
+				if(this.APPinfor == '') {
+					this.$message({
+						message: '搜索内容不能为空！！！',
+						type: 'warning'
+					});
+				}else{
+					this.loading = this.$loading(this.loadingopaction) 
+					this.Ajax() 
+				} 
+			},
+			Ajax() {
+				let url = '/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId='+this.countryNow+'&count=10'+'&searchContent='+this.APPinfor
+				this.$https.get( url )
+				.then((res) => {
+					this.list = res.data.data.list 
+					if(res.data.resultCode == 1000 ) {
+						$(".kc_over").animate({
+								height: "242px"
+							},
+							200
+						);
+					}
+					this.loading.close() 
+				})
 			}
 		}
 	};

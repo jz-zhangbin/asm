@@ -95,7 +95,7 @@
 				</el-option>
 			</el-select>
 			<div class="kl_top_right">
-				<span class="kltr_btn" @click="pieClick">
+				<span class="kltr_btn" @click="pieClick" v-if="tableInnerCode.resultCode != 404">
 		          <i class="iconfont icon-tongji5"></i>
 		          展示量占比图
 	          </span>
@@ -182,7 +182,7 @@
 					</td>
 					<td>
 						{{ele.ratio}}
-						<i class="iconfont icon-icon-test" style="color: #2d76ed;" @click="brokenClick(index)"></i>
+						<i class="iconfont icon-icon-test" style="color: #2d76ed;" @click="AjaxBroken(index)"></i>
 					</td>
 					<td>{{ele.estimatePrice}}</td>
 					<td>{{ele.searchRank}}</td>
@@ -261,6 +261,10 @@
 				//tableInner: [],
 				createBrokenIndex: null, //折线图下标
 				myChart: null,
+				sortDate:{
+					one: 'ratio',
+					two: 0
+				}
 			};
 		},
 
@@ -311,8 +315,9 @@
 			},
 
 			changeFun(value) { //切换时间进行请求
+				$('.table_datr_broken').remove()
 				this.$parent.propDate = this.value
-				this.$emit('peiDate', value)
+				this.$emit('peiDate', value , this.sortDate) 
 			},
 
 			paiClick(num, name) {
@@ -323,6 +328,19 @@
 					ele.two = false;
 				});
 				this.showList[num][name] = true;
+				if(num == 0) {
+					this.sortDate = {
+						one: 'ratio',
+						two: name == 'one' ? 0 : 1
+					}
+				}else if(num == 1) {
+					this.sortDate = {
+						one: 'searchRank',
+						two: name == 'one' ? 0 : 1
+					}
+				}
+
+				this.$emit('pageDate', this.currentPage3 , this.sortDate)
 			},
 
 			excelOut() {
@@ -330,7 +348,14 @@
 				excel('ta2', 20, `<tr><th>应用</th><th>展示量占比</th><th>预测出价</th><th>搜索排名</th><th>总榜</th><th>分榜</th></tr>`, [], 'tab')
 			},
 
-			brokenClick(index) { //添加折线图
+			brokenClick(res,index) { //添加折线图
+				let dateList = []
+				let contentList = []
+				for(var i in res.ratioListByDate) {
+					dateList.push(i)
+					contentList.push(res.ratioListByDate[i])
+				}
+
 				$('.table_datr_broken').remove() //删除所有折线 
 				if(this.createBrokenIndex != index) {
 					let domstring = ` <tr class="table_datr_broken" style="height: 390px;background: #f7f7f7;" >
@@ -344,13 +369,13 @@
 					this.myChart.setOption({
 						xAxis: {
 							type: 'category',
-							data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+							data: dateList
 						},
 						yAxis: {
 							type: 'value'
 						},
 						series: [{
-							data: [820, 932, 901, 934, 1290, 1330, 1320],
+							data: contentList,
 							type: 'line',
 							itemStyle: {
 								normal: {
@@ -369,17 +394,33 @@
 			},
 
 			handleSizeChange(val) {
-				this.$emit('pageDate', val)
+				this.$emit('pageDate', val , this.sortDate)
 				$(window).scrollTop($('#ta2').offset().top)
 			},
 
 			handleCurrentChange(val) {
-				this.$emit('pageDate', val)
+				this.$emit('pageDate', val , this.sortDate)
 				$(window).scrollTop($('#ta2').offset().top)
 			},
 
 			routerClick() { //应用跳转
 				this.$router.push('/application')
+			},
+
+			AjaxBroken(i) {
+				let url = '/api/v1/IntellSearchApi/KeywordDetail/GetAppRatioList'
+				let obj = {
+					nationId:  this.$parent.countryNow,
+					appStoreId: this.$parent.tableInner[i].appStoreId,
+					keywordName: this.$parent.tableData.keywordName,
+					begingTime: datefn(1)[this.value].data.beginTime,
+					endTime:  datefn(1)[this.value].data.endTime
+				} 
+				console.log(datefn(1)[this.value].data)
+				this.$https.post(url, JSON.stringify(obj))
+				.then((res) => { 
+					this.brokenClick(res.data.data , i)
+				})
 			}
 		}
 	};
