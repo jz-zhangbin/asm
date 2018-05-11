@@ -171,7 +171,7 @@
 				<!-- 表格内容 -->
 				<tr class="table_data_tr" v-for="(ele,index) in tableInner" :key="index" v-if="tableInnerCode.resultCode == 1000">
 					<td>
-						<div class="table_datr_td" @click="routerClick">
+						<div class="table_datr_td" @click="routerClick(ele.appInfoModel.appStoreId)">
 							<img :src="ele.appInfoModel.appImgUrl" alt="">
 							<p>
 								<span>{{ele.appInfoModel.appName}}</span>
@@ -403,8 +403,8 @@
 				$(window).scrollTop($('#ta2').offset().top)
 			},
 
-			routerClick() { //应用跳转
-				this.$router.push('/application')
+			routerClick(id) { //应用跳转
+				this.$router.push({path: '/application' , query: {id: id, country: this.$parent.countryNow}})
 			},
 
 			AjaxBroken(i) {

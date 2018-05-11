@@ -427,6 +427,12 @@
 			},
 
 			changeFun(value) { //切换国家
+				this.$refs.childr.showList.map((ele,index)=>{ // 切换国家让排序归零
+					ele.one = false
+					ele.two = false
+				})
+				this.$refs.childr.showList[0].one = true
+
 				this.AJaxKeyWord(value)
 
 				this.AjaxHistoryList(1, value, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime , 'ratio' , 0)
@@ -450,7 +456,14 @@
 			},
 
 			peiDate(num,sortData) { //切换日期进行请求 
-				this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime , sortData.one , sortData.two)
+				this.$refs.childr.showList.map((ele,index)=>{ // 切换国家让排序归零
+						ele.one = false
+						ele.two = false
+					})
+				this.$refs.childr.showList[0].one = true
+				
+				this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime ,'ratio' , 0)
+				//this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime , sortData.one , sortData.two)
 			},
 
 			pageDate(num,sortData) { //分页请求

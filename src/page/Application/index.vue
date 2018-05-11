@@ -216,10 +216,10 @@
 		<div class="apl_body">
 			<!-- 头部表格信息 -->
 			<div class="apl_body_top">
-				<img :src="appData.img" alt="">
-				<img src="../../images/moni/appimg_1123_03.png" alt="">
+				<img :src="appData.appImgUrl" alt="" v-if="appData.show">
+				<img src="../../images/moni/appimg_1123_03.png" alt=""  v-if="!appData.show">
 				<div class="apl_bt_ct">
-					<h1>{{appData.name}}</h1>
+					<h1>{{appData.appName}}</h1>
 					<p>
 						<span style="width: 140px">开发商</span>
 						<span style="width: 74px">分类</span>
@@ -228,15 +228,15 @@
 						<span style="width: 74px">总榜</span>
 						<span style="width: 140px">分类榜</span>
 					</p>
-					<p>
-						<span style="width: 140px; color:#000;">{{appData.made}}</span>
-						<span style="width: 74px; color:#2d76ed;">{{appData.fenlei}}</span>
-						<span style="width: 138px; color:#2d76ed;">{{appData.id}}</span>
-						<span style="width: 74px; color:#000;">{{appData.jiage}}</span>
-						<span style="width: 74px; color:#000;">{{appData.zongbang}}</span>
-						<span style="width: 140px; color:#000;">{{appData.fenleibang}}</span>
+					<p  v-if="appData.show">
+						<span style="width: 140px; color:#000;">{{appData.aristName}}</span>
+						<span style="width: 74px; color:#2d76ed;">{{appData.appTypeName}}</span>
+						<span style="width: 138px; color:#2d76ed;">{{appData.appStoreId}}</span>
+						<span style="width: 74px; color:#000;">{{appData.appPrice}}</span>
+						<span style="width: 74px; color:#000;">{{appData.totalRank}}</span>
+						<span style="width: 140px; color:#000;">{{appData.classificationRank}}</span>
 					</p>
-					<p>
+					<p  v-if="!appData.show">
 						<span style="width: 140px; color:#000;">-</span>
 						<span style="width: 74px; color:#2d76ed;">-</span>
 						<span style="width: 138px; color:#2d76ed;">-</span>
@@ -245,7 +245,7 @@
 						<span style="width: 140px; color:#000;">-</span>
 					</p>
 				</div>
-				<div class="apl_bt_btn">
+				<div class="apl_bt_btn" v-if="appData.show">
 					<span @click="keywordRouter">
                       <i class="iconfont icon-plus-add"></i>竞品对比
                   </span>
@@ -278,29 +278,29 @@
 				<div class="apl_bos_box">
 					<p>热度</p>
 					<div>
-						<input type="text" placeholder="最小值">
-						<input type="text" placeholder="最大值">
+						<input type="text" placeholder="最小值" v-model="seacrchData.minSearchIndex">
+						<input type="text" placeholder="最大值" v-model="seacrchData.maxSearchIndex">
 					</div>
 				</div>
 				<div class="apl_bos_box">
 					<p>展示量占比(%)</p>
 					<div>
-						<input type="text" placeholder="最小值">
-						<input type="text" placeholder="最大值">
+						<input type="text" placeholder="最小值" v-model="seacrchData.minRatio">
+						<input type="text" placeholder="最大值" v-model="seacrchData.maxRatio">
 					</div>
 				</div>
 				<div class="apl_bos_box">
 					<p>近期竞价App数</p>
 					<div>
-						<input type="text" placeholder="最小值">
-						<input type="text" placeholder="最大值">
+						<input type="text" placeholder="最小值" v-model="seacrchData.minAppLength">
+						<input type="text" placeholder="最大值" v-model="seacrchData.maxAppLength">
 					</div>
 				</div>
-				<button>搜索</button>
+				<button @click="searchMoreClick">搜索</button>
 				<div class="apl_bos_right">
 					<div class="apl_bos_input">
-						<input type="text" placeholder="查找关键词">
-						<i class="iconfont icon-icon-plus-search"></i>
+						<input type="text" placeholder="查找关键词" v-model="searchKeyWord">
+						<i class="iconfont icon-icon-plus-search" @click="keywordClick"></i>
 					</div>
 				</div>
 			</div>
@@ -374,29 +374,29 @@
 						</th>
 					</tr>
 					<!-- 表格第二行 -->
-					<tr v-for="(ele,index) in tableData" :key="index" class="table_td_cont">
-						<td class="href_a">微信2.0.0</td>
-						<td>2345</td>
-						<td>144</td>
-						<td>23%</td>
-						<td>-</td>
+					<tr v-for="(ele,index) in tableData.list" :key="index" class="table_td_cont" v-if="tableShow">
+						<td class="href_a" @click="routerClick(ele.keywordName)">{{ele.keywordName}}</td>
+						<td>{{ele.searchIndex}}</td>
+						<td>{{ele.popularityIndex}}</td>
+						<td>{{ele.ratio}}%</td>
+						<td>{{ele.estimatePrice}}</td>
 						<td style="width: 20%" class="sl_dt_img">
 							<div>
 								<!-- 最多显示四个 -->
-								<img :src="item" alt="" v-for="(item,index2) in ele.imgList" :key="index2" v-if="index2<4">
-								<span v-if="ele.imgList.length>4">{{ele.imgList.length}}&gt;</span>
+								<img :src="item.appImgUrl" alt="" v-for="(item,index2) in ele.hotKeywordAppList" :key="index2" v-if="index2<4">
+								<span v-if="ele.appLength>4" @click="routerClick(ele.keywordName)">{{ele.appLength}}&gt;</span>
 							</div>
 						</td>
 						<td style="width: 9%">
-							<div class="sl_t_dis" v-if="ele.show">
-								<i class="iconfont icon-plus-add" @click="addCiClick(index)"></i>
+							<div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
+								<i class="iconfont icon-plus-add" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
 								<span class="sl_t_is" style="width:114px;"> 
 									添加至新建词组
 								</span>
 								<span class="sl_t_san"></span>
 							</div>
-							<div class="sl_t_dis" v-if="!ele.show">
-								<i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index)"> </i>
+							<div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
+								<i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
 								<span class="sl_t_is" style="width:114px;"> 
 									从新建词组删除
 								</span>
@@ -404,13 +404,16 @@
 							</div>
 						</td>
 					</tr>
+					<tr v-if="!tableShow">
+						<td colspan="7" style="height: 150px">该关键词暂无竞价数据</td>
+					</tr>
 				</table>
 			</div> 
 			<!-- 分页 -->
 			<div class="page_index"  v-if="userType">
 				<div>{{pagedata}}</div>
 				<div>
-					<el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="total">
+					<el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="tableData.totalCount">
 					</el-pagination>
 				</div>
 			</div>
@@ -429,24 +432,14 @@
 		data() {
 			return {
 				currentPage3: 1, //当前页
-				userType: false, //用户登录状态
-				total: 98, //总数
-				appData: {
-					img: require("../../images/moni/appimg_05_03.png"),
-					name: "Find My Family, Friends, Phone",
-					made: "Life360",
-					fenlei: "社交",
-					id: "384830320",
-					jiage: "免费",
-					zongbang: "186",
-					fenleibang: "16",
+				userType: false, //用户登录状态 
+				appData: { 
 					show: true
 				}, 
-				countryNow: "",
-				value1: "",
-				options3: [ ],
-				showList: [{
-						//控制排序的三角
+				countryNow: "",//当前国家
+				value1: "",//当前时间
+				options3: [ ],//世界列表
+				showList: [{ //控制排序的三角
 						one: true,
 						two: false
 					},
@@ -457,22 +450,39 @@
 					{
 						one: false,
 						two: false
-					},
-					{
-						one: false,
-						two: false
-					}
+					} 
 				],
-				tableData: [{
-					imgList: [
-						require("../../images/moni/appimg_03.png"),
-						require("../../images/moni/appimg_03.png"),
-						require("../../images/moni/appimg_03.png"),
-						require("../../images/moni/appimg_03.png"),
-						require("../../images/moni/appimg_03.png")
-					],
-					show: false
-				}]
+				tableData: [],
+				tableShow: true,
+				loading: null,
+				loadingopaction: {
+					lock: true,
+					text: 'Loading',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+				},
+				sortDate:{//排序
+					one: 'searchIndex',
+					two: 0
+				},
+				seacrchData: {
+					minSearchIndex: '',
+					maxSearchIndex: '',
+					minRatio: '',
+					maxRatio: '',
+					minAppLength: '',
+					maxAppLength: ''
+				},
+				seacrchDataTrue: {
+					minSearchIndex: 0,
+					maxSearchIndex: 0,
+					minRatio: 0,
+					maxRatio: 0,
+					minAppLength: 0,
+					maxAppLength: 0
+				},
+				searchKeyWord: '',
+				searchKeyWordTrue: ''
 			};
 		},
 
@@ -485,11 +495,11 @@
 				countryList: state => state.Home.countryList, 
 			}),
 			pagedata() {
-				if(this.currentPage3 * 20 <= this.total) {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.total
+				if(this.currentPage3 * 20 <= this.tableData.totalCount) {
+					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.tableData.totalCount
 					return ls
 				} else {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.total + ', 共' + this.total
+					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.tableData.totalCount + ', 共' + this.tableData.totalCount
 					return ls
 				}
 			}
@@ -516,44 +526,386 @@
 					this.userType = false
 				}
 			})
+
+			this.AjaxGetAppInfo()
+
+			this.AjaxGetAppHistoryKeywordList({
+				pageIndex: 1,
+				pageSize: 20,
+				requestPar: {
+					appStoreId: this.$route.query.id,
+					nationId: this.$route.country,
+					beginTime: datefn(0).beginTime,
+					endTime: datefn(0).endTime, 
+				},
+				orderByParDic: {
+					searchIndex: 0,
+					// ratio: 0,
+					// popularityIndex: 0
+				}
+			})
 		},
 
 		destroyed() {},
 
 		methods: {
 			changeFun(value) {//切换国家
-				console.log(value)
+				this.showList.map(ele=>{
+					ele.one = false
+					ele.two = false
+				})
+				this.showList[0].one = true
+
+				this.AjaxGetAppHistoryKeywordList({
+					pageIndex: 1,
+					pageSize: 20,
+					requestPar: {
+						appStoreId: this.$route.query.id,
+						nationId: value,
+						beginTime: datefn(1)[this.value1].data.beginTime,
+						endTime: datefn(1)[this.value1].data.endTime,
+						keywordName: this.searchKeyWordTrue,
+						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+					},
+					orderByParDic: {
+						searchIndex: 0,
+						// ratio: 0,
+						// popularityIndex: 0
+					}
+				})
 			},
-			changeDateFun(value) {//切换日期
-				console.log(value)
+
+			changeDateFun(value) {//切换日期 
+				this.showList.map(ele=>{
+						ele.one = false
+						ele.two = false
+					})
+				this.showList[0].one = true
+
+				this.AjaxGetAppHistoryKeywordList({
+					pageIndex: 1,
+					pageSize: 20,
+					requestPar: {
+						appStoreId: this.$route.query.id,
+						nationId: this.countryNow,
+						beginTime: datefn(1)[value].data.beginTime,
+						endTime: datefn(1)[value].data.endTime,
+						keywordName: this.searchKeyWordTrue,
+						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+					},
+					orderByParDic: {
+						searchIndex: 0,
+						// ratio: 0,
+						// popularityIndex: 0
+					}
+				})
 			},
-			paiClick(num, name) {
-				//排序的按钮
+
+			paiClick(num, name) { //排序的按钮
 				this.showList.map((ele, index) => {
 					ele.one = false;
 					ele.two = false;
 				});
 				this.showList[num][name] = true;
+				if(num == 0) {
+					this.sortDate = {
+						one: 'searchIndex',
+						two: name == 'one' ? 0 : 1
+					}
+				}else if(num == 1) {
+					this.sortDate = {
+						one: 'popularityIndex',
+						two: name == 'one' ? 0 : 1
+					}
+				}else{
+					this.sortDate = {
+						one: 'ratio',
+						two: name == 'one' ? 0 : 1
+					}
+				}
+				let obj = {}
+					obj[this.sortDate.one] = this.sortDate.two
+				this.AjaxGetAppHistoryKeywordList({
+					pageIndex: this.currentPage3,
+					pageSize: 20,
+					requestPar: {
+						appStoreId: this.$route.query.id,
+						nationId: this.countryNow,
+						beginTime: datefn(1)[this.value1].data.beginTime,
+						endTime: datefn(1)[this.value1].data.endTime,
+						keywordName: this.searchKeyWordTrue,
+						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+					},
+					orderByParDic:obj  
+				})
+			}, 
+
+			addCiClick(index, num, name) { //收藏操作
+				if(num == 0) {
+					this.tableData.list[index].hotKeywordTemStatus = 1
+					this.AjaxRemove(name, 0) //添加
+				} else {
+					this.tableData.list[index].hotKeywordTemStatus = 0
+					this.AjaxRemove(name, 1) //删除
+				}
 			},
-			//添加至收藏
-			addCiClick(index) {
-				this.tableData[index].show = !this.tableData[index].show;
+			routerClick(id) { //点击跳转，回到顶部，切换回历史列表
+				this.$router.push({
+					path: '/rankingDetails-List',
+					query: {
+						key: id,
+						country: this.countryNow
+					}
+				}) 
 			},
+
+			searchMoreClick () { //模糊查询
+				this.showList.map(ele=>{
+						ele.one = false
+						ele.two = false
+					})
+				this.showList[0].one = true
+
+				for(var i in this.seacrchData) {   
+					if(isNaN( this.seacrchData[i] ) && this.seacrchData[i] != '' || parseInt(this.seacrchData[i])<0 ) {
+						this.$message({
+							message: '搜索内容必须为大于等于0的数字',
+							type: 'warning'
+						}); 
+						return false
+					}  
+				} 
+				if(this.seacrchData.maxSearchIndex != ''){
+					if(parseInt(this.seacrchData.maxSearchIndex) < parseInt(this.seacrchData.minSearchIndex)) {
+						this.$message({
+							message: '热度：最大值必须大于最小值',
+							type: 'warning'
+						}); 
+						return false
+					}
+				}
+				if(this.seacrchData.maxRatio != '') {
+					if(parseInt(this.seacrchData.maxRatio) < parseInt(this.seacrchData.minRatio)) {
+						this.$message({
+							message: '展示量占比：最大值必须大于最小值',
+							type: 'warning'
+						}); 
+						return false
+					}
+				}
+				if(this.seacrchData.maxAppLength != '') {
+					if(parseInt(this.seacrchData.maxAppLength) < parseInt(this.seacrchData.minAppLength)) {
+						this.$message({
+							message: '近期竞价APP：最大值必须大于最小值',
+							type: 'warning'
+						}); 
+						return false
+					}
+				} 
+				if(this.zTest(this.seacrchData.maxSearchIndex) || this.zTest(this.seacrchData.minSearchIndex) || this.zTest(this.seacrchData.maxAppLength) || this.zTest(this.seacrchData.minAppLength)) {
+					this.$message({
+						message: '必须为大于等于0的正整数',
+						type: 'warning'
+					}); 
+					return false
+				}
+				this.seacrchDataTrue = this.seacrchData
+
+				this.AjaxGetAppHistoryKeywordList({
+					pageIndex: 1,
+					pageSize: 20,
+					requestPar: {
+						appStoreId: this.$route.query.id,
+						nationId: this.countryNow,
+						beginTime: datefn(1)[this.value1].data.beginTime,
+						endTime: datefn(1)[this.value1].data.endTime,
+						keywordName: this.searchKeyWordTrue,
+						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+					},
+					orderByParDic: {
+						searchIndex: 0
+					}
+				}) 
+			},
+
+			keywordClick () {//input搜索
+				if(this.searchKeyWord == ''){
+					this.$message({
+						message: '搜索内容不能为空',
+						type: 'warning'
+					}); 
+
+					return false
+				}
+				this.searchKeyWordTrue = this.searchKeyWord
+				this.showList.map(ele=>{
+						ele.one = false
+						ele.two = false
+					})
+				this.showList[0].one = true
+
+				this.AjaxGetAppHistoryKeywordList({
+					pageIndex: 1,
+					pageSize: 20,
+					requestPar: {
+						appStoreId: this.$route.query.id,
+						nationId: this.countryNow,
+						beginTime: datefn(1)[this.value1].data.beginTime,
+						endTime: datefn(1)[this.value1].data.endTime,
+						keywordName: this.searchKeyWordTrue,
+						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+					},
+					orderByParDic: {
+						searchIndex: 0
+					}
+				}) 
+			},
+
+
+			zTest(data) {//正则验证
+				let ZZ = /^([1-9]\d*|[0]{1,1})$/  
+				if( data != '' && !ZZ.test(data)) {
+					return true
+				}else{
+					return false
+				}
+			},
+
+			isNull(data) {//判断是否为空
+				if(data == '') {
+					return 0
+				}else{
+					return data
+				}
+			},
+
 			handleSizeChange(val) {
-				console.log(`每页 ${val} 条`);
-				//$(window).scrollTop($('#ta2').offset().top)
+				let obj = {}
+					obj[this.sortDate.one] = this.sortDate.two
+				this.AjaxGetAppHistoryKeywordList({
+					pageIndex: val,
+					pageSize: 20,
+					requestPar: {
+						appStoreId: this.$route.query.id,
+						nationId: this.countryNow,
+						beginTime: datefn(1)[this.value1].data.beginTime,
+						endTime: datefn(1)[this.value1].data.endTime,
+						keywordName: this.searchKeyWordTrue,
+						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+					},
+					orderByParDic: obj
+				})
+				$(window).scrollTop($('#ta2').offset().top)
 			},
+
 			handleCurrentChange(val) {
-				console.log(`当前页: ${val}`);
+				let obj = {}
+					obj[this.sortDate.one] = this.sortDate.two
+				this.AjaxGetAppHistoryKeywordList({
+					pageIndex: val,
+					pageSize: 20,
+					requestPar: {
+						appStoreId: this.$route.query.id,
+						nationId: this.countryNow,
+						beginTime: datefn(1)[this.value1].data.beginTime,
+						endTime: datefn(1)[this.value1].data.endTime,
+						keywordName: this.searchKeyWordTrue,
+						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+					},
+					orderByParDic: obj
+				})
+				$(window).scrollTop($('#ta2').offset().top)
 			},
+
 			excelOut() {
 				//表格导出
 				method1("ta2");
 			},
-			keywordRouter() {
-				//竞品对比跳转
+
+			keywordRouter() { //竞品对比跳转
 				this.$router.push('/keyword-comparison-list')
-			}
+			},
+
+			AjaxGetAppInfo() {//初次加载
+				this.loading = this.$loading(this.loadingopaction)
+				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId='+this.$route.query.id+'&nationId='+this.$route.query.country
+
+				this.$https.get(url)
+				.then((res)=>{ 
+					//res.data.resultCode = 404
+					if(res.data.resultCode == 1000) {
+						res.data.data.show = true
+						this.appData = res.data.data
+					}else if(res.data.resultCode == 404) {
+						res.data.data.show = false
+						this.appData = res.data.data
+					}
+					this.loading.close() 
+				})			 
+			},
+
+			AjaxGetAppHistoryKeywordList(obj) {//获取历史列表
+				this.loading = this.$loading(this.loadingopaction)
+				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppHistoryKeywordList'
+				
+				this.$https.post(url , JSON.stringify(obj))
+				.then((res)=>{ 
+					//res.data.resultCode = 404
+					if(res.data.resultCode == 1000){
+						this.tableShow = true
+					}else if(res.data.resultCode == 404) {
+						this.tableShow = false
+					}
+					this.tableData = res.data.data 
+					this.loading.close() 
+				})
+
+			},
+
+			AjaxRemove(name, type) { //操作关键词ajax
+				let url = '/api/v1/IntellSearchApi/HotKeyword/OperatKeywords'
+				let data = {
+					"keywordName": name,
+					"hotKeywordActionType": type
+				}
+				let data1 = JSON.stringify(data)
+				return this.$https.post(url, data1)
+			},
 		}
-	};
+	}; 
 </script>
