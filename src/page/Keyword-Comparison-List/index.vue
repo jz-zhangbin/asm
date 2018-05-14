@@ -326,9 +326,9 @@
 				<div class="kcl_dui_cont">
 					<!-- 从详情页跳转过来的 -->
 					<div class="kcl_duibi_left">
-						<img src="../../images/moni/appimg_1123_03.png" alt="">
+						<img :src="dataLeft.appImgUrl" alt="">
 						<section>
-							<h1>Find My Family, Friends, Phone</h1>
+							<h1>{{dataLeft.appName}}</h1>
 							<p>
 								<span style="width: 16%;">开发商</span>
 								<span style="width: 12%;">分类</span>
@@ -338,12 +338,12 @@
 								<span style="width: 14%;">分类榜</span>
 							</p>
 							<p>
-								<span style="width: 16%; color:#000">Life</span>
-								<span style="width: 12%; color:#2d76ed">娱乐</span>
-								<span style="width: 21%; color:#2d76ed">124332</span>
-								<span style="width: 15%; color:#000">免费</span>
-								<span style="width: 12%; color:#000">186</span>
-								<span style="width: 14%; color:#000">239</span>
+								<span style="width: 16%; color:#000">{{dataLeft.aristName}}</span>
+								<span style="width: 12%; color:#2d76ed">{{dataLeft.appTypeName}}</span>
+								<span style="width: 21%; color:#2d76ed">{{dataLeft.appStoreId}}</span>
+								<span style="width: 15%; color:#000">{{dataLeft.appPrice}}</span>
+								<span style="width: 12%; color:#000">{{dataLeft.totalRank}}</span>
+								<span style="width: 14%; color:#000">{{dataLeft.classificationRank}}</span>
 							</p>
 						</section>
 					</div>
@@ -352,9 +352,9 @@
 					</div>
 					<!-- 在对比页选中的 -->
 					<div class="kcl_duibi_left" v-if="appDataShow">
-						<img src="../../images/moni/appimg_1123_03.png" alt="">
+						<img :src="dataRight.appImgUrl" alt="" v-if="dataRight.appImgUrl">
 						<section>
-							<h1>Find My Family, Friends, Phone</h1>
+							<h1>{{dataRight.appName}}</h1>
 							<p>
 								<span style="width: 16%;">开发商</span>
 								<span style="width: 12%;">分类</span>
@@ -364,12 +364,12 @@
 								<span style="width: 14%;">分类榜</span>
 							</p>
 							<p>
-								<span style="width: 16%; color:#000">Life</span>
-								<span style="width: 12%; color:#2d76ed">娱乐</span>
-								<span style="width: 21%; color:#2d76ed">124332</span>
-								<span style="width: 15%; color:#000">免费</span>
-								<span style="width: 12%; color:#000">186</span>
-								<span style="width: 14%; color:#000">239</span>
+								<span style="width: 16%; color:#000">{{dataRight.aristName}}</span>
+								<span style="width: 12%; color:#2d76ed">{{dataRight.appTypeName}}</span>
+								<span style="width: 21%; color:#2d76ed">{{dataRight.appStoreId}}</span>
+								<span style="width: 15%; color:#000">{{dataRight.appPrice}}</span>
+								<span style="width: 12%; color:#000">{{dataRight.totalRank}}</span>
+								<span style="width: 14%; color:#000">{{dataRight.classificationRank}}</span>
 							</p>
 						</section>
 						<i class="iconfont icon-cha" @click="close"></i>
@@ -381,7 +381,7 @@
 							<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor">
 							<div class="kc_over">
 								<ul> 
-									<li @click="overLiClick" v-for="(ele,index) in list" :key="index">
+									<li @click="overLiClick(index)" v-for="(ele,index) in list" :key="index">
 										<img :src="ele.appImgUrl" alt="">
 										<span>{{ele.appName}}</span>
 										<b>{{ele.aristName}}</b>
@@ -400,7 +400,7 @@
 				<!-- 竞品对比结果-第一个表格 -->
 				<div class="kcl_table_one" v-if="tableShow">
 					<h2>竞品对比结果</h2>
-					<table class="kcl_table1">
+					<table class="kcl_table1" v-if="ContrastData[idLeft]">
 						<tr>
 							<th style="width: 28%">#</th>
 							<th style="width: 19%">已选APP (左)</th>
@@ -410,23 +410,23 @@
 						</tr>
 						<tr>
 							<td>ASM竞价词数 </td>
-							<td class="td_color">23213</td>
+							<td class="td_color">{{ContrastData[idLeft].totalCompetitiveWordNum}}</td>
 							<td></td>
-							<td class="td_color">3234</td>
-							<td><i class="iconfont icon-more"></i></td>
+							<td class="td_color">{{ContrastData[idRight].totalCompetitiveWordNum}}</td>
+							<td><i class="iconfont icon-more" @click="listNav('alike')"></i></td>
 						</tr>
 						<tr>
 							<td class="td_weight">相同竞价词数 </td>
 							<td class="td_color"></td>
-							<td class="td_color">4634</td>
+							<td class="td_color">{{ContrastData[idLeft].equalCompetitiveWordNum}}</td>
 							<td class="td_color"></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td>不同竞价词数 </td>
-							<td class="td_color">23213</td>
+							<td class="td_color">{{ContrastData[idLeft].unEqualCompetitiveWordNum}}</td>
 							<td></td>
-							<td class="td_color">3234</td>
+							<td class="td_color">{{ContrastData[idRight].unEqualCompetitiveWordNum}}</td>
 							<td></td>
 						</tr>
 						<tr class="td_height">
@@ -435,7 +435,7 @@
 							<td class="td_animous">
 								<div>
 									<section class="yuan" id="myChart1"> </section>
-									<span>100%</span>
+									<span>{{percentage}}%</span>
 								</div>
 							</td>
 							<td class="td_color"></td>
@@ -443,31 +443,31 @@
 						</tr>
 						<tr>
 							<td>8000以上热度竞价词数 </td>
-							<td class="td_color">23213</td>
+							<td class="td_color">{{ContrastData[idLeft].hotCompetitiveWords}}</td>
 							<td></td>
-							<td class="td_color">3234</td>
-							<td><i class="iconfont icon-more"></i></td>
+							<td class="td_color">{{ContrastData[idRight].hotCompetitiveWords}}</td>
+							<td><i class="iconfont icon-more" @click="listNav('noalike' , 8000 , '')"></i></td>
 						</tr>
 						<tr>
 							<td>6000-8000热度竞价词数 </td>
-							<td class="td_color">23213</td>
+							<td class="td_color">{{ContrastData[idLeft].lowerHotCompetitiveWords}}</td>
 							<td></td>
-							<td class="td_color">3234</td>
-							<td><i class="iconfont icon-more"></i></td>
+							<td class="td_color">{{ContrastData[idRight].lowerHotCompetitiveWords}}</td>
+							<td><i class="iconfont icon-more" @click="listNav('noalike' , 8000 , 6000)"></i></td>
 						</tr>
 						<tr>
 							<td>4605-6000热度竞价词数 </td>
-							<td class="td_color">23213</td>
+							<td class="td_color">{{ContrastData[idLeft].middleHotCompetitiveWords}}</td>
 							<td></td>
-							<td class="td_color">3234</td>
-							<td><i class="iconfont icon-more"></i></td>
+							<td class="td_color">{{ContrastData[idRight].middleHotCompetitiveWords}}</td>
+							<td><i class="iconfont icon-more" @click="listNav('noalike' , 6000 , 4605)"></i></td>
 						</tr>
 						<tr>
 							<td>低于4605热度竞价词数 </td>
-							<td class="td_color">23213</td>
+							<td class="td_color">{{ContrastData[idLeft].lowCompetitiveWords }}</td>
 							<td></td>
-							<td class="td_color">3234</td>
-							<td><i class="iconfont icon-more"></i></td>
+							<td class="td_color">{{ContrastData[idRight].lowCompetitiveWords}}</td>
+							<td><i class="iconfont icon-more" @click="listNav('noalike' , '' , 4605)"></i></td>
 						</tr>
 					</table>
 				</div>
@@ -477,7 +477,7 @@
 						<span v-for="(ele,index) in components_list" :key="index" :class="{rdl_section_is: index == components_index}" @click="componentsClick(index)">{{ele.name}}</span>
 					</div>
 					<!-- table组件 -->
-					<component :is="currentView"></component>
+					<component :is="currentView" :userType='userType' :max='max' :min='min'></component>
 					<usersign v-if="!userType"></usersign>
 				</div>
 			</div>
@@ -492,6 +492,8 @@
 	import list2 from './list2.vue'
 	import list3 from './list3.vue'
 	import usersign from '@components/User-Sign'
+	import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
+	import { datefn } from '@commonJS/functionJS'
 	export default {
 		data() {
 			return {
@@ -503,7 +505,7 @@
 					spinner: 'el-icon-loading',
 					background: 'rgba(0, 0, 0, 0.7)'
 				},
-				list: [],
+				list: [],//搜索列表
 				countryNow: "",
 				APPinfor: '',//搜索内容
 				bannerName: "竞品对比",
@@ -523,7 +525,15 @@
 				],
 				components_index: 0,
 				currentView: list1,
-				myChart: null
+				myChart: null,
+				dataLeft: {},//左面选中的app数据
+				dataRight: {},//右面进行对比的app数据
+				ContrastData: {},//对比数据
+				percentage: 0 ,//相同的百分比
+				idLeft: 0,
+				idRight: 0,
+				max: '',
+				min: ''
 			};
 		},
 
@@ -546,13 +556,28 @@
 				.then(() => {
 					this.countryNow = this.$store.state.Home.countryList[0].nationId 
 				})
+
+			UserSignType()
+			.then(res=>{ 
+				if(res.data.data.userLoginStatus == 1) {//登陆状态
+					this.userType = true
+				}else{//未登陆
+					this.userType = false
+				}
+			})
+
+			this.AjaxInfor({
+				key: this.$route.query.key,
+				id: this.$route.query.id
+			} , 'left')
+
+			
 		},
 
 		updated() {},
 
 		mounted() { 
-			
-			console.log(this.$route.query)
+			 
 			//关闭搜索列表
 			$(document).bind("click", function(e) {
 				var target = $(e.target);
@@ -580,20 +605,93 @@
 					this.Ajax() 
 				} 
 			}, 
-			overLiClick() {
-				//选中app请求数据，进行比较
+			overLiClick(index) { //选中app请求数据，进行比较
 				this.appDataShow = true
+
+				this.AjaxInfor({
+					id: this.list[index].appStoreId,
+					key: this.countryNow
+				} , 'right')
 			},
-			close() {
-				//关闭选中的app
+			close() { //关闭选中的app
 				this.appDataShow = false
 				this.tableShow = false
 			},
-			starClick() {
-				//点击开始对比
+			starClick() { //点击开始对比
 				this.tableShow = true
-				setTimeout(() => {
-					// 基于准备好的dom，初始化echarts实例
+
+				this.AjaxAppcontent(this.dataLeft.appStoreId , this.dataRight.appStoreId)
+				
+			},
+			drawaCircle(baifenbi) {
+
+			}, //table切换
+			componentsClick(index) {
+				this.components_index = index
+				this.currentView = this.components_list[index].com
+			},
+			listNav(name,num1,num2) {//切换关键词热度
+			$(window).scrollTop($('.kcl_table_btn').offset().top)
+				if(name == 'alike') { 
+					this.components_index = 0
+					this.currentView = list1
+				}else{ 
+					this.components_index = 2
+					this.currentView = list3
+				}
+				this.max = num1
+				this.min = num2
+			},
+			Ajax() { //搜索app
+				let url = '/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId='+this.countryNow+'&count=10'+'&searchContent='+this.APPinfor
+				this.$https.get( url )
+				.then((res) => {
+					this.list = res.data.data.list
+					if(res.data.resultCode == 1000 ) {
+						$(".kc_over").animate({
+								height: "242px"
+							},
+							200
+						);
+					}
+					this.loading.close() 
+				})
+			},
+			AjaxInfor(obj , num) { //获取需要对比的app
+				this.loading = this.$loading(this.loadingopaction)
+				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId='+obj.id+'&nationId='+obj.key
+
+				this.$https.get(url)
+				.then((res) => {
+					if( num == 'left') {
+						this.dataLeft = res.data.data
+						this.idLeft = this.$route.query.id
+					}else{
+						this.dataRight = res.data.data
+						this.idRight = res.data.data.appStoreId
+					}
+					this.loading.close()
+				}) 
+			},
+			AjaxAppcontent(selectedAppId , competitiveAppId) {//获取两个app之间的对比数据
+				this.loading = this.$loading(this.loadingopaction)
+				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppResults'
+				let obj = {
+					nationId: this.countryNow,
+					selectedAppId,
+					competitiveAppId,
+					beginTime: datefn(1)[1].data.beginTime,
+					endTime: datefn(1)[1].data.endTime,
+				}
+				this.$https.post( url , JSON.stringify(obj))
+				.then((res) => { 
+					this.ContrastData = res.data.data.appAnalysisResult
+					this.loading.close()
+
+					let totalNum = res.data.data.appAnalysisResult[this.idLeft].totalCompetitiveWordNum
+					let identicalNum = res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum
+					this.percentage = (identicalNum / totalNum).toFixed(4)*100
+					setTimeout(() => { // 基于准备好的dom，初始化echarts实例 
 					this.myChart = this.$echarts.init(document.getElementById("myChart1"));
 					this.myChart.setOption({
 						tooltip: {
@@ -611,39 +709,17 @@
 							},
 							color: ['#2d76ed', '#dee2e6'],
 							data: [{
-									value: 30,
+									value: identicalNum,
 									name: '相同'
 								},
 								{
-									value: 130,
+									value: (totalNum - identicalNum),
 									name: '不相同'
 								}
 							]
 						}]
 					});
 				}, 300)
-			},
-			drawaCircle(baifenbi) {
-
-			},
-			//table切换
-			componentsClick(index) {
-				this.components_index = index
-				this.currentView = this.components_list[index].com
-			},
-			Ajax() { //搜索app
-				let url = '/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId='+this.countryNow+'&count=10'+'&searchContent='+this.APPinfor
-				this.$https.get( url )
-				.then((res) => {
-					this.list = res.data.data.list
-					if(res.data.resultCode == 1000 ) {
-						$(".kc_over").animate({
-								height: "242px"
-							},
-							200
-						);
-					}
-					this.loading.close() 
 				})
 			}
 		}

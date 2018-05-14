@@ -228,7 +228,7 @@
 
 		methods: {
 			routerClick(index) {
-				this.$router.push({path: '/keyword-comparison-list',query: {key: this.countryNow , data: this.list[index]}})
+				this.$router.push({path: '/keyword-comparison-list',query: {key: this.countryNow , id: this.list[index].appStoreId}})
 			},
 			btnClick() {
 				if(this.APPinfor == '') {

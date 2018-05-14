@@ -858,7 +858,7 @@
 			},
 
 			keywordRouter() { //竞品对比跳转
-				this.$router.push('/keyword-comparison-list')
+				this.$router.push({path: '/keyword-comparison-list' , query: {key: this.countryNow , id: this.appData.appStoreId}})
 			},
 
 			AjaxGetAppInfo() {//初次加载
