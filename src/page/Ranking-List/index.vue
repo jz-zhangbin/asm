@@ -295,11 +295,13 @@
 					}
 				})
 			},
+			
 			fromTop() { //回到顶部 
 				$('html,body').animate({  
 					scrollTop: 0  
 				}, 800); 
 			},
+			
 			addCiClick(index, num, name) { //操作关键词
 				if(num == 0) {
 					this.tableData[index].hotKeywordTemStatus = 1
@@ -309,6 +311,7 @@
 					this.AjaxRemove(name, 1) //删除
 				}
 			},
+			
 			changeFun(countryNow) { //切换国家
 				this.AjaxInit(countryNow, 1)
 					.then(res => {
@@ -316,11 +319,13 @@
 						this.initloading = true
 					})
 			},
+			
 			excelOut() {
 				//表格导出
 				excel('ta', 1500, `<tr><th>#</th><th>关键词</th><th>流行度</th><th>搜索指数</th></tr>`, [5, 4], 'tab')
 
 			},
+			
 			AjaxInit(id, pageindex) { //初始化列表ajax
 				let url = '/api/v1/IntellSearchApi/HotKeyword/GetHotKeywordList'
 				let data = {
@@ -333,6 +338,7 @@
 				let data1 = JSON.stringify(data)
 				return this.$https.post(url, data1)
 			},
+			
 			AjaxRemove(name, type) { //操作关键词ajax
 				let url = '/api/v1/IntellSearchApi/HotKeyword/OperatKeywords'
 				let data = {
@@ -342,6 +348,7 @@
 				let data1 = JSON.stringify(data)
 				return this.$https.post(url, data1)
 			},
+			
 			Ajax() { //滚动加载请求
 				this.AjaxInit(this.vacountryNowlue, this.ajaxnum)
 					.then(res => {

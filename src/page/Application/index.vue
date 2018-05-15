@@ -423,6 +423,7 @@
 </template>
 
 <script>
+	import excel from '@commonJS/excelFn'
 	import usersign from '@components/User-Sign'
 	import method1 from "@commonJS/excel";
 	import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
@@ -504,10 +505,6 @@
 				}
 			}
 		},
-
-		created() {},
-
-		updated() {},
 
 		mounted() {
 			this.$store.dispatch('GET_COUNTRYLIST')
@@ -852,9 +849,8 @@
 				$(window).scrollTop($('#ta2').offset().top)
 			},
 
-			excelOut() {
-				//表格导出
-				method1("ta2");
+			excelOut() { //表格导出 
+				excel('ta2', 20, `<tr><th>关键词</th><th>搜索指数</th><th>流行度</th><th>展示量占比</th><th>预测出价</th></tr>`, [6,5], 'tab')
 			},
 
 			keywordRouter() { //竞品对比跳转

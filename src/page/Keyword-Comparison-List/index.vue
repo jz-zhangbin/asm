@@ -380,12 +380,12 @@
 						<div class="kc_ct_search">
 							<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor">
 							<div class="kc_over">
-								<ul> 
+								<ul>
 									<li @click="overLiClick(index)" v-for="(ele,index) in list" :key="index">
 										<img :src="ele.appImgUrl" alt="">
 										<span>{{ele.appName}}</span>
 										<b>{{ele.aristName}}</b>
-									</li>  
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -492,7 +492,7 @@
 	import list2 from './list2.vue'
 	import list3 from './list3.vue'
 	import usersign from '@components/User-Sign'
-	import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
+	import { CountryInit, UserSignType } from '@commonJS/AxiosGet'
 	import { datefn } from '@commonJS/functionJS'
 	export default {
 		data() {
@@ -505,9 +505,9 @@
 					spinner: 'el-icon-loading',
 					background: 'rgba(0, 0, 0, 0.7)'
 				},
-				list: [],//搜索列表
+				list: [], //搜索列表
 				countryNow: "",
-				APPinfor: '',//搜索内容
+				APPinfor: '', //搜索内容
 				bannerName: "竞品对比",
 				appDataShow: false,
 				tableShow: false,
@@ -526,10 +526,10 @@
 				components_index: 0,
 				currentView: list1,
 				myChart: null,
-				dataLeft: {},//左面选中的app数据
-				dataRight: {},//右面进行对比的app数据
-				ContrastData: {},//对比数据
-				percentage: 0 ,//相同的百分比
+				dataLeft: {}, //左面选中的app数据
+				dataRight: {}, //右面进行对比的app数据
+				ContrastData: {}, //对比数据
+				percentage: 0, //相同的百分比
 				idLeft: 0,
 				idRight: 0,
 				max: '',
@@ -554,30 +554,27 @@
 		created() {
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
-					this.countryNow = this.$store.state.Home.countryList[0].nationId 
+					this.countryNow = this.$store.state.Home.countryList[0].nationId
 				})
 
 			UserSignType()
-			.then(res=>{ 
-				if(res.data.data.userLoginStatus == 1) {//登陆状态
-					this.userType = true
-				}else{//未登陆
-					this.userType = false
-				}
-			})
+				.then(res => {
+					if(res.data.data.userLoginStatus == 1) { //登陆状态
+						this.userType = true
+					} else { //未登陆
+						this.userType = false
+					}
+				})
 
 			this.AjaxInfor({
 				key: this.$route.query.key,
 				id: this.$route.query.id
-			} , 'left')
+			}, 'left')
 
-			
 		},
 
-		updated() {},
+		mounted() {
 
-		mounted() { 
-			 
 			//关闭搜索列表
 			$(document).bind("click", function(e) {
 				var target = $(e.target);
@@ -591,89 +588,97 @@
 			});
 		},
 
-		destroyed() {},
-
 		methods: {
+
 			btnClick() {
 				if(this.APPinfor == '') {
 					this.$message({
 						message: '搜索内容不能为空！！！',
 						type: 'warning'
 					});
-				}else{
-					this.loading = this.$loading(this.loadingopaction) 
-					this.Ajax() 
-				} 
-			}, 
+				} else {
+					this.loading = this.$loading(this.loadingopaction)
+					this.Ajax()
+				}
+			},
+
 			overLiClick(index) { //选中app请求数据，进行比较
 				this.appDataShow = true
 
 				this.AjaxInfor({
 					id: this.list[index].appStoreId,
 					key: this.countryNow
-				} , 'right')
+				}, 'right')
 			},
+
 			close() { //关闭选中的app
 				this.appDataShow = false
 				this.tableShow = false
 			},
+
 			starClick() { //点击开始对比
 				this.tableShow = true
 
-				this.AjaxAppcontent(this.dataLeft.appStoreId , this.dataRight.appStoreId)
-				
+				this.AjaxAppcontent(this.dataLeft.appStoreId, this.dataRight.appStoreId)
+
 			},
+
 			drawaCircle(baifenbi) {
 
-			}, //table切换
+			},
+			//table切换
 			componentsClick(index) {
 				this.components_index = index
 				this.currentView = this.components_list[index].com
 			},
-			listNav(name,num1,num2) {//切换关键词热度
-			$(window).scrollTop($('.kcl_table_btn').offset().top)
-				if(name == 'alike') { 
+
+			listNav(name, num1, num2) { //切换关键词热度
+				$(window).scrollTop($('.kcl_table_btn').offset().top)
+				if(name == 'alike') {
 					this.components_index = 0
 					this.currentView = list1
-				}else{ 
+				} else {
 					this.components_index = 2
 					this.currentView = list3
 				}
 				this.max = num1
 				this.min = num2
 			},
+
 			Ajax() { //搜索app
-				let url = '/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId='+this.countryNow+'&count=10'+'&searchContent='+this.APPinfor
-				this.$https.get( url )
-				.then((res) => {
-					this.list = res.data.data.list
-					if(res.data.resultCode == 1000 ) {
-						$(".kc_over").animate({
-								height: "242px"
-							},
-							200
-						);
-					}
-					this.loading.close() 
-				})
+				let url = '/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId=' + this.countryNow + '&count=10' + '&searchContent=' + this.APPinfor
+				this.$https.get(url)
+					.then((res) => {
+						this.list = res.data.data.list
+						if(res.data.resultCode == 1000) {
+							$(".kc_over").animate({
+									height: "242px"
+								},
+								200
+							);
+						}
+						this.loading.close()
+					})
 			},
-			AjaxInfor(obj , num) { //获取需要对比的app
+
+			AjaxInfor(obj, num) { //获取需要对比的app
 				this.loading = this.$loading(this.loadingopaction)
-				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId='+obj.id+'&nationId='+obj.key
+				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=' + obj.id + '&nationId=' + obj.key
 
 				this.$https.get(url)
-				.then((res) => {
-					if( num == 'left') {
-						this.dataLeft = res.data.data
-						this.idLeft = this.$route.query.id
-					}else{
-						this.dataRight = res.data.data
-						this.idRight = res.data.data.appStoreId
-					}
-					this.loading.close()
-				}) 
+					.then((res) => {
+						if(num == 'left') {
+							this.dataLeft = res.data.data
+							this.idLeft = this.$route.query.id
+						} else {
+							this.dataRight = res.data.data
+							this.idRight = res.data.data.appStoreId
+						}
+						this.loading.close()
+					})
 			},
-			AjaxAppcontent(selectedAppId , competitiveAppId) {//获取两个app之间的对比数据
+
+			AjaxAppcontent(selectedAppId, competitiveAppId) { //获取两个app之间的对比数据
 				this.loading = this.$loading(this.loadingopaction)
 				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppResults'
 				let obj = {
@@ -683,44 +688,44 @@
 					beginTime: datefn(1)[1].data.beginTime,
 					endTime: datefn(1)[1].data.endTime,
 				}
-				this.$https.post( url , JSON.stringify(obj))
-				.then((res) => { 
-					this.ContrastData = res.data.data.appAnalysisResult
-					this.loading.close()
+				this.$https.post(url, JSON.stringify(obj))
+					.then((res) => {
+						this.ContrastData = res.data.data.appAnalysisResult
+						this.loading.close()
 
-					let totalNum = res.data.data.appAnalysisResult[this.idLeft].totalCompetitiveWordNum
-					let identicalNum = res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum
-					this.percentage = (identicalNum / totalNum).toFixed(4)*100
-					setTimeout(() => { // 基于准备好的dom，初始化echarts实例 
-					this.myChart = this.$echarts.init(document.getElementById("myChart1"));
-					this.myChart.setOption({
-						tooltip: {
-							trigger: 'item',
-							formatter: "{a} <br/>{b}: {c} ({d}%)"
-						},
-						series: [{
-							name: '竞价词重合度',
-							type: 'pie',
-							radius: ['60%', '80%'],
-							labelLine: {
-								normal: {
-									show: false
-								}
-							},
-							color: ['#2d76ed', '#dee2e6'],
-							data: [{
-									value: identicalNum,
-									name: '相同'
+						let totalNum = res.data.data.appAnalysisResult[this.idLeft].totalCompetitiveWordNum
+						let identicalNum = res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum
+						this.percentage = (identicalNum / totalNum).toFixed(4) * 100
+						setTimeout(() => { // 基于准备好的dom，初始化echarts实例 
+							this.myChart = this.$echarts.init(document.getElementById("myChart1"));
+							this.myChart.setOption({
+								tooltip: {
+									trigger: 'item',
+									formatter: "{a} <br/>{b}: {c} ({d}%)"
 								},
-								{
-									value: (totalNum - identicalNum),
-									name: '不相同'
-								}
-							]
-						}]
-					});
-				}, 300)
-				})
+								series: [{
+									name: '竞价词重合度',
+									type: 'pie',
+									radius: ['60%', '80%'],
+									labelLine: {
+										normal: {
+											show: false
+										}
+									},
+									color: ['#2d76ed', '#dee2e6'],
+									data: [{
+											value: identicalNum,
+											name: '相同'
+										},
+										{
+											value: (totalNum - identicalNum),
+											name: '不相同'
+										}
+									]
+								}]
+							});
+						}, 300)
+					})
 			}
 		}
 	};

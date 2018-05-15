@@ -15,8 +15,8 @@
 				}
 			}
 		}
-		.page_index{
-			div{
+		.page_index {
+			div {
 				width: 100%;
 				display: flex;
 				justify-content: center !important;
@@ -43,8 +43,8 @@
 				}
 			}
 		}
-		.kcll2_table_fu{
-			width: 50%; 
+		.kcll2_table_fu {
+			width: 50%;
 		}
 	}
 </style>
@@ -115,7 +115,7 @@
 					<div>
 						<el-pagination background @size-change="handleSizeChange3" @current-change="handleCurrentChange3" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="total3">
 						</el-pagination>
-					</div> 
+					</div>
 				</div>
 			</div>
 
@@ -179,14 +179,14 @@
 					</tr>
 				</table>
 				<!-- 分页 -->
-				<div class="page_index" v-if="userType"> 
+				<div class="page_index" v-if="userType">
 					<div>
 						<el-pagination background @size-change="handleSizeChange4" @current-change="handleCurrentChange4" :current-page.sync="currentPage4" :page-size="20" layout="prev, pager, next, jumper" :total="total4">
 						</el-pagination>
 					</div>
 				</div>
 			</div>
-		</div> 
+		</div>
 	</div>
 </template>
 
@@ -195,8 +195,7 @@
 	export default {
 		data() {
 			return {
-				showList: [{
-						//控制排序的三角
+				showList: [{ //控制排序的三角
 						one: true,
 						two: false
 					},
@@ -205,8 +204,7 @@
 						two: false
 					}
 				],
-				showList1: [{
-						//控制排序的三角
+				showList1: [{ //控制排序的三角
 						one: true,
 						two: false
 					},
@@ -215,8 +213,8 @@
 						two: false
 					}
 				],
-				tableInner1: [ ],
-				tableInner2: [ ],
+				tableInner1: [],
+				tableInner2: [],
 				currentPage3: 1, //当前页 
 				currentPage4: 1, //当前页 
 				total3: 98, //总数
@@ -229,11 +227,11 @@
 					spinner: 'el-icon-loading',
 					background: 'rgba(0, 0, 0, 0.7)'
 				},
-				sortDate3:{//排序
+				sortDate3: { //排序
 					one: 'searchIndex',
 					two: 0
 				},
-				sortDate4:{//排序
+				sortDate4: { //排序
 					one: 'searchIndex',
 					two: 0
 				},
@@ -243,32 +241,31 @@
 		props: {
 			userType: {},
 			max: {}
-		},  
+		},
 
 		watch: {
-			max: function () {
+			max: function() {
 				this.Ajax()
-			}, 
-			min: function () {
+			},
+			min: function() {
 				this.Ajax()
 			}
 		},
 
 		filters: {
-			pageNum: function (value,currentPage3) {
+			pageNum: function(value, currentPage3) {
 				let num2 = currentPage3 - 1
-				let num = (value + 1) + num2 * 20 
+				let num = (value + 1) + num2 * 20
 				return num
 			}
-		}, 
+		},
 
 		mounted() {
 			this.Ajax()
 		},
 
-		destroyed() {},
-
 		methods: {
+
 			paiClick(num, name) {
 				//排序的按钮
 				this.showList.map((ele, index) => {
@@ -281,14 +278,15 @@
 						one: 'searchIndex',
 						two: name == 'one' ? 0 : 1
 					}
-				}else if(num == 1) {
+				} else if(num == 1) {
 					this.sortDate3 = {
 						one: 'selectedAppRatio',
 						two: name == 'one' ? 0 : 1
 					}
-				} 
-				this.AjaxClass(this.currentPage3 ,'left') 
+				}
+				this.AjaxClass(this.currentPage3, 'left')
 			},
+
 			paiClick1(num, name) {
 				//排序的按钮
 				this.showList1.map((ele, index) => {
@@ -301,14 +299,15 @@
 						one: 'searchIndex',
 						two: name == 'one' ? 0 : 1
 					}
-				}else if(num == 1) {
+				} else if(num == 1) {
 					this.sortDate4 = {
 						one: 'selectedAppRatio',
 						two: name == 'one' ? 0 : 1
 					}
-				}  
-				this.AjaxClass(this.currentPage4 ,'right')
+				}
+				this.AjaxClass(this.currentPage4, 'right')
 			},
+
 			//添加至收藏
 			addCiClick1(index) {
 				if(num == 0) {
@@ -317,8 +316,9 @@
 				} else {
 					this.tableInner1[index].hotKeywordTemStatus = 0
 					this.AjaxRemove(name, 1) //删除
-				} 
+				}
 			},
+
 			addCiClick2(index) {
 				if(num == 0) {
 					this.tableInner2[index].hotKeywordTemStatus = 1
@@ -328,32 +328,37 @@
 					this.AjaxRemove(name, 1) //删除
 				}
 			},
+
 			handleSizeChange3(val) {
-				this.currentPage3 =  val*1 
-				this.AjaxClass(this.currentPage3 , 'left')
+				this.currentPage3 = val * 1
+				this.AjaxClass(this.currentPage3, 'left')
 			},
+
 			handleCurrentChange3(val) {
-				this.currentPage3 =  val*1 
-				this.AjaxClass(this.currentPage3 , 'left')
+				this.currentPage3 = val * 1
+				this.AjaxClass(this.currentPage3, 'left')
 			},
+
 			handleSizeChange4(val) {
-				this.currentPage4 =  val*1 
-				this.AjaxClass(this.currentPage4 , 'right')
+				this.currentPage4 = val * 1
+				this.AjaxClass(this.currentPage4, 'right')
 			},
+
 			handleCurrentChange4(val) {
-				this.currentPage4 =  val*1 
-				this.AjaxClass(this.currentPage4 , 'right')
+				this.currentPage4 = val * 1
+				this.AjaxClass(this.currentPage4, 'right')
 			},
+
 			Ajax() {
 				this.loading = this.$loading(this.loadingopaction)
 				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisNotAllList'
-				let obj = { 
+				let obj = {
 					pageIndex: 1,
 					pageSize: 22,
 					requestPar: {
 						nationId: this.$parent.countryNow,
 						competitiveAppId: this.$parent.idRight,
-						selectedAppId: this.$parent.idLeft, 
+						selectedAppId: this.$parent.idLeft,
 						beginTime: datefn(1)[1].data.beginTime,
 						endTime: datefn(1)[1].data.endTime,
 						competitiveType: 1,
@@ -362,38 +367,39 @@
 						orderType: 0
 					},
 					orderByParDic: {
-							searchIndex: 0  
-						}
+						searchIndex: 0
 					}
-				if(this.$parent.max == '' ) {
+				}
+				if(this.$parent.max == '') {
 					delete obj.requestPar.maxSearchIndex
-				} 
+				}
 				if(this.$parent.min == '') {
 					delete obj.requestPar.minSearchIndex
-				}  
+				}
 
-				this.$https.post(url , JSON.stringify(obj))
-				.then(res=> {
-					this.loading.close() 
-					if(res.data.resultCode == 1000) {
-						this.tableShow = true
-					}else if(res.data.resultCode == 404){
-						this.tableShow = false
-					}
-					this.tableInner2 = res.data.data.list[0][this.$parent.idRight]
-					this.tableInner1 = res.data.data.list[1][this.$parent.idLeft] 
-				})
+				this.$https.post(url, JSON.stringify(obj))
+					.then(res => {
+						this.loading.close()
+						if(res.data.resultCode == 1000) {
+							this.tableShow = true
+						} else if(res.data.resultCode == 404) {
+							this.tableShow = false
+						}
+						this.tableInner2 = res.data.data.list[0][this.$parent.idRight]
+						this.tableInner1 = res.data.data.list[1][this.$parent.idLeft]
+					})
 			},
-			AjaxClass(pageIndex,lorr) {
+
+			AjaxClass(pageIndex, lorr) {
 				this.loading = this.$loading(this.loadingopaction)
-				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisList' 
+				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisList'
 				var newobj = {}
-				if(lorr == 'left') { 
+				if(lorr == 'left') {
 					newobj[this.sortDate3.one] = this.sortDate3.two
-				}else if(lorr == 'right') {
+				} else if(lorr == 'right') {
 					newobj[this.sortDate4.one] = this.sortDate4.two
-				} 
-				let obj = { 
+				}
+				let obj = {
 					pageIndex,
 					pageSize: 20,
 					requestPar: {
@@ -409,26 +415,27 @@
 					},
 					orderByParDic: newobj
 				}
-				if(this.$parent.max == '' ) {
+				if(this.$parent.max == '') {
 					delete obj.requestPar.maxSearchIndex
-				} 
+				}
 				if(this.$parent.min == '') {
 					delete obj.requestPar.minSearchIndex
-				} 
+				}
 
-				this.$https.post(url , JSON.stringify(obj))
-				.then((res) =>{
-					this.loading.close()  
-					if(lorr == 'left') {
-						this.tableInner1 = res.data.data.list
-						this.total3 = res.data.data.totalCount
-					}else if(lorr == 'right') {
-						this.tableInner2 = res.data.data.list
-						this.total4 = res.data.data.totalCount
-					}
-				
-				})
+				this.$https.post(url, JSON.stringify(obj))
+					.then((res) => {
+						this.loading.close()
+						if(lorr == 'left') {
+							this.tableInner1 = res.data.data.list
+							this.total3 = res.data.data.totalCount
+						} else if(lorr == 'right') {
+							this.tableInner2 = res.data.data.list
+							this.total4 = res.data.data.totalCount
+						}
+
+					})
 			},
+
 			AjaxRemove(name, type) { //操作关键词ajax
 				let url = '/api/v1/IntellSearchApi/HotKeyword/OperatKeywords'
 				let data = {

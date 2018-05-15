@@ -64,24 +64,13 @@
 			return {
 				myChart: null
 			};
-		},
-
-		components: {},
-
-		computed: {},
-
-		created() {},
-
-		updated() {},
-
+		}, 
 		mounted() { 
 			this.AjaxPie() 
 			// 基于准备好的dom，初始化echarts实例
 			
 		},
-
-		destroyed() {},
-
+ 
 		methods: {
 			AjaxPie() {
 				let url = 'api/v1/IntellSearchApi/KeywordDetail/GetAllAppsRatio'

@@ -159,7 +159,7 @@
 								<img :src="ele.appImgUrl" alt="">
 								<span>{{ele.appName}}</span>
 								<b>{{ele.aristName}}</b>
-							</li> 
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -177,7 +177,7 @@
 	import qs from "qs"
 	export default {
 		data() {
-			return { 
+			return {
 				countryNow: "",
 				bannerName: '竞品对比',
 				APPinfor: '',
@@ -205,13 +205,11 @@
 		created() {
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
-					this.countryNow = this.$store.state.Home.countryList[0].nationId 
+					this.countryNow = this.$store.state.Home.countryList[0].nationId
 				})
 		},
 
-		updated() {},
-
-		mounted() { 
+		mounted() {
 			$(document).bind("click", function(e) {
 				var target = $(e.target);
 				if(target.closest(".btnclass").length == 0) {
@@ -224,37 +222,44 @@
 			});
 		},
 
-		destroyed() {},
-
 		methods: {
+
 			routerClick(index) {
-				this.$router.push({path: '/keyword-comparison-list',query: {key: this.countryNow , id: this.list[index].appStoreId}})
+				this.$router.push({
+					path: '/keyword-comparison-list',
+					query: {
+						key: this.countryNow,
+						id: this.list[index].appStoreId
+					}
+				})
 			},
+
 			btnClick() {
 				if(this.APPinfor == '') {
 					this.$message({
 						message: '搜索内容不能为空！！！',
 						type: 'warning'
 					});
-				}else{
-					this.loading = this.$loading(this.loadingopaction) 
-					this.Ajax() 
-				} 
+				} else {
+					this.loading = this.$loading(this.loadingopaction)
+					this.Ajax()
+				}
 			},
+
 			Ajax() {
-				let url = '/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId='+this.countryNow+'&count=10'+'&searchContent='+this.APPinfor
-				this.$https.get( url )
-				.then((res) => {
-					this.list = res.data.data.list 
-					if(res.data.resultCode == 1000 ) {
-						$(".kc_over").animate({
-								height: "242px"
-							},
-							200
-						);
-					}
-					this.loading.close() 
-				})
+				let url = '/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId=' + this.countryNow + '&count=10' + '&searchContent=' + this.APPinfor
+				this.$https.get(url)
+					.then((res) => {
+						this.list = res.data.data.list
+						if(res.data.resultCode == 1000) {
+							$(".kc_over").animate({
+									height: "242px"
+								},
+								200
+							);
+						}
+						this.loading.close()
+					})
 			}
 		}
 	};

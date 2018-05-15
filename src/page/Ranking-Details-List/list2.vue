@@ -145,15 +145,7 @@
 					return ls
 				}
 			}
-		},
-
-		created() {},
-
-		updated() {},
-
-		mounted() {},
-
-		destroyed() {},
+		}, 
 
 		methods: {
 

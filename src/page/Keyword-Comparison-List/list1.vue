@@ -109,7 +109,7 @@
 					{
 						one: false,
 						two: false
-					} 
+					}
 				],
 				loading: null,
 				loadingopaction: {
@@ -122,7 +122,7 @@
 				tableShow: false,
 				currentPage3: 1, //当前页 
 				total: 98, //总数
-				sortDate:{//排序
+				sortDate: { //排序
 					one: 'searchIndex',
 					two: 0
 				},
@@ -144,20 +144,15 @@
 					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.total + ', 共' + this.total
 					return ls
 				}
-			} 
+			}
 		},
 		filters: {
-			pageNum: function (value,currentPage3) {
+			pageNum: function(value, currentPage3) {
 				let num2 = currentPage3 - 1
-				let num = (value + 1) + num2 * 20 
+				let num = (value + 1) + num2 * 20
 				return num
 			}
 		},
-
-		created() {},
-
-		updated() {},
-
 		mounted() {
 			this.Ajax(1)
 		},
@@ -177,14 +172,15 @@
 						one: 'searchIndex',
 						two: name == 'one' ? 0 : 1
 					}
-				}else if(num == 1) {
+				} else if(num == 1) {
 					this.sortDate = {
 						one: 'popularityIndex',
 						two: name == 'one' ? 0 : 1
 					}
-				} 
+				}
 				this.Ajax(this.currentPage3)
 			},
+
 			addCiClick(index, num, name) { //收藏操作
 				if(num == 0) {
 					this.tableInner[index].hotKeywordTemStatus = 1
@@ -194,20 +190,23 @@
 					this.AjaxRemove(name, 1) //删除
 				}
 			},
+
 			handleSizeChange(val) {
-				this.currentPage3 =  val*1 
+				this.currentPage3 = val * 1
 				this.Ajax(this.currentPage3)
 			},
+
 			handleCurrentChange(val) {
-				this.currentPage3 =  val*1 
+				this.currentPage3 = val * 1
 				this.Ajax(this.currentPage3)
 			},
+
 			Ajax(pageIndex) {
 				this.loading = this.$loading(this.loadingopaction)
-				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisList' 
+				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisList'
 				let newobj = {}
-					newobj[this.sortDate.one] = this.sortDate.two
-				let obj = { 
+				newobj[this.sortDate.one] = this.sortDate.two
+				let obj = {
 					pageIndex,
 					pageSize: 20,
 					requestPar: {
@@ -216,25 +215,26 @@
 						competitiveAppId: this.$parent.idRight,
 						beginTime: datefn(1)[1].data.beginTime,
 						endTime: datefn(1)[1].data.endTime,
-						competitiveType: 2, 
+						competitiveType: 2,
 						orderType: 0
 					},
 					orderByParDic: newobj
 				}
-				
-				this.$https.post(url , JSON.stringify(obj))
-				.then((res) =>{
-					this.loading.close() 
-					if(res.data.resultCode == 1000) {
-						this.tableShow = true
-					}else if(res.data.resultCode == 404){
-						this.tableShow = false
-					}
-					this.tableInner = res.data.data.list
-					this.total = res.data.data.totalCount
-				
-				})
+
+				this.$https.post(url, JSON.stringify(obj))
+					.then((res) => {
+						this.loading.close()
+						if(res.data.resultCode == 1000) {
+							this.tableShow = true
+						} else if(res.data.resultCode == 404) {
+							this.tableShow = false
+						}
+						this.tableInner = res.data.data.list
+						this.total = res.data.data.totalCount
+
+					})
 			},
+
 			AjaxRemove(name, type) { //操作关键词ajax
 				let url = '/api/v1/IntellSearchApi/HotKeyword/OperatKeywords'
 				let data = {

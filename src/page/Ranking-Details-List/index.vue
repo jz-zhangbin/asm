@@ -290,9 +290,7 @@
 			list1,
 			list2
 		},
-
-		created() { 
-		},
+ 
 		computed: {
 			...mapState({
 				countryList: state => state.Home.countryList,
@@ -306,6 +304,7 @@
 				this.AJaxKeyWordMore(1, this.$route.query.country)
 			}
 		},
+		
 		beforeRouteEnter(to, from, next) {
 			let ls = to.query.key
 			next(vm => {
