@@ -44,6 +44,9 @@
 			min-width: 1200px;
 			padding: 0 45px;
 			box-sizing: border-box;
+			table{
+				box-shadow: 0 2px 5px @border;
+			}
 		}
 		.sl_from_top {
 			position: fixed;

@@ -8,6 +8,7 @@
 		}
 		.kcll2_table1 {
 			width: 100%;
+			box-shadow: 0 2px 5px @border;
 			.table_th_wei {
 				th {
 					font-size: 16px;

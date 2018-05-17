@@ -14,9 +14,20 @@ Vue.prototype.$ls = ls
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
+
+var explorer =navigator.userAgent ; 
+
+if (explorer.indexOf("MSIE") >= 0) {
+	//alert("ie");
+
+}else{
+	//alert('not ie') 
+	// import VueParticles from 'vue-particles'
+	// Vue.use(VueParticles)  
+}
 /**
- * 粒子效果
- */
+ * 粒子效果,源码不兼容ie浏览器，"git+https://github.com/jz-zhangbin/vue-particles.git",修改并fork
+ */ 
 import VueParticles from 'vue-particles'
 Vue.use(VueParticles)
 /**

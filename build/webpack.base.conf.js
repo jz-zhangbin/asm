@@ -4,6 +4,8 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 var webpack = require("webpack")
+//提取css到一个单独文件
+var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -41,7 +43,10 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig
+        //options: vueLoaderConfig
+        options: {
+          extractCSS: true
+        }
       },
       {
         test: /\.js$/,
@@ -87,6 +92,7 @@ module.exports = {
     child_process: 'empty'
   },
   plugins: [
+    new ExtractTextPlugin("style.css"),
 		new webpack.optimize.CommonsChunkPlugin('common'),
 		new webpack.ProvidePlugin({
 			jQuery: "jquery",

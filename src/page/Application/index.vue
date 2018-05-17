@@ -16,10 +16,11 @@
 			padding: 26px 24px;
 			display: flex;
 			position: relative;
+			box-shadow: 0 2px 5px @border;
 			img {
 				width: 124px;
 				height: 124px;
-				border-radius: 8px;
+				border-radius: 16px;
 				margin-right: 22px;
 			}
 			.apl_bt_ct {
@@ -177,6 +178,7 @@
 		}
 		.apl_body_table {
 			width: 100%;  
+			box-shadow: 0 2px 5px @border;
 		}
 		.href_a{
 			color: @color !important;

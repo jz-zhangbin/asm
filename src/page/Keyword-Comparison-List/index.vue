@@ -29,13 +29,15 @@
 		.kcl_duibi {
 			min-width: 1200px;
 			box-sizing: border-box;
-			padding: 0 45px;
+			padding: 0 45px; 
 			.kcl_dui_cont {
-				width: 100%;
+				width: 1200px;
 				display: flex;
+				margin: 0 auto;
+				justify-content: center;
 			}
 			.kcl_duibi_left {
-				width: 45%;
+				width: 570px;
 				height: 85px;
 				display: flex;
 				position: relative;
@@ -77,7 +79,7 @@
 				}
 			}
 			.kcl_duibi_right {
-				width: 45%;
+				width: 570px;
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -127,16 +129,17 @@
 						}
 					}
 					.kc_over {
-						width: 400px;
+						width: 376px;
 						height: 0px;
 						position: absolute;
 						top: 60px;
 						left: 0;
 						z-index: 100;
 						overflow: hidden;
+						box-shadow: 0 2px 5px @border;
 					}
 					ul {
-						width: 398px;
+						width: 374px;
 						height: 240px;
 						border: 1px solid @border;
 						border-radius: 6px;
@@ -161,7 +164,7 @@
 								margin-right: 12px;
 							}
 							span {
-								width: 410px;
+								width: 400px;
 								font-weight: 540;
 								color: #000;
 							}
@@ -175,7 +178,7 @@
 				}
 			}
 			.kcl_vs {
-				width: 10%;
+				width: 126px;
 				text-align: center;
 				line-height: 85px;
 				font-size: 60px;
@@ -218,6 +221,7 @@
 		.kcl_table1 {
 			width: 100%;
 			border: 1px solid @border;
+			box-shadow: 0 2px 5px @border;
 			tr {
 				th,
 				td {
@@ -264,8 +268,7 @@
 					span {
 						display: block;
 						position: absolute;
-						top: 50%;
-						left: 43%;
+						top: 50%; 
 						color: @color;
 						transform: translateY(-50%);
 						z-index: 1000;

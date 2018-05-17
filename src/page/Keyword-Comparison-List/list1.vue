@@ -2,6 +2,9 @@
 	@import url('../../base/commonJS/css.less');
 	.kcll1_index {
 		width: 100%;
+		table{
+			box-shadow: 0 2px 5px @border;
+		}
 		.table_data_tr {
 			td {
 				height: 60px !important;
@@ -223,6 +226,7 @@
 
 				this.$https.post(url, JSON.stringify(obj))
 					.then((res) => {
+						//res.data.resultCode = 404
 						this.loading.close()
 						if(res.data.resultCode == 1000) {
 							this.tableShow = true

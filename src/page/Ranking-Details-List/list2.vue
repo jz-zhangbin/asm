@@ -24,6 +24,7 @@
 			table {
 				width: 100%;
 				border: 1px solid #dee2e6;
+				box-shadow: 0 2px 5px @border;
 			}
 		}
 	}
@@ -36,7 +37,7 @@
 			</span>
 		</div>
 		<div class="rdlh_table">
-			<table id="table1">
+			<table id="table1" >
 				<tr>
 					<th style="width: 40%">关键词</th>
 					<th style="width: 8%" class="sl_table_po">

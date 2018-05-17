@@ -28,33 +28,33 @@
 			.kc_center {
 				display: flex;
 				justify-content: center;
-				line-height: 60px;
+				line-height: 50px;
 				p {
 					color: #000;
 					font-weight: 520;
 				}
 				button {
-					width: 60px;
-					height: 60px;
+					width: 50px;
+					height: 50px;
 					background: @color;
 					border: none;
 					border-radius: 6px;
 					cursor: pointer;
 					text-align: center;
-					line-height: 60px;
+					line-height: 50px;
 					color: #f7f7f7;
 					outline: none;
 					&:hover {
 						background: @btnhover;
 					}
 					i {
-						font-size: 30px;
+						font-size: 24px;
 					}
 				}
 			}
 			.kc_ct_search {
-				width: 590px;
-				height: 60px;
+				width: 500px;
+				height: 50px;
 				box-sizing: border-box;
 				border: 1px solid @border;
 				border-radius: 6px;
@@ -62,10 +62,10 @@
 				position: relative;
 				input {
 					width: 100%;
-					height: 58px;
+					height: 48px;
 					box-sizing: border-box;
 					padding: 0 22px;
-					line-height: 58px;
+					line-height: 48px;
 					display: block;
 					border-radius: 6px;
 					border: none;
@@ -75,15 +75,16 @@
 					}
 				}
 				.kc_over {
-					width: 590px;
+					width: 500px;
 					height: 0px;
 					position: absolute;
-					top: 70px;
-					left: 0;
+					top: 60px;
+					left: 0; 
+					box-shadow: 4px 4px 4px @border; 
 					overflow: hidden;
 				}
 				ul {
-					width: 590px;
+					width: 500px;
 					height: 240px;
 					overflow-y: auto;
 					border: 1px solid @border;

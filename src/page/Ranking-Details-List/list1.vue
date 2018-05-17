@@ -25,11 +25,12 @@
 		table {
 			width: 100%;
 			border: 1px solid #dee2e6;
+			box-shadow: 0 2px 5px @border;
 			tr {
 				//表格内容
 				&.table_data_tr {
 					td {
-						height: 70px;
+						height: 80px;
 					}
 					.table_datr_td {
 						cursor: pointer;
@@ -39,7 +40,7 @@
 						img {
 							width: 54px;
 							height: 54px;
-							border-radius: 6px;
+							border-radius: 10px;
 							margin-right: 15px;
 						}
 						p {
@@ -51,7 +52,7 @@
 								&:first-child {
 									font-size: 14px;
 									color: @font_color;
-									font-weight: 600;
+									font-weight: 500;
 								}
 							}
 						}
@@ -68,8 +69,9 @@
 				}
 			}
 		}
-	}
-}</style>
+	} 
+}
+</style>
 
 </style>
 <style lang='less'>.key_list1_index {
@@ -103,7 +105,7 @@
 		</div>
 		<div class="kl_table">
 			<!-- 头部表格 -->
-			<table id="ta2">
+			<table id="ta2"  >
 				<tr>
 					<th style="width: 30%">应用</th>
 					<th style="width: 14%" class="sl_table_po">

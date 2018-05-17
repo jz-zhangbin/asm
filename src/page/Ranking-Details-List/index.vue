@@ -30,6 +30,7 @@
 		}
 		.rdl_body_table_top {
 			width: 100%;
+			box-shadow: 0 2px 5px @border;
 		}
 		.sl_table {
 			min-width: 100%;
@@ -378,6 +379,7 @@
 				}
 				this.$https.post(keyWordDateUrl, JSON.stringify(obj))
 					.then(res => {
+						//res.data.resultCode = 404
 						if(res.data.resultCode == 1000) { //有内容
 							this.keyWordType = true
 							this.tableData = res.data.data

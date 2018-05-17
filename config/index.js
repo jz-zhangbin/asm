@@ -5,6 +5,9 @@
 const path = require('path')
 
 module.exports = {
+  entry: {//解决ie下空白问题
+    app: ["babel-polyfill", "./src/main.js"]
+    },
   dev: {
 
     // Paths
