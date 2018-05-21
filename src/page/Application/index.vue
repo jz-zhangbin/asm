@@ -1,5 +1,5 @@
-<style lang='less' scoped> 
-@import url('../../base/commonJS/css.less');
+<style lang='less' scoped>
+	@import url('../../base/commonJS/css.less');
 	.apl_index {
 		.apl_body {
 			min-width: 1200px;
@@ -31,10 +31,15 @@
 					color: @color;
 					margin-bottom: 12px;
 				}
+				div {
+					display: flex;
+				}
 				p {
 					margin-bottom: 6px;
 					span {
-						display: inline-block;
+						display: block;
+						margin-bottom: 6px;
+						margin-right: 10px;
 					}
 				}
 			}
@@ -177,13 +182,13 @@
 			}
 		}
 		.apl_body_table {
-			width: 100%;  
+			width: 100%;
 			box-shadow: 0 2px 5px @border;
 		}
-		.href_a{
+		.href_a {
 			color: @color !important;
 			cursor: pointer;
-		} 
+		}
 	}
 </style>
 <style lang="less">
@@ -219,33 +224,41 @@
 			<!-- 头部表格信息 -->
 			<div class="apl_body_top">
 				<img :src="appData.appImgUrl" alt="" v-if="appData.show">
-				<img src="../../images/moni/appimg_1123_03.png" alt=""  v-if="!appData.show">
+				<img src="../../images/moni/appimg_1123_03.png" alt="" v-if="!appData.show">
 				<div class="apl_bt_ct">
 					<h1>{{appData.appName}}</h1>
-					<p>
-						<span style="width: 140px">开发商</span>
-						<span style="width: 74px">分类</span>
-						<span style="width: 138px">AppId</span>
-						<span style="width: 74px">价格</span>
-						<span style="width: 74px">总榜</span>
-						<span style="width: 140px">分类榜</span>
-					</p>
-					<p  v-if="appData.show">
-						<span style="width: 140px; color:#000;">{{appData.aristName}}</span>
-						<span style="width: 74px; color:#2d76ed;">{{appData.appTypeName}}</span>
-						<span style="width: 138px; color:#2d76ed;">{{appData.appStoreId}}</span>
-						<span style="width: 74px; color:#000;">{{appData.appPrice}}</span>
-						<span style="width: 74px; color:#000;">{{appData.totalRank}}</span>
-						<span style="width: 140px; color:#000;">{{appData.classificationRank}}</span>
-					</p>
-					<p  v-if="!appData.show">
-						<span style="width: 140px; color:#000;">-</span>
-						<span style="width: 74px; color:#2d76ed;">-</span>
-						<span style="width: 138px; color:#2d76ed;">-</span>
-						<span style="width: 74px; color:#000;">-</span>
-						<span style="width: 74px; color:#000;">-</span>
-						<span style="width: 140px; color:#000;">-</span>
-					</p>
+					<div>
+						<p style="min-width: 140px">
+							<span>开发商</span>
+							<span v-if="appData.show">{{appData.aristName}}</span>
+							<span style=" color:#000;" v-if="!appData.show">-</span>
+						</p>
+						<p style="min-width: 74px">
+							<span>分类</span>
+							<span style="color:#2d76ed;" v-if="appData.show">{{appData.appTypeName}}</span>
+							<span style=" color:#2d76ed;" v-if="!appData.show">-</span>
+						</p>
+						<p style="min-width: 138px">
+							<span>AppId</span>
+							<span style="color:#2d76ed;" v-if="appData.show">{{appData.appStoreId}}</span>
+							<span style=" color:#2d76ed;" v-if="!appData.show">-</span>
+						</p>
+						<p style="min-width: 74px">
+							<span>价格</span>
+							<span style="color:#000;" v-if="appData.show">{{appData.appPrice}}</span>
+							<span style=" color:#000;" v-if="!appData.show">-</span>
+						</p>
+						<p style="min-width: 74px">
+							<span>总榜</span>
+							<span style="color:#000;" v-if="appData.show">{{appData.totalRank}}</span>
+							<span style=" color:#000;" v-if="!appData.show">-</span>
+						</p>
+						<p style="min-width: 140px">
+							<span>分类榜</span>
+							<span style="color:#000;" v-if="appData.show">{{appData.classificationRank}}</span>
+							<span style=" color:#000;" v-if="!appData.show">-</span>
+						</p>
+					</div>
 				</div>
 				<div class="apl_bt_btn" v-if="appData.show">
 					<span @click="keywordRouter">
@@ -265,12 +278,12 @@
 				<h2>历史竞价关键词</h2>
 			</div>
 			<div class="apl_body_date">
-				<el-select v-model="value1"  @change="changeDateFun(value1)">
+				<el-select v-model="value1" @change="changeDateFun(value1)">
 					<el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
 					</el-option>
 				</el-select>
 				<div class="apl_checketout">
-					<span  @click="excelOut"  v-if="userType">
+					<span @click="excelOut" v-if="userType">
 						<i class="iconfont icon-download"></i> 导出
 					</span>
 				</div>
@@ -368,7 +381,7 @@
 							<div class="sl_table_flex">
 								近期竞价App
 							</div>
-						</th> 
+						</th>
 						<th style="width: 9%" class="sl_table_po">
 							<div class="sl_table_flex">
 								操作
@@ -381,7 +394,7 @@
 						<td>{{ele.searchIndex}}</td>
 						<td>{{ele.popularityIndex}}</td>
 						<td>{{ele.ratio}}%</td>
-						<td>{{ele.estimatePrice}}</td>
+						<td>{{ele.estimatePrice | numNull}}</td>
 						<td style="width: 20%" class="sl_dt_img">
 							<div>
 								<!-- 最多显示四个 -->
@@ -410,9 +423,9 @@
 						<td colspan="7" style="height: 150px">该关键词暂无竞价数据</td>
 					</tr>
 				</table>
-			</div> 
+			</div>
 			<!-- 分页 -->
-			<div class="page_index"  v-if="userType">
+			<div class="page_index" v-if="userType">
 				<div>{{pagedata}}</div>
 				<div>
 					<el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="tableData.totalCount">
@@ -428,20 +441,20 @@
 	import excel from '@commonJS/excelFn'
 	import usersign from '@components/User-Sign'
 	import method1 from "@commonJS/excel";
-	import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
-	import {mapState} from 'vuex'
+	import { CountryInit, UserSignType } from '@commonJS/AxiosGet'
+	import { mapState } from 'vuex'
 	import { datefn } from '@commonJS/functionJS'
 	export default {
 		data() {
 			return {
 				currentPage3: 1, //当前页
 				userType: false, //用户登录状态 
-				appData: { 
+				appData: {
 					show: true
-				}, 
-				countryNow: "",//当前国家
-				value1: "",//当前时间
-				options3: [ ],//世界列表
+				},
+				countryNow: "", //当前国家
+				value1: "", //当前时间
+				options3: [], //世界列表
 				showList: [{ //控制排序的三角
 						one: true,
 						two: false
@@ -453,9 +466,11 @@
 					{
 						one: false,
 						two: false
-					} 
+					}
 				],
-				tableData: [],
+				tableData: {
+					totalCount: 0
+				},
 				tableShow: true,
 				loading: null,
 				loadingopaction: {
@@ -464,7 +479,7 @@
 					spinner: 'el-icon-loading',
 					background: 'rgba(0, 0, 0, 0.7)'
 				},
-				sortDate:{//排序
+				sortDate: { //排序
 					one: 'searchIndex',
 					two: 0
 				},
@@ -495,7 +510,7 @@
 
 		computed: {
 			...mapState({
-				countryList: state => state.Home.countryList, 
+				countryList: state => state.Home.countryList,
 			}),
 			pagedata() {
 				if(this.currentPage3 * 20 <= this.tableData.totalCount) {
@@ -508,23 +523,29 @@
 			}
 		},
 
+		filters: {
+			numNull: function(value) {
+				return value == 0 ? '-' : value
+			}
+		},
 		mounted() {
 			this.$store.dispatch('GET_COUNTRYLIST')
-			.then(()=>{
-				this.countryNow = this.$store.state.Home.countryList[0].nationId
-			}) 
+				.then(() => {
+					this.countryNow = this.$store.state.Home.countryList[0].nationId
+				})
 
-			this.options3  = datefn(1) 
+			this.options3 = datefn(1)
 			this.value1 = this.options3[0].value
 
-			UserSignType()
-			.then(res=>{ 
-				if(res.data.data.userLoginStatus == 1) {//登陆状态
+			if(this.$ls.get('adjuz_user')) {
+				if(this.$ls.get('adjuz_user').userLoginStatus == 1) { //登陆状态
 					this.userType = true
-				}else{//未登陆
+				} else { //未登陆
 					this.userType = false
 				}
-			})
+			} else {
+				this.userType = false
+			}
 
 			this.AjaxGetAppInfo()
 
@@ -535,7 +556,7 @@
 					appStoreId: this.$route.query.id,
 					nationId: this.$route.country,
 					beginTime: datefn(0).beginTime,
-					endTime: datefn(0).endTime, 
+					endTime: datefn(0).endTime,
 				},
 				orderByParDic: {
 					searchIndex: 0,
@@ -548,8 +569,8 @@
 		destroyed() {},
 
 		methods: {
-			changeFun(value) {//切换国家
-				this.showList.map(ele=>{
+			changeFun(value) { //切换国家
+				this.showList.map(ele => {
 					ele.one = false
 					ele.two = false
 				})
@@ -579,11 +600,11 @@
 				})
 			},
 
-			changeDateFun(value) {//切换日期 
-				this.showList.map(ele=>{
-						ele.one = false
-						ele.two = false
-					})
+			changeDateFun(value) { //切换日期 
+				this.showList.map(ele => {
+					ele.one = false
+					ele.two = false
+				})
 				this.showList[0].one = true
 
 				this.AjaxGetAppHistoryKeywordList({
@@ -621,19 +642,19 @@
 						one: 'searchIndex',
 						two: name == 'one' ? 0 : 1
 					}
-				}else if(num == 1) {
+				} else if(num == 1) {
 					this.sortDate = {
 						one: 'popularityIndex',
 						two: name == 'one' ? 0 : 1
 					}
-				}else{
+				} else {
 					this.sortDate = {
 						one: 'ratio',
 						two: name == 'one' ? 0 : 1
 					}
 				}
 				let obj = {}
-					obj[this.sortDate.one] = this.sortDate.two
+				obj[this.sortDate.one] = this.sortDate.two
 				this.AjaxGetAppHistoryKeywordList({
 					pageIndex: this.currentPage3,
 					pageSize: 20,
@@ -650,9 +671,9 @@
 						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
 						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
-					orderByParDic:obj  
+					orderByParDic: obj
 				})
-			}, 
+			},
 
 			addCiClick(index, num, name) { //收藏操作
 				if(num == 0) {
@@ -670,31 +691,31 @@
 						key: id,
 						country: this.countryNow
 					}
-				}) 
+				})
 			},
 
-			searchMoreClick () { //模糊查询
-				this.showList.map(ele=>{
-						ele.one = false
-						ele.two = false
-					})
+			searchMoreClick() { //模糊查询
+				this.showList.map(ele => {
+					ele.one = false
+					ele.two = false
+				})
 				this.showList[0].one = true
 
-				for(var i in this.seacrchData) {   
-					if(isNaN( this.seacrchData[i] ) && this.seacrchData[i] != '' || parseInt(this.seacrchData[i])<0 ) {
+				for(var i in this.seacrchData) {
+					if(isNaN(this.seacrchData[i]) && this.seacrchData[i] != '' || parseInt(this.seacrchData[i]) < 0) {
 						this.$message({
 							message: '搜索内容必须为大于等于0的数字',
 							type: 'warning'
-						}); 
+						});
 						return false
-					}  
-				} 
-				if(this.seacrchData.maxSearchIndex != ''){
+					}
+				}
+				if(this.seacrchData.maxSearchIndex != '') {
 					if(parseInt(this.seacrchData.maxSearchIndex) < parseInt(this.seacrchData.minSearchIndex)) {
 						this.$message({
 							message: '热度：最大值必须大于最小值',
 							type: 'warning'
-						}); 
+						});
 						return false
 					}
 				}
@@ -703,7 +724,7 @@
 						this.$message({
 							message: '展示量占比：最大值必须大于最小值',
 							type: 'warning'
-						}); 
+						});
 						return false
 					}
 				}
@@ -712,15 +733,15 @@
 						this.$message({
 							message: '近期竞价APP：最大值必须大于最小值',
 							type: 'warning'
-						}); 
+						});
 						return false
 					}
-				} 
+				}
 				if(this.zTest(this.seacrchData.maxSearchIndex) || this.zTest(this.seacrchData.minSearchIndex) || this.zTest(this.seacrchData.maxAppLength) || this.zTest(this.seacrchData.minAppLength)) {
 					this.$message({
 						message: '必须为大于等于0的正整数',
 						type: 'warning'
-					}); 
+					});
 					return false
 				}
 				this.seacrchDataTrue = this.seacrchData
@@ -744,23 +765,23 @@
 					orderByParDic: {
 						searchIndex: 0
 					}
-				}) 
+				})
 			},
 
-			keywordClick () {//input搜索
-				if(this.searchKeyWord == ''){
+			keywordClick() { //input搜索
+				if(this.searchKeyWord == '') {
 					this.$message({
 						message: '搜索内容不能为空',
 						type: 'warning'
-					}); 
+					});
 
 					return false
 				}
 				this.searchKeyWordTrue = this.searchKeyWord
-				this.showList.map(ele=>{
-						ele.one = false
-						ele.two = false
-					})
+				this.showList.map(ele => {
+					ele.one = false
+					ele.two = false
+				})
 				this.showList[0].one = true
 
 				this.AjaxGetAppHistoryKeywordList({
@@ -782,30 +803,29 @@
 					orderByParDic: {
 						searchIndex: 0
 					}
-				}) 
+				})
 			},
 
-
-			zTest(data) {//正则验证
-				let ZZ = /^([1-9]\d*|[0]{1,1})$/  
-				if( data != '' && !ZZ.test(data)) {
+			zTest(data) { //正则验证
+				let ZZ = /^([1-9]\d*|[0]{1,1})$/
+				if(data != '' && !ZZ.test(data)) {
 					return true
-				}else{
+				} else {
 					return false
 				}
 			},
 
-			isNull(data) {//判断是否为空
+			isNull(data) { //判断是否为空
 				if(data == '') {
 					return 0
-				}else{
+				} else {
 					return data
 				}
 			},
 
 			handleSizeChange(val) {
 				let obj = {}
-					obj[this.sortDate.one] = this.sortDate.two
+				obj[this.sortDate.one] = this.sortDate.two
 				this.AjaxGetAppHistoryKeywordList({
 					pageIndex: val,
 					pageSize: 20,
@@ -829,7 +849,7 @@
 
 			handleCurrentChange(val) {
 				let obj = {}
-					obj[this.sortDate.one] = this.sortDate.two
+				obj[this.sortDate.one] = this.sortDate.two
 				this.AjaxGetAppHistoryKeywordList({
 					pageIndex: val,
 					pageSize: 20,
@@ -852,46 +872,64 @@
 			},
 
 			excelOut() { //表格导出 
-				excel('ta2', 20, `<tr><th>关键词</th><th>搜索指数</th><th>流行度</th><th>展示量占比</th><th>预测出价</th></tr>`, [6,5], 'tab')
+				let title = ['关键词', '搜索指数', '流行度', '展示量占比', '预测出价', '近期竞价APP数量']
+				let arr = []
+				for(var i = 0; i < this.tableData.list.length; i++) {
+					var newarr = []
+					newarr.push(this.tableData.list[i].keywordName)
+					newarr.push(this.tableData.list[i].searchIndex)
+					newarr.push(this.tableData.list[i].popularityIndex)
+					newarr.push(this.tableData.list[i].ratio)
+					newarr.push(this.tableData.list[i].estimatePrice)
+					newarr.push(this.tableData.list[i].appLength)
+					arr.push(newarr)
+				}
+				excel(title, arr, 'tab')
 			},
 
 			keywordRouter() { //竞品对比跳转
-				this.$router.push({path: '/keyword-comparison-list' , query: {key: this.countryNow , id: this.appData.appStoreId}})
+				this.$router.push({
+					path: '/keyword-comparison-list',
+					query: {
+						key: this.countryNow,
+						id: this.appData.appStoreId
+					}
+				})
 			},
 
-			AjaxGetAppInfo() {//初次加载
+			AjaxGetAppInfo() { //初次加载
 				this.loading = this.$loading(this.loadingopaction)
-				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId='+this.$route.query.id+'&nationId='+this.$route.query.country
+				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=' + this.$route.query.id + '&nationId=' + this.$route.query.country
 
 				this.$https.get(url)
-				.then((res)=>{ 
-					//res.data.resultCode = 404
-					if(res.data.resultCode == 1000) {
-						res.data.data.show = true
-						this.appData = res.data.data
-					}else if(res.data.resultCode == 404) {
-						res.data.data.show = false
-						this.appData = res.data.data
-					}
-					this.loading.close() 
-				})			 
+					.then((res) => {
+						//res.data.resultCode = 404
+						if(res.data.resultCode == 1000) {
+							res.data.data.show = true
+							this.appData = res.data.data
+						} else if(res.data.resultCode == 404) {
+							res.data.data.show = false
+							this.appData = res.data.data
+						}
+						this.loading.close()
+					})
 			},
 
-			AjaxGetAppHistoryKeywordList(obj) {//获取历史列表
+			AjaxGetAppHistoryKeywordList(obj) { //获取历史列表
 				this.loading = this.$loading(this.loadingopaction)
 				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppHistoryKeywordList'
-				
-				this.$https.post(url , JSON.stringify(obj))
-				.then((res)=>{ 
-					//res.data.resultCode = 404
-					if(res.data.resultCode == 1000){
-						this.tableShow = true
-					}else if(res.data.resultCode == 404) {
-						this.tableShow = false
-					}
-					this.tableData = res.data.data 
-					this.loading.close() 
-				})
+
+				this.$https.post(url, JSON.stringify(obj))
+					.then((res) => {
+						//res.data.resultCode = 404
+						if(res.data.resultCode == 1000) {
+							this.tableShow = true
+						} else if(res.data.resultCode == 404) {
+							this.tableShow = false
+						}
+						this.tableData = res.data.data
+						this.loading.close()
+					})
 
 			},
 
@@ -905,5 +943,5 @@
 				return this.$https.post(url, data1)
 			},
 		}
-	}; 
+	};
 </script>

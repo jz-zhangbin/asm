@@ -184,18 +184,13 @@
 							<td v-if="tableData.associatedWords.length == 0" style="height: 150px">暂无搜索关联词</td>
 							<td style="width: 11%">
 								<div class="sl_t_dis" v-if="tableData.hotKeywordTemStatus == 0">
-									<i 
-										class="iconfont icon-plus-add" 
-										@click="addCiClick( tableData.hotKeywordTemStatus , tableData.keywordName)">
+									<i class="iconfont icon-plus-add" @click="addCiClick( tableData.hotKeywordTemStatus , tableData.keywordName)">
 									</i>
 									<span class="sl_t_is" style="width:114px;">添加至新建词组</span>
 									<span class="sl_t_san"></span>
 								</div>
 								<div class="sl_t_dis" v-if="tableData.hotKeywordTemStatus == 1">
-									<i 
-										class="iconfont icon-xuanze" 
-										style="color:#43c2ac;" 
-										@click="addCiClick( tableData.hotKeywordTemStatus , tableData.keywordName)"> 
+									<i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick( tableData.hotKeywordTemStatus , tableData.keywordName)"> 
 									</i>
 									<span class="sl_t_is" style="width:114px;">从新建词组删除</span>
 									<span class="sl_t_san"></span>
@@ -217,27 +212,12 @@
 			<!-- table切换 -->
 			<div class="rdl_body_nav">
 				<section>
-					<span 
-						v-for="(ele,index) in components_list" 
-						:key="index" 
-						:class="{rdl_section_is: index == components_index}" 
-						@click="componentsClick(index)">{{ele.name}}
+					<span v-for="(ele,index) in components_list" :key="index" :class="{rdl_section_is: index == components_index}" @click="componentsClick(index)">{{ele.name}}
 					</span>
 				</section>
 			</div>
 			<!-- table组件 -->
-			<component 
-				@pageDate='pageDate' 
-				@peiDate='peiDate' 
-				@pageMoreDate='pageMoreDate' 
-				:is="currentView" 
-				ref="childr"
-				:valueData="countryNow" 
-				:tableMoreData='tableMoreData' 
-				:tableMoreCode='tableMoreCode'
-				:tableInnerCode='tableInnerCode'
-				:userType="userType" 
-				:tableInner='tableInner'>
+			<component @pageDate='pageDate' @peiDate='peiDate' @pageMoreDate='pageMoreDate' :is="currentView" ref="childr" :valueData="countryNow" :tableMoreData='tableMoreData' :tableMoreCode='tableMoreCode' :tableInnerCode='tableInnerCode' :userType="userType" :tableInner='tableInner'>
 			</component>
 		</div>
 	</div>
@@ -260,7 +240,7 @@
 					},
 					{
 						name: '更多关联词',
-						com: list2 
+						com: list2
 					}
 				],
 				userType: true,
@@ -276,7 +256,7 @@
 				tableMoreData: {}, //更多关联词列表  
 				tableMoreCode: {},
 				tableInner: {}, //历史关联词列表 
-				tableInnerCode: {}, 
+				tableInnerCode: {},
 				loading: null,
 				loadingopaction: {
 					lock: true,
@@ -291,7 +271,7 @@
 			list1,
 			list2
 		},
- 
+
 		computed: {
 			...mapState({
 				countryList: state => state.Home.countryList,
@@ -301,19 +281,19 @@
 		watch: {
 			$route() {
 				this.AJaxKeyWord(this.$route.query.country)
-				this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime , 'ratio' , 0)
+				this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime, 'ratio', 0)
 				this.AJaxKeyWordMore(1, this.$route.query.country)
 			}
 		},
-		
+
 		beforeRouteEnter(to, from, next) {
 			let ls = to.query.key
 			next(vm => {
 				//console.log(ls)
 			})
 		},
- 
-		mounted() { 
+
+		mounted() {
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
 					this.countryNow = this.$store.state.Home.countryList[0].nationId
@@ -321,23 +301,24 @@
 
 			this.AJaxKeyWord(this.$route.query.country)
 
-			this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime , 'ratio' , 0)
+			this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime, 'ratio', 0)
 
 			this.AJaxKeyWordMore(1, this.$route.query.country)
 
-			UserSignType()
-				.then(res => {
-					if(res.data.data.userLoginStatus == 1) { //登陆状态
-						this.userType = true
-					} else { //未登陆
-						this.userType = false
-					}
-				})
+			if(this.$ls.get('adjuz_user')) {
+				if(this.$ls.get('adjuz_user').userLoginStatus == 1) { //登陆状态
+					this.userType = true
+				} else { //未登陆
+					this.userType = false
+				}
+			} else {
+				this.userType = false
+			}
 		},
- 
+
 		methods: {
 
-			AjaxHistoryList(pageIndex, nationId, beginTime, endTime , sortName , upordown) { // 历史列表
+			AjaxHistoryList(pageIndex, nationId, beginTime, endTime, sortName, upordown) { // 历史列表
 				this.loading = this.$loading(this.loadingopaction)
 				let GetHistoryAppListUrl = '/api/v1/IntellSearchApi/KeywordDetail/GetHistoryAppList'
 				var sortObj = {}
@@ -345,9 +326,9 @@
 					sortObj = {
 						ratio: upordown
 					}
-				}else if(sortName == 'searchRank') {
+				} else if(sortName == 'searchRank') {
 					sortObj = {
-						searchRank : upordown
+						searchRank: upordown
 					}
 				}
 				let data = {
@@ -366,7 +347,7 @@
 						//res.data.resultCode = 404
 						this.tableInnerCode = res.data
 						this.tableInner = res.data.data.list
-						this.loading.close() 
+						this.loading.close()
 					})
 			},
 
@@ -413,7 +394,7 @@
 						//res.data.resultCode = 404 
 						this.tableMoreCode = res.data
 						this.tableMoreData = res.data.data.list
-						this.loading.close() 
+						this.loading.close()
 					})
 			},
 
@@ -428,7 +409,7 @@
 			},
 
 			changeFun(value) { //切换国家
-				this.$refs.childr.showList.map((ele,index)=>{ // 切换国家让排序归零
+				this.$refs.childr.showList.map((ele, index) => { // 切换国家让排序归零
 					ele.one = false
 					ele.two = false
 				})
@@ -436,7 +417,7 @@
 
 				this.AJaxKeyWord(value)
 
-				this.AjaxHistoryList(1, value, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime , 'ratio' , 0)
+				this.AjaxHistoryList(1, value, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime, 'ratio', 0)
 
 				this.AJaxKeyWordMore(1, value)
 			},
@@ -456,19 +437,19 @@
 				this.currentView = this.components_list[index].com
 			},
 
-			peiDate(num,sortData) { //切换日期进行请求 
-				this.$refs.childr.showList.map((ele,index)=>{ // 切换国家让排序归零
-						ele.one = false
-						ele.two = false
-					})
+			peiDate(num, sortData) { //切换日期进行请求 
+				this.$refs.childr.showList.map((ele, index) => { // 切换国家让排序归零
+					ele.one = false
+					ele.two = false
+				})
 				this.$refs.childr.showList[0].one = true
-				
-				this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime ,'ratio' , 0)
+
+				this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime, 'ratio', 0)
 				//this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime , sortData.one , sortData.two)
 			},
 
-			pageDate(num,sortData) { //分页请求
-				this.AjaxHistoryList(num, this.countryNow, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime ,  sortData.one , sortData.two)
+			pageDate(num, sortData) { //分页请求
+				this.AjaxHistoryList(num, this.countryNow, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime, sortData.one, sortData.two)
 			},
 
 			pageMoreDate(num) {

@@ -34,6 +34,8 @@ Vue.use(VueParticles)
  * 全局组件
  */
 import searchTop from '@components/Search-Top'
+import SIdentify from './components/canvas'
+Vue.component('s-identify', SIdentify)
 Vue.component('v-search-top', searchTop)
 
 /**
@@ -41,6 +43,8 @@ Vue.component('v-search-top', searchTop)
  */
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
+ 
+
 
 Vue.config.productionTip = false
 

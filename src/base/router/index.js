@@ -32,6 +32,18 @@ let routes = [{
 }, {
   path: '/keyword-comparison-list',//应用对比
   component: resolve => require(["@page/Keyword-Comparison-List"], resolve)
+}, {
+  path: '/login',//登陆
+  component: resolve => require(["@page/Login/login"], resolve)
+}, {
+  path: '/modif-password',//修改密码
+  component: resolve => require(["@page/Login/ModifyPassword"], resolve)
+}, {
+  path: '/register',//注册账号
+  component: resolve => require(["@page/Login/register"], resolve)
+}, {
+  path: '/agent',//代理投放
+  component: resolve => require(["@page/agent"], resolve)
 },
 {
   path: '*',//404

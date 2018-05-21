@@ -17,6 +17,7 @@
 			.st_logo {
 				width: 134px;
 				height: 60px;
+				cursor: pointer;
 				margin-left: 45px;
 				float: left;
 				background: url("../images/components/logo.png") no-repeat center center;
@@ -178,6 +179,42 @@
 					}
 				}
 			}
+			.st_sign{
+				float: right;
+				margin-left: 30px;
+				margin-right: 45px;
+				display: flex;
+				align-items: center;
+				height: 60px;
+				button{
+					width: 60px;
+					height: 34px;
+					text-align: center;
+					line-height: 34px;
+					cursor: pointer;
+					border-radius: 6px;
+					outline: none;
+					&:nth-child(1){
+						border: 1px solid #f7f7f7;
+						color: #f7f7f7;
+						background: #2d76ed;
+						margin-right: 20px;
+					}
+					&:nth-child(1):hover{
+						//border: none;
+						//background: @font_color;
+					}
+					&:nth-child(2){
+						border: 1px solid #f7f7f7;
+						color: #f7f7f7;
+						background: #2d76ed; 
+					}
+					&:nth-child(2):hover{
+						//border: none;
+						//background: @font_color;
+					}
+				}
+			}
 			.st_user {
 				float: right;
 				margin-left: 30px;
@@ -208,7 +245,7 @@
 			transform: translateX(-50%);
 			border-radius: 4px;
 			z-index: 100;
-			a {
+			a,span {
 				line-height: 35px;
 				display: block;
 				margin-left: 0;
@@ -237,7 +274,7 @@
 <template>
 	<div class="st_index">
 		<div class="st_body">
-			<div class="st_logo"></div>
+			<div class="st_logo" @click="$router.push('/home')"></div>
 			<ul class="clear">
 				<li>
 					<router-link :to="{path: '/'}">首页</router-link>
@@ -255,21 +292,25 @@
 					</div>
 				</li>
 				<li>
-					<router-link :to="{path: '/daili'}" class="st_lasta">
+					<router-link :to="{path: '/agent'}" class="st_lasta">
 						<i class="iconfont icon-xiaoshouguanli"></i> 代理投放
 					</router-link>
 				</li>
 			</ul>
 			<!-- 用户中心 -->
-			<div class="st_user" @mouseover="show3 = true" @mouseout="show3 = false">
+			<div class="st_user" @mouseover="show3 = true" @mouseout="show3 = false" v-if="userType">
 				{{userName}}
 				<i class="st_user_i"></i>
 				<transition name="el-zoom-in-top">
-					<div class="st_user_list" @mouseout="show3 = false" v-show="show3">
+					<div class="st_user_list" @mouseout="show3 = false" v-show="show3" >
 						<router-link :to="{path: '/'}"><i class="iconfont icon-huodongzhongxin"></i>广告中心</router-link>
-						<router-link :to="{path: '/'}"><i class="iconfont icon-tuichu"></i>退出登录</router-link>
+						<span @click="userOut"><i class="iconfont icon-tuichu"></i>退出登录</span>
 					</div>	
 				</transition> 
+			</div>
+			<div class="st_sign" v-if="!userType">
+				<button @click="$router.push('/login')">登陆</button>
+				<button @click="$router.push('/register')">注册</button>
 			</div>
 			<!-- 顶部搜索 -->
 			<div class="st_search">
@@ -305,7 +346,8 @@ import {mapState} from 'vuex'
 				userName: "", 
 				show2: false,
 				show3: false,
-				countryNow: {}
+				countryNow: {},
+				userType: false
 			};
 		},
 
@@ -329,29 +371,36 @@ import {mapState} from 'vuex'
 				this.countryNow = this.$store.state.Home.countryList[0]
 			})
 
-			if(localStorage.getItem('user') != null && localStorage.getItem('user') != undefined) {
-				this.userName = JSON.parse(localStorage.getItem('user')).name
+			if(localStorage.getItem('adjuz_user') != null && localStorage.getItem('adjuz_user') != undefined) {
+				this.userName = JSON.parse(localStorage.getItem('adjuz_user')).userEmail
+				this.userType = true
 			}else{
 				UserSignType()
 				.then(res=>{
 					if(res.data.data.userLoginStatus == 1) {//登陆状态
 						this.userName = res.data.data.userEmail
-						localStorage.setItem('user' , JSON.stringify(
-							{name: this.userName}
+						localStorage.setItem('adjuz_user' , JSON.stringify(
+							{
+								userEmail: this.userName,
+								userId : res.data.data.userId,
+								//userLoginStatus : 0
+								userLoginStatus : res.data.data.userLoginStatus
+							}
 							)) 
 					}
 				})
 			} 
-		},
-
-		destroyed() {},
+		}, 
 
 		methods: {  
+			userOut() {//退出登录
+				this.$ls.clear('adjuz_user')
+				this.userType = false
+			},
 			chainList() {
 				this.domHeight("st_chain_list", 239);
-			},
-			//点击选择国家
-			hrefClick(index) {
+			}, 
+			hrefClick(index) {//选择国家
 				this.st_bgk = index;
 				this.domHeight("st_chain_list", 0);
 				this.countryNow = this.countryList[index];

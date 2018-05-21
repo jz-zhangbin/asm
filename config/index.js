@@ -20,6 +20,13 @@ module.exports = {
         pathRewrite: {
             '^/api': ''
         }
+     },
+     '/baseapi': { 
+        target: 'http://asm.adjuz.net', 
+        changeOrigin: true,
+        pathRewrite: {
+            '^/baseapi': ''
+        }
     }
     },
 
@@ -68,7 +75,8 @@ module.exports = {
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
-    productionGzip: false,
+    //打包压缩gzip格式
+    productionGzip: true,
     productionGzipExtensions: ['js', 'css'],
 
     // Run the build command with an extra argument to

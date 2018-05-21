@@ -15,27 +15,27 @@
 			margin: 100px auto;
 			padding: 30px 30px 0;
 			position: relative;
-			animation:animation1 .5s ease-out;
-			-webkit-animation:animation1 .5s ease-out;
+			animation: animation1 .5s ease-out;
+			-webkit-animation: animation1 .5s ease-out;
 		}
 		@keyframes animation1 {
-			0%{
+			0% {
 				margin: 0 auto;
 				transform: scale(0.8);
 			}
-			100%{
+			100% {
 				margin: 100px auto;
 				transform: scale(1);
 			}
 		}
-		@-webkit-keyframes animation1 { 
-			0%{
+		@-webkit-keyframes animation1 {
+			0% {
 				margin: 0 auto;
 			}
-			100%{
+			100% {
 				margin: 100px auto;
 			}
-		} 
+		}
 		#myChart1 {
 			width: 100%;
 			height: 400px;
@@ -57,38 +57,38 @@
 	</div>
 </template>
 
-<script> 
+<script>
 	import { datefn } from '@commonJS/functionJS'
 	export default {
 		data() {
 			return {
 				myChart: null
 			};
-		}, 
-		mounted() { 
-			this.AjaxPie() 
-			// 基于准备好的dom，初始化echarts实例
-			
 		},
- 
+		mounted() {
+			this.AjaxPie()
+			// 基于准备好的dom，初始化echarts实例
+
+		},
+
 		methods: {
 			AjaxPie() {
 				let url = 'api/v1/IntellSearchApi/KeywordDetail/GetAllAppsRatio'
 				let obj = {
-					nationId: this.$parent.$parent.countryNow, 
+					nationId: this.$parent.$parent.countryNow,
 					keywordName: this.$parent.$parent.tableData.keywordName,
 					begingTime: datefn(1)[this.$parent.$parent.propDate].data.beginTime,
-					endTime:  datefn(1)[this.$parent.$parent.propDate].data.endTime
+					endTime: datefn(1)[this.$parent.$parent.propDate].data.endTime
 				}
 
-				this.$https.post( url , JSON.stringify(obj) )
-				.then((res) => { 
-					this.echartsInit(res.data)
-				})
+				this.$https.post(url, JSON.stringify(obj))
+					.then((res) => {
+						this.echartsInit(res.data)
+					})
 			},
 			echartsInit(res) {
 				let nameList = []
-				let dataList = [] 
+				let dataList = []
 				for(var i in res.data.appsRatioByKeyword) {
 					nameList.push(i)
 					let obj = {
@@ -97,7 +97,7 @@
 					}
 					dataList.push(obj)
 				}
-				console.log(nameList,dataList)
+				console.log(nameList, dataList)
 				let myChart = this.$echarts.init(document.getElementById("myChart1"));
 				// 绘制图表
 				myChart.setOption({
@@ -142,7 +142,7 @@
 						type: "pie",
 						radius: "55%",
 						center: ["50%", "60%"],
-						data:  dataList,
+						data: dataList,
 						itemStyle: {
 							emphasis: {
 								shadowBlur: 10,
@@ -153,6 +153,6 @@
 					}]
 				});
 			}
-		} 
+		}
 	};
 </script>

@@ -37,7 +37,7 @@
 			</span>
 		</div>
 		<div class="rdlh_table">
-			<table id="table1" >
+			<table id="table1">
 				<tr>
 					<th style="width: 40%">关键词</th>
 					<th style="width: 8%" class="sl_table_po">
@@ -146,7 +146,7 @@
 					return ls
 				}
 			}
-		}, 
+		},
 
 		methods: {
 
@@ -160,8 +160,18 @@
 				}
 			},
 
-			excelOut() { //表格导出 
-				excel('table1', 20, `<tr><th>关键词</th><th>流行度</th><th>搜索指数</th></tr>`, [4, 3], 'tab')
+			excelOut() { //表格导出  
+				let title = ['关键词', '流行度', '搜索指数', '近期竞价APP数量']
+				let arr = []
+				for(var i = 0; i < this.tableMoreData.length; i++) {
+					var newarr = []
+					newarr.push(this.tableMoreData[i].keywordName)
+					newarr.push(this.tableMoreData[i].popularityIndex)
+					newarr.push(this.tableMoreData[i].searchIndex)
+					newarr.push(this.tableMoreData[i].appLength)
+					arr.push(newarr)
+				}
+				excel(title, arr, 'tab')
 			},
 
 			routerClick(id) { //点击跳转，回到顶部，切换回历史列表

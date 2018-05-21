@@ -23,7 +23,7 @@
  
    updated() {},
  
-   mounted() { 
+   mounted() {  
    },
  
    destroyed() {},

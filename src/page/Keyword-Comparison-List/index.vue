@@ -60,6 +60,9 @@
 						min-width: 440px;
 						span {
 							display: inline-block;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
 						}
 					}
 				}
@@ -355,7 +358,7 @@
 					</div>
 					<!-- 在对比页选中的 -->
 					<div class="kcl_duibi_left" v-if="appDataShow">
-						<img :src="dataRight.appImgUrl" alt="" v-if="dataRight.appImgUrl">
+						<img :src="dataRight.appImgUrl" alt="" >
 						<section>
 							<h1>{{dataRight.appName}}</h1>
 							<p>
@@ -560,14 +563,15 @@
 					this.countryNow = this.$store.state.Home.countryList[0].nationId
 				})
 
-			UserSignType()
-				.then(res => {
-					if(res.data.data.userLoginStatus == 1) { //登陆状态
+			if(this.$ls.get('adjuz_user')){
+					if(this.$ls.get('adjuz_user').userLoginStatus == 1) { //登陆状态
 						this.userType = true
-					} else { //未登陆
-						this.userType = false
-					}
-				})
+						} else { //未登陆
+							this.userType = false
+						} 
+				}else{
+					this.userType = false
+				}
 
 			this.AjaxInfor({
 				key: this.$route.query.key,
@@ -619,11 +623,16 @@
 				this.tableShow = false
 			},
 
-			starClick() { //点击开始对比
-				this.tableShow = true
-
-				this.AjaxAppcontent(this.dataLeft.appStoreId, this.dataRight.appStoreId)
-
+			starClick() { //点击开始对比 
+				if(this.dataLeft.appStoreId == this.dataRight.appStoreId) {
+					this.$message({
+						message: '对不起相同应用不能进行比较！！！',
+						type: 'warning'
+					});
+				}else{
+					this.tableShow = true
+					this.AjaxAppcontent(this.dataLeft.appStoreId, this.dataRight.appStoreId)
+				}  
 			},
 
 			drawaCircle(baifenbi) {

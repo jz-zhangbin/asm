@@ -44,7 +44,7 @@
 			min-width: 1200px;
 			padding: 0 45px;
 			box-sizing: border-box;
-			table{
+			table {
 				box-shadow: 0 2px 5px @border;
 			}
 		}
@@ -164,9 +164,7 @@
 						</td>
 						<td style="width: 8%">
 							<div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
-								<i 
-									class="iconfont icon-plus-add" 
-									@click="addCiClick(index,ele.hotKeywordTemStatus,ele.keywordName)">
+								<i class="iconfont icon-plus-add" @click="addCiClick(index,ele.hotKeywordTemStatus,ele.keywordName)">
 								</i>
 								<span class="sl_t_is" style="width:114px;"> 
 				                  添加至新建词组
@@ -174,10 +172,7 @@
 								<span class="sl_t_san"></span>
 							</div>
 							<div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
-								<i 
-									class="iconfont icon-xuanze" 
-									style="color:#43c2ac;" 
-									@click="addCiClick(index,ele.hotKeywordTemStatus,ele.keywordName)"> 
+								<i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index,ele.hotKeywordTemStatus,ele.keywordName)"> 
 								</i>
 								<span class="sl_t_is" style="width:114px;"> 
 				                  从新建词组删除
@@ -245,15 +240,15 @@
 							this.initloading = true
 						})
 				})
-
-			UserSignType()
-				.then(res => {
-					if(res.data.data.userLoginStatus == 1) { //登陆状态
-						this.userType = true
-					} else { //未登陆
-						this.userType = false
-					}
-				})
+			if(this.$ls.get('adjuz_user')) {
+				if(this.$ls.get('adjuz_user').userLoginStatus == 1) { //登陆状态
+					this.userType = true
+				} else { //未登陆
+					this.userType = false
+				}
+			} else {
+				this.userType = false
+			}
 		},
 
 		updated() {},
@@ -285,8 +280,7 @@
 			});
 		},
 
-		destroyed() { 
-		},
+		destroyed() {},
 
 		methods: {
 			routerLickClick(id) { //路由跳转
@@ -298,13 +292,13 @@
 					}
 				})
 			},
-			
+
 			fromTop() { //回到顶部 
-				$('html,body').animate({  
-					scrollTop: 0  
-				}, 800); 
+				$('html,body').animate({
+					scrollTop: 0
+				}, 800);
 			},
-			
+
 			addCiClick(index, num, name) { //操作关键词
 				if(num == 0) {
 					this.tableData[index].hotKeywordTemStatus = 1
@@ -314,7 +308,7 @@
 					this.AjaxRemove(name, 1) //删除
 				}
 			},
-			
+
 			changeFun(countryNow) { //切换国家
 				this.AjaxInit(countryNow, 1)
 					.then(res => {
@@ -322,13 +316,22 @@
 						this.initloading = true
 					})
 			},
-			
+
 			excelOut() {
 				//表格导出
-				excel('ta', 1500, `<tr><th>#</th><th>关键词</th><th>流行度</th><th>搜索指数</th></tr>`, [5, 4], 'tab')
-
+				let title = ['关键词', '流行度', '搜索指数', '近期竞价APP数量']
+				let arr = []
+				for(var i = 0; i < this.tableData.length; i++) {
+					var newarr = []
+					newarr.push(this.tableData[i].keywordName)
+					newarr.push(this.tableData[i].popularityIndex)
+					newarr.push(this.tableData[i].searchIndex)
+					newarr.push(this.tableData[i].appLength)
+					arr.push(newarr)
+				}
+				excel(title, arr, 'tab')
 			},
-			
+
 			AjaxInit(id, pageindex) { //初始化列表ajax
 				let url = '/api/v1/IntellSearchApi/HotKeyword/GetHotKeywordList'
 				let data = {
@@ -341,7 +344,7 @@
 				let data1 = JSON.stringify(data)
 				return this.$https.post(url, data1)
 			},
-			
+
 			AjaxRemove(name, type) { //操作关键词ajax
 				let url = '/api/v1/IntellSearchApi/HotKeyword/OperatKeywords'
 				let data = {
@@ -351,7 +354,7 @@
 				let data1 = JSON.stringify(data)
 				return this.$https.post(url, data1)
 			},
-			
+
 			Ajax() { //滚动加载请求
 				this.AjaxInit(this.vacountryNowlue, this.ajaxnum)
 					.then(res => {

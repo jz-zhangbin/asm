@@ -79,8 +79,8 @@
 					height: 0px;
 					position: absolute;
 					top: 60px;
-					left: 0; 
-					box-shadow: 4px 4px 4px @border; 
+					left: 0;
+					box-shadow: 4px 4px 4px @border;
 					overflow: hidden;
 				}
 				ul {
