@@ -10,7 +10,7 @@
 	}
 	
 	.kcl_index {
-		min-width: 1200px;
+		min-width: 1200px; 
 		.kcl_body {
 			width: 100%;
 			.kcl_top {
@@ -273,7 +273,8 @@
 						position: absolute;
 						top: 50%; 
 						color: @color;
-						transform: translateY(-50%);
+						left: 50%;
+						transform: translateY(-50%) translateX(-50%);
 						z-index: 1000;
 					}
 				}
@@ -485,9 +486,10 @@
 					<!-- table组件 -->
 					<component :is="currentView" :userType='userType' :max='max' :min='min'></component>
 					<usersign v-if="!userType"></usersign>
-				</div>
+				</div> 
 			</div>
-		</div>
+		</div>  
+		<v-footer v-if="tableShow"></v-footer>
 	</div>
 </template>
 

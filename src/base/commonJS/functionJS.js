@@ -21,7 +21,7 @@ export function datefn(datenum) {
 				endTime: fn(timerNum1)
 			},
 			value: 0,
-			label: fn(timerNum3) + ' 至 ' + fn(timerNum3)
+			label: fn(timerNum3) + ' 至 ' + fn(timerNum1)
 		},
 		{
 			data: {

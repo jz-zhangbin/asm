@@ -242,8 +242,10 @@
 			},
 			Mailboxjump() { //邮箱跳转
 				let leftNum = this.userEmil.indexOf('@')
-				let rightNum = this.userEmil.indexOf('.')
-				let email = this.userEmil.substring(leftNum + 1, rightNum)
+				let newEmail = this.userEmil.substring(leftNum)
+				let rightNum = newEmail.indexOf('.')
+				let email = newEmail.substring(1, rightNum)
+				console.log(email)
 				switch(email) {
 					case 'qq':
 						window.location.href = 'http://www.mail.qq.com'
@@ -252,10 +254,10 @@
 						window.location.href = 'http://www.mail.163.com'
 						break;
 					case 'sina':
-						window.location.href = 'http://www.mail.sina.com'
+						window.location.href = 'https://mail.sina.com.cn'
 						break;
 					case 'sohu':
-						window.location.href = 'http://www.mail.sohu.com'
+						window.location.href = 'https://mail.sohu.com/fe/#/login'
 						break;
 					default:
 						window.location.href = 'http://www.mail.163.com'

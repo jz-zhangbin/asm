@@ -434,6 +434,7 @@
 			</div>
 			<usersign v-if="!userType"></usersign>
 		</div>
+		 <v-footer></v-footer> 
 	</div>
 </template>
 

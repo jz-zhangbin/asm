@@ -138,10 +138,10 @@
 					<th style="width: 14%" class="sl_table_po">
 						<div class="sl_table_flex">
 							搜索排名
-							<div class="table_tandb">
+							<!-- <div class="table_tandb">
 								<span @click="paiClick(1,'one')" :class="{bandb_one: showList[1].one}"></span>
 								<span @click="paiClick(1,'two')" :class="{bandb_two: showList[1].two}"></span>
-							</div>
+							</div> -->
 							<div class="sl_t_dis">
 								<i class="iconfont icon-wenhao-fill"> </i>
 								<span class="sl_t_is" style="width:260px;">该APP在该关键词的App Store搜索结果中的排名</span>
@@ -427,7 +427,7 @@
 				let obj = {
 					nationId: this.$parent.countryNow,
 					appStoreId: this.$parent.tableInner[i].appStoreId,
-					keywordName: this.$parent.tableData.keywordName,
+					keywordName: this.$parent.tableInner[i].appInfoModel.appName,
 					begingTime: datefn(1)[this.value].data.beginTime,
 					endTime: datefn(1)[this.value].data.endTime
 				}

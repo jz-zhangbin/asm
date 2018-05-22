@@ -4,14 +4,15 @@
 	@color: #2d76ed;
 	@bgk: #f7f7f7;
 	@font_color: #6c757d;
+	@btnhover: #1559c8;
 	@import url('../base/commonJS/scroll.css');
 	.st_index {
 		min-width: 1200px;
-		height: 60px;
-		background: @color;
+		height: 60px; 
 		top: 0;
 		left: 0;
 		right: 0;
+		z-index: 100;
 		.st_body {
 			height: 60px;
 			.st_logo {
@@ -45,7 +46,7 @@
 						padding-right: 17px;
 						i {
 							display: block;
-							border: 5px solid #2d76ed;
+							border: 5px solid transparent;
 							border-top: 5px solid #fff;
 							position: absolute;
 							right: 0px;
@@ -187,32 +188,26 @@
 				align-items: center;
 				height: 60px;
 				button{
-					width: 60px;
-					height: 34px;
+					width: 70px;
+					height: 30px;
 					text-align: center;
-					line-height: 34px;
+					line-height: 30px;
 					cursor: pointer;
-					border-radius: 6px;
+					border-radius: 3px;
+					border: none;
 					outline: none;
-					&:nth-child(1){
-						border: 1px solid #f7f7f7;
+					&:nth-child(1){ 
 						color: #f7f7f7;
 						background: #2d76ed;
-						margin-right: 20px;
-					}
+						margin-right: 20px; 
+					} 
 					&:nth-child(1):hover{
-						//border: none;
-						//background: @font_color;
+						background: @btnhover;
 					}
-					&:nth-child(2){
-						border: 1px solid #f7f7f7;
+					&:nth-child(2){ 
 						color: #f7f7f7;
-						background: #2d76ed; 
-					}
-					&:nth-child(2):hover{
-						//border: none;
-						//background: @font_color;
-					}
+						background: @btnhover; 
+					} 
 				}
 			}
 			.st_user {
@@ -226,7 +221,7 @@
 				position: relative;
 				.st_user_i {
 					display: block;
-					border: 5px solid #2d76ed;
+					border: 5px solid transparent;
 					border-top: 5px solid #fff;
 					position: absolute;
 					right: 0px;
@@ -272,7 +267,7 @@
 	}
 </style>
 <template>
-	<div class="st_index">
+	<div class="st_index" :style="{background : background_color}">
 		<div class="st_body">
 			<div class="st_logo" @click="$router.push('/home')"></div>
 			<ul class="clear">
@@ -313,7 +308,7 @@
 				<button @click="$router.push('/register')">注册</button>
 			</div>
 			<!-- 顶部搜索 -->
-			<div class="st_search">
+			<div class="st_search" v-if="searchShow">
 				<div class="st_chain" @click="chainList" @mouseleave="faoust">
 					<img :src='countryNow.nationImgUrl' alt="">
 					<i></i>
@@ -351,6 +346,17 @@ import {mapState} from 'vuex'
 			};
 		},
 
+		props: {
+			searchShow: { 
+				type: Boolean,
+				default: true 
+			},
+			background_color: {
+				type: String,
+				default:  '#2d76ed'
+			}
+		},
+		
 		components: {},
 
 		computed: {

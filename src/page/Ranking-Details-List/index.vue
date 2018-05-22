@@ -220,6 +220,7 @@
 			<component @pageDate='pageDate' @peiDate='peiDate' @pageMoreDate='pageMoreDate' :is="currentView" ref="childr" :valueData="countryNow" :tableMoreData='tableMoreData' :tableMoreCode='tableMoreCode' :tableInnerCode='tableInnerCode' :userType="userType" :tableInner='tableInner'>
 			</component>
 		</div>
+		 <v-footer></v-footer> 
 	</div>
 </template>
 
@@ -335,7 +336,7 @@
 					pageIndex: pageIndex,
 					pageSize: 20,
 					requestPar: {
-						keywordName: this.keyName,
+						keywordName: this.$route.query.key,
 						nationId: nationId,
 						beginTime: beginTime,
 						endTime: endTime
@@ -386,7 +387,9 @@
 					pageSize: 20,
 					requestPar: {
 						nationId,
-						keywordName: this.$route.query.key
+						keywordName: this.$route.query.key,
+						beginTime: datefn(0).beginTime,
+						endTime:  datefn(0).endTime
 					}
 				}
 				this.$https.post(url, JSON.stringify(obj))

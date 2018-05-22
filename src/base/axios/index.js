@@ -26,7 +26,7 @@ axios.interceptors.response.use(function (response) {
     //console.log(response)
     return response;
 }, function (error) {
-    // return alert("网络繁忙,请您稍后再试");
+    //return alert("网络繁忙,请您稍后再试");
 })
 
 Vue.use(VueAxios, axios)

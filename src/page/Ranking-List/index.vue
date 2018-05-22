@@ -44,6 +44,7 @@
 			min-width: 1200px;
 			padding: 0 45px;
 			box-sizing: border-box;
+			min-height: 600px;
 			table {
 				box-shadow: 0 2px 5px @border;
 			}
@@ -195,6 +196,7 @@
 				<i class="iconfont icon-ico-top1"></i>
 			</div>
 		</div>
+		<v-footer></v-footer> 
 	</div>
 </template>
 
@@ -215,6 +217,12 @@
 				bannerName: '竞价热词榜',
 				countryNow: "", //选中的国家
 				tableData: [], //表格数据 
+				loadingopaction: {
+					lock: true,
+					text: 'Loading',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+				}
 			};
 		},
 
@@ -234,8 +242,10 @@
 				.then(() => {
 					this.countryNow = this.$store.state.Home.countryList[0].nationId
 
+					this.loading = this.$loading(this.loadingopaction)
 					this.AjaxInit(this.countryNow, 1)
 						.then(res => {
+							this.loading.close()
 							this.tableData = res.data.data
 							this.initloading = true
 						})
@@ -356,7 +366,7 @@
 			},
 
 			Ajax() { //滚动加载请求
-				this.AjaxInit(this.vacountryNowlue, this.ajaxnum)
+				this.AjaxInit(this.countryNow, this.ajaxnum)
 					.then(res => {
 						this.tableData.push(...res.data.data)
 						this.ajaxType = true;

@@ -125,6 +125,7 @@
 			text-align: center;
 			margin-top: 20px;
 			font-size: 16px;
+			margin-bottom: 30px;
 			a {
 				color: @color;
 			}

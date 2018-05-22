@@ -21,8 +21,7 @@
     "qs": "^6.5.2",
     "style-loader": "^0.21.0",
     "vue": "^2.5.2",
-    "vue-axios": "^2.1.1",
-    "vue-particles": "git+https://github.com/jz-zhangbin/vue-particles.git",
+    "vue-axios": "^2.1.1", 
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

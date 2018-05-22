@@ -24,17 +24,16 @@ if (explorer.indexOf("MSIE") >= 0) {
 	//alert('not ie') 
 	// import VueParticles from 'vue-particles'
 	// Vue.use(VueParticles)  
-}
-/**
- * 粒子效果,源码不兼容ie浏览器，"git+https://github.com/jz-zhangbin/vue-particles.git",修改并fork
- */ 
-import VueParticles from 'vue-particles'
-Vue.use(VueParticles)
+} 
 /**
  * 全局组件
  */
 import searchTop from '@components/Search-Top'
 import SIdentify from './components/canvas'
+import VueParticles from '@components/vue-particles'
+import Footer from '@components/footer'
+Vue.component('v-footer' , Footer)
+Vue.component('vue-particles' , VueParticles)
 Vue.component('s-identify', SIdentify)
 Vue.component('v-search-top', searchTop)
 

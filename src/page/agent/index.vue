@@ -57,6 +57,7 @@
 							cursor: pointer;
 							border-radius: 4px;
 							margin-right: 6px;
+							display: block;
 							line-height: 16px;
 							&.checkedbox_b {
 								background: @color;
@@ -85,6 +86,7 @@
 					}
 				}
 				&.te_btn {
+					margin-bottom: 30px;
 					div {
 						background: @color;
 						height: 40px;
