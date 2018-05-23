@@ -11,6 +11,7 @@
 	
 	.kc_index {
 		min-width: 1200px;
+		min-height: 100%;
 		.kc_body {
 			width: 100%;
 			.kc_top {
@@ -153,7 +154,7 @@
 			<div class="kc_center">
 				<p>选择APP</p>
 				<div class="kc_ct_search">
-					<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor">
+					<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor" @focus="focusInput" @blur="blurInput">
 					<div class="kc_over">
 						<ul>
 							<li v-for="(ele,index) in list" :key="index" @click="routerClick(index)">
@@ -224,6 +225,12 @@
 		},
 
 		methods: {
+			focusInput() {
+				$('.kc_ct_search').css('border-color', '#2d76ed') 
+			},
+			blurInput() {
+				$('.kc_ct_search').css('border-color', '#dee2e6')
+			},
 
 			routerClick(index) {
 				this.$router.push({

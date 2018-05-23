@@ -1,6 +1,8 @@
 <style lang='less' scoped>
 	@import url('../../base/commonJS/css.less');
 	.apl_index {
+		min-height: 100%;
+		margin-bottom: 20px;
 		.apl_body {
 			min-width: 1200px;
 			padding: 0 45px;
@@ -151,8 +153,9 @@
 				width: 240px;
 				height: 30px;
 				border: 1px solid @border;
-				border-radius: 6px;
+				border-radius: 4px;
 				position: absolute;
+				overflow: hidden;
 				top: 50px;
 				right: 20px;
 				overflow: hidden;
@@ -160,6 +163,7 @@
 					width: 100%;
 					height: 100%;
 					position: relative;
+					border-radius: 4px;
 					input {
 						width: 100%;
 						height: 100%;
@@ -228,7 +232,7 @@
 				<div class="apl_bt_ct">
 					<h1>{{appData.appName}}</h1>
 					<div>
-						<p style="min-width: 140px">
+						<p style="max-width: 260px">
 							<span>开发商</span>
 							<span v-if="appData.show">{{appData.aristName}}</span>
 							<span style=" color:#000;" v-if="!appData.show">-</span>
@@ -270,7 +274,7 @@
 			<div class="apl_body_cur">
 				<p class="sl_center_p">地区</p>
 				<el-select v-model="countryNow" placeholder="请选择" @change="changeFun(countryNow)">
-					<el-option v-for="item in countryList" :key="item.nationId" :label="item.nationCHSName" :value="item.nationId">
+					<el-option class="search_input" v-for="item in countryList" :key="item.nationId" :label="item.nationCHSName" :value="item.nationId">
 					</el-option>
 				</el-select>
 			</div>
@@ -297,15 +301,15 @@
 						<input type="text" placeholder="最大值" v-model="seacrchData.maxSearchIndex">
 					</div>
 				</div>
-				<div class="apl_bos_box">
+				<!-- <div class="apl_bos_box">
 					<p>展示量占比(%)</p>
 					<div>
 						<input type="text" placeholder="最小值" v-model="seacrchData.minRatio">
 						<input type="text" placeholder="最大值" v-model="seacrchData.maxRatio">
 					</div>
-				</div>
+				</div> -->
 				<div class="apl_bos_box">
-					<p>近期竞价App数</p>
+					<p>流行度</p>
 					<div>
 						<input type="text" placeholder="最小值" v-model="seacrchData.minAppLength">
 						<input type="text" placeholder="最大值" v-model="seacrchData.maxAppLength">
@@ -314,7 +318,7 @@
 				<button @click="searchMoreClick">搜索</button>
 				<div class="apl_bos_right">
 					<div class="apl_bos_input">
-						<input type="text" placeholder="查找关键词" v-model="searchKeyWord">
+						<input type="text" placeholder="查找关键词" v-model="searchKeyWord" @focus="focusInput" @blur="blurInput">
 						<i class="iconfont icon-icon-plus-search" @click="keywordClick"></i>
 					</div>
 				</div>
@@ -359,10 +363,10 @@
 						<th style="width: 11%" class="sl_table_po">
 							<div class="sl_table_flex">
 								展示量占比
-								<div class="table_tandb">
+								<!-- <div class="table_tandb">
 									<span @click="paiClick(2,'one')" :class="{bandb_one: showList[2].one}"></span>
 									<span @click="paiClick(2,'two')" :class="{bandb_two: showList[2].two}"></span>
-								</div>
+								</div> -->
 								<div class="sl_t_dis">
 									<i class="iconfont icon-wenhao-fill"> </i>
 									<span class="sl_t_is" style="width:260px;"> 
@@ -434,7 +438,6 @@
 			</div>
 			<usersign v-if="!userType"></usersign>
 		</div>
-		 <v-footer></v-footer> 
 	</div>
 </template>
 
@@ -570,6 +573,13 @@
 		destroyed() {},
 
 		methods: {
+			focusInput() {
+				$('.apl_bos_right').css('border-color', '#2d76ed') 
+			},
+			blurInput() {
+				$('.apl_bos_right').css('border-color', '#dee2e6')
+			},
+
 			changeFun(value) { //切换国家
 				this.showList.map(ele => {
 					ele.one = false
@@ -588,10 +598,10 @@
 						keywordName: this.searchKeyWordTrue,
 						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
 						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+						// minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						// maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
 					orderByParDic: {
 						searchIndex: 0,
@@ -619,10 +629,10 @@
 						keywordName: this.searchKeyWordTrue,
 						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
 						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
 					orderByParDic: {
 						searchIndex: 0,
@@ -667,10 +677,10 @@
 						keywordName: this.searchKeyWordTrue,
 						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
 						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
 					orderByParDic: obj
 				})
@@ -732,7 +742,7 @@
 				if(this.seacrchData.maxAppLength != '') {
 					if(parseInt(this.seacrchData.maxAppLength) < parseInt(this.seacrchData.minAppLength)) {
 						this.$message({
-							message: '近期竞价APP：最大值必须大于最小值',
+							message: '流行度：最大值必须大于最小值',
 							type: 'warning'
 						});
 						return false
@@ -758,10 +768,10 @@
 						keywordName: this.searchKeyWordTrue,
 						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
 						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
 					orderByParDic: {
 						searchIndex: 0
@@ -796,10 +806,10 @@
 						keywordName: this.searchKeyWordTrue,
 						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
 						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
 					orderByParDic: {
 						searchIndex: 0
@@ -838,10 +848,10 @@
 						keywordName: this.searchKeyWordTrue,
 						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
 						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
 					orderByParDic: obj
 				})
@@ -862,10 +872,10 @@
 						keywordName: this.searchKeyWordTrue,
 						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
 						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minAppLength: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxAppLength: this.isNull(this.seacrchDataTrue.maxAppLength)
+						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
 					orderByParDic: obj
 				})

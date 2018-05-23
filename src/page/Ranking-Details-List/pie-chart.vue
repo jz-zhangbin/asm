@@ -89,14 +89,25 @@
 			echartsInit(res) {
 				let nameList = []
 				let dataList = []
-				for(var i in res.data.appsRatioByKeyword) {
-					nameList.push(i)
+				let others = 0
+				for(var i in res.data.appsRatioByKeyword) { 
 					let obj = {
 						value: res.data.appsRatioByKeyword[i],
 						name: i
 					}
-					dataList.push(obj)
+					if(res.data.appsRatioByKeyword[i] > 0.02) {
+						nameList.push(i)
+						dataList.push(obj)
+					}else{
+						others += res.data.appsRatioByKeyword[i]
+					}
 				}
+				
+				nameList.push('Other')
+				dataList.push({
+					value: others.toFixed(4),
+					name: 'Other'
+				})
 				console.log(nameList, dataList)
 				let myChart = this.$echarts.init(document.getElementById("myChart1"));
 				// 绘制图表

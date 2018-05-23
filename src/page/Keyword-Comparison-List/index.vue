@@ -11,6 +11,8 @@
 	
 	.kcl_index {
 		min-width: 1200px; 
+		min-height: 100%;
+		margin-bottom: 20px;
 		.kcl_body {
 			width: 100%;
 			.kcl_top {
@@ -161,6 +163,7 @@
 								background: #f7f7f7;
 							}
 							img {
+								display: block;
 								width: 23px;
 								height: 22px;
 								border-radius: 4px;
@@ -385,7 +388,7 @@
 					<div class="kcl_duibi_right" v-if="!appDataShow">
 						<p>选择APP</p>
 						<div class="kc_ct_search">
-							<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor">
+							<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor" @focus="focusInput" @blur="blurInput">
 							<div class="kc_over">
 								<ul>
 									<li @click="overLiClick(index)" v-for="(ele,index) in list" :key="index">
@@ -489,7 +492,6 @@
 				</div> 
 			</div>
 		</div>  
-		<v-footer v-if="tableShow"></v-footer>
 	</div>
 </template>
 
@@ -598,6 +600,12 @@
 		},
 
 		methods: {
+			focusInput() {
+				$('.kc_ct_search').css('border-color', '#2d76ed') 
+			},
+			blurInput() {
+				$('.kc_ct_search').css('border-color', '#dee2e6')
+			},
 
 			btnClick() {
 				if(this.APPinfor == '') {

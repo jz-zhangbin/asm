@@ -38,11 +38,13 @@
 							display: flex;
 							box-sizing: border-box;
 							padding-left: 28px;
+							align-items: center;
 							img {
 								width: 54px;
 								height: 54px;
 								border-radius: 10px;
 								margin-right: 15px;
+								display: block;
 							}
 							p {
 								text-align: left !important;
@@ -182,7 +184,7 @@
 						</div>
 					</td>
 					<td>
-						{{ele.ratio}}
+						{{ele.ratio | percentage}}
 						<i class="iconfont icon-icon-test" style="color: #2d76ed;" @click="AjaxBroken(index)"></i>
 					</td>
 					<td>{{ele.estimatePrice | numNull}}</td>
@@ -289,6 +291,10 @@
 		filters: {
 			numNull: function(value) {
 				return value == 0 ? '-' : value
+			},
+			percentage: function(value) {
+				let num = (value*100).toFixed(2)
+				return num+"%"
 			}
 		},
 
@@ -365,7 +371,7 @@
 					contentList.push(res.ratioListByDate[i])
 				}
 
-				$('.table_datr_broken').remove() //删除所有折线 
+				
 				if(this.createBrokenIndex != index) {
 					let domstring = ` <tr class="table_datr_broken" style="height: 390px;background: #f7f7f7;" >
                             <td colspan="6" style="position:relative"> 
@@ -373,7 +379,7 @@
                             </td> 
                           </tr>`
 					$('#ta2 tr').eq(index + 1).after(domstring) //添加兄弟节点
-					//进行请求，渲染折线图
+					//进行请求，渲染折线图 
 					this.myChart = this.$echarts.init(document.getElementById("myChart"));
 					this.myChart.setOption({
 						xAxis: {
@@ -423,19 +429,25 @@
 			},
 
 			AjaxBroken(i) {
+				$('.table_datr_broken').remove() //删除所有折线 
+
 				let url = '/api/v1/IntellSearchApi/KeywordDetail/GetAppRatioList'
 				let obj = {
 					nationId: this.$parent.countryNow,
-					appStoreId: this.$parent.tableInner[i].appStoreId,
-					keywordName: this.$parent.tableInner[i].appInfoModel.appName,
+					appStoreId: this.tableInner[i].appInfoModel.appStoreId,
+					keywordName: this.$parent.keyName,
+					//keywordName: this.$parent.tableInner[i].appInfoModel.appName,
 					begingTime: datefn(1)[this.value].data.beginTime,
 					endTime: datefn(1)[this.value].data.endTime
 				}
-				console.log(datefn(1)[this.value].data)
+				console.log(obj)
 				this.$https.post(url, JSON.stringify(obj))
 					.then((res) => {
 						this.brokenClick(res.data.data, i)
+					},()=>{
+						this.brokenClick([], i)
 					})
+					
 			}
 		}
 	};

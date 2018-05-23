@@ -325,14 +325,6 @@
           background: @btnhover;
         }
       }
-    }
-    footer{
-      height: 68px;
-      width: 100%;
-      text-align: center;
-      line-height: 68px;
-      background: #181e28;
-      color: #969ba6;  
     } 
     /*固定背景图*/
     .home_center{
@@ -365,11 +357,11 @@
         align-items: center;
         i{
           display: block;
-          width: 100px;
-          height: 100px;
+          width: 125px;
+          height: 125px;
           border-radius: 50%; 
+          background-repeat: no-repeat;  
           background-size: 100% 100%;
-          background-repeat: no-repeat; 
         }
         p{
           margin: 30px 0 36px;
@@ -551,8 +543,7 @@
       <div class="home_sign">
         <h5>成为巨掌注册用户可获得更多权限</h5>
         <div>免费注册</div>
-      </div>
-      <footer>©2012-2018 adjuz.net 巨掌互动科技（北京）有限公司 京ICP备14034813号</footer> 
+      </div> 
    </div>
  </template>
  

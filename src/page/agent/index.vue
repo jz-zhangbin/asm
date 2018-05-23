@@ -6,6 +6,7 @@
 	@btnhover: #1559c8;
 	.agent_index {
 		min-width: 1200px;
+		min-height: 100%;
 		.agent_body {
 			width: 100%;
 		}

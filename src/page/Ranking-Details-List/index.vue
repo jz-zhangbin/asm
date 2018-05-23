@@ -1,6 +1,8 @@
 <style lang='less' scoped>
 	@import url('../../base/commonJS/css.less');
 	.rdl_index {
+		min-height: 100%;
+		margin-bottom: 20px;
 		width: 100%;
 		color: @font_color;
 		.rdl_name {
@@ -167,7 +169,7 @@
 							</th>
 						</tr>
 						<tr v-if="keyWordType">
-							<td style="width: 20%" class="sl_dt_name">{{tableData.keywordName}}</td>
+							<td style="width: 20%" class="sl_dt_name">{{keyName}}</td>
 							<td style="width: 11%">{{tableData.popularityIndex}}</td>
 							<td style="width: 11%">{{tableData.searchIndex}}</td>
 							<td style="width: 11%" class="sl_dt_img">
@@ -220,7 +222,6 @@
 			<component @pageDate='pageDate' @peiDate='peiDate' @pageMoreDate='pageMoreDate' :is="currentView" ref="childr" :valueData="countryNow" :tableMoreData='tableMoreData' :tableMoreCode='tableMoreCode' :tableInnerCode='tableInnerCode' :userType="userType" :tableInner='tableInner'>
 			</component>
 		</div>
-		 <v-footer></v-footer> 
 	</div>
 </template>
 
@@ -295,6 +296,8 @@
 		},
 
 		mounted() {
+			this.keyName = this.$route.query.key
+
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
 					this.countryNow = this.$store.state.Home.countryList[0].nationId
@@ -372,9 +375,7 @@
 								keywordName: this.$route.query.key,
 								associatedWords: []
 							}
-						}
-
-						this.keyName = this.$route.query.key
+						} 
 						this.loading.close()
 					})
 			},
@@ -412,12 +413,14 @@
 			},
 
 			changeFun(value) { //切换国家
-				this.$refs.childr.showList.map((ele, index) => { // 切换国家让排序归零
-					ele.one = false
-					ele.two = false
-				})
-				this.$refs.childr.showList[0].one = true
-
+				if(this.components_index == 0) {
+					this.$refs.childr.showList.map((ele, index) => { // 切换国家让排序归零
+						ele.one = false
+						ele.two = false
+					})
+					this.$refs.childr.showList[0].one = true
+				} 
+				
 				this.AJaxKeyWord(value)
 
 				this.AjaxHistoryList(1, value, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime, 'ratio', 0)

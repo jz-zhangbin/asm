@@ -1,6 +1,9 @@
 <style lang='less' scoped>
 	@import url('../../base/commonJS/css.less');
+	
 	.rl_index {
+		min-height: 100%;
+		margin-bottom: 20px;
 		.sl_main {}
 		.sl_center {
 			min-width: 1200px;
@@ -195,8 +198,7 @@
 			<div class="sl_from_top" @click="fromTop">
 				<i class="iconfont icon-ico-top1"></i>
 			</div>
-		</div>
-		<v-footer></v-footer> 
+		</div> 
 	</div>
 </template>
 

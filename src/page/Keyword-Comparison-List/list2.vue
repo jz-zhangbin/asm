@@ -75,10 +75,10 @@
 						<td style="width: 18%">
 							<div class="sl_table_flex">
 								展示量占比
-								<div class="table_tandb">
+								<!-- <div class="table_tandb">
 									<span @click="paiClick(1,'one')" :class="{bandb_one: showList[1].one}"></span>
 									<span @click="paiClick(1,'two')" :class="{bandb_two: showList[1].two}"></span>
-								</div>
+								</div> -->
 							</div>
 							<td style="width: 14%">操作</td>
 					</tr>
@@ -143,10 +143,10 @@
 						<td style="width: 18%">
 							<div class="sl_table_flex">
 								展示量占比
-								<div class="table_tandb">
+								<!-- <div class="table_tandb">
 									<span @click="paiClick1(1,'one')" :class="{bandb_one: showList1[1].one}"></span>
 									<span @click="paiClick1(1,'two')" :class="{bandb_two: showList1[1].two}"></span>
-								</div>
+								</div> -->
 							</div>
 							<td style="width: 14%">操作</td>
 					</tr>

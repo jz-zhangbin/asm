@@ -7,6 +7,10 @@
       background: #181e28;
       color: #969ba6; 
       margin-top: 20px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
     } 
 </style>
 <template> 
