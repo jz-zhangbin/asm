@@ -2,6 +2,7 @@
 	@import url('../../base/commonJS/css.less');
 	.key_list1_index {
 		width: 100%;
+		min-height: 400px;
 		.kl_top {
 			display: flex;
 			justify-content: space-between;

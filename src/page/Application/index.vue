@@ -1,6 +1,6 @@
 <style lang='less' scoped>
 	@import url('../../base/commonJS/css.less');
-	.apl_index {
+	.apl_index { 
 		min-height: 100%;
 		margin-bottom: 20px;
 		.apl_body {
@@ -188,6 +188,7 @@
 		.apl_body_table {
 			width: 100%;
 			box-shadow: 0 2px 5px @border;
+			min-height: 400px;
 		}
 		.href_a {
 			color: @color !important;
@@ -397,7 +398,7 @@
 						<td class="href_a" @click="routerClick(ele.keywordName)">{{ele.keywordName}}</td>
 						<td>{{ele.searchIndex}}</td>
 						<td>{{ele.popularityIndex}}</td>
-						<td>{{ele.ratio}}%</td>
+						<td>{{ele.ratio | percentage}}</td>
 						<td>{{ele.estimatePrice | numNull}}</td>
 						<td style="width: 20%" class="sl_dt_img">
 							<div>
@@ -530,9 +531,13 @@
 		filters: {
 			numNull: function(value) {
 				return value == 0 ? '-' : value
+			},
+			percentage: function(value) {
+				let num = (value*100).toFixed(2)
+				return num+"%"
 			}
 		},
-		mounted() {
+		created() {
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
 					this.countryNow = this.$store.state.Home.countryList[0].nationId
@@ -549,18 +554,23 @@
 				}
 			} else {
 				this.userType = false
-			}
-
-			this.AjaxGetAppInfo()
+			} 
 
 			this.AjaxGetAppHistoryKeywordList({
 				pageIndex: 1,
 				pageSize: 20,
 				requestPar: {
 					appStoreId: this.$route.query.id,
-					nationId: this.$route.country,
+					nationId: this.$route.query.country,
 					beginTime: datefn(0).beginTime,
 					endTime: datefn(0).endTime,
+					keywordName: this.searchKeyWordTrue,
+					minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+					maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+					// minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+					// maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+					minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+					maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 				},
 				orderByParDic: {
 					searchIndex: 0,
@@ -568,6 +578,11 @@
 					// popularityIndex: 0
 				}
 			})
+
+			this.AjaxGetAppInfo()
+		},
+		mounted() {
+			
 		},
 
 		destroyed() {},
@@ -929,7 +944,7 @@
 			AjaxGetAppHistoryKeywordList(obj) { //获取历史列表
 				this.loading = this.$loading(this.loadingopaction)
 				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppHistoryKeywordList'
-
+				console.log(obj)
 				this.$https.post(url, JSON.stringify(obj))
 					.then((res) => {
 						//res.data.resultCode = 404

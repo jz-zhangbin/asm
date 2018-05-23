@@ -179,7 +179,7 @@
 					path: '/rankingDetails-List',
 					query: {
 						key: id,
-						country: this.countryNow
+						country: this.$parent.countryNow
 					}
 				})
 				$(window).scrollTop(0)

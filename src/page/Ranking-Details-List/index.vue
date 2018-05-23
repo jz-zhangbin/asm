@@ -58,6 +58,8 @@
 			flex-wrap: wrap;
 			box-sizing: border-box;
 			padding: 20px 20px 0px 0;
+			max-width: 500px;
+			overflow: hidden;
 			span {
 				display: block;
 				border: 1px solid @border;
@@ -65,6 +67,7 @@
 				border-radius: 6px;
 				cursor: pointer;
 				margin: 2px 0 10px 20px;
+				float: left;
 			}
 		}
 		// table切换
@@ -376,6 +379,7 @@
 								associatedWords: []
 							}
 						} 
+						this.keyName = this.$route.query.key
 						this.loading.close()
 					})
 			},
