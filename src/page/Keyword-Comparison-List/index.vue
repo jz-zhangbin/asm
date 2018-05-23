@@ -170,11 +170,12 @@
 								margin-right: 12px;
 							}
 							span {
-								width: 400px;
+								width: 210px;
 								font-weight: 540;
 								color: #000;
 							}
 							b {
+								width: 67px;
 								overflow: hidden;
 								text-overflow: ellipsis;
 								white-space: nowrap;
@@ -672,9 +673,15 @@
 				this.$https.get(url)
 					.then((res) => {
 						this.list = res.data.data.list
+						let ls = ''
+						if(this.list.length >5 ) {
+							ls = '242'
+						}else{
+							ls = this.list.length * 40
+						}
 						if(res.data.resultCode == 1000) {
 							$(".kc_over").animate({
-									height: "242px"
+									height: ls + 'px'
 								},
 								200
 							);

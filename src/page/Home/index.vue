@@ -138,7 +138,7 @@
   }
   /*关键词列表*/
   .home_keyword { 
-    width: 462px;
+    width: 490px;
     position: absolute;
     //height: 200px;
     z-index: 30;
@@ -183,13 +183,15 @@
       }
     }
     span{
-      font-size: 24px;
+      font-size: 20px;
       color: #fff;
       text-align: center;
       display: block;
       &:nth-child(1){
-        margin-bottom: 10px;
+        margin-bottom: 4px;
+        font-size: 24px;
       }
+
     }
   }
   .home_num{
@@ -427,7 +429,7 @@
           </div>
           <div class="home_keyword">
             <ul> 
-              <li @click="keyWordListClick(index)" v-for="(ele,index) in list" :key="index">{{ele.appName}}</li> 
+              <li @click="keyWordListClick(index)" v-for="(ele,index) in list" :key="index">{{ele}}</li> 
             </ul>
           </div>
         </div>
@@ -616,7 +618,7 @@ export default {
     },
     keyWordListClick(index) {
       this.domHeight('home_keyword' , 0) 
-      this.$router.push({path: '/rankingDetails-List' , query : { key : this.list[index].appName , country: this.countryNow.nationId} })					
+      this.$router.push({path: '/rankingDetails-List' , query : { key : this.list[index] , country: this.countryNow.nationId} })					
     },
     domHeight(dom, num) {
 				$("." + dom).animate({
@@ -626,7 +628,7 @@ export default {
 				);
     },
     Ajax() {//目前接口不正确
-				let url = '/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId=' + this.countryNow.nationId + '&count=10' + '&searchContent=' + this.keyWord
+				let url = '/api/v1/IntellSearchApi/Index/GetKeywords?nationId=' + this.countryNow.nationId + '&count=10' + '&searchContent=' + this.keyWord
 				this.$https.get(url)
 					.then((res) => {
 						this.list = res.data.data.list
