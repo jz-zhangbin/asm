@@ -10,7 +10,7 @@
   .home_banner {
     width: 100%;
     height: 572px;
-    background-image: url(../../../static/img/home/home_banner.png);
+    background-image: url(../../../static/img/home_banner.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     margin-top: -60px;
@@ -302,7 +302,7 @@
     .home_sign{
       width: 100%;
       height: 186px;
-      background-image: url(../../../static/img/home/home_sign.png);
+      background-image: url(../../../static/img/home_sign.png);
       background-repeat: no-repeat;
       background-size: 100% 100%;
       box-sizing: border-box;
@@ -332,7 +332,7 @@
     .home_center{
       width: 100%;
       height: 620px;
-      background-image: url(../../../static/img/home/home_center.png);
+      background-image: url(../../../static/img/home_center.png);
       background-attachment: fixed;
       background-position: center;
       background-repeat: no-repeat;

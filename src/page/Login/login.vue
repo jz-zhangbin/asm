@@ -12,7 +12,7 @@
 			justify-content: center;
 			box-sizing: border-box;
 			padding-top: 120px;
-			background: url("../../../static/img/login/login_left.png") 0 0 no-repeat, url("../../../static/img/login/login_right.png") bottom right no-repeat;
+			background: url("../../../static/img/login_left.png") 0 0 no-repeat, url("../../../static/img/login_right.png") bottom right no-repeat;
 		}
 		.login_box {
 			width: 400px;
