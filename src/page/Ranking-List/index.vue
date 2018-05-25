@@ -162,8 +162,8 @@
 						<td style="width: 22%" class="sl_dt_img">
 							<div>
 								<!-- 最多显示四个 -->
-								<img alt="" v-for="(item,index2) in ele.hotKeywordAppList" :key="index2" :src="item.appImgUrl">
-								<span v-if="ele.appLength>4" @click="routerLickClick(ele.keywordName)">{{ele.appLength}}&gt;</span>
+								<img alt="" v-for="(item,index2) in ele.hotKeywordAppList" :key="index2" :src="item.appImgUrl" @click="imgRouterClick(item.appStoreId)">
+								<span v-if="ele.appLength>4" @click="routerLickClick(ele.keywordName)">{{ele.appLength}}<i class="iconfont icon-gengduo"></i></span>
 							</div>
 						</td>
 						<td style="width: 8%">
@@ -300,6 +300,15 @@
 					path: '/rankingDetails-List',
 					query: {
 						key: id,
+						country: this.countryNow
+					}
+				})
+			},
+			imgRouterClick(id) {//图片应用跳转
+				this.$router.push({
+					path: '/application',
+					query: {
+						id,
 						country: this.countryNow
 					}
 				})

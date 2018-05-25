@@ -88,7 +88,7 @@
 						<td>{{index | pageNum(currentPage3)}}</td>
 						<td class="rou"><span>{{ele.keywordName}}</span></td>
 						<td>{{ele.searchIndex}}/{{ele.popularityIndex}}</td>
-						<td>{{ele.selectedAppRatio}}</td>
+						<td>{{ele.selectedAppRatio | percentage}}</td>
 						<td>
 							<div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
 								<i class="iconfont icon-plus-add" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
@@ -156,7 +156,7 @@
 						<td>{{index | pageNum(currentPage4)}}</td>
 						<td class="rou"><span>{{ele.keywordName}}</span></td>
 						<td>{{ele.searchIndex}}/{{ele.popularityIndex}}</td>
-						<td>{{ele.selectedAppRatio}}</td>
+						<td>{{ele.selectedAppRatio | percentage}}</td>
 						<td>
 							<div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
 								<i class="iconfont icon-plus-add" @click="addCiClick2(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
@@ -218,8 +218,8 @@
 				tableInner2: [],
 				currentPage3: 1, //当前页 
 				currentPage4: 1, //当前页 
-				total3: 98, //总数
-				total4: 98, //总数
+				total3: 0, //总数
+				total4: 0, //总数
 				tableShow: false,
 				loading: null,
 				loadingopaction: {
@@ -248,6 +248,10 @@
 				let num2 = currentPage3 - 1
 				let num = (value + 1) + num2 * 20
 				return num
+			},
+			percentage: function(value) {
+				let num = (value*100).toFixed(2)
+				return num+"%"
 			}
 		},
 		mounted() {
@@ -274,7 +278,8 @@
 						two: name == 'one' ? 0 : 1
 					}
 				}
-				this.AjaxClass(this.currentPage3, 'left')
+				this.this.currentPage3 = 1
+				this.AjaxClass(1, 'left')
 			},
 
 			paiClick1(num, name) {
@@ -295,7 +300,8 @@
 						two: name == 'one' ? 0 : 1
 					}
 				}
-				this.AjaxClass(this.currentPage4, 'right')
+				this.currentPage4 = 1
+				this.AjaxClass(1, 'right')
 			},
 
 			//添加至收藏
@@ -319,24 +325,20 @@
 				}
 			},
 
-			handleSizeChange3(val) {
-				this.currentPage3 = val * 1
-				this.AjaxClass(this.currentPage3, 'left')
+			handleSizeChange3(val) { 
+				this.AjaxClass(this.currentPage3, 'left' , val)
 			},
 
-			handleCurrentChange3(val) {
-				this.currentPage3 = val * 1
-				this.AjaxClass(this.currentPage3, 'left')
+			handleCurrentChange3(val) { 
+				this.AjaxClass(this.currentPage3, 'left' , val)
 			},
 
-			handleSizeChange4(val) {
-				this.currentPage4 = val * 1
-				this.AjaxClass(this.currentPage4, 'right')
+			handleSizeChange4(val) { 
+				this.AjaxClass(this.currentPage4, 'right' , val)
 			},
 
-			handleCurrentChange4(val) {
-				this.currentPage4 = val * 1
-				this.AjaxClass(this.currentPage4, 'right')
+			handleCurrentChange4(val) { 
+				this.AjaxClass(this.currentPage4, 'right' , val)
 			},
 
 			Ajax() {
@@ -344,7 +346,7 @@
 				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisNotAllList'
 				let obj = {
 					pageIndex: 1,
-					pageSize: 22,
+					pageSize: 20,
 					requestPar: {
 						nationId: this.$parent.countryNow,
 						competitiveAppId: this.$parent.idRight,
@@ -367,12 +369,15 @@
 						} else if(res.data.resultCode == 404) {
 							this.tableShow = false
 						}
-						this.tableInner2 = res.data.data.list[0][this.$parent.idRight]
-						this.tableInner1 = res.data.data.list[1][this.$parent.idLeft]
+						this.tableInner1 = res.data.data.list[0][this.$parent.idLeft]
+						this.tableInner2 = res.data.data.list[1][this.$parent.idRight]
+						this.total4 = res.data.data.competitiveTotalCount
+						this.total3 = res.data.data.selectedTotalCount
 					})
 			},
 
-			AjaxClass(pageIndex, lorr) {
+			AjaxClass(pageIndex, lorr ,val) {
+				$(window).scrollTop($('.kcl_table_btn').offset().top)
 				this.loading = this.$loading(this.loadingopaction)
 				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisList'
 				var newobj = {}
@@ -387,8 +392,8 @@
 					pageSize: 20,
 					requestPar: {
 						nationId: this.$parent.countryNow,
-						selectedAppId: lorr == 'left' ? this.$parent.idLeft : 0,
-						competitiveAppId: lorr == 'right' ? this.$parent.idRight : 0,
+						selectedAppId: this.$parent.idLeft,
+						competitiveAppId: this.$parent.idRight,
 						beginTime: datefn(1)[1].data.beginTime,
 						endTime: datefn(1)[1].data.endTime,
 						competitiveType: 3,
@@ -403,9 +408,11 @@
 						if(lorr == 'left') {
 							this.tableInner1 = res.data.data.list
 							this.total3 = res.data.data.totalCount
+							this.currentPage3 = val * 1
 						} else if(lorr == 'right') {
 							this.tableInner2 = res.data.data.list
 							this.total4 = res.data.data.totalCount
+							this.currentPage4 = val * 1
 						}
 
 					})

@@ -234,7 +234,6 @@
 	import { CountryInit, UserSignType } from '@commonJS/AxiosGet'
 	import { datefn } from '@commonJS/functionJS'
 	import { mapState } from 'vuex'
-	import qs from 'qs'
 	export default {
 		data() {
 			return {
@@ -288,6 +287,7 @@
 				this.AJaxKeyWord(this.$route.query.country)
 				this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime, 'ratio', 0)
 				this.AJaxKeyWordMore(1, this.$route.query.country)
+				this.countryNow = this.$route.query.country
 			}
 		},
 
@@ -359,7 +359,7 @@
 			},
 
 			AJaxKeyWord(nationId) { //关键词详情信息
-				this.loading = this.$loading(this.loadingopaction)
+				//this.loading = this.$loading(this.loadingopaction)
 				let keyWordDateUrl = '/api/v1/IntellSearchApi/KeywordDetail/Getkeywordinfo'
 				let obj = {
 					nationId,
@@ -380,7 +380,7 @@
 							}
 						} 
 						this.keyName = this.$route.query.key
-						this.loading.close()
+						//this.loading.close()
 					})
 			},
 
@@ -455,7 +455,7 @@
 				this.$refs.childr.showList[0].one = true
 
 				this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime, 'ratio', 0)
-				//this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime , sortData.one , sortData.two)
+				 
 			},
 
 			pageDate(num, sortData) { //分页请求

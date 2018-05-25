@@ -64,8 +64,8 @@
 				<td class="rou"><span>{{ele.keywordName}}</span></td>
 				<td>{{ele.searchIndex}}</td>
 				<td>{{ele.popularityIndex}}</td>
-				<td>{{ele.selectedAppRatio}}</td>
-				<td>{{ele.competitiveAppRatio}}</td>
+				<td>{{ele.selectedAppRatio | percentage}}</td>
+				<td>{{ele.competitiveAppRatio | percentage}}</td>
 				<td>
 					<div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
 						<i class="iconfont icon-plus-add" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
@@ -133,10 +133,17 @@
 		},
 
 		props: {
-			userType: {}
+			userType: {},
+			parentAjaxType: {}
 		},
 
-		components: {},
+		watch: {
+			parentAjaxType: function() {
+				if(this.parentAjaxType) {
+					this.Ajax(1)
+				}
+			}
+		},
 
 		computed: {
 			pagedata() {
@@ -154,13 +161,17 @@
 				let num2 = currentPage3 - 1
 				let num = (value + 1) + num2 * 20
 				return num
+			},
+			percentage: function(value) {
+				let num = (value*100).toFixed(2)
+				return num+"%"
 			}
 		},
-		mounted() {
-			this.Ajax(1)
-		},
-
-		destroyed() {},
+		mounted() {  
+			if(this.$parent.parentAjaxType) {
+					this.Ajax(1)
+				}
+		}, 
 
 		methods: {
 			paiClick(num, name) {
@@ -235,7 +246,6 @@
 						}
 						this.tableInner = res.data.data.list
 						this.total = res.data.data.totalCount
-
 					})
 			},
 

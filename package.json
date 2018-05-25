@@ -10,20 +10,14 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
-    "css-loader": "^0.28.11",
-    "echarts": "^4.1.0",
-    "element-ui": "^2.3.7",
+    "css-loader": "^0.28.11", 
     "jquery": "^3.3.1",
     "less": "^3.0.4",
-    "less-loader": "^4.1.0",
-    "qs": "^6.5.2",
+    "echarts": "^4.1.0",
+    "less-loader": "^4.1.0", 
     "style-loader": "^0.21.0",
-    "vue": "^2.5.2",
-    "vue-axios": "^2.1.1", 
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vue-particles": "git+https://github.com/jz-zhangbin/vue-particles.git"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

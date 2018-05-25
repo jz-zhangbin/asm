@@ -4,9 +4,6 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 var webpack = require("webpack")
-//提取css到一个单独文件
-var ExtractTextPlugin = require("extract-text-webpack-plugin")
-
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -17,6 +14,13 @@ module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
+  },
+  externals:{
+    'vue': 'Vue', 
+    'vue-router' : 'VueRouter',
+    'element-ui' : 'ELEMENT',
+    'axios' : 'axios',
+    'vuex' : 'Vuex',
   },
   output: {
     path: config.build.assetsRoot,
@@ -43,10 +47,7 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        //options: vueLoaderConfig
-        options: {
-          extractCSS: true
-        }
+        options: vueLoaderConfig
       },
       {
         test: /\.js$/,
@@ -78,7 +79,7 @@ module.exports = {
         }
       }
     ]
-  }, 
+  },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
@@ -91,8 +92,7 @@ module.exports = {
     tls: 'empty',
     child_process: 'empty'
   },
-  plugins: [
-    new ExtractTextPlugin("style.css"),
+  plugins: [ 
 		new webpack.optimize.CommonsChunkPlugin('common'),
 		new webpack.ProvidePlugin({
 			jQuery: "jquery",

@@ -1,20 +1,11 @@
-import Vue from 'vue'
 import los from '@commonJS/localStorage'
-import Axios from 'axios'
-import VueAxios from 'vue-axios' 
 import {Message} from 'element-ui'
 
-let axios = Axios.create({
-    
-    // //baseURL: baseURL, 
-    // transformRequest: function (data) {  
-    // }
-   
-})
+let Axios = axios.create({})
 /**
  *添加请求拦截器
  */
-axios.interceptors.request.use(function (config) {
+Axios.interceptors.request.use(function (config) {
     config.headers = {'Content-Type': 'application/json; charset=utf-8'}
     return config; 
 }, function (error) {
@@ -23,7 +14,7 @@ axios.interceptors.request.use(function (config) {
 /**
  *直接返回数据层级 
  */
-axios.interceptors.response.use(data=> {
+Axios.interceptors.response.use(data=> {
     if (data.status && data.status == 200 && data.data.status == 'error') {
       Message.error({message: data.data.msg});
       return;
@@ -41,6 +32,6 @@ axios.interceptors.response.use(data=> {
     return Promise.resolve(err);
   })
 
-Vue.use(VueAxios, axios)
+//Vue.use(axios)
 
-export default axios
+export default Axios

@@ -41,7 +41,7 @@
 					span {
 						display: block;
 						margin-bottom: 6px;
-						margin-right: 10px;
+						margin-right: 16px;
 					}
 				}
 			}
@@ -233,7 +233,7 @@
 				<div class="apl_bt_ct">
 					<h1>{{appData.appName}}</h1>
 					<div>
-						<p style="max-width: 260px">
+						<p style="max-width: 260px ; min-width: 100px;">
 							<span>开发商</span>
 							<span v-if="appData.show">{{appData.aristName}}</span>
 							<span style=" color:#000;" v-if="!appData.show">-</span>
@@ -243,17 +243,17 @@
 							<span style="color:#2d76ed;" v-if="appData.show">{{appData.appTypeName}}</span>
 							<span style=" color:#2d76ed;" v-if="!appData.show">-</span>
 						</p>
-						<p style="min-width: 138px">
+						<p style="min-width: 110px">
 							<span>AppId</span>
 							<span style="color:#2d76ed;" v-if="appData.show">{{appData.appStoreId}}</span>
 							<span style=" color:#2d76ed;" v-if="!appData.show">-</span>
 						</p>
-						<p style="min-width: 74px">
+						<p style="min-width: 64px">
 							<span>价格</span>
 							<span style="color:#000;" v-if="appData.show">{{appData.appPrice}}</span>
 							<span style=" color:#000;" v-if="!appData.show">-</span>
 						</p>
-						<p style="min-width: 74px">
+						<p style="min-width: 64px">
 							<span>总榜</span>
 							<span style="color:#000;" v-if="appData.show">{{appData.totalRank}}</span>
 							<span style=" color:#000;" v-if="!appData.show">-</span>
@@ -403,8 +403,8 @@
 						<td style="width: 20%" class="sl_dt_img">
 							<div>
 								<!-- 最多显示四个 -->
-								<img :src="item.appImgUrl" alt="" v-for="(item,index2) in ele.hotKeywordAppList" :key="index2" v-if="index2<4">
-								<span v-if="ele.appLength>4" @click="routerClick(ele.keywordName)">{{ele.appLength}}&gt;</span>
+								<img :src="item.appImgUrl" alt="" v-for="(item,index2) in ele.hotKeywordAppList" :key="index2" v-if="index2<4" @click="imgRouterClick(item.appStoreId)">
+								<span v-if="ele.appLength>4" @click="routerClick(ele.keywordName)">{{ele.appLength}}<i class="iconfont icon-gengduo"></i></span>
 							</div>
 						</td>
 						<td style="width: 9%">
@@ -528,6 +528,33 @@
 			}
 		},
 
+		watch: {
+			$route() { 
+				this.AjaxGetAppHistoryKeywordList({
+					pageIndex: 1,
+					pageSize: 20,
+					requestPar: {
+						appStoreId: this.$route.query.id,
+						nationId: this.$route.query.country,
+						beginTime: datefn(0).beginTime,
+						endTime: datefn(0).endTime,
+						keywordName: this.searchKeyWordTrue,
+						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+						// minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+						// maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+					},
+					orderByParDic: {
+						searchIndex: 0, 
+					}
+				})
+
+				this.AjaxGetAppInfo()
+			}
+		},
+
 		filters: {
 			numNull: function(value) {
 				return value == 0 ? '-' : value
@@ -537,6 +564,7 @@
 				return num+"%"
 			}
 		},
+
 		created() {
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
@@ -573,9 +601,7 @@
 					maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 				},
 				orderByParDic: {
-					searchIndex: 0,
-					// ratio: 0,
-					// popularityIndex: 0
+					searchIndex: 0, 
 				}
 			})
 
@@ -584,8 +610,7 @@
 		mounted() {
 			
 		},
-
-		destroyed() {},
+ 
 
 		methods: {
 			focusInput() {
@@ -619,9 +644,7 @@
 						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
 					orderByParDic: {
-						searchIndex: 0,
-						// ratio: 0,
-						// popularityIndex: 0
+						searchIndex: 0, 
 					}
 				})
 			},
@@ -650,9 +673,7 @@
 						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
 					},
 					orderByParDic: {
-						searchIndex: 0,
-						// ratio: 0,
-						// popularityIndex: 0
+						searchIndex: 0, 
 					}
 				})
 			},
@@ -710,6 +731,18 @@
 					this.AjaxRemove(name, 1) //删除
 				}
 			},
+
+			imgRouterClick(id) {//图片应用跳转
+				this.$router.push({
+					path: '/application',
+					query: {
+						id,
+						country: this.countryNow
+					}
+				})
+				$(window).scrollTop(0)
+			},
+
 			routerClick(id) { //点击跳转，回到顶部，切换回历史列表
 				this.$router.push({
 					path: '/rankingDetails-List',
@@ -923,8 +956,7 @@
 				})
 			},
 
-			AjaxGetAppInfo() { //初次加载
-				this.loading = this.$loading(this.loadingopaction)
+			AjaxGetAppInfo() { //初次加载 
 				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=' + this.$route.query.id + '&nationId=' + this.$route.query.country
 
 				this.$https.get(url)
@@ -936,8 +968,7 @@
 						} else if(res.data.resultCode == 404) {
 							res.data.data.show = false
 							this.appData = res.data.data
-						}
-						this.loading.close()
+						} 
 					})
 			},
 

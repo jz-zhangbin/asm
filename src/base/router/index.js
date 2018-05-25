@@ -1,9 +1,7 @@
-import Vue from 'vue'
-import Router from 'vue-router'   
 /**
  * 引入其他路由表插入主路由
  */
-Vue.use(Router)
+//Vue.use(Router)
 
 /**
  * 首页、登陆、注册路由
@@ -52,7 +50,7 @@ let routes = [{
 
 //routes.push()
 
-export default new Router({
+export default new VueRouter({
   //去#号
   mode: 'history',
   routes

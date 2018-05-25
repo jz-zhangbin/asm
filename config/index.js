@@ -5,7 +5,7 @@
 const path = require('path')
 
 module.exports = {
-  entry: {//解决ie下空白问题
+	entry: {//解决ie下空白问题
     app: ["babel-polyfill", "./src/main.js"]
     },
   dev: {
@@ -14,20 +14,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': { 
+    	'/api': { 
         target: 'http://asm.api.adjuz.net', 
         changeOrigin: true,
         pathRewrite: {
             '^/api': ''
         }
-     },
-     '/baseapi': { 
-        target: 'http://asm.adjuz.net', 
-        changeOrigin: true,
-        pathRewrite: {
-            '^/baseapi': ''
-        }
-    }
+     }
     },
 
     // Various Dev Server settings
@@ -64,9 +57,9 @@ module.exports = {
     assetsPublicPath: './',
 
     /**
-     * Source Maps
+     * Source Maps文件
      */
-
+  
     productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
@@ -75,7 +68,6 @@ module.exports = {
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
-    //打包压缩gzip格式
     productionGzip: true,
     productionGzipExtensions: ['js', 'css'],
 

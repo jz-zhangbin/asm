@@ -6,7 +6,7 @@
 		.kl_top {
 			display: flex;
 			justify-content: space-between;
-			margin-top: 25px;
+			margin-top: 25px; 
 		}
 		.kl_top_right {
 			display: flex;
@@ -323,8 +323,7 @@
 			},
 
 			paiClick(num, name) {
-				console.log(num, name)
-				//排序的按钮
+				console.log(num, name) //排序的按钮
 				this.showList.map((ele, index) => {
 					ele.one = false;
 					ele.two = false;
@@ -345,8 +344,7 @@
 				this.$emit('pageDate', this.currentPage3, this.sortDate)
 			},
 
-			excelOut() {
-				//表格导出
+			excelOut() { //表格导出
 				let title = ['应用', 'ID', '开发商', '展示量占比', '预测出价', '搜索排名', '总榜', '分类榜']
 				let arr = []
 				for(var i = 0; i < this.tableInner.length; i++) {
@@ -369,42 +367,73 @@
 				let contentList = []
 				for(var i in res.ratioListByDate) {
 					dateList.push(i)
-					contentList.push(res.ratioListByDate[i])
+					contentList.push(res.ratioListByDate[i]*100)
 				}
 
 				
 				if(this.createBrokenIndex != index) {
 					let domstring = ` <tr class="table_datr_broken" style="height: 390px;background: #f7f7f7;" >
                             <td colspan="6" style="position:relative"> 
-                              <div style="position: absolute; top:0; left: 0;width: 1200px;height: 390px;" id="myChart"></div>  
+                              <div style="position: absolute; top:0; left: 0;width: 100%;height: 390px;" id="myChart"></div>  
                             </td> 
                           </tr>`
 					$('#ta2 tr').eq(index + 1).after(domstring) //添加兄弟节点
-					//进行请求，渲染折线图 
-					this.myChart = this.$echarts.init(document.getElementById("myChart"));
-					this.myChart.setOption({
-						xAxis: {
-							type: 'category',
-							data: dateList
-						},
-						yAxis: {
-							type: 'value'
-						},
-						series: [{
-							data: contentList,
-							type: 'line',
-							itemStyle: {
-								normal: {
-									color: '#2d76ed'
+					if(res.length == 0) {//当后台数据为空时
+						$('.table_datr_broken td div').html('暂时没有数据！').css({
+							textAlign: 'center',
+							lineHeight: '390px',
+							fontSize: '26px',
+						})
+					}else{//进行请求，渲染折线图 
+						this.myChart = this.$echarts.init(document.getElementById("myChart"));
+						this.myChart.setOption({
+							xAxis: {
+								type: 'category',
+								data: dateList
+							},
+							yAxis: {
+								type: 'value'
+							},
+							grid:{
+								x: '20%',
+								y: 60,
+								x2: '20%',
+								y2: 60, 
+							},
+							tooltip: {
+								trigger: 'axis',
+								axisPointer: {
+									type: 'cross'
+								},
+								backgroundColor: 'rgba(245, 245, 245, 0.8)',
+								borderWidth: 1,
+								borderColor: '#ccc',
+								padding: 10,
+								textStyle: {
+									color: '#000'
+								},
+								position: function (pos, params, el, elRect, size) {
+									var obj = {top: 10};
+									obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+									return obj;
+								},
+								extraCssText: 'width: 170px'
+							},
+							series: [{
+								data: contentList,
+								type: 'line',
+								itemStyle: {
+									normal: {
+										color: '#2d76ed'
+									}
 								}
-							}
-						}]
-					})
-					//标记下标
-					this.createBrokenIndex = index
-				} else {
-					//如果当前相当就清除下标
-					this.createBrokenIndex = null
+							}]
+						})
+					}
+					 
+					this.createBrokenIndex = index//标记下标
+				} else { 
+					this.createBrokenIndex = null//如果当前相当就清除下标
 				}
 
 			},
@@ -437,11 +466,10 @@
 					nationId: this.$parent.countryNow,
 					appStoreId: this.tableInner[i].appInfoModel.appStoreId,
 					keywordName: this.$parent.keyName,
-					//keywordName: this.$parent.tableInner[i].appInfoModel.appName,
 					begingTime: datefn(1)[this.value].data.beginTime,
 					endTime: datefn(1)[this.value].data.endTime
 				}
-				console.log(obj)
+				
 				this.$https.post(url, JSON.stringify(obj))
 					.then((res) => {
 						this.brokenClick(res.data.data, i)

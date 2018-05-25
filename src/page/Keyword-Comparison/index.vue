@@ -113,6 +113,9 @@
 							width: 300px;
 							font-weight: 540;
 							color: #000;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
 						}
 						b {
 							width: 100px;

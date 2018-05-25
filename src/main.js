@@ -1,6 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
 import App from './App'
 import router from '@router'
 import store from '@vuex'
@@ -9,22 +6,15 @@ import https from '@axios'
 Vue.prototype.$https = https
 
 import ls from '@commonJS/localStorage'
-Vue.prototype.$ls = ls
- 
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-Vue.use(ElementUI)
-
-var explorer =navigator.userAgent ; 
-
-if (explorer.indexOf("MSIE") >= 0) {
-	//alert("ie");
-
-}else{
-	//alert('not ie') 
-	// import VueParticles from 'vue-particles'
-	// Vue.use(VueParticles)  
-} 
+Vue.prototype.$ls = ls 
+/**
+ * 
+    "axios": "^0.18.0",
+    "element-ui": "^2.3.7",
+	"vue": "^2.5.2", 
+	"vuex": "^3.0.1", 
+    "vue-router": "^3.0.1",
+ */
 /**
  * 全局组件
  */

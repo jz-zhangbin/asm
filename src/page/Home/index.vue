@@ -10,7 +10,7 @@
   .home_banner {
     width: 100%;
     height: 572px;
-    background-image: url(../../images/home/home_banner.png);
+    background-image: url(../../../static/img/home/home_banner.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     margin-top: -60px;
@@ -71,14 +71,13 @@
     width: 52px;
     height: 50px;
     background: @color;
-    border-radius: 6px;
-    text-align: center;
-    line-height: 50px;
-    cursor: pointer;
-    color: #fff;
-    i {
-      font-size: 24px;
-      font-weight: 600;
+    border-radius: 6px; 
+    cursor: pointer; 
+    i{
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: url(../../images/home/home_magnifier.png) no-repeat center center;
     }
   }
   .home_search_left_btn {
@@ -197,9 +196,7 @@
   .home_num{
     width: 100%;
     height: 605px;
-    background-image: url(../../images/home/home_banner2.png);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background: #fff;
     h3{
       color: #212529;
       font-size: 28px;
@@ -208,7 +205,7 @@
       line-height: 175px;
     }
     section{
-      width: 940px;
+      width: 950px;
       height: 202px;
       display: flex;
       margin: 0 auto;
@@ -216,8 +213,9 @@
   }
   .home_num_right{
     display: flex;
+    width: 430px;
     &:nth-child(1){
-      margin-right: 84px;
+      margin-right: 90px;
     }  
     &:hover{
       img{
@@ -226,10 +224,9 @@
     }
     transition: all 0.5;
     img{
-      width: 90px;
+      width: 80px;
       height: 80px;
-      margin-right: 41px;
-      margin-left: 15px; 
+      margin-right:18px;  
     }
     i{
       display: block;
@@ -240,7 +237,10 @@
       margin-right: 26px;
     }
     div{
-      width: 276px;
+      width: 324px;
+      &.home_num_div{
+        width: 289px;
+      }
       h4{
         font-size: 18px;
         margin-bottom: 20px;
@@ -250,16 +250,16 @@
       }
     }
     .home_num_i1{
-      background: url(../../images/home/home_num_1_1.png) no-repeat center center;
+      background: url(../../images/home/home_num_1_2.png) no-repeat center center;
     }
     .home_num_i2{
-      background: url(../../images/home/home_num_2_1.png) no-repeat center center;
+      background: url(../../images/home/home_num_2_2.png) no-repeat center center;
     }
     .home_num_i3{
-      background: url(../../images/home/home_num_3_1.png) no-repeat center center;
+      background: url(../../images/home/home_num_3_2.png) no-repeat center center;
     }
     .home_num_i4{
-      background: url(../../images/home/home_num_4_1.png) no-repeat center center;
+      background: url(../../images/home/home_num_4_2.png) no-repeat center center;
     }
   }
   
@@ -268,7 +268,7 @@
         color: @color;
       }
       i{
-         background: url(../../images/home/home_num_1_2.png) no-repeat center center !important;
+         background: url(../../images/home/home_num_1_1.png) no-repeat center center !important;
       } 
     }
     .home_num_right_2:hover{
@@ -276,7 +276,7 @@
         color: @color;
       }
       i{
-         background: url(../../images/home/home_num_2_2.png) no-repeat center center !important;
+         background: url(../../images/home/home_num_2_1.png) no-repeat center center !important;
       }
     }
     .home_num_right_3:hover{
@@ -284,7 +284,7 @@
         color: @color;
       }
       i{
-         background: url(../../images/home/home_num_3_2.png) no-repeat center center !important;
+         background: url(../../images/home/home_num_3_1.png) no-repeat center center !important;
       }
     }
     .home_num_right_4:hover{
@@ -292,7 +292,7 @@
         color: @color;
       }
       i{
-         background: url(../../images/home/home_num_4_2.png) no-repeat center center !important;
+         background: url(../../images/home/home_num_4_1.png) no-repeat center center !important;
       }
     }
     .home_user{
@@ -302,7 +302,7 @@
     .home_sign{
       width: 100%;
       height: 186px;
-      background-image: url(../../images/home/home_sign.png);
+      background-image: url(../../../static/img/home/home_sign.png);
       background-repeat: no-repeat;
       background-size: 100% 100%;
       box-sizing: border-box;
@@ -332,7 +332,7 @@
     .home_center{
       width: 100%;
       height: 620px;
-      background-image: url(../../images/home/home_center.png);
+      background-image: url(../../../static/img/home/home_center.png);
       background-attachment: fixed;
       background-position: center;
       background-repeat: no-repeat;
@@ -363,7 +363,7 @@
           height: 125px;
           border-radius: 50%; 
           background-repeat: no-repeat;  
-          background-size: 100% 100%;
+          background-position: center center;
         }
         p{
           margin: 30px 0 36px;
@@ -406,7 +406,7 @@
 
      <!-- banner -->
      <div class="home_banner">
-       <h1>ASMater</h1>
+       <h1>ASMATER</h1>
        <h2>专业的数据服务平台</h2> 
        <vue-particles color="#dedede" :particleOpacity="0.3" :particlesNumber="120" shapeType="circle" :particleSize="4" linesColor="#dedede" :linesWidth="1" :lineLinked="true" :lineOpacity="0.4" :linesDistance="100" :moveSpeed="3" :hoverEffect="true" hoverMode="grab" :clickEffect="true" clickMode="push">
 		   </vue-particles>
@@ -434,17 +434,17 @@
           </div>
         </div>
         <div class="home_search_right" @click="keyWordClick">
-          <i class="iconfont icon-icon-plus-search"></i>
+          <i></i>
         </div>
       </div>
       <!-- 关键词个数 -->
       <div class="home_keyword_box">  
         <p>
-          <span>324，234，234</span>
+          <span>2,036,213</span>
           <span>应用收录</span>
         </p>
         <p>
-          <span>324，234，234</span>
+          <span>1,621,556</span>
           <span>关键词</span>
         </p>
       </div>
@@ -452,16 +452,16 @@
       <div class="home_num">
         <h3>全方位数据查询</h3>
         <section>
-          <div class="home_num_right home_num_right_1">
+          <div class="home_num_right home_num_right_1 ">
             <i class="home_num_i1"></i>
-            <div>
+            <div class="home_num_div">
               <h4>竞价广告热词榜</h4>
               <span>全面的竞价热词榜单查询，可随时了解不同国家竞价热词情况，便于针对性的调整不同国家的投放策略。</span>
             </div>
           </div>
           <div class="home_num_right home_num_right_2">
             <i class="home_num_i2"></i>
-            <div>
+            <div class="home_num_div">
               <h4>关键词投放信息</h4>
               <span>全方位查询关键词搜索指数，历史竞价APP数量及各竞价APP的流量占比，助您了解关键词竞价情况，调整投放策略。</span>
             </div>
@@ -470,14 +470,14 @@
         <section>
           <div class="home_num_right home_num_right_3">
             <i class="home_num_i3"></i>
-            <div>
+            <div class="home_num_div">
               <h4>竞品投放情况查询</h4>
               <span>竞品投放信息查询一目了然，可随时了解竞品投放情况，方便您调整不同阶段的投放策略。</span>
             </div>
           </div>
           <div class="home_num_right home_num_right_4">
             <i class="home_num_i4"></i>
-            <div>
+            <div class="home_num_div">
               <h4>关键词推荐服务</h4>
               <span>关键词所有关联词实时展示，可根据搜索指数，历史竞价APP情况添加至新建词组，便于智投系统投放广告需要。</span>
             </div>
@@ -509,15 +509,15 @@
       <div class="home_num home_user">
         <h3>客户服务优势</h3>
         <section>
-          <div class="home_num_right home_num_right_1"> 
-            <img src="../../images/home/home_user_1.jpg" alt="">
+          <div class="home_num_right "> 
+            <img src="../../images/home/home_user_1.png" alt="">
             <div>
               <h4>智能化投放与监测系统</h4>
               <span>依托苹果后台官方精准数据，基于深厚ASO优化经验让人工智能与经验直觉共同护驾投放与监测</span>
             </div>
           </div>
-          <div class="home_num_right home_num_right_2"> 
-            <img src="../../images/home/home_user_2.jpg" alt="">
+          <div class="home_num_right "> 
+            <img src="../../images/home/home_user_2.png" alt="">
             <div>
               <h4>丰富的ASM投放经验</h4>
               <span>国内最早搜索投放推广团队之一，已为国内外众多客户提供ASM优化服务</span>
@@ -525,15 +525,15 @@
           </div>
         </section>
         <section>
-          <div class="home_num_right home_num_right_3"> 
-            <img src="../../images/home/home_user_3.jpg" alt="">
+          <div class="home_num_right "> 
+            <img src="../../images/home/home_user_3.png" alt="">
             <div>
               <h4>专业团队筛词选词</h4>
               <span>专注研究App Store，近四年国内外ASO优化经验，让更多词，成为你的词</span>
             </div>
           </div>
-          <div class="home_num_right home_num_right_4"> 
-            <img src="../../images/home/home_user_4.jpg" alt="">
+          <div class="home_num_right "> 
+            <img src="../../images/home/home_user_4.png" alt="">
             <div>
               <h4>实时透明进度反馈</h4>
               <span>投放数据与进度反馈实时跟进，定（方案指定）、投（及时投放）、优（优化投放）、管（数据管理）一站式服务。</span>
@@ -544,7 +544,7 @@
       <!-- 用户注册 -->
       <div class="home_sign">
         <h5>成为巨掌注册用户可获得更多权限</h5>
-        <div>免费注册</div>
+        <div @click="$router.push('/register')">免费注册</div>
       </div> 
    </div>
  </template>

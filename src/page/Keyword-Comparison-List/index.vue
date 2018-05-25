@@ -39,7 +39,7 @@
 				justify-content: center;
 			}
 			.kcl_duibi_left {
-				width: 570px;
+				width: 520px;
 				height: 85px;
 				display: flex;
 				position: relative;
@@ -173,6 +173,9 @@
 								width: 210px;
 								font-weight: 540;
 								color: #000;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
 							}
 							b {
 								width: 67px;
@@ -341,20 +344,20 @@
 						<section>
 							<h1>{{dataLeft.appName}}</h1>
 							<p>
-								<span style="width: 16%;">开发商</span>
+								<span style="width: 20%;">开发商</span>
 								<span style="width: 12%;">分类</span>
 								<span style="width: 21%;">AppID</span>
 								<span style="width: 15%;">价格</span>
 								<span style="width: 12%;">总榜</span>
-								<span style="width: 14%;">分类榜</span>
+								<span style="width: 10%;">分类榜</span>
 							</p>
 							<p>
-								<span style="width: 16%; color:#000">{{dataLeft.aristName}}</span>
+								<span style="width: 20%; color:#000">{{dataLeft.aristName}}</span>
 								<span style="width: 12%; color:#2d76ed">{{dataLeft.appTypeName}}</span>
 								<span style="width: 21%; color:#2d76ed">{{dataLeft.appStoreId}}</span>
 								<span style="width: 15%; color:#000">{{dataLeft.appPrice}}</span>
 								<span style="width: 12%; color:#000">{{dataLeft.totalRank}}</span>
-								<span style="width: 14%; color:#000">{{dataLeft.classificationRank}}</span>
+								<span style="width: 10%; color:#000">{{dataLeft.classificationRank}}</span>
 							</p>
 						</section>
 					</div>
@@ -367,20 +370,20 @@
 						<section>
 							<h1>{{dataRight.appName}}</h1>
 							<p>
-								<span style="width: 16%;">开发商</span>
+								<span style="width: 20%;">开发商</span>
 								<span style="width: 12%;">分类</span>
 								<span style="width: 21%;">AppID</span>
 								<span style="width: 15%;">价格</span>
 								<span style="width: 12%;">总榜</span>
-								<span style="width: 14%;">分类榜</span>
+								<span style="width: 10%;">分类榜</span>
 							</p>
 							<p>
-								<span style="width: 16%; color:#000">{{dataRight.aristName}}</span>
+								<span style="width: 20%; color:#000">{{dataRight.aristName}}</span>
 								<span style="width: 12%; color:#2d76ed">{{dataRight.appTypeName}}</span>
 								<span style="width: 21%; color:#2d76ed">{{dataRight.appStoreId}}</span>
 								<span style="width: 15%; color:#000">{{dataRight.appPrice}}</span>
 								<span style="width: 12%; color:#000">{{dataRight.totalRank}}</span>
-								<span style="width: 14%; color:#000">{{dataRight.classificationRank}}</span>
+								<span style="width: 10%; color:#000">{{dataRight.classificationRank}}</span>
 							</p>
 						</section>
 						<i class="iconfont icon-cha" @click="close"></i>
@@ -421,9 +424,9 @@
 						</tr>
 						<tr>
 							<td>ASM竞价词数 </td>
-							<td class="td_color">{{ContrastData[idLeft].totalCompetitiveWordNum}}</td>
+							<td class="td_color" v-if="ContrastData[idLeft]">{{ContrastData[idLeft].totalCompetitiveWordNum}}</td>
 							<td></td>
-							<td class="td_color">{{ContrastData[idRight].totalCompetitiveWordNum}}</td>
+							<td class="td_color" v-if="ContrastData[idRight]">{{ContrastData[idRight].totalCompetitiveWordNum}}</td>
 							<td><i class="iconfont icon-more" @click="listNav('alike')"></i></td>
 						</tr>
 						<tr>
@@ -488,7 +491,7 @@
 						<span v-for="(ele,index) in components_list" :key="index" :class="{rdl_section_is: index == components_index}" @click="componentsClick(index)">{{ele.name}}</span>
 					</div>
 					<!-- table组件 -->
-					<component :is="currentView" :userType='userType' :max='max' :min='min'></component>
+					<component :is="currentView" :userType='userType' :max='max' :min='min' :parentAjaxType='parentAjaxType'></component>
 					<usersign v-if="!userType"></usersign>
 				</div> 
 			</div>
@@ -544,7 +547,8 @@
 				idLeft: 0,
 				idRight: 0,
 				max: '',
-				min: ''
+				min: '',
+				parentAjaxType: false,//父级的对比列表是否请求结束
 			};
 		},
 
@@ -632,6 +636,7 @@
 			close() { //关闭选中的app
 				this.appDataShow = false
 				this.tableShow = false
+				this.parentAjaxType = false
 			},
 
 			starClick() { //点击开始对比 
@@ -721,10 +726,12 @@
 					.then((res) => {
 						this.ContrastData = res.data.data.appAnalysisResult
 						this.loading.close()
+						this.parentAjaxType = true // 当前请求结束，自己请求
 
 						let totalNum = res.data.data.appAnalysisResult[this.idLeft].totalCompetitiveWordNum
 						let identicalNum = res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum
 						this.percentage = (identicalNum / totalNum).toFixed(4) * 100
+
 						setTimeout(() => { // 基于准备好的dom，初始化echarts实例 
 							this.myChart = this.$echarts.init(document.getElementById("myChart1"));
 							this.myChart.setOption({

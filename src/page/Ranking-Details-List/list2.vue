@@ -81,8 +81,8 @@
 					<td style="width: 22%" class="sl_dt_img">
 						<div>
 							<!-- 最多显示四个 -->
-							<img :src="item.appImgUrl" alt="" v-for="(item,index2) in ele.hotKeywordAppList" :key="index2" v-if="index2<4">
-							<span v-if="ele.appLength>4" @click="routerClick(ele.keywordName)">{{ele.appLength}}&gt;</span>
+							<img :src="item.appImgUrl" alt="" v-for="(item,index2) in ele.hotKeywordAppList" :key="index2" v-if="index2<4" @click="imgRouterClick(item.appStoreId)">
+							<span v-if="ele.appLength>4" @click="routerClick(ele.keywordName)">{{ele.appLength}}<i class="iconfont icon-gengduo"></i></span>
 						</div>
 					</td>
 					<td style="width: 8%">
@@ -149,6 +149,15 @@
 		},
 
 		methods: {
+			imgRouterClick(id) {//图片应用跳转
+				this.$router.push({
+					path: '/application',
+					query: {
+						id,
+						country: this.$parent.countryNow
+					}
+				})
+			},
 
 			addCiClick(index, num, name) { //收藏操作
 				if(num == 0) {

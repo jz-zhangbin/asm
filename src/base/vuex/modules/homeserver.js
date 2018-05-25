@@ -1,4 +1,4 @@
-import axios from '@axios'
+//import axios from '@axios'
 
 export function CountryInit() { 
 	return axios.get('/api/v1/IntellSearchApi/Index/GetNationList')

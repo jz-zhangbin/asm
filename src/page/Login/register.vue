@@ -12,7 +12,7 @@
 			justify-content: center;
 			box-sizing: border-box;
 			padding-top: 80px;
-			background: url("../../images/login/login_left.png") 0 0 no-repeat, url("../../images/login/login_right.png") bottom right no-repeat;
+			background: url("../../../static/img/login/login_left.png") 0 0 no-repeat, url("../../../static/img/login/login_right.png") bottom right no-repeat;
 		}
 		.register_box {
 			width: 400px;
@@ -117,7 +117,7 @@
 					}
 				}
 			}
-			span {
+			a {
 				color: @color;
 			}
 		}
@@ -165,7 +165,7 @@
 				<div class="register_clause">
 					<b @click="ischecked = !ischecked" :class="{b_checked : ischecked}">
                         <i class="iconfont icon-gouxuan" v-if="ischecked"></i>
-                    </b> 我已经阅读并同意 <span> 《相关服务和条款》</span>
+                    </b> 我已经阅读并同意 <a href="http://asm.adjuz.net/prov_service"  target="_blank"> 《相关服务和条款》</a> 
 				</div>
 				<div class="register_input login_input_war" v-if="war">
 					{{warData}}
@@ -216,6 +216,14 @@
 			$('.register_input input').on('blur', function() {
 				$(this).parent().css('border-color', '#dee2e6')
 			})
+
+			$('.blur_input').on('focus', function() {
+				$(this).parent().css('border-color', '#2d76ed')
+			})
+			$('.blur_input').on('blur', function() {
+				$(this).parent().css('border-color', '#dee2e6')
+			})
+			
 		},
 
 		destroyed() {},
@@ -263,7 +271,7 @@
 					];
 				}
 				console.log(this.identifyCode);
-			},
+			}, 
 		}
 	}
 </script>
