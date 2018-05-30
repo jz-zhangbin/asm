@@ -77,8 +77,14 @@ export default {
 
       for (var i in this.$route.query) {
         this.urlData = i; 
-      }
-      this.arr = this.urlData.split("-");
+      } 
+    
+      if(this.urlData[0] == '-') {
+        this.arr = this.urlData.substr(1).split("-") 
+      }else{
+        this.arr = this.urlData.split("-") 
+      }   
+      
       this.urlObj = {
         clientkey: this.arr[0],
         clientdate: this.arr[1],

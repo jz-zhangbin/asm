@@ -7,12 +7,12 @@ Vue.prototype.$https = https
 
 import ls from '@commonJS/localStorage'
 Vue.prototype.$ls = ls 
+
 import cookie from '@commonJS/cookie'
 Vue.prototype.$cookie = cookie 
 /**
  * 
-    "axios": "^0.18.0",
-    "element-ui": "^2.3.7",
+    "axios": "^0.18.0", 
 	"vue": "^2.5.2", 
 	"vuex": "^3.0.1", 
     "vue-router": "^3.0.1",
@@ -34,8 +34,13 @@ Vue.component('v-search-top', searchTop)
  */
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
- 
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+router.afterEach((to,from,next) => {
+    window.scrollTo(0,0);
+});
 
 Vue.config.productionTip = false
 

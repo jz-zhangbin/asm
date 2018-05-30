@@ -124,9 +124,15 @@ export default {
     for (var i in this.$route.query) {
       this.urlData = i;
     }
-    this.arr = this.urlData.split("-");
-	this.urlObj.uid = this.arr[0]
-	this.urlObj.key = this.arr[1]
+
+    if(this.urlData[0] == '-') {
+        this.arr = this.urlData.substr(1).split("-") 
+      }else{
+        this.arr = this.urlData.split("-") 
+      } 
+        
+    this.urlObj.uid = this.arr[0]
+    this.urlObj.key = this.arr[1]
   },
 
   mounted() {},
