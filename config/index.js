@@ -8,8 +8,7 @@ module.exports = {
 	entry: {//解决ie下空白问题
     app: ["babel-polyfill", "./src/main.js"]
     },
-  dev: {
-
+  dev: { 
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -20,7 +19,7 @@ module.exports = {
         pathRewrite: {
             '^/api': ''
         }
-     }
+     } 
     },
 
     // Various Dev Server settings

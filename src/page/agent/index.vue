@@ -7,6 +7,7 @@
 	.agent_index {
 		min-width: 1200px;
 		min-height: 100%;
+		margin-top: 60px;
 		.agent_body {
 			width: 100%;
 		}
@@ -223,7 +224,7 @@
 		data() {
 			return {
 				bannerName: "代理投放",
-				success: true, // 是否投放成功
+				success: false, // 是否投放成功
 				userName: '',
 				userEmail: '',
 				userTel: '',
@@ -233,7 +234,7 @@
 				war: false,
 				warData: '',
 				checkList: [{
-						show: false
+						show: true
 					},
 					{
 						show: false
@@ -269,11 +270,9 @@
 			},
 			checkClick(num) {
 				if(num == 0) {
-					this.checkList[1].show = false
-					$('.te_se_input').eq(1).removeAttr('checked')
+					this.checkList[1].show = false 
 				} else {
-					this.checkList[0].show = false
-					$('.te_se_input').eq(0).removeAttr('checked')
+					this.checkList[0].show = false 
 				}
 				this.checkList[num].show = !this.checkList[num].show
 			},

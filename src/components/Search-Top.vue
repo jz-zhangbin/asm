@@ -7,12 +7,13 @@
 	@btnhover: #1559c8;
 	@import url('../base/commonJS/scroll.css');
 	.st_index {
+		position: fixed;
 		min-width: 1200px;
 		height: 60px; 
 		top: 0;
 		left: 0;
 		right: 0;
-		z-index: 100;
+		z-index: 1000;
 		.st_body {
 			height: 60px;
 			.st_logo {
@@ -22,6 +23,10 @@
 				margin-left: 45px;
 				float: left;
 				background: url("../images/components/logo.png") no-repeat center center;
+			}
+			.home_logo{
+				width: 155px;
+				background: url("../images/components/home_logo2.png") no-repeat center center;
 			}
 			ul {
 				margin-left: 18px;
@@ -198,8 +203,9 @@
 					outline: none;
 					&:nth-child(1){ 
 						color: #f7f7f7;
-						background: #2d76ed;
-						margin-right: 20px; 
+						//background: #2d76ed;
+						background: none;
+						margin-right: 14px; 
 					} 
 					&:nth-child(1):hover{
 						background: @btnhover;
@@ -269,7 +275,7 @@
 <template>
 	<div class="st_index" :style="{background : background_color}">
 		<div class="st_body">
-			<div class="st_logo" @click="$router.push('/home')"></div>
+			<div :class="{st_logo: ls , home_logo: logo}" @click="$router.push('/home')"></div>
 			<ul class="clear">
 				<li>
 					<router-link :to="{path: '/'}">首页</router-link>
@@ -292,7 +298,7 @@
 					</router-link>
 				</li>
 			</ul>
-			<!-- 用户中心 -->
+			<!-- 用户中心 --> 
 			<div class="st_user" @mouseover="show3 = true" @mouseout="show3 = false" v-if="userType">
 				{{userName}}
 				<i class="st_user_i"></i>
@@ -304,7 +310,7 @@
 				</transition> 
 			</div>
 			<div class="st_sign" v-if="!userType">
-				<button @click="$router.push('/login')">登陆</button>
+				<button @click="$router.push('/login')">登录</button>
 				<button @click="$router.push('/register')">注册</button>
 			</div>
 			<!-- 顶部搜索 -->
@@ -323,7 +329,7 @@
 					</div>
 				</div>
 				<span class="st_shu"></span>
-				<input type="text" placeholder="关键词或APP ID" v-model="searchData">
+				<input type="text" id="top_search" placeholder="关键词或APP ID" v-model="searchData"  autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -332,17 +338,17 @@
 <script>
 import { CountryInit , UserSignType} from '@commonJS/AxiosGet'
 import {mapState} from 'vuex'
+import reduceCookie from '@commonJS/reduceCookie'
 	export default {
 		data() {
 			return {
 				st_bgk: -1,
 				overList: false, //当前国家列表是否应该消失 
-				searchData: "", //搜索内容
-				userName: "", 
+				searchData: "", //搜索内容 
 				show2: false,
 				show3: false,
-				countryNow: {},
-				userType: false
+				countryNow: {}, 
+				ls: true
 			};
 		},
 
@@ -354,6 +360,10 @@ import {mapState} from 'vuex'
 			background_color: {
 				type: String,
 				default:  '#2d76ed'
+			},
+			logo: {
+				type: Boolean,
+				default: false
 			}
 		},
 		
@@ -362,6 +372,8 @@ import {mapState} from 'vuex'
 		computed: {
 			...mapState({
 				countryList: state => state.Home.countryList, 
+				userType: state => state.Sign.userType, 
+				userName: state => state.Sign.userName
 			})
 		},
 
@@ -377,31 +389,22 @@ import {mapState} from 'vuex'
 				this.countryNow = this.$store.state.Home.countryList[0]
 			})
 
-			if(localStorage.getItem('adjuz_user') != null && localStorage.getItem('adjuz_user') != undefined) {
-				this.userName = JSON.parse(localStorage.getItem('adjuz_user')).userEmail
-				this.userType = true
-			}else{
-				UserSignType()
-				.then(res=>{
-					if(res.data.data.userLoginStatus == 1) {//登陆状态
-						this.userName = res.data.data.userEmail
-						localStorage.setItem('adjuz_user' , JSON.stringify(
-							{
-								userEmail: this.userName,
-								userId : res.data.data.userId,
-								//userLoginStatus : 0
-								userLoginStatus : res.data.data.userLoginStatus
-							}
-							)) 
-					}
-				})
-			} 
+			this.$store.commit('GET_USERTYPE') 
+
+			let _this = this
+			$("#top_search").keydown(function(e){
+				var curKey = e.which;
+				if(curKey == 13){
+					_this.searchRouteLink()
+					return false; 
+				}
+			});
 		}, 
 
 		methods: {  
-			userOut() {//退出登录
-				this.$ls.clear('adjuz_user')
-				this.userType = false
+			userOut() {//退出登录 
+				this.$store.commit('SET_USERTYPE') 
+				this.$store.commit('GET_USERTYPE')
 			},
 			chainList() {
 				this.domHeight("st_chain_list", 239);

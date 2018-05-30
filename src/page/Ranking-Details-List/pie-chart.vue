@@ -121,11 +121,11 @@
 						trigger: "item",
 						formatter: "{a} <br/>{b} : {c} ({d}%)"
 					},
-					legend: {
-						orient: "vertical",
-						left: "left",
-						data: nameList
-					},
+					// legend: {
+					// 	orient: "vertical",
+					// 	left: "left",
+					// 	data: nameList
+					// },
 					toolbox: {
 						show: true,
 						feature: {

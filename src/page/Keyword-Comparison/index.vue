@@ -4,6 +4,7 @@
 	@font_color: #6c757d;
 	@border: #dee2e6;
 	@btnhover: #1559c8;
+	@boxshado: #eee;
 	@import url('./../../base/commonJS/scroll.css');
 	.iconfont {
 		cursor: pointer;
@@ -12,6 +13,7 @@
 	.kc_index {
 		min-width: 1200px;
 		min-height: 100%;
+		margin-top: 60px;
 		.kc_body {
 			width: 100%;
 			.kc_top {
@@ -81,7 +83,7 @@
 					position: absolute;
 					top: 60px;
 					left: 0;
-					box-shadow: 4px 4px 4px @border;
+					box-shadow: 0 2px 2px @boxshado;
 					overflow: hidden;
 				}
 				ul {
@@ -191,7 +193,7 @@
 				loading: null,
 				loadingopaction: {
 					lock: true,
-					text: 'Loading',
+					text: '加载中',
 					spinner: 'el-icon-loading',
 					background: 'rgba(0, 0, 0, 0.7)'
 				}
@@ -205,6 +207,7 @@
 		computed: {
 			...mapState({
 				countryList: state => state.Home.countryList,
+				userType: state => state.Sign.userType
 			})
 		},
 

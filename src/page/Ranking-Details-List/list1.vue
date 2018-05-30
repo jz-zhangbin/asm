@@ -27,7 +27,7 @@
 			table {
 				width: 100%;
 				border: 1px solid #dee2e6;
-				box-shadow: 0 2px 5px @border;
+				box-shadow: 0 2px 2px @boxshado;
 				tr {
 					//表格内容
 					&.table_data_tr {
@@ -201,13 +201,13 @@
 				<!-- 暂无关键词 -->
 				<tr v-if="tableInnerCode.resultCode == 404">
 					<td colspan="6" style="height: 150px">该关键词暂无竞价数据</td>
+				</tr> 
+				 <!-- loading -->
+				<tr v-if="loadingfirst">
+					<td colspan="6" style="height: 80px;">
+						<img src="../../images/components/loading.gif" alt="">
+					</td>
 				</tr>
-				<!-- 插入折线图 -->
-				<!-- <tr class="table_datr_broken">
-              <td colspan="6">
-                <div></div>  
-              </td> 
-            </tr> -->
 			</table>
 			<!-- 分页 -->
 			<div class="page_index" v-if="userType && tableInnerCode.data">
@@ -270,7 +270,8 @@
 			valueData: {},
 			userType: {},
 			tableInner: {},
-			tableInnerCode: {}
+			tableInnerCode: {},
+			loadingfirst: {}
 		},
 		components: {
 			pie,

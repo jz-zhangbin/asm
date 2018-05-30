@@ -24,7 +24,7 @@
 			table {
 				width: 100%;
 				border: 1px solid #dee2e6;
-				box-shadow: 0 2px 5px @border;
+				box-shadow: 0 2px 2px @boxshado;
 			}
 		}
 	}
@@ -45,7 +45,7 @@
 							流行度
 							<div class="sl_t_dis">
 								<i class="iconfont icon-wenhao-fill"> </i>
-								<span class="sl_t_is" style="width:280px;">流行度来源于App Store官方数据。该指数代表次关键词在App Store中的搜索流行度，数值最高为100。</span>
+								<span class="sl_t_is" style="width:280px;">流行度来源于App Store官方数据。该指数代表此关键词在App Store中的搜索流行度，数值最高为100。</span>
 								<span class="sl_t_san"></span>
 							</div>
 						</div>
@@ -55,7 +55,7 @@
 							搜索指数
 							<div class="sl_t_dis">
 								<i class="iconfont icon-wenhao-fill"> </i>
-								<span class="sl_t_is" style="width:280px;">搜索指数来源于App Store官方数据。该指数代表次关键词在App Store中的搜索热度。一般来说，指数越高，则该次在每天被搜索的次数也越多。</span>
+								<span class="sl_t_is" style="width:280px;">搜索指数来源于App Store官方数据。该指数代表此关键词在App Store中的搜索热度。一般来说，指数越高，则该词在每天被搜索的次数也越多。</span>
 								<span class="sl_t_san"></span>
 							</div>
 						</div>
@@ -102,6 +102,12 @@
 				<tr v-if="tableMoreCode.resultCode==404">
 					<td colspan="5" style="height: 150px">暂无更多关联词</td>
 				</tr>
+				 <!-- loading -->
+				<tr v-if="loadingfirst">
+					<td colspan="6" style="height: 80px;">
+						<img src="../../images/components/loading.gif" alt="">
+					</td>
+				</tr>
 			</table>
 			<!-- 分页 -->
 			<div class="page_index" v-if="userType && tableMoreCode.data">
@@ -133,7 +139,8 @@
 			valueData: {},
 			userType: {},
 			tableMoreData: {},
-			tableMoreCode: {}
+			tableMoreCode: {},
+			loadingfirst: {}
 		},
 
 		computed: {
@@ -160,6 +167,13 @@
 			},
 
 			addCiClick(index, num, name) { //收藏操作
+				if(!this.userType) {
+						this.$message({
+							message: '请先登录！',
+							type: 'warning'
+						});
+						return false
+					}
 				if(num == 0) {
 					this.tableMoreData[index].hotKeywordTemStatus = 1
 					this.AjaxRemove(name, 0) //添加

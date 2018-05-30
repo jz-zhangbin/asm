@@ -10,7 +10,7 @@
   .home_banner {
     width: 100%;
     height: 572px;
-    background-image: url(../../../static/img/home_banner.png);
+    background-image: url(http://static.adjuz.com/asmmaster/img/home_banner.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     margin-top: -60px;
@@ -51,10 +51,11 @@
   }
   .home_search_left {
     width: 560px;
-    height: 50px;
-    border-radius: 6px;
+    height: 50px; 
     background: #fff;
     display: flex;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     align-items: center;
     input {
       height: 50px;
@@ -87,7 +88,7 @@
     align-items: center;
     border-right: 1px solid @border;
     img {
-      width: 24px;
+      width: 22px;
       height: 16px;
       margin: 0 10px 0 14px;
     }
@@ -107,8 +108,7 @@
     width: 140px;
     // height: 140px;
     overflow-y: auto;
-    background: #fff;
-    border-radius: 4px;
+    background: #fff; 
     z-index: 20;
     height: 0px;
     ul {
@@ -124,7 +124,7 @@
         cursor: pointer;
       }
       img {
-        width: 24px;
+        width: 22px;
         height: 16px;
         margin: 0 10px 0 14px;
       }
@@ -143,13 +143,11 @@
     z-index: 30;
     background: #fff;
     top: 50px;
-    left: 70px;
-    border-radius: 6px;
+    left: 70px; 
     overflow-y: auto;
     height: 0;  
     ul {
-      width: 430px;
-      height: 200px;
+      width: 430px; 
       margin-left: 14px; 
     }
     li {
@@ -302,7 +300,7 @@
     .home_sign{
       width: 100%;
       height: 186px;
-      background-image: url(../../../static/img/home_sign.png);
+      background-image: url(http://static.adjuz.com/asmmaster/img/home_sign.png);
       background-repeat: no-repeat;
       background-size: 100% 100%;
       box-sizing: border-box;
@@ -332,7 +330,7 @@
     .home_center{
       width: 100%;
       height: 620px;
-      background-image: url(../../../static/img/home_center.png);
+      background-image: url(http://static.adjuz.com/asmmaster/img/home_center.png);
       background-attachment: fixed;
       background-position: center;
       background-repeat: no-repeat;
@@ -402,11 +400,11 @@
 
 <template>
    <div class="home_index">
-     <v-search-top :background_color='background_color' :searchShow='searchShow'></v-search-top>
+     <v-search-top :background_color='background_color' :searchShow='searchShow' :logo='logo'></v-search-top>
 
      <!-- banner -->
      <div class="home_banner">
-       <h1>ASMATER</h1>
+       <h1>ASMaster</h1>
        <h2>专业的数据服务平台</h2> 
        <vue-particles color="#dedede" :particleOpacity="0.3" :particlesNumber="120" shapeType="circle" :particleSize="4" linesColor="#dedede" :linesWidth="1" :lineLinked="true" :lineOpacity="0.4" :linesDistance="100" :moveSpeed="3" :hoverEffect="true" hoverMode="grab" :clickEffect="true" clickMode="push">
 		   </vue-particles>
@@ -418,9 +416,9 @@
             <img :src='countryNow.nationImgUrl' alt="">
             <i @click="countryClick"></i>
           </div>
-          <input type="text" placeholder="请输入关键词" v-model="keyWord">
+          <input type="text" placeholder="请输入关键词" id="home_search" v-model="keyWord" @input="keyWordClick"   >
           <div class="home_country" @mouseover="countryover" @mouseleave="countryliover">
-            <ul >  
+            <ul class="btnclass">  
               <li @click="countryliClick(index)" v-for="(ele,index) in countryList" :key="index">
                 <img :src="ele.nationImgUrl" alt="" :title="ele.nationCHSName">
                 <span>{{ele.nationCHSName}}</span>
@@ -433,7 +431,7 @@
             </ul>
           </div>
         </div>
-        <div class="home_search_right" @click="keyWordClick">
+        <div class="home_search_right" @click="routerKeyWordClick">
           <i></i>
         </div>
       </div>
@@ -559,7 +557,9 @@ export default {
       conuntryShow: false,
       countryNow: {},
       keyWord: '',
-      list: []
+      list: [],
+      logo: true,
+      scrooll: null
     };
   },
 
@@ -580,11 +580,43 @@ export default {
 
   updated() {},
 
-  mounted() {},
+  mounted() {
+    $(document).bind("click", function(e) {
+				var target = $(e.target);
+				if(target.closest(".btnclass").length == 0) {
+					$(".home_keyword").animate({
+							height: "0px"
+						},
+						200
+					);
+				}
+      });
+       
+      window.addEventListener('scroll', this.handleScroll);
 
-  destroyed() {},
+      let _this = this
+      $("#home_search").keydown(function(e){
+            var curKey = e.which;
+            if(curKey == 13){
+                _this.routerKeyWordClick()
+                return false; 
+            }
+        });
+  },  
+
+   destroyed () {
+    window.removeEventListener('scroll', this.handleScroll); // 离开页面 关闭监听 不然会报错 
+  },
 
   methods: {
+    handleScroll() { 
+				var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop; 
+				if(scrollTop >= 60 && scrollTop <= 600) {
+          let opacity = (scrollTop - 60) / 540
+					$('.st_index').css('background', 'rgba(21,89,200,'+opacity+')')
+        }   
+    },
+
     countryClick() {
       this.domHeight('home_country' , 200) 
     },
@@ -606,19 +638,18 @@ export default {
       this.countryNow = this.$store.state.Home.countryList[index]
       this.domHeight('home_country' , 0) 
     }, 
-    keyWordClick() {
-      if(this.keyWord == '') {
-        this.$message({
-						message: '搜索关键词不能为空！！！',
-						type: 'warning'
-          });
-          return false
+    keyWordClick() { 
+      if(this.keyWord != '') {
+         this.Ajax()
       } 
-      this.Ajax()
     },
-    keyWordListClick(index) {
+    keyWordListClick(index) {//列表跳转
       this.domHeight('home_keyword' , 0) 
       this.$router.push({path: '/rankingDetails-List' , query : { key : this.list[index] , country: this.countryNow.nationId} })					
+    },
+    routerKeyWordClick() {//点击跳转
+      this.domHeight('home_keyword' , 0) 
+      this.$router.push({path: '/rankingDetails-List' , query : { key : this.keyWord , country: this.countryNow.nationId} })					
     },
     domHeight(dom, num) {
 				$("." + dom).animate({
@@ -631,10 +662,14 @@ export default {
 				let url = '/api/v1/IntellSearchApi/Index/GetKeywords?nationId=' + this.countryNow.nationId + '&count=10' + '&searchContent=' + this.keyWord
 				this.$https.get(url)
 					.then((res) => {
-						this.list = res.data.data.list
+            this.list = res.data.data.list 
+            let ls = this.list.length * 30 
+            if(this.list.length > 6) {
+              ls = '200'
+            } 
 						if(res.data.resultCode == 1000) {
 							$(".home_keyword").animate({
-									height: "200px"
+									height: ls+"px"
 								},
 								200
 							);

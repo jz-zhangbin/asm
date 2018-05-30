@@ -13,7 +13,7 @@
 		flex-direction: column;
 		align-items: center;
 		p {
-			margin-top: 6px;
+			margin-top: 10px;
 		}
 		button {
 			width: 150px;
@@ -59,8 +59,7 @@
 		methods: {
 			// 跳转至登录页面
 			btnClick() {
-				//this.$router.push('')
-				this.$parent.userType = true;
+				this.$router.push('/login') 
 			}
 		}
 	};

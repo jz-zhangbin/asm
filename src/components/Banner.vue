@@ -2,7 +2,7 @@
 	//公共banner图
 	//2018-4-23-zb
 	.rl_body {
-		background-image: url("../../static/img/sl_bgm.png");
+		background-image: url(http://static.adjuz.com/asmmaster/img/sl_bgm.png);
 		background-repeat: no-repeat;
 		background-size: 100% 100%;
 		height: 130px;

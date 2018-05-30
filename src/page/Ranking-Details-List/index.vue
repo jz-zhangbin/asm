@@ -3,6 +3,7 @@
 	.rdl_index {
 		min-height: 100%;
 		margin-bottom: 20px;
+		margin-top: 60px;
 		width: 100%;
 		color: @font_color;
 		.rdl_name {
@@ -32,7 +33,7 @@
 		}
 		.rdl_body_table_top {
 			width: 100%;
-			box-shadow: 0 2px 5px @border;
+			box-shadow: 0 2px 2px @boxshado;
 		}
 		.sl_table {
 			min-width: 100%;
@@ -135,7 +136,7 @@
 									流行度
 									<div class="sl_t_dis">
 										<i class="iconfont icon-wenhao-fill"> </i>
-										<span class="sl_t_is" style="width:260px;"> 流行度来源于App Store官方数据。该指数代表次关键词在App Store中的搜索流行度，数值最高为100。</span>
+										<span class="sl_t_is" style="width:260px;"> 流行度来源于App Store官方数据。该指数代表此关键词在App Store中的搜索流行度，数值最高为100。</span>
 										<span class="sl_t_san"></span>
 									</div>
 								</div>
@@ -145,7 +146,7 @@
 									搜索指数
 									<div class="sl_t_dis">
 										<i class="iconfont icon-wenhao-fill"> </i>
-										<span class="sl_t_is" style="width:260px;">搜索指数来源于App Store官方数据。该指数代表次关键词在App Store中的搜索热度。一般来说，指数越高，则该次在每天被搜索的次数也越多。</span>
+										<span class="sl_t_is" style="width:260px;">搜索指数来源于App Store官方数据。该指数代表次关键词在App Store中的搜索热度。一般来说，指数越高，则该词在每天被搜索的次数也越多。</span>
 										<span class="sl_t_san"></span>
 									</div>
 								</div>
@@ -222,7 +223,7 @@
 				</section>
 			</div>
 			<!-- table组件 -->
-			<component @pageDate='pageDate' @peiDate='peiDate' @pageMoreDate='pageMoreDate' :is="currentView" ref="childr" :valueData="countryNow" :tableMoreData='tableMoreData' :tableMoreCode='tableMoreCode' :tableInnerCode='tableInnerCode' :userType="userType" :tableInner='tableInner'>
+			<component @pageDate='pageDate' @peiDate='peiDate' @pageMoreDate='pageMoreDate' :is="currentView" ref="childr" :valueData="countryNow" :tableMoreData='tableMoreData' :tableMoreCode='tableMoreCode' :tableInnerCode='tableInnerCode' :userType="userType" :tableInner='tableInner' :loadingfirst='loadingfirst'>
 			</component>
 		</div>
 	</div>
@@ -246,8 +247,7 @@
 						name: '更多关联词',
 						com: list2
 					}
-				],
-				userType: true,
+				], 
 				components_index: 0,
 				currentView: list1,
 				keyWordType: true, //当前关键词详情是否有内容
@@ -260,14 +260,8 @@
 				tableMoreData: {}, //更多关联词列表  
 				tableMoreCode: {},
 				tableInner: {}, //历史关联词列表 
-				tableInnerCode: {},
-				loading: null,
-				loadingopaction: {
-					lock: true,
-					text: 'Loading',
-					spinner: 'el-icon-loading',
-					background: 'rgba(0, 0, 0, 0.7)'
-				}
+				tableInnerCode: {}, 
+				loadingfirst: true
 			};
 		},
 
@@ -279,6 +273,7 @@
 		computed: {
 			...mapState({
 				countryList: state => state.Home.countryList,
+				userType: state => state.Sign.userType
 			})
 		},
 
@@ -310,23 +305,14 @@
 
 			this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime, 'ratio', 0)
 
-			this.AJaxKeyWordMore(1, this.$route.query.country)
-
-			if(this.$ls.get('adjuz_user')) {
-				if(this.$ls.get('adjuz_user').userLoginStatus == 1) { //登陆状态
-					this.userType = true
-				} else { //未登陆
-					this.userType = false
-				}
-			} else {
-				this.userType = false
-			}
+			this.AJaxKeyWordMore(1, this.$route.query.country) 
 		},
 
 		methods: {
 
 			AjaxHistoryList(pageIndex, nationId, beginTime, endTime, sortName, upordown) { // 历史列表
-				this.loading = this.$loading(this.loadingopaction)
+				this.loadingfirst = true
+				this.tableInner = []
 				let GetHistoryAppListUrl = '/api/v1/IntellSearchApi/KeywordDetail/GetHistoryAppList'
 				var sortObj = {}
 				if(sortName == 'ratio') {
@@ -351,15 +337,17 @@
 				}
 				this.$https.post(GetHistoryAppListUrl, JSON.stringify(data))
 					.then(res => {
-						//res.data.resultCode = 404
+						this.loadingfirst = false
 						this.tableInnerCode = res.data
-						this.tableInner = res.data.data.list
-						this.loading.close()
+						this.tableInner = res.data.data.list 
+					})
+					.catch(res=>{
+						alert('请求错误！')
+						this.loadingfirst = false
 					})
 			},
 
 			AJaxKeyWord(nationId) { //关键词详情信息
-				//this.loading = this.$loading(this.loadingopaction)
 				let keyWordDateUrl = '/api/v1/IntellSearchApi/KeywordDetail/Getkeywordinfo'
 				let obj = {
 					nationId,
@@ -367,7 +355,6 @@
 				}
 				this.$https.post(keyWordDateUrl, JSON.stringify(obj))
 					.then(res => {
-						//res.data.resultCode = 404
 						if(res.data.resultCode == 1000) { //有内容
 							this.keyWordType = true
 							this.tableData = res.data.data
@@ -380,12 +367,12 @@
 							}
 						} 
 						this.keyName = this.$route.query.key
-						//this.loading.close()
 					})
 			},
 
-			AJaxKeyWordMore(pageIndex, nationId) { //更多关联词
-				this.loading = this.$loading(this.loadingopaction)
+			AJaxKeyWordMore(pageIndex, nationId) { //更多关联词 
+				this.loadingfirst = true
+				this.tableMoreData = []
 				let url = '/api/v1/IntellSearchApi/KeywordDetail/GetAssociatedWords'
 				let obj = {
 					pageIndex,
@@ -398,11 +385,10 @@
 					}
 				}
 				this.$https.post(url, JSON.stringify(obj))
-					.then(res => {
-						//res.data.resultCode = 404 
+					.then(res => { 
 						this.tableMoreCode = res.data
 						this.tableMoreData = res.data.data.list
-						this.loading.close()
+						this.loadingfirst = false
 					})
 			},
 
@@ -433,6 +419,13 @@
 			},
 
 			addCiClick(num, name) { //收藏操作
+				if(!this.userType) {
+					this.$message({
+						message: '请先登录！',
+						type: 'warning'
+					});
+					return false
+				}
 				if(num == 0) {
 					this.tableData.hotKeywordTemStatus = 1
 					this.AjaxRemove(name, 0) //添加

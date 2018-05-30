@@ -3,7 +3,7 @@
 	.kcll1_index {
 		width: 100%;
 		table{
-			box-shadow: 0 2px 5px @border;
+			box-shadow: 0 2px 2px @boxshado;
 		}
 		.table_data_tr {
 			td {
@@ -48,12 +48,12 @@
 						<div class="sl_t_dis">
 							<i class="iconfont icon-wenhao-fill"> </i>
 							<span class="sl_t_is" style="width:260px;"> 
-                        流行度来源于App Store官方数据。该数据代表次关键词在App Store中的搜索流行度，数值最高为100。                    </span>
+                        流行度来源于App Store官方数据。该数据代表此关键词在App Store中的搜索流行度，数值最高为100。                    </span>
 							<span class="sl_t_san"></span>
 						</div>
 					</div>
 				</th>
-				<th style="width: 14%">已选APP展示量比(左)</th>
+				<th style="width: 14%">已选APP展示量占比(左)</th>
 				<th style="width: 14%">竞品APP展示量占比(右)</th>
 				<th style="width: 10%">操作</th>
 			</tr>
@@ -87,6 +87,12 @@
 			<tr v-if="!tableShow">
 				<td colspan="7">该关键词暂无竞价数据</td>
 			</tr>
+			 <!-- loading -->
+			<tr v-if="loadingfirst">
+				<td colspan="7" style="height: 80px;">
+					<img src="../../images/components/loading.gif" alt="">
+				</td>
+			</tr>
 		</table>
 		<!-- 分页 -->
 		<div class="page_index" v-if="userType">
@@ -113,22 +119,16 @@
 						one: false,
 						two: false
 					}
-				],
-				loading: null,
-				loadingopaction: {
-					lock: true,
-					text: 'Loading',
-					spinner: 'el-icon-loading',
-					background: 'rgba(0, 0, 0, 0.7)'
-				},
+				], 
 				tableInner: [],
-				tableShow: false,
+				tableShow: true,
 				currentPage3: 1, //当前页 
-				total: 98, //总数
+				total: 0, //总数
 				sortDate: { //排序
 					one: 'searchIndex',
 					two: 0
 				},
+				loadingfirst: true,
 			};
 		},
 
@@ -196,6 +196,13 @@
 			},
 
 			addCiClick(index, num, name) { //收藏操作
+				if(!this.userType) {
+						this.$message({
+							message: '请先登录！',
+							type: 'warning'
+						});
+						return false
+					}
 				if(num == 0) {
 					this.tableInner[index].hotKeywordTemStatus = 1
 					this.AjaxRemove(name, 0) //添加
@@ -215,8 +222,9 @@
 				this.Ajax(this.currentPage3)
 			},
 
-			Ajax(pageIndex) {
-				this.loading = this.$loading(this.loadingopaction)
+			Ajax(pageIndex) { 
+				this.loadingfirst = true
+				this.tableInner = []
 				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisList'
 				let newobj = {}
 				newobj[this.sortDate.one] = this.sortDate.two
@@ -236,16 +244,18 @@
 				}
 
 				this.$https.post(url, JSON.stringify(obj))
-					.then((res) => {
-						//res.data.resultCode = 404
-						this.loading.close()
+					.then((res) => { 
 						if(res.data.resultCode == 1000) {
 							this.tableShow = true
 						} else if(res.data.resultCode == 404) {
 							this.tableShow = false
 						}
+						this.loadingfirst = false
 						this.tableInner = res.data.data.list
 						this.total = res.data.data.totalCount
+					})
+					.catch(()=>{
+						this.loadingfirst = false
 					})
 			},
 

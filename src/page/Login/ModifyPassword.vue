@@ -5,14 +5,16 @@
 	@border: #dee2e6;
 	@btnhover: #1559c8;
 	.pass_index {
+		height: 100%;
+		margin-top: 60px;
 		.login_body {
 			min-width: 1200px;
-			min-height: 560px;
+			min-height: 100%;
 			display: flex;
 			justify-content: center;
 			box-sizing: border-box;
 			padding-top: 120px;
-			background: url("../../../static/img/login_left.png") 0 0 no-repeat, url("../../../static/img/login_right.png") bottom right no-repeat;
+			background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0 no-repeat, url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right no-repeat;
 		}
 		.login_box {
 			width: 400px;
@@ -191,7 +193,7 @@
 				identifyCode: "",
 				war: false, //错误提醒
 				warData: "",
-				userEmil: "1154041905@163.com",
+				userEmil: "",
 				userWorld: "",
 				emailShow: true, //是否需要跳转邮箱 
 			};
@@ -222,9 +224,27 @@
 					this.war = true;
 					this.warData = "您输入的验证码不正确！";
 					return false
-				}
-				this.emailShow = false
+				} 
+				this.Ajax({
+					userEmail: this.userEmil
+				})
 			},
+
+			Ajax(obj) {
+				let url = '/api/v1/IntellSearchApi/UserInfo/UserResetPwdEmail'
+
+				this.$https.post(url , JSON.stringify(obj))
+				.then(res=> {
+					if(res.data.resultCode == 2400) {
+						this.war = true;
+						this.warData = res.data.message;
+					}
+					if(res.data.resultCode == 1000) {
+						this.emailShow = false
+					}
+				})
+			},
+
 			randomNum(min, max) {
 				return Math.floor(Math.random() * (max - min) + min);
 			},

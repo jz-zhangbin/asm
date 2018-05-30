@@ -20,16 +20,10 @@ Axios.interceptors.response.use(data=> {
       return;
     }
     return data;
-  }, err=> {
-      console.log(err.responses.data.error)
+  }, err=> { 
     if (err.response.status == 500||err.response.status == 404) {
-      Message.error({message: '服务器被吃了⊙﹏⊙∥'});
-    } else if (err.response.status == 403) {
-      Message.error({message: '权限不足,请联系管理员!'});
-    }else {
-      Message.error({message: '未知错误!'});
-    }
-    return Promise.resolve(err);
+      Message.error({message: '服务器出现问题'});
+    } 
   })
 
 //Vue.use(axios)

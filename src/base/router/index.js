@@ -37,8 +37,14 @@ let routes = [{
   path: '/modif-password',//修改密码
   component: resolve => require(["@page/Login/ModifyPassword"], resolve)
 }, {
+  path: '/reset',//重置密码
+  component: resolve => require(["@page/Login/reset"], resolve)
+}, {
   path: '/register',//注册账号
   component: resolve => require(["@page/Login/register"], resolve)
+}, {
+  path: '/activatingSuccess',//账号激活成功
+  component: resolve => require(["@page/Login/activatingSuccess"], resolve)
 }, {
   path: '/agent',//代理投放
   component: resolve => require(["@page/agent"], resolve)
@@ -52,7 +58,7 @@ let routes = [{
 
 export default new VueRouter({
   //去#号
-  mode: 'history',
+  //mode: 'history',
   routes
 })
  

@@ -4,6 +4,7 @@
 	.rl_index {
 		min-height: 100%;
 		margin-bottom: 20px;
+		margin-top: 60px;
 		.sl_main {}
 		.sl_center {
 			min-width: 1200px;
@@ -42,6 +43,9 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			p{
+				margin-top: 14px;
+			}
 		}
 		.sl_table {
 			min-width: 1200px;
@@ -49,7 +53,7 @@
 			box-sizing: border-box;
 			min-height: 600px;
 			table {
-				box-shadow: 0 2px 5px @border;
+				box-shadow: 0 2px 2px @boxshado;
 			}
 		}
 		.sl_from_top {
@@ -120,7 +124,7 @@
 								<div class="sl_t_dis">
 									<i class="iconfont icon-wenhao-fill"> </i>
 									<span class="sl_t_is" style="width:280px;">
-					                    流行度来源于App Store官方数据。该指数代表次关键词在App Store中的搜索流行度，数值最高为100。
+					                    流行度来源于App Store官方数据。该指数代表此关键词在App Store中的搜索流行度，数值最高为100。
 					                  </span>
 									<span class="sl_t_san"></span>
 								</div>
@@ -132,7 +136,7 @@
 								<div class="sl_t_dis">
 									<i class="iconfont icon-wenhao-fill"> </i>
 									<span class="sl_t_is" style="width:280px;">
-				                      搜索指数来源于App Store官方数据。该指数代表次关键词在App Store中的搜索热度。一般来说，指数越高，则该次在每天被搜索的次数也越多。
+				                      搜索指数来源于App Store官方数据。该指数代表此关键词在App Store中的搜索热度。一般来说，指数越高，则该词在每天被搜索的次数也越多。
 				                    </span>
 									<span class="sl_t_san"></span>
 								</div>
@@ -185,6 +189,13 @@
 							</div>
 						</td>
 					</tr>
+
+					<!-- loading -->
+					<tr v-if="loadingfirst">
+						<td colspan="6" style="height: 80px;">
+							<img src="../../images/components/loading.gif" alt="">
+						</td>
+					</tr>
 				</table>
 			</div>
 			<!-- 用户登录 -->
@@ -210,21 +221,15 @@
 	import { mapState } from 'vuex'
 	export default {
 		data() {
-			return {
-				userType: true, //用户的登录状态
+			return { 
 				ajaxType: true, // 当用户滚动到底部，限制只有请求成功后，再次滑到底部再次请求
 				ajaxnum: 2, //一共加载2000，10次时结束滚动事件 
 				loadingShow: false, //是否显示loading
 				initloading: false, //初次加载是否完成
 				bannerName: '竞价热词榜',
 				countryNow: "", //选中的国家
-				tableData: [], //表格数据 
-				loadingopaction: {
-					lock: true,
-					text: 'Loading',
-					spinner: 'el-icon-loading',
-					background: 'rgba(0, 0, 0, 0.7)'
-				}
+				tableData: [], //表格数据  
+				loadingfirst: true
 			};
 		},
 
@@ -236,6 +241,7 @@
 		computed: {
 			...mapState({
 				countryList: state => state.Home.countryList,
+				userType: state => state.Sign.userType 
 			})
 		},
 
@@ -244,23 +250,15 @@
 				.then(() => {
 					this.countryNow = this.$store.state.Home.countryList[0].nationId
 
-					this.loading = this.$loading(this.loadingopaction)
+					//this.loading = this.$loading(this.loadingopaction)
 					this.AjaxInit(this.countryNow, 1)
 						.then(res => {
-							this.loading.close()
+							//this.loading.close()
+							this.loadingfirst = false
 							this.tableData = res.data.data
 							this.initloading = true
 						})
-				})
-			if(this.$ls.get('adjuz_user')) {
-				if(this.$ls.get('adjuz_user').userLoginStatus == 1) { //登陆状态
-					this.userType = true
-				} else { //未登陆
-					this.userType = false
-				}
-			} else {
-				this.userType = false
-			}
+				}) 
 		},
 
 		updated() {},
@@ -321,6 +319,13 @@
 			},
 
 			addCiClick(index, num, name) { //操作关键词
+			    if(!this.userType) {
+					this.$message({
+						message: '请先登录！',
+						type: 'warning'
+					});
+					return false
+				}
 				if(num == 0) {
 					this.tableData[index].hotKeywordTemStatus = 1
 					this.AjaxRemove(name, 0) //添加

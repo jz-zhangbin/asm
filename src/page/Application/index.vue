@@ -3,6 +3,8 @@
 	.apl_index { 
 		min-height: 100%;
 		margin-bottom: 20px;
+		margin-top: 60px;
+		overflow: hidden;
 		.apl_body {
 			min-width: 1200px;
 			padding: 0 45px;
@@ -18,7 +20,7 @@
 			padding: 26px 24px;
 			display: flex;
 			position: relative;
-			box-shadow: 0 2px 5px @border;
+			box-shadow: 0 2px 2px @boxshado;
 			img {
 				width: 124px;
 				height: 124px;
@@ -89,12 +91,12 @@
 			width: 100%;
 			display: flex;
 			justify-content: space-between;
+			margin-bottom: 25px;
 		}
 		.apl_checketout {
 			width: 100%;
 			display: flex;
-			justify-content: flex-end;
-			margin-bottom: 25px;
+			justify-content: flex-end; 
 			span {
 				display: block;
 				height: 32px;
@@ -144,6 +146,15 @@
 				background: #fff;
 				color: #36bead;
 				margin-top: 29px;
+				&.btn_null{
+					background: @color;
+					border: 1px solid @border;
+					color: #fff;
+					margin-left: 20px;
+					&:hover{
+						background: #1559c8;
+					}
+				}
 				&:hover {
 					background: #36bead;
 					color: #fff;
@@ -187,7 +198,7 @@
 		}
 		.apl_body_table {
 			width: 100%;
-			box-shadow: 0 2px 5px @border;
+			box-shadow: 0 2px 2px @boxshado;
 			min-height: 400px;
 		}
 		.href_a {
@@ -250,7 +261,7 @@
 						</p>
 						<p style="min-width: 64px">
 							<span>价格</span>
-							<span style="color:#000;" v-if="appData.show">{{appData.appPrice}}</span>
+							<span style="color:#000;" v-if="appData.show">{{appData.appPrice | appPriceFilter}}</span>
 							<span style=" color:#000;" v-if="!appData.show">-</span>
 						</p>
 						<p style="min-width: 64px">
@@ -296,7 +307,7 @@
 			<!-- 表单详细搜索 -->
 			<div class="apl_body_search">
 				<div class="apl_bos_box">
-					<p>热度</p>
+					<p>搜索指数</p>
 					<div>
 						<input type="text" placeholder="最小值" v-model="seacrchData.minSearchIndex">
 						<input type="text" placeholder="最大值" v-model="seacrchData.maxSearchIndex">
@@ -316,7 +327,8 @@
 						<input type="text" placeholder="最大值" v-model="seacrchData.maxAppLength">
 					</div>
 				</div>
-				<button @click="searchMoreClick">搜索</button>
+				<button @click="btnNullClick">清空</button>
+				<button @click="searchMoreClick" class="btn_null">搜索</button>
 				<div class="apl_bos_right">
 					<div class="apl_bos_input">
 						<input type="text" placeholder="查找关键词" v-model="searchKeyWord" @focus="focusInput" @blur="blurInput">
@@ -355,7 +367,7 @@
 								<div class="sl_t_dis">
 									<i class="iconfont icon-wenhao-fill"> </i>
 									<span class="sl_t_is" style="width:260px;">
-										 流行度来源于App Store官方数据。该数据代表次关键词在App Store中的搜索流行度，数值最高为100%。
+										 流行度来源于App Store官方数据。该数据代表此关键词在App Store中的搜索流行度，数值最高为100%。
 									</span>
 									<span class="sl_t_san"></span>
 								</div>
@@ -427,6 +439,12 @@
 					<tr v-if="!tableShow">
 						<td colspan="7" style="height: 150px">该关键词暂无竞价数据</td>
 					</tr>
+					 <!-- loading -->
+					<tr v-if="loadingfirst">
+						<td colspan="7" style="height: 80px;">
+							<img src="../../images/components/loading.gif" alt="">
+						</td>
+					</tr>
 				</table>
 			</div>
 			<!-- 分页 -->
@@ -452,8 +470,7 @@
 	export default {
 		data() {
 			return {
-				currentPage3: 1, //当前页
-				userType: false, //用户登录状态 
+				currentPage3: 1, //当前页  
 				appData: {
 					show: true
 				},
@@ -476,14 +493,8 @@
 				tableData: {
 					totalCount: 0
 				},
-				tableShow: true,
-				loading: null,
-				loadingopaction: {
-					lock: true,
-					text: 'Loading',
-					spinner: 'el-icon-loading',
-					background: 'rgba(0, 0, 0, 0.7)'
-				},
+				tableShow: true, 
+				loadingfirst: true,
 				sortDate: { //排序
 					one: 'searchIndex',
 					two: 0
@@ -516,6 +527,7 @@
 		computed: {
 			...mapState({
 				countryList: state => state.Home.countryList,
+				userType: state => state.Sign.userType
 			}),
 			pagedata() {
 				if(this.currentPage3 * 20 <= this.tableData.totalCount) {
@@ -526,7 +538,7 @@
 					return ls
 				}
 			}
-		},
+		}, 
 
 		watch: {
 			$route() { 
@@ -562,6 +574,16 @@
 			percentage: function(value) {
 				let num = (value*100).toFixed(2)
 				return num+"%"
+			},
+			appPriceFilter : function(value) {
+				if(value == 0) {
+					return '免费'
+				}else if(!value){
+					return ''
+				}else{
+					let ls  = (value*1).toFixed(2)
+					return ls
+				}
 			}
 		},
 
@@ -572,17 +594,7 @@
 				})
 
 			this.options3 = datefn(1)
-			this.value1 = this.options3[0].value
-
-			if(this.$ls.get('adjuz_user')) {
-				if(this.$ls.get('adjuz_user').userLoginStatus == 1) { //登陆状态
-					this.userType = true
-				} else { //未登陆
-					this.userType = false
-				}
-			} else {
-				this.userType = false
-			} 
+			this.value1 = this.options3[0].value 
 
 			this.AjaxGetAppHistoryKeywordList({
 				pageIndex: 1,
@@ -723,6 +735,13 @@
 			},
 
 			addCiClick(index, num, name) { //收藏操作
+				if(!this.userType) {
+						this.$message({
+							message: '请先登录！',
+							type: 'warning'
+						});
+						return false
+					}
 				if(num == 0) {
 					this.tableData.list[index].hotKeywordTemStatus = 1
 					this.AjaxRemove(name, 0) //添加
@@ -827,15 +846,18 @@
 				})
 			},
 
-			keywordClick() { //input搜索
-				if(this.searchKeyWord == '') {
-					this.$message({
-						message: '搜索内容不能为空',
-						type: 'warning'
-					});
-
-					return false
+			btnNullClick() {//清空搜索
+				this.seacrchData = {
+					minSearchIndex: '',
+					maxSearchIndex: '',
+					minRatio: '',
+					maxRatio: '',
+					minAppLength: '',
+					maxAppLength: ''
 				}
+			},
+
+			keywordClick() { //input搜索 
 				this.searchKeyWordTrue = this.searchKeyWord
 				this.showList.map(ele => {
 					ele.one = false
@@ -863,6 +885,7 @@
 						searchIndex: 0
 					}
 				})
+				this.searchKeyWord = ''//清空搜索内容
 			},
 
 			zTest(data) { //正则验证
@@ -972,20 +995,24 @@
 					})
 			},
 
-			AjaxGetAppHistoryKeywordList(obj) { //获取历史列表
-				this.loading = this.$loading(this.loadingopaction)
+			AjaxGetAppHistoryKeywordList(obj) { //获取历史列表 
+				this.loadingfirst = true
+				this.tableData.list = []
 				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppHistoryKeywordList'
 				console.log(obj)
 				this.$https.post(url, JSON.stringify(obj))
-					.then((res) => {
-						//res.data.resultCode = 404
+					.then((res) => { 
 						if(res.data.resultCode == 1000) {
 							this.tableShow = true
 						} else if(res.data.resultCode == 404) {
 							this.tableShow = false
 						}
-						this.tableData = res.data.data
-						this.loading.close()
+						this.loadingfirst = false
+						this.tableData = res.data.data 
+					})
+					.catch(()=>{
+						this.loadingfirst = false
+						alert('请求错误！')
 					})
 
 			},

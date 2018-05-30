@@ -5,14 +5,16 @@
 	@border: #dee2e6;
 	@btnhover: #1559c8;
 	.login_index {
+		min-height: 100%;
+		margin-top: 60px;
 		.login_body {
 			min-width: 1200px;
-			min-height: 560px;
+			min-height: 100%;
 			display: flex;
 			justify-content: center;
 			box-sizing: border-box;
 			padding-top: 120px;
-			background: url("../../../static/img/login_left.png") 0 0 no-repeat, url("../../../static/img/login_right.png") bottom right no-repeat;
+			background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0 no-repeat, url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right no-repeat;
 		}
 		.login_box {
 			width: 400px;
@@ -78,7 +80,7 @@
 </style>
 <template>
 	<div class="login_index">
-		<v-search-top></v-search-top>
+		<v-search-top ></v-search-top>
 
 		<div class="login_body">
 			<div class="login_box">
@@ -89,7 +91,7 @@
 				</div>
 				<div class="login_input">
 					<i class="iconfont icon-zhucedenglumima"></i>
-					<input type="text" placeholder="请输入密码/至少6位" v-model="userWorld">
+					<input type="text" placeholder="请输入密码/至少6位" v-model="userWorld" class="passinput" @focus="changeinput"> 
 				</div>
 				<div class="login_input login_input_war" v-if="war">
 					{{warData}}
@@ -107,23 +109,19 @@
 </template>
 
 <script>
+import crypto from 'crypto'
+import qs from 'qs'
+import reduceCookie from '@commonJS/reduceCookie'
 	export default {
 		data() {
 			return {
 				war: false, //错误提醒
 				warData: '',
 				userEmil: '',
-				userWorld: ''
+				userWorld: '',
+				searchShow: false
 			};
-		},
-
-		components: {},
-
-		computed: {},
-
-		created() {},
-
-		updated() {},
+		}, 
 
 		mounted() {
 			$('.login_input input').on('focus', function() {
@@ -131,26 +129,48 @@
 			})
 			$('.login_input input').on('blur', function() {
 				$(this).parent().css('border-color', '#dee2e6')
-			})
-		},
-
-		destroyed() {},
+			}) 
+		}, 
 
 		methods: {
+			changeinput() {
+				$('.passinput').attr('type' , 'password')
+			},
+
 			loginSubmit() {
 				if(this.userEmil == '' || this.userWorld == '') {
 					this.war = true
 					this.warData = '邮箱或密码不能为空！'
 					return false
-				}
-				let obj = {
-					'data[User][email]': 'lifuchun@adjuz.com',
-					'data[User][password]': 'lfc123456'
-				}
-				this.$https.get('/baseapi/login', JSON.stringify(obj))
-					.then(res => {
-						console.log(res)
-					})
+				}   
+				this.$https.get('/api/v1/IntellSearchApi/Login/UserLogin?userName='+this.userEmil+"&userPasswd="+this.getmd5(this.userWorld)) 
+				.then(res=>{ 
+					if(res.data.resultCode == 1000){ 
+						
+					//创建cookie
+					let secureId = res.data.data.userId+this.userEmil
+					let Adjuz_UserInfoNEW = { 
+							Adjuz_SecureId : this.getmd5(secureId),
+							uid : res.data.data.userId,
+							urole : res.data.data.userRoles,
+							useremail : this.userEmil
+						}
+					this.$cookie.set('Adjuz_UserInfoNEW', qs.stringify(Adjuz_UserInfoNEW))
+					//console.log(reduceCookie(this.$cookie.get('Adjuz_UserInfoNEW'))) 
+						this.$router.push('/home')
+					}else if(res.data.resultCode == 404) {
+						this.war = true
+						this.warData = '账号或密码错误，请重新登录！'
+					}
+				}) 
+			},
+ 
+			getmd5(b){
+				var a
+                  var md5 = crypto.createHash('md5')
+                  md5.update(b)
+                  var a = md5.digest('hex')
+                return a
 			}
 		}
 	}

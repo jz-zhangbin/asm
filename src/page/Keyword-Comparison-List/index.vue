@@ -4,6 +4,7 @@
 	@font_color: #6c757d;
 	@border: #dee2e6;
 	@btnhover: #1559c8;
+	@boxshado: #eeeeee;
 	@import url('./../../base/commonJS/scroll.css');
 	.iconfont {
 		cursor: pointer;
@@ -13,6 +14,7 @@
 		min-width: 1200px; 
 		min-height: 100%;
 		margin-bottom: 20px;
+		margin-top: 60px;
 		.kcl_body {
 			width: 100%;
 			.kcl_top {
@@ -33,23 +35,30 @@
 			box-sizing: border-box;
 			padding: 0 45px; 
 			.kcl_dui_cont {
-				width: 1200px;
+				min-width: 1200px;
+				max-width: 1600px;
 				display: flex;
 				margin: 0 auto;
-				justify-content: center;
+				justify-content: space-between;
 			}
-			.kcl_duibi_left {
-				width: 520px;
+			.kcl_duibi_left { 
+				width: 45%;
 				height: 85px;
 				display: flex;
 				position: relative;
-				img {
+				div{
 					width: 85px;
 					height: 85px;
 					border-radius: 6px;
 					margin-right: 12px;
+					overflow: hidden;
+				}
+				img {
+					width: 100%;
+					height: 100%;
 				}
 				section {
+					width: 80%;
 					box-sizing: border-box;
 					padding-top: 8px;
 					h1 {
@@ -59,7 +68,6 @@
 					}
 					p {
 						margin-bottom: 4px;
-						min-width: 440px;
 						span {
 							display: inline-block;
 							overflow: hidden;
@@ -141,7 +149,7 @@
 						left: 0;
 						z-index: 100;
 						overflow: hidden;
-						box-shadow: 0 2px 5px @border;
+						box-shadow: 0 2px 2px @boxshado;
 					}
 					ul {
 						width: 374px;
@@ -188,7 +196,7 @@
 				}
 			}
 			.kcl_vs {
-				width: 126px;
+				margin: 0 20px;
 				text-align: center;
 				line-height: 85px;
 				font-size: 60px;
@@ -220,6 +228,7 @@
 		}
 		.kcl_table_one {
 			width: 100%;
+			min-height: 300px;
 			h2 {
 				font-size: 16px;
 				font-weight: 520;
@@ -231,7 +240,7 @@
 		.kcl_table1 {
 			width: 100%;
 			border: 1px solid @border;
-			box-shadow: 0 2px 5px @border;
+			box-shadow: 0 2px 2px @boxshado;
 			tr {
 				th,
 				td {
@@ -340,22 +349,22 @@
 				<div class="kcl_dui_cont">
 					<!-- 从详情页跳转过来的 -->
 					<div class="kcl_duibi_left">
-						<img :src="dataLeft.appImgUrl" alt="">
+						<div><img :src="dataLeft.appImgUrl" alt=""></div> 
 						<section>
 							<h1>{{dataLeft.appName}}</h1>
 							<p>
-								<span style="width: 20%;">开发商</span>
-								<span style="width: 12%;">分类</span>
-								<span style="width: 21%;">AppID</span>
-								<span style="width: 15%;">价格</span>
+								<span style="width: 21%;">开发商</span>
+								<span style="width: 13%;">分类</span>
+								<span style="width: 22%;">AppID</span>
+								<span style="width: 16%;">价格</span>
 								<span style="width: 12%;">总榜</span>
 								<span style="width: 10%;">分类榜</span>
 							</p>
 							<p>
-								<span style="width: 20%; color:#000">{{dataLeft.aristName}}</span>
-								<span style="width: 12%; color:#2d76ed">{{dataLeft.appTypeName}}</span>
-								<span style="width: 21%; color:#2d76ed">{{dataLeft.appStoreId}}</span>
-								<span style="width: 15%; color:#000">{{dataLeft.appPrice}}</span>
+								<span style="width: 21%; color:#000">{{dataLeft.aristName}}</span>
+								<span style="width: 13%; color:#2d76ed">{{dataLeft.appTypeName}}</span>
+								<span style="width: 22%; color:#2d76ed">{{dataLeft.appStoreId}}</span>
+								<span style="width: 16%; color:#000">{{dataLeft.appPrice | appPriceFilter}}</span>
 								<span style="width: 12%; color:#000">{{dataLeft.totalRank}}</span>
 								<span style="width: 10%; color:#000">{{dataLeft.classificationRank}}</span>
 							</p>
@@ -366,22 +375,22 @@
 					</div>
 					<!-- 在对比页选中的 -->
 					<div class="kcl_duibi_left" v-if="appDataShow">
-						<img :src="dataRight.appImgUrl" alt="" >
+						<div><img :src="dataRight.appImgUrl" alt="" ></div> 
 						<section>
 							<h1>{{dataRight.appName}}</h1>
 							<p>
-								<span style="width: 20%;">开发商</span>
-								<span style="width: 12%;">分类</span>
-								<span style="width: 21%;">AppID</span>
-								<span style="width: 15%;">价格</span>
+								<span style="width: 21%;">开发商</span>
+								<span style="width: 13%;">分类</span>
+								<span style="width: 22%;">AppID</span>
+								<span style="width: 16%;">价格</span>
 								<span style="width: 12%;">总榜</span>
 								<span style="width: 10%;">分类榜</span>
 							</p>
 							<p>
-								<span style="width: 20%; color:#000">{{dataRight.aristName}}</span>
-								<span style="width: 12%; color:#2d76ed">{{dataRight.appTypeName}}</span>
-								<span style="width: 21%; color:#2d76ed">{{dataRight.appStoreId}}</span>
-								<span style="width: 15%; color:#000">{{dataRight.appPrice}}</span>
+								<span style="width: 21%; color:#000">{{dataRight.aristName}}</span>
+								<span style="width: 13%; color:#2d76ed">{{dataRight.appTypeName}}</span>
+								<span style="width: 22%; color:#2d76ed">{{dataRight.appStoreId}}</span>
+								<span style="width: 16%; color:#000">{{dataRight.appPrice | appPriceFilter}}</span>
 								<span style="width: 12%; color:#000">{{dataRight.totalRank}}</span>
 								<span style="width: 10%; color:#000">{{dataRight.classificationRank}}</span>
 							</p>
@@ -510,15 +519,7 @@
 	import { datefn } from '@commonJS/functionJS'
 	export default {
 		data() {
-			return {
-				userType: false, //用户登录状态 
-				loading: null,
-				loadingopaction: {
-					lock: true,
-					text: 'Loading',
-					spinner: 'el-icon-loading',
-					background: 'rgba(0, 0, 0, 0.7)'
-				},
+			return {  
 				list: [], //搜索列表
 				countryNow: "",
 				APPinfor: '', //搜索内容
@@ -563,24 +564,32 @@
 		computed: {
 			...mapState({
 				countryList: state => state.Home.countryList,
+				userType: state => state.Sign.userType
 			})
+		},
+
+		filters: {
+			percentage: function(value) {
+				let num = (value*100).toFixed(2)
+				return num+"%"
+			},
+			appPriceFilter : function(value) {
+				if(value == 0) {
+					return '免费'
+				}else if(!value){
+					return ''
+				}else{
+					let ls  = (value*1).toFixed(2)
+					return ls
+				}
+			}
 		},
 
 		created() {
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
 					this.countryNow = this.$store.state.Home.countryList[0].nationId
-				})
-
-			if(this.$ls.get('adjuz_user')){
-					if(this.$ls.get('adjuz_user').userLoginStatus == 1) { //登陆状态
-						this.userType = true
-						} else { //未登陆
-							this.userType = false
-						} 
-				}else{
-					this.userType = false
-				}
+				}) 
 
 			this.AjaxInfor({
 				key: this.$route.query.key,
@@ -618,8 +627,7 @@
 						message: '搜索内容不能为空！！！',
 						type: 'warning'
 					});
-				} else {
-					this.loading = this.$loading(this.loadingopaction)
+				} else { 
 					this.Ajax()
 				}
 			},
@@ -637,6 +645,8 @@
 				this.appDataShow = false
 				this.tableShow = false
 				this.parentAjaxType = false
+				this.components_index = 0
+				this.currentView = list1
 			},
 
 			starClick() { //点击开始对比 
@@ -690,13 +700,11 @@
 								},
 								200
 							);
-						}
-						this.loading.close()
+						} 
 					})
 			},
 
-			AjaxInfor(obj, num) { //获取需要对比的app
-				this.loading = this.$loading(this.loadingopaction)
+			AjaxInfor(obj, num) { //获取需要对比的app 
 				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=' + obj.id + '&nationId=' + obj.key
 
 				this.$https.get(url)
@@ -707,13 +715,11 @@
 						} else {
 							this.dataRight = res.data.data
 							this.idRight = res.data.data.appStoreId
-						}
-						this.loading.close()
+						} 
 					})
 			},
 
-			AjaxAppcontent(selectedAppId, competitiveAppId) { //获取两个app之间的对比数据
-				this.loading = this.$loading(this.loadingopaction)
+			AjaxAppcontent(selectedAppId, competitiveAppId) { //获取两个app之间的对比数据 
 				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppResults'
 				let obj = {
 					nationId: this.countryNow,
@@ -724,14 +730,12 @@
 				}
 				this.$https.post(url, JSON.stringify(obj))
 					.then((res) => {
-						this.ContrastData = res.data.data.appAnalysisResult
-						this.loading.close()
+						this.ContrastData = res.data.data.appAnalysisResult 
 						this.parentAjaxType = true // 当前请求结束，自己请求
 
 						let totalNum = res.data.data.appAnalysisResult[this.idLeft].totalCompetitiveWordNum
-						let identicalNum = res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum
-						this.percentage = (identicalNum / totalNum).toFixed(4) * 100
-
+						let identicalNum = res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum	  
+						this.percentage = ((identicalNum / totalNum)* 100).toFixed(2)  
 						setTimeout(() => { // 基于准备好的dom，初始化echarts实例 
 							this.myChart = this.$echarts.init(document.getElementById("myChart1"));
 							this.myChart.setOption({

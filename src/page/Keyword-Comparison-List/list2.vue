@@ -8,7 +8,7 @@
 		}
 		.kcll2_table1 {
 			width: 100%;
-			box-shadow: 0 2px 5px @border;
+			box-shadow: 0 2px 2px @boxshado;
 			.table_th_wei {
 				th {
 					font-size: 16px;
@@ -45,7 +45,7 @@
 			}
 		}
 		.kcll2_table_fu {
-			width: 50%;
+			width: 50%; 
 		}
 	}
 </style>
@@ -109,6 +109,12 @@
 					<!-- 暂无关键词 -->
 					<tr v-if="!tableShow">
 						<td colspan="5">该关键词暂无竞价数据</td>
+					</tr>
+					 <!-- loading -->
+					<tr v-if="loadingfirst1">
+						<td colspan="7" style="height: 80px;">
+							<img src="../../images/components/loading.gif" alt="">
+						</td>
 					</tr>
 				</table>
 				<!-- 分页 -->
@@ -178,6 +184,12 @@
 					<tr v-if="!tableShow">
 						<td colspan="5">该关键词暂无竞价数据</td>
 					</tr>
+					 <!-- loading -->
+					<tr v-if="loadingfirst2">
+						<td colspan="7" style="height: 80px;">
+							<img src="../../images/components/loading.gif" alt="">
+						</td>
+					</tr>
 				</table>
 				<!-- 分页 -->
 				<div class="page_index" v-if="userType">
@@ -220,14 +232,7 @@
 				currentPage4: 1, //当前页 
 				total3: 0, //总数
 				total4: 0, //总数
-				tableShow: false,
-				loading: null,
-				loadingopaction: {
-					lock: true,
-					text: 'Loading',
-					spinner: 'el-icon-loading',
-					background: 'rgba(0, 0, 0, 0.7)'
-				},
+				tableShow: true, 
 				sortDate3: { //排序
 					one: 'searchIndex',
 					two: 0
@@ -236,6 +241,8 @@
 					one: 'searchIndex',
 					two: 0
 				},
+				loadingfirst1: true,
+				loadingfirst2: true
 			};
 		},
 
@@ -248,7 +255,7 @@
 				let num2 = currentPage3 - 1
 				let num = (value + 1) + num2 * 20
 				return num
-			},
+			}, 
 			percentage: function(value) {
 				let num = (value*100).toFixed(2)
 				return num+"%"
@@ -278,7 +285,7 @@
 						two: name == 'one' ? 0 : 1
 					}
 				}
-				this.this.currentPage3 = 1
+				this.currentPage3 = 1
 				this.AjaxClass(1, 'left')
 			},
 
@@ -306,6 +313,13 @@
 
 			//添加至收藏
 			addCiClick1(index) {
+				if(!this.userType) {
+					this.$message({
+						message: '请先登录！',
+						type: 'warning'
+					});
+					return false
+				}
 				if(num == 0) {
 					this.tableInner1[index].hotKeywordTemStatus = 1
 					this.AjaxRemove(name, 0) //添加
@@ -316,6 +330,13 @@
 			},
 
 			addCiClick2(index) {
+				if(!this.userType) {
+					this.$message({
+						message: '请先登录！',
+						type: 'warning'
+					});
+					return false
+				}
 				if(num == 0) {
 					this.tableInner2[index].hotKeywordTemStatus = 1
 					this.AjaxRemove(name, 0) //添加
@@ -341,8 +362,11 @@
 				this.AjaxClass(this.currentPage4, 'right' , val)
 			},
 
-			Ajax() {
-				this.loading = this.$loading(this.loadingopaction)
+			Ajax() { 
+				this.loadingfirst1 = true
+				this.loadingfirst2 = true
+				this.tableInner1 = []
+				this.tableInner2 = []
 				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisNotAllList'
 				let obj = {
 					pageIndex: 1,
@@ -362,13 +386,14 @@
 				}
 
 				this.$https.post(url, JSON.stringify(obj))
-					.then(res => {
-						this.loading.close()
+					.then(res => { 
 						if(res.data.resultCode == 1000) {
 							this.tableShow = true
 						} else if(res.data.resultCode == 404) {
 							this.tableShow = false
 						}
+						this.loadingfirst1 = false
+						this.loadingfirst2 = false
 						this.tableInner1 = res.data.data.list[0][this.$parent.idLeft]
 						this.tableInner2 = res.data.data.list[1][this.$parent.idRight]
 						this.total4 = res.data.data.competitiveTotalCount
@@ -377,16 +402,21 @@
 			},
 
 			AjaxClass(pageIndex, lorr ,val) {
-				$(window).scrollTop($('.kcl_table_btn').offset().top)
-				this.loading = this.$loading(this.loadingopaction)
+				if(lorr == 'left') {
+					this.loadingfirst1 = true 
+					this.tableInner1 = []
+				}else{
+					this.loadingfirst2 = true 
+					this.tableInner2 = []
+				}
+				$(window).scrollTop($('.kcl_table_btn').offset().top) 
 				let url = '/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisList'
 				var newobj = {}
 				if(lorr == 'left') {
 					newobj[this.sortDate3.one] = this.sortDate3.two
 				} else if(lorr == 'right') {
 					newobj[this.sortDate4.one] = this.sortDate4.two
-				}
-				console.log(newobj)
+				} 
 				let obj = {
 					pageIndex,
 					pageSize: 20,
@@ -403,13 +433,14 @@
 				}
 
 				this.$https.post(url, JSON.stringify(obj))
-					.then((res) => {
-						this.loading.close()
+					.then((res) => { 
 						if(lorr == 'left') {
+							this.loadingfirst1 = false
 							this.tableInner1 = res.data.data.list
 							this.total3 = res.data.data.totalCount
 							this.currentPage3 = val * 1
 						} else if(lorr == 'right') {
+							this.loadingfirst2 = false
 							this.tableInner2 = res.data.data.list
 							this.total4 = res.data.data.totalCount
 							this.currentPage4 = val * 1

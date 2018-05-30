@@ -7,6 +7,8 @@ Vue.prototype.$https = https
 
 import ls from '@commonJS/localStorage'
 Vue.prototype.$ls = ls 
+import cookie from '@commonJS/cookie'
+Vue.prototype.$cookie = cookie 
 /**
  * 
     "axios": "^0.18.0",
