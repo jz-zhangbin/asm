@@ -77,8 +77,8 @@
 				let obj = {
 					nationId: this.$parent.$parent.countryNow,
 					keywordName: this.$parent.$parent.tableData.keywordName,
-					begingTime: datefn(1)[this.$parent.$parent.propDate].data.beginTime,
-					endTime: datefn(1)[this.$parent.$parent.propDate].data.endTime
+					begingTime: datefn(2)[this.$parent.$parent.propDate].data.beginTime,
+					endTime: datefn(2)[this.$parent.$parent.propDate].data.endTime
 				}
 
 				this.$https.post(url, JSON.stringify(obj))
@@ -107,8 +107,7 @@
 				dataList.push({
 					value: others.toFixed(4),
 					name: 'Other'
-				})
-				console.log(nameList, dataList)
+				}) 
 				let myChart = this.$echarts.init(document.getElementById("myChart1"));
 				// 绘制图表
 				myChart.setOption({

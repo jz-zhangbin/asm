@@ -146,7 +146,7 @@
 									搜索指数
 									<div class="sl_t_dis">
 										<i class="iconfont icon-wenhao-fill"> </i>
-										<span class="sl_t_is" style="width:260px;">搜索指数来源于App Store官方数据。该指数代表次关键词在App Store中的搜索热度。一般来说，指数越高，则该词在每天被搜索的次数也越多。</span>
+										<span class="sl_t_is" style="width:260px;">搜索指数来源于App Store官方数据。该指数代表此关键词在App Store中的搜索热度。一般来说，指数越高，则该词在每天被搜索的次数也越多。</span>
 										<span class="sl_t_san"></span>
 									</div>
 								</div>
@@ -223,7 +223,7 @@
 				</section>
 			</div>
 			<!-- table组件 -->
-			<component @pageDate='pageDate' @peiDate='peiDate' @pageMoreDate='pageMoreDate' :is="currentView" ref="childr" :valueData="countryNow" :tableMoreData='tableMoreData' :tableMoreCode='tableMoreCode' :tableInnerCode='tableInnerCode' :userType="userType" :tableInner='tableInner' :loadingfirst='loadingfirst'>
+			<component @pageDate='pageDate' @peiDate='peiDate' @pageMoreDate='pageMoreDate' :is="currentView" ref="childr" :valueData="countryNow" :tableMoreData='tableMoreData' :tableMoreCode='tableMoreCode' :tableInnerCode='tableInnerCode' :userType="userType" :tableInner='tableInner' :loadingfirst='loadingfirst' :loadingfirst2='loadingfirst2'>
 			</component>
 		</div>
 	</div>
@@ -261,7 +261,8 @@
 				tableMoreCode: {},
 				tableInner: {}, //历史关联词列表 
 				tableInnerCode: {}, 
-				loadingfirst: true
+				loadingfirst: true,
+				loadingfirst2: true
 			};
 		},
 
@@ -280,7 +281,7 @@
 		watch: {
 			$route() {
 				this.AJaxKeyWord(this.$route.query.country)
-				this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime, 'ratio', 0)
+				this.AjaxHistoryList(1, this.$route.query.country, datefn(3).beginTime, datefn(3).endTime, 'ratio', 0)
 				this.AJaxKeyWordMore(1, this.$route.query.country)
 				this.countryNow = this.$route.query.country
 			}
@@ -288,8 +289,7 @@
 
 		beforeRouteEnter(to, from, next) {
 			let ls = to.query.key
-			next(vm => {
-				//console.log(ls)
+			next(vm => { 
 			})
 		},
 
@@ -298,12 +298,18 @@
 
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
-					this.countryNow = this.$store.state.Home.countryList[0].nationId
+					this.$store.state.Home.countryList.map((ele,index)=>{
+						if(ele.nationId == this.$route.query.country) {
+							this.countryNow = this.$store.state.Home.countryList[index].nationId
+						}
+					}) 
 				})
+
+			console.log(this.$store.state.Home.countryList)
 
 			this.AJaxKeyWord(this.$route.query.country)
 
-			this.AjaxHistoryList(1, this.$route.query.country, datefn(0).beginTime, datefn(0).endTime, 'ratio', 0)
+			this.AjaxHistoryList(1, this.$route.query.country, datefn(3).beginTime, datefn(3).endTime, 'ratio', 0)
 
 			this.AJaxKeyWordMore(1, this.$route.query.country) 
 		},
@@ -371,7 +377,7 @@
 			},
 
 			AJaxKeyWordMore(pageIndex, nationId) { //更多关联词 
-				this.loadingfirst = true
+				this.loadingfirst2 = true
 				this.tableMoreData = []
 				let url = '/api/v1/IntellSearchApi/KeywordDetail/GetAssociatedWords'
 				let obj = {
@@ -388,7 +394,7 @@
 					.then(res => { 
 						this.tableMoreCode = res.data
 						this.tableMoreData = res.data.data.list
-						this.loadingfirst = false
+						this.loadingfirst2 = false
 					})
 			},
 
@@ -413,7 +419,7 @@
 				
 				this.AJaxKeyWord(value)
 
-				this.AjaxHistoryList(1, value, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime, 'ratio', 0)
+				this.AjaxHistoryList(1, value, datefn(2)[this.propDate].data.beginTime, datefn(2)[this.propDate].data.endTime, 'ratio', 0)
 
 				this.AJaxKeyWordMore(1, value)
 			},
@@ -447,12 +453,12 @@
 				})
 				this.$refs.childr.showList[0].one = true
 
-				this.AjaxHistoryList(1, this.countryNow, datefn(1)[num].data.beginTime, datefn(1)[num].data.endTime, 'ratio', 0)
+				this.AjaxHistoryList(1, this.countryNow, datefn(2)[num].data.beginTime, datefn(2)[num].data.endTime, 'ratio', 0)
 				 
 			},
 
 			pageDate(num, sortData) { //分页请求
-				this.AjaxHistoryList(num, this.countryNow, datefn(1)[this.propDate].data.beginTime, datefn(1)[this.propDate].data.endTime, sortData.one, sortData.two)
+				this.AjaxHistoryList(num, this.countryNow, datefn(2)[this.propDate].data.beginTime, datefn(2)[this.propDate].data.endTime, sortData.one, sortData.two)
 			},
 
 			pageMoreDate(num) {

@@ -103,7 +103,7 @@
 					<td colspan="5" style="height: 150px">暂无更多关联词</td>
 				</tr>
 				 <!-- loading -->
-				<tr v-if="loadingfirst">
+				<tr v-if="loadingfirst2">
 					<td colspan="6" style="height: 80px;">
 						<img src="../../images/components/loading.gif" alt="">
 					</td>
@@ -140,7 +140,7 @@
 			userType: {},
 			tableMoreData: {},
 			tableMoreCode: {},
-			loadingfirst: {}
+			loadingfirst2: {}
 		},
 
 		computed: {

@@ -16,18 +16,14 @@
 		z-index: 1000;
 		.st_body {
 			height: 60px;
-			.st_logo {
-				width: 134px;
+			.st_logo { 
 				height: 60px;
 				cursor: pointer;
 				margin-left: 45px;
 				float: left;
-				background: url("../images/components/logo.png") no-repeat center center;
-			}
-			.home_logo{
 				width: 155px;
-				background: url("../images/components/home_logo2.png") no-repeat center center;
-			}
+				background: url("../images/components/home_logo2.png") no-repeat center center; 
+			} 
 			ul {
 				margin-left: 18px;
 				height: 60px;
@@ -275,7 +271,7 @@
 <template>
 	<div class="st_index" :style="{background : background_color}">
 		<div class="st_body">
-			<div :class="{st_logo: ls , home_logo: logo}" @click="$router.push('/home')"></div>
+			<div class="st_logo" @click="$router.push('/home')"></div>
 			<ul class="clear">
 				<li>
 					<router-link :to="{path: '/'}">首页</router-link>
@@ -329,7 +325,7 @@
 					</div>
 				</div>
 				<span class="st_shu"></span>
-				<input type="text" id="top_search" placeholder="关键词或APP ID" v-model="searchData"  autocomplete="off">
+				<input type="text" id="top_search" placeholder="关键词或APP" v-model="searchData"  autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -348,7 +344,6 @@ import reduceCookie from '@commonJS/reduceCookie'
 				show2: false,
 				show3: false,
 				countryNow: {}, 
-				ls: true
 			};
 		},
 
@@ -360,11 +355,7 @@ import reduceCookie from '@commonJS/reduceCookie'
 			background_color: {
 				type: String,
 				default:  '#2d76ed'
-			},
-			logo: {
-				type: Boolean,
-				default: false
-			}
+			} 
 		},
 		
 		components: {},

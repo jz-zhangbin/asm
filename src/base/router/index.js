@@ -52,13 +52,19 @@ let routes = [{
 {
   path: '*',//404
   component: resolve => require(["@page/404"], resolve)
-}]
+}
+// ,
+// {
+//   path: '/index.html',//404
+//   component: resolve => require(["@page/Home"], resolve)
+// }
+]
 
 //routes.push()
 
 export default new VueRouter({
   //去#号
-  //mode: 'history',
+  mode: 'history',
   routes
 })
  

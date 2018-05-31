@@ -400,7 +400,7 @@
 
 <template>
    <div class="home_index">
-     <v-search-top :background_color='background_color' :searchShow='searchShow' :logo='logo'></v-search-top>
+     <v-search-top :background_color='background_color' :searchShow='searchShow' ></v-search-top>
 
      <!-- banner -->
      <div class="home_banner">
@@ -557,8 +557,7 @@ export default {
       conuntryShow: false,
       countryNow: {},
       keyWord: '',
-      list: [],
-      logo: true,
+      list: [], 
       scrooll: null
     };
   },

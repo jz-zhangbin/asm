@@ -61,7 +61,65 @@ export function datefn(datenum) {
 			beginTime: fn(timerNum3),
 			endTime: fn(timerNum1)
 		}
-	} else {
+	} else if(datenum == 2) {
+		let newarr	= [
+			{
+				data: {
+					beginTime: fn(timerNum1),
+					endTime: fn(timerNum1)
+				},
+				value: 0,
+				label: '今天'
+			},
+			{
+				data: {
+					beginTime: fn(timerNum3),
+					endTime: fn(timerNum1)
+				},
+				value: 1,
+				label: fn(timerNum3) + ' 至 ' + fn(timerNum1)
+			},
+			{
+				data: {
+					beginTime: fn(timerNum4),
+					endTime: fn(timerNum1)
+				},
+				value: 2,
+				label: '昨天'
+			},
+			{
+				data: {
+					beginTime: fn(timerNum3),
+					endTime: fn(timerNum1)
+				},
+				value: 3,
+				label: '近七天'
+			},
+			{
+				data: {
+					beginTime: fn(timerNum5),
+					endTime: fn(timerNum1)
+				},
+				value: 4,
+				label: '近十五天'
+			},
+			{
+				data: {
+					beginTime: fn(timerNum6),
+					endTime: fn(timerNum1)
+				},
+				value: 5,
+				label: '近三十天'
+			}
+		]
+
+		return newarr
+	}else if(datenum == 3){
+		return {
+			beginTime: fn(timerNum1),
+			endTime: fn(timerNum1)
+		}
+	}else{
 		return arr
 	}
 };

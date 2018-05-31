@@ -118,7 +118,7 @@ function getExcelFileName() {
 		curSecond = "0" + curSecond;
 	}
 	var fileName = + curYear + curMonth + curDate + "_"
-		+ curHour + curMinute + curSecond + ".xls";
+		+ curHour + curMinute + curSecond + ".xls"; 
 	return fileName;
 }
 //执行导出程序

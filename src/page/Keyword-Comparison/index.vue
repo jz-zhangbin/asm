@@ -160,7 +160,7 @@
 			<div class="kc_center">
 				<p>选择APP</p>
 				<div class="kc_ct_search">
-					<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor" @focus="focusInput" @blur="blurInput">
+					<input type="text" placeholder="请输入应用名称" v-model="APPinfor" @focus="focusInput" @blur="blurInput">
 					<div class="kc_over">
 						<ul>
 							<li v-for="(ele,index) in list" :key="index" @click="routerClick(index)">
@@ -280,6 +280,14 @@
 							);
 						}
 						this.loading.close()
+
+						//如果搜索内容为空给一个提醒
+						if(this.list.length == 0) {
+							this.$message({
+								message: '对不起没有搜索到对应的APP！',
+								type: 'warning'
+							});
+						}
 					})
 			}
 		}

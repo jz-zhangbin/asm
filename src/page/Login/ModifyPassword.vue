@@ -257,15 +257,13 @@
 					this.identifyCode += this.identifyCodes[
 						this.randomNum(0, this.identifyCodes.length)
 					];
-				}
-				console.log(this.identifyCode);
+				} 
 			},
 			Mailboxjump() { //邮箱跳转
 				let leftNum = this.userEmil.indexOf('@')
 				let newEmail = this.userEmil.substring(leftNum)
 				let rightNum = newEmail.indexOf('.')
-				let email = newEmail.substring(1, rightNum)
-				console.log(email)
+				let email = newEmail.substring(1, rightNum) 
 				switch(email) {
 					case 'qq':
 						window.location.href = 'http://www.mail.qq.com'

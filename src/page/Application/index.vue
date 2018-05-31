@@ -367,7 +367,7 @@
 								<div class="sl_t_dis">
 									<i class="iconfont icon-wenhao-fill"> </i>
 									<span class="sl_t_is" style="width:260px;">
-										 流行度来源于App Store官方数据。该数据代表此关键词在App Store中的搜索流行度，数值最高为100%。
+										 流行度来源于App Store官方数据。该数据代表此关键词在App Store中的搜索流行度，数值最高为100。
 									</span>
 									<span class="sl_t_san"></span>
 								</div>
@@ -590,7 +590,11 @@
 		created() {
 			this.$store.dispatch('GET_COUNTRYLIST')
 				.then(() => {
-					this.countryNow = this.$store.state.Home.countryList[0].nationId
+					this.$store.state.Home.countryList.map((ele,index)=>{
+						if(ele.nationId == this.$route.query.country) {
+							this.countryNow = this.$store.state.Home.countryList[index].nationId
+						}
+					}) 
 				})
 
 			this.options3 = datefn(1)
@@ -886,6 +890,7 @@
 					}
 				})
 				this.searchKeyWord = ''//清空搜索内容
+				this.searchKeyWordTrue = ''
 			},
 
 			zTest(data) { //正则验证
@@ -999,7 +1004,6 @@
 				this.loadingfirst = true
 				this.tableData.list = []
 				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppHistoryKeywordList'
-				console.log(obj)
 				this.$https.post(url, JSON.stringify(obj))
 					.then((res) => { 
 						if(res.data.resultCode == 1000) {

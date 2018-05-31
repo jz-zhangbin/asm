@@ -307,7 +307,7 @@
 		},
 
 		mounted() {
-			this.options3 = datefn(1)
+			this.options3 = datefn(2)
 			this.value = this.options3[0].value
 		},
 
@@ -323,8 +323,7 @@
 				this.$emit('peiDate', value, this.sortDate)
 			},
 
-			paiClick(num, name) {
-				console.log(num, name) //排序的按钮
+			paiClick(num, name) { //排序的按钮
 				this.showList.map((ele, index) => {
 					ele.one = false;
 					ele.two = false;
@@ -368,7 +367,8 @@
 				let contentList = []
 				for(var i in res.ratioListByDate) {
 					dateList.push(i)
-					contentList.push(res.ratioListByDate[i]*100)
+					let ls = res.ratioListByDate[i]*10000
+					contentList.push(ls/100) 
 				}
 
 				
@@ -467,8 +467,8 @@
 					nationId: this.$parent.countryNow,
 					appStoreId: this.tableInner[i].appInfoModel.appStoreId,
 					keywordName: this.$parent.keyName,
-					begingTime: datefn(1)[this.value].data.beginTime,
-					endTime: datefn(1)[this.value].data.endTime
+					begingTime: datefn(2)[this.value].data.beginTime,
+					endTime: datefn(2)[this.value].data.endTime
 				}
 				
 				this.$https.post(url, JSON.stringify(obj))
