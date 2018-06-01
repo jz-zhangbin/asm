@@ -276,9 +276,10 @@
 				}
 				this.checkList[num].show = !this.checkList[num].show
 			},
+
 			submitClick() {
 				let emailTest = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g
-				let telTest = /^1[3|4|5|8][0-9]\d{4,8}$/
+				let telTest = /^[1][3,4,5,7,8][0-9]{9}$/
 				if(this.userName == '' || this.userEmail == '' || this.userTel == '' || this.userCompany == '' || this.userPosition == '' || this.userProduct == '') {
 					this.war = true
 					this.warData = '所填内容不能为空！'
@@ -294,6 +295,31 @@
 					this.warData = '手机格式不正确！'
 					return false
 				}
+				let obj = {
+					"name": this.userName,
+					"phone": this.userTel,
+					"email": this.userEmail,
+					"companyName": this.userCompany,
+					"companyPosition": this.userPosition,
+					"appName": this.userProduct,
+					"isADIImmediately": this.checkList[1].show ? 0 : 1
+					}
+				
+				this.Ajax(obj)
+			},
+
+			Ajax(obj) {
+				let url = '/api/v1/IntellSearchApi/Index/AdvertiseSendEmail'
+
+				this.$https.post(url , JSON.stringify(obj))
+				.then(res=> {
+					if(res.data.resultCode == 1000) {
+						this.success = true
+					}else{
+						this.war = true
+						this.warData = '发送失败'
+					}
+				})
 			}
 		}
 	}

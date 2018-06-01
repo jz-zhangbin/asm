@@ -64,7 +64,7 @@ let routes = [{
 
 export default new VueRouter({
   //去#号
-  mode: 'history',
+  //mode: 'history',
   routes
 })
  

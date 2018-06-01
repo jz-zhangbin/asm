@@ -351,7 +351,7 @@
 								<div class="sl_t_dis">
 									<i class="iconfont icon-wenhao-fill"> </i>
 									<span class="sl_t_is" style="width:260px;">
-										 搜索指数来源于App Store官方数据。该数据代表每个关键词在App Store的搜索热度，一般来说说，指数越高，则该词每天被搜索次数也越多
+										 搜索指数来源于App Store官方数据。该数据代表每个关键词在App Store的搜索热度，一般来说，指数越高，则该词每天被搜索次数也越多
 									</span>
 									<span class="sl_t_san"></span>
 								</div>

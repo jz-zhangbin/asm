@@ -300,7 +300,7 @@
 				<i class="st_user_i"></i>
 				<transition name="el-zoom-in-top">
 					<div class="st_user_list" @mouseout="show3 = false" v-show="show3" >
-						<router-link :to="{path: '/'}"><i class="iconfont icon-huodongzhongxin"></i>广告中心</router-link>
+						<a href="/admin"><i class="iconfont icon-huodongzhongxin"></i>广告中心</a>
 						<span @click="userOut"><i class="iconfont icon-tuichu"></i>退出登录</span>
 					</div>	
 				</transition> 

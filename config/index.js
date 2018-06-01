@@ -45,9 +45,10 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     //js&&css  build后的cdn路径
-    assetsPublicPath: '//static.adjuz.com/asmmaster/packages/',
-    //assetsPublicPath: '', 
-    assetsSubDirectory: '', 
+     assetsPublicPath: '//static.adjuz.com/asmmaster/packages/', 
+     assetsSubDirectory: '', 
+    // assetsSubDirectory: 'static',
+    // assetsPublicPath: './',
     /**
      * Source Maps文件
      */

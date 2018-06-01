@@ -21,7 +21,8 @@ var Cookie = {
             // 默认30天有效期
             expires = 30;
         }
-        var domain = options['domain'] || document.domain;
+        //var domain = options['domain'] || document.domain;
+        var domain = '.adjuz.net'
         var path = options['path'] || '/';
 
         if (!options['raw']) {

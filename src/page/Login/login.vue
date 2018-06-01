@@ -149,13 +149,14 @@ import reduceCookie from '@commonJS/reduceCookie'
 						
 					//创建cookie
 					let secureId = res.data.data.userId+this.userEmil
+					console.log(this.getmd5(secureId).toUpperCase())
 					let Adjuz_UserInfoNEW = { 
-							Adjuz_SecureId : this.getmd5(secureId),
+							Adjuz_SecureId : this.getmd5(secureId).toUpperCase(),
 							uid : res.data.data.userId,
 							urole : res.data.data.userRoles,
 							useremail : this.userEmil
 						}
-					this.$cookie.set('Adjuz_UserInfoNEW', qs.stringify(Adjuz_UserInfoNEW))
+					this.$cookie.set('Adjuz_UserInfoNEW', qs.stringify(Adjuz_UserInfoNEW) , {domain: 'www.baidu.com'})
 					//console.log(reduceCookie(this.$cookie.get('Adjuz_UserInfoNEW'))) 
 						this.$router.push('/home')
 					}else if(res.data.resultCode == 404) {
