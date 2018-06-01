@@ -5,7 +5,7 @@
 	@border: #dee2e6;
 	@btnhover: #1559c8;
 	.login_index {
-		min-height: 100%;
+		height: 100%;
 		margin-top: 60px;
 		.login_body {
 			min-width: 1200px;

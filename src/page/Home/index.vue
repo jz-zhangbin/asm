@@ -147,7 +147,7 @@
     overflow-y: auto;
     height: 0;  
     ul {
-      width: 430px; 
+      width: 460px; 
       margin-left: 14px; 
     }
     li {
@@ -416,7 +416,7 @@
             <img :src='countryNow.nationImgUrl' alt="">
             <i @click="countryClick"></i>
           </div>
-          <input type="text" placeholder="请输入关键词" id="home_search" v-model="keyWord" @input="keyWordClick"   >
+          <input type="text" placeholder="请输入关键词" id="home_search" v-model="keyWord" @input="keyWordClick"  @keydown.40.prevent="lowerInput" @keydown.38.prevent="upInput">
           <div class="home_country" @mouseover="countryover" @mouseleave="countryliover">
             <ul class="btnclass">  
               <li @click="countryliClick(index)" v-for="(ele,index) in countryList" :key="index">
@@ -558,7 +558,8 @@ export default {
       countryNow: {},
       keyWord: '',
       list: [], 
-      scrooll: null
+      scrooll: null,
+      listNum: 0,
     };
   },
 
@@ -580,19 +581,20 @@ export default {
   updated() {},
 
   mounted() {
+    let that = this
+    
+    //搜索列表的消失事件
     $(document).bind("click", function(e) {
 				var target = $(e.target);
 				if(target.closest(".btnclass").length == 0) {
-					$(".home_keyword").animate({
-							height: "0px"
-						},
-						200
-					);
+          that.listNum = 0 //清空计数
+					$(".home_keyword").css('height',0)
 				}
       });
        
       window.addEventListener('scroll', this.handleScroll);
 
+      //搜索列表的回车事件
       let _this = this
       $("#home_search").keydown(function(e){
             var curKey = e.which;
@@ -608,7 +610,7 @@ export default {
   },
 
   methods: {
-    handleScroll() { 
+    handleScroll() {//导航条变色
 				var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop; 
 				if(scrollTop >= 60 && scrollTop <= 600) {
           let opacity = (scrollTop - 60) / 540
@@ -619,6 +621,7 @@ export default {
     countryClick() {
       this.domHeight('home_country' , 200) 
     },
+
     countryfouse() {
       setTimeout(() => {
         if (!this.conuntryShow) {
@@ -626,30 +629,41 @@ export default {
         }
       }, 300);
     },
+
     countryover() {
       this.conuntryShow = true;
     },
+
     countryliover() {
       this.conuntryShow = false;
       this.domHeight('home_country' , 0) 
     },
+
     countryliClick(index) {
       this.countryNow = this.$store.state.Home.countryList[index]
       this.domHeight('home_country' , 0) 
     }, 
-    keyWordClick() { 
+
+    keyWordClick() { //搜索框修改
       if(this.keyWord != '') {
+         this.listNum = 0 //初始化上下按键计数器
+         $('.home_keyword ul li').css('background' , 'none')
          this.Ajax()
       } 
     },
+
     keyWordListClick(index) {//列表跳转
       this.domHeight('home_keyword' , 0) 
       this.$router.push({path: '/rankingDetails-List' , query : { key : this.list[index] , country: this.countryNow.nationId} })					
     },
+
     routerKeyWordClick() {//点击跳转
       this.domHeight('home_keyword' , 0) 
-      this.$router.push({path: '/rankingDetails-List' , query : { key : this.keyWord , country: this.countryNow.nationId} })					
+      if(this.keyWord != ''){
+           this.$router.push({path: '/rankingDetails-List' , query : { key : this.keyWord , country: this.countryNow.nationId} })					
+      } 
     },
+
     domHeight(dom, num) {
 				$("." + dom).animate({
 						height: num + "px"
@@ -657,21 +671,40 @@ export default {
 					300
 				);
     },
-    Ajax() {//目前接口不正确
+
+    lowerInput() {//向下按键
+      if(this.list.length > 0 && this.listNum < this.list.length) {
+        this.listNum ++  
+        $('.home_keyword ul li').eq(this.listNum - 1 ).css('background' , '#f7f7f7').siblings().css('background' , 'none')
+        this.keyWord = $('.home_keyword ul li').eq(this.listNum - 1 ).html()
+          if(this.listNum == this.list.length) {
+            this.listNum = 0
+        } 
+      }
+    },
+
+    upInput() { //向上按键
+      if(this.list.length > 0 && this.listNum < this.list.length) {
+        if(this.listNum == 0) {
+            this.listNum = this.list.length
+        }
+        this.listNum -- 
+        $('.home_keyword ul li').eq(this.listNum - 1 ).css('background' , '#f7f7f7').siblings().css('background' , 'none')
+        this.keyWord = $('.home_keyword ul li').eq(this.listNum - 1 ).html()  
+      }
+    },
+
+    Ajax() {//关键词搜索
 				let url = '/api/v1/IntellSearchApi/Index/GetKeywords?nationId=' + this.countryNow.nationId + '&count=10' + '&searchContent=' + this.keyWord
 				this.$https.get(url)
 					.then((res) => {
             this.list = res.data.data.list 
             let ls = this.list.length * 30 
             if(this.list.length > 6) {
-              ls = '200'
+              ls = '300'
             } 
 						if(res.data.resultCode == 1000) {
-							$(".home_keyword").animate({
-									height: ls+"px"
-								},
-								200
-							);
+							$(".home_keyword").css('height' , ls+"px") 
 						} 
 					})
 			}  

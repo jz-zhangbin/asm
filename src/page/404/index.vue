@@ -1,5 +1,5 @@
 <style lang='less' scoped>
- @color: #2d76ed;
+    @color: #2d76ed;
 	@bgk: #f7f7f7;
 	@font_color: #6c757d;
 	@border: #dee2e6;

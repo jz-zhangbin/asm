@@ -4,8 +4,7 @@
 	.rl_index {
 		min-height: 100%;
 		margin-bottom: 20px;
-		margin-top: 60px;
-		.sl_main {}
+		margin-top: 60px; 
 		.sl_center {
 			min-width: 1200px;
 			padding: 36px 45px 0 45px;
@@ -37,6 +36,7 @@
 				top: 50px;
 			}
 		}
+
 		.sl_loading {
 			min-width: 1200px;
 			margin: 25px auto 0;
@@ -47,15 +47,17 @@
 				margin-top: 14px;
 			}
 		}
+
 		.sl_table {
 			min-width: 1200px;
 			padding: 0 45px;
 			box-sizing: border-box;
-			min-height: 600px;
+			min-height: 100px;
 			table {
 				box-shadow: 0 2px 2px @boxshado;
 			}
 		}
+		
 		.sl_from_top {
 			position: fixed;
 			display: none;
@@ -201,10 +203,10 @@
 			<!-- 用户登录 -->
 			<usersign v-if="!userType"></usersign>
 			<!-- loading图片 -->
-			<div class="sl_loading">
+			<!-- <div class="sl_loading">
 				<img src="../../images/components/loading.gif" alt="" v-if="loadingShow">
 				<p v-if="loadingShow">努力加载中</p>
-			</div>
+			</div> -->
 			<!-- footer -->
 			<div class="sl_from_top" @click="fromTop">
 				<i class="iconfont icon-ico-top1"></i>
@@ -229,7 +231,14 @@
 				bannerName: '竞价热词榜',
 				countryNow: "", //选中的国家
 				tableData: [], //表格数据  
-				loadingfirst: true
+				//loadingfirst: true
+				loading: null,
+				loadingopaction: {
+					lock: true,
+					text: 'Loading',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+				}
 			};
 		},
 
@@ -250,10 +259,10 @@
 				.then(() => {
 					this.countryNow = this.$store.state.Home.countryList[0].nationId
 
-					//this.loading = this.$loading(this.loadingopaction)
+					this.loading = this.$loading(this.loadingopaction)
 					this.AjaxInit(this.countryNow, 1)
 						.then(res => {
-							//this.loading.close()
+							this.loading.close()
 							this.loadingfirst = false
 							this.tableData = res.data.data
 							this.initloading = true
@@ -336,8 +345,10 @@
 			},
 
 			changeFun(countryNow) { //切换国家
+			this.loading = this.$loading(this.loadingopaction)
 				this.AjaxInit(countryNow, 1)
 					.then(res => {
+						this.loading.close()
 						this.tableData = res.data.data
 						this.initloading = true
 					})

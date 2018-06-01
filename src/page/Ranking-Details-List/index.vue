@@ -305,8 +305,6 @@
 					}) 
 				})
 
-			console.log(this.$store.state.Home.countryList)
-
 			this.AJaxKeyWord(this.$route.query.country)
 
 			this.AjaxHistoryList(1, this.$route.query.country, datefn(3).beginTime, datefn(3).endTime, 'ratio', 0)
@@ -341,6 +339,7 @@
 					},
 					orderByParDic: sortObj
 				}
+
 				this.$https.post(GetHistoryAppListUrl, JSON.stringify(data))
 					.then(res => {
 						this.loadingfirst = false
@@ -359,6 +358,7 @@
 					nationId,
 					keywordName: this.$route.query.key
 				}
+
 				this.$https.post(keyWordDateUrl, JSON.stringify(obj))
 					.then(res => {
 						if(res.data.resultCode == 1000) { //有内容
@@ -390,6 +390,7 @@
 						endTime:  datefn(0).endTime
 					}
 				}
+				
 				this.$https.post(url, JSON.stringify(obj))
 					.then(res => { 
 						this.tableMoreCode = res.data

@@ -6,7 +6,7 @@
 	@btnhover: #1559c8;
 	.register_index {
 		margin-top: 60px;
-		min-height: 100%;
+		height: 100%;
 		.register_body {
 			min-width: 1200px;
 			min-height: 100%;
