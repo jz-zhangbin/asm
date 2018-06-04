@@ -5,16 +5,15 @@
 	@border: #dee2e6;
 	@btnhover: #1559c8;
 	.login_index {
-		height: 100%;
+		min-height: 100%;
 		margin-top: 60px;
+		background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0 no-repeat, url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right no-repeat;
 		.login_body {
 			min-width: 1200px;
-			min-height: 100%;
 			display: flex;
 			justify-content: center;
 			box-sizing: border-box;
 			padding-top: 120px;
-			background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0 no-repeat, url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right no-repeat;
 		}
 		.login_box {
 			width: 400px;

@@ -7,7 +7,8 @@
 		}
 		.table_data_tr {
 			td {
-				height: 60px !important;
+				//height: 60px !important;
+				padding: 9px 0;
 				&.rou {
 					color: @color;
 					cursor: pointer;

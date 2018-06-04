@@ -5,20 +5,19 @@
 @border: #dee2e6;
 @btnhover: #1559c8;
 .acitiva_index {
-  height: 100%;
-  margin-top: 60px;
+  min-height: 100%;
+  margin-top: 60px; 
+    background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0
+        no-repeat,
+      url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right
+        no-repeat;
   .acitiva_box {
-    min-width: 1200px;
-    min-height: 100%;
+    min-width: 1200px; 
     display: flex;
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
     padding-top: 120px;
-    background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0
-        no-repeat,
-      url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right
-        no-repeat;
     h1 {
       height: 54px;
       text-align: center;

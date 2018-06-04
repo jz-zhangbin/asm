@@ -162,7 +162,7 @@
 					</tr>
 					<tr v-for="(ele,index) in tableData" :key="index" class="table_td_cont">
 						<td style="width: 8%">{{index+1}}</td>
-						<td style="width: 32%" class="sl_dt_name" @click="routerLickClick(ele.keywordName)">{{ele.keywordName}}</td>
+						<td style="width: 32%" class="sl_dt_name a_router" @click="routerLickClick(ele.keywordName)">{{ele.keywordName}}</td>
 						<td style="width: 8%">{{ele.popularityIndex}}</td>
 						<td style="width: 22%">{{ele.searchIndex}}</td>
 						<td style="width: 22%" class="sl_dt_img">

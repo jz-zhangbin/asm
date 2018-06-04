@@ -6,7 +6,8 @@
 	@btnhover: #1559c8;
 	.register_index {
 		margin-top: 60px;
-		height: 100%;
+		min-height: 100%;
+		background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0 no-repeat, url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right no-repeat;
 		.register_body {
 			min-width: 1200px;
 			min-height: 100%;
@@ -14,7 +15,6 @@
 			justify-content: center;
 			box-sizing: border-box;
 			padding-top: 80px;
-			background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0 no-repeat, url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right no-repeat;
 		}
 		.register_box {
 			width: 400px;

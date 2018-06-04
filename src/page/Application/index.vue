@@ -118,14 +118,14 @@
 			padding: 27px 0 0 23px;
 			position: relative;
 			.apl_bos_box {
-				margin-right: 40px;
+				margin-right: 20px;
 				p {
 					margin-bottom: 10px;
 				}
 				input {
 					border: 1px solid @border;
 					border-radius: 4px;
-					width: 89px;
+					width: 80px;
 					height: 30px;
 					margin-right: 16px;
 					box-sizing: border-box;
@@ -167,7 +167,7 @@
 				border-radius: 4px;
 				position: absolute;
 				overflow: hidden;
-				top: 50px;
+				top: 55px;
 				right: 20px;
 				overflow: hidden;
 				.apl_bos_input {
@@ -312,14 +312,7 @@
 						<input type="text" placeholder="最小值" v-model="seacrchData.minSearchIndex">
 						<input type="text" placeholder="最大值" v-model="seacrchData.maxSearchIndex">
 					</div>
-				</div>
-				<!-- <div class="apl_bos_box">
-					<p>展示量占比(%)</p>
-					<div>
-						<input type="text" placeholder="最小值" v-model="seacrchData.minRatio">
-						<input type="text" placeholder="最大值" v-model="seacrchData.maxRatio">
-					</div>
-				</div> -->
+				</div> 
 				<div class="apl_bos_box">
 					<p>流行度</p>
 					<div>
@@ -327,6 +320,13 @@
 						<input type="text" placeholder="最大值" v-model="seacrchData.maxAppLength">
 					</div>
 				</div>
+				<!-- <div class="apl_bos_box">
+					<p>竞价APP数量</p>
+					<div>
+						<input type="text" placeholder="最小值" v-model="seacrchData.minRatio">
+						<input type="text" placeholder="最大值" v-model="seacrchData.maxRatio">
+					</div>
+				</div> -->
 				<button @click="btnNullClick">清空</button>
 				<button @click="searchMoreClick" class="btn_null">搜索</button>
 				<div class="apl_bos_right">

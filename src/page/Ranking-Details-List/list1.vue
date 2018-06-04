@@ -32,7 +32,7 @@
 					//表格内容
 					&.table_data_tr {
 						td {
-							height: 80px;
+							padding: 13px 0;
 						}
 						.table_datr_td {
 							cursor: pointer;

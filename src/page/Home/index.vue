@@ -163,7 +163,8 @@
   .home_keyword_box{
     height: 95px;
     position: absolute;
-    top: 476px;
+    top: 416px;
+    bottom: 0;
     left: 0;
     right: 0;
     background: rgba(30, 40, 50, 0.5);  
@@ -349,8 +350,7 @@
       display: flex;
       justify-content: space-between;
       section{
-        width: 224px;
-        height: 300px; 
+        width: 224px;  
         box-sizing: border-box;
         display: flex;
         flex-direction: column; 
@@ -438,11 +438,11 @@
       <!-- 关键词个数 -->
       <div class="home_keyword_box">  
         <p>
-          <span>2,036,213</span>
+          <span>{{Appnum | numtoLocaleString}}</span>
           <span>应用收录</span>
         </p>
         <p>
-          <span>1,621,556</span>
+          <span>{{Wordnum | numtoLocaleString}}</span>
           <span>关键词</span>
         </p>
       </div>
@@ -560,6 +560,8 @@ export default {
       list: [], 
       scrooll: null,
       listNum: 0,
+      Appnum: 1000000,
+      Wordnum: 1000000
     };
   },
 
@@ -579,6 +581,13 @@ export default {
   },
 
   updated() {},
+
+  filters: {
+    numtoLocaleString: function(value) {
+      value = value.toLocaleString()
+      return value
+    }
+  },
 
   mounted() {
     let that = this
@@ -602,7 +611,10 @@ export default {
                 _this.routerKeyWordClick()
                 return false; 
             }
-        });
+        }); 
+        
+        this.keyWordNum('Appnum' , 2036213 , 'timer1') 
+        this.keyWordNum('Wordnum' , 1621556 , 'timer2') 
   },  
 
    destroyed () {
@@ -610,6 +622,17 @@ export default {
   },
 
   methods: {
+    keyWordNum(num , maxNum , timer) { //数字滚动增加
+      let _this = this
+       timer = setInterval(()=>{ 
+           _this[num] += 12341
+          if(_this[num] >= maxNum) {
+            clearInterval(timer)
+            _this[num] = maxNum
+          }   
+        },10)
+    },
+
     handleScroll() {//导航条变色
 				var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop; 
 				if(scrollTop >= 60 && scrollTop <= 600) {
