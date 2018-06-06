@@ -6,8 +6,7 @@ const vueLoaderConfig = require('./vue-loader.conf')
 var webpack = require("webpack")
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
-}
-
+} 
 
 //'element-ui' : 'ELEMENT',
 module.exports = {
@@ -36,13 +35,14 @@ module.exports = {
       '@components': resolve('src/components'),
       '@page': resolve('src/page'),
       '@commonJS': resolve('src/base/commonJS'),
+      '@commonCSS': resolve('src/base/commonCSS'),
       '@router': resolve('src/base/router'),
       '@vuex': resolve('src/base/vuex'),
       '@axios': resolve('src/base/axios'),
     }
   },
   module: {
-    rules: [
+    rules: [ 
       {
         test: /\.vue$/,
         loader: 'vue-loader',

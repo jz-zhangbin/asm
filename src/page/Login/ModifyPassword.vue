@@ -1,145 +1,148 @@
 <style lang='less' scoped>
-	@color: #2d76ed;
-	@bgk: #f7f7f7;
-	@font_color: #6c757d;
-	@border: #dee2e6;
-	@btnhover: #1559c8;
-	.pass_index {
-		min-height: 100%;
-		margin-top: 60px;
-		background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0 no-repeat, url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right no-repeat;	
-		.login_body {
-			min-width: 1200px;
-			min-height: 100%;
-			display: flex;
-			justify-content: center;
-			box-sizing: border-box;
-			padding-top: 120px;
-		}
-		.login_box {
-			width: 400px;
-			h1 {
-				height: 54px;
-				text-align: center;
-				font-size: 24px;
-			}
-			.login_input {
-				border: 1px solid @border;
-				width: 400px;
-				height: 42px;
-				display: flex;
-				margin-bottom: 24px;
-				border-radius: 6px;
-				box-sizing: border-box;
-				padding: 0 14px;
-				align-items: center;
-				input {
-					width: 330px;
-					margin-left: 10px;
-					border: none;
-					outline: none;
-					height: 38px;
-					&::-webkit-input-placeholder {
-						color: #9a9a9a;
-					}
-				}
-			}
-			.login_input_war {
-				border: none;
-				background: #fff4f4;
-				color: #f62d51;
-			}
-			.login_btn {
-				margin-top: 10px;
-				background: @color;
-				height: 45px;
-				color: #fff;
-				font-size: 16px;
-				cursor: pointer;
-				text-align: center;
-				justify-content: center;
-				line-height: 40px;
-				&:hover {
-					background: @btnhover;
-				}
-			}
-			.code {
-				display: flex;
-				margin-left: 10px;
-			}
-			p {
-				margin-left: 12px;
-				color: #36bea6;
-				cursor: pointer;
-				line-height: 42px;
-			}
-			.login_input_two {
-				border: none;
-				height: 40px;
-				margin-bottom: 20px;
-				display: flex;
-				.login_pass {
-					display: flex;
-					height: 42px;
-					align-items: center;
-					border: 1px solid @border;
-					border-radius: 6px;
-					width: 148px;
-					box-sizing: border-box;
-					padding: 0 14px;
-					input {
-						width: 90px;
-						outline: none;
-						border: none;
-						height: 36px;
-						margin-left: 10px;
-					}
-				}
-			}
-		}
-		.login_email_btn {
-			border: 1px solid @border;
-			width: 400px;
-			height: 42px;
-			display: flex;
-			margin-bottom: 24px;
-			border-radius: 6px;
-			box-sizing: border-box;
-			padding: 0 14px;
-			align-items: center;
-			margin-top: 20px;
-			background: @color;
-			height: 45px;
-			color: #fff;
-			font-size: 16px;
-			cursor: pointer;
-			text-align: center;
-			justify-content: center;
-			line-height: 40px;
-			&:hover {
-				background: @btnhover;
-			}
-		}
-		.login_email {
-			width: 400px;
-			h2 {
-				text-align: center;
-				font-size: 24px;
-				color: @color;
-				margin-bottom: 20px;
-			}
-			p {
-				width: 400px;
-				font-size: 16px;
-				line-height: 30px;
-				span {
-					color: #f62d51;
-					cursor: pointer;
-					text-decoration: underline;
-				}
-			}
-		}
-	}
+@color: #2d76ed;
+@bgk: #f7f7f7;
+@font_color: #6c757d;
+@border: #dee2e6;
+@btnhover: #1559c8;
+.pass_index {
+  min-height: 100%;
+  margin-top: 60px;
+  background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0
+      no-repeat,
+    url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right
+      no-repeat;
+  .login_body {
+    min-width: 1200px;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    padding-top: 120px;
+  }
+  .login_box {
+    width: 400px;
+    h1 {
+      height: 54px;
+      text-align: center;
+      font-size: 24px;
+    }
+    .login_input {
+      border: 1px solid @border;
+      width: 400px;
+      height: 42px;
+      display: flex;
+      margin-bottom: 24px;
+      border-radius: 6px;
+      box-sizing: border-box;
+      padding: 0 14px;
+      align-items: center;
+      input {
+        width: 330px;
+        margin-left: 10px;
+        border: none;
+        outline: none;
+        height: 38px;
+        &::-webkit-input-placeholder {
+          color: #9a9a9a;
+        }
+      }
+    }
+    .login_input_war {
+      border: none;
+      background: #fff4f4;
+      color: #f62d51;
+    }
+    .login_btn {
+      margin-top: 10px;
+      background: @color;
+      height: 45px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+      justify-content: center;
+      line-height: 40px;
+      &:hover {
+        background: @btnhover;
+      }
+    }
+    .code {
+      display: flex;
+      margin-left: 10px;
+    }
+    p {
+      margin-left: 12px;
+      color: #36bea6;
+      cursor: pointer;
+      line-height: 42px;
+    }
+    .login_input_two {
+      border: none;
+      height: 40px;
+      margin-bottom: 20px;
+      display: flex;
+      .login_pass {
+        display: flex;
+        height: 42px;
+        align-items: center;
+        border: 1px solid @border;
+        border-radius: 6px;
+        width: 148px;
+        box-sizing: border-box;
+        padding: 0 14px;
+        input {
+          width: 90px;
+          outline: none;
+          border: none;
+          height: 36px;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+  .login_email_btn {
+    border: 1px solid @border;
+    width: 400px;
+    height: 42px;
+    display: flex;
+    margin-bottom: 24px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    padding: 0 14px;
+    align-items: center;
+    margin-top: 20px;
+    background: @color;
+    height: 45px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+    line-height: 40px;
+    &:hover {
+      background: @btnhover;
+    }
+  }
+  .login_email {
+    width: 400px;
+    h2 {
+      text-align: center;
+      font-size: 24px;
+      color: @color;
+      margin-bottom: 20px;
+    }
+    p {
+      width: 400px;
+      font-size: 16px;
+      line-height: 30px;
+      span {
+        color: #f62d51;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+}
 </style>
 <template>
 	<div class="pass_index">
@@ -185,102 +188,103 @@
 </template>
 
 <script>
-	export default {
-		name: "codetest",
-		data() {
-			return {
-				identifyCodes: "1234567890",
-				identifyCode: "",
-				war: false, //错误提醒
-				warData: "",
-				userEmil: "",
-				userWorld: "",
-				emailShow: true, //是否需要跳转邮箱 
-			};
-		},
-		mounted() {
-			this.identifyCode = "";
-			this.makeCode(this.identifyCodes, 4);
+export default {
+  name: "codetest",
+  data() {
+    return {
+      identifyCodes: "1234567890",
+      identifyCode: "",
+      war: false, //错误提醒
+      warData: "",
+      userEmil: "",
+      userWorld: "",
+      emailShow: true //是否需要跳转邮箱
+    };
+  },
+  mounted() {
+    this.identifyCode = "";
+    this.makeCode(this.identifyCodes, 4);
 
-			$(".blur_input").on("focus", function() {
-				$(this)
-					.parent()
-					.css("border-color", "#2d76ed");
-			});
-			$(".blur_input").on("blur", function() {
-				$(this)
-					.parent()
-					.css("border-color", "#dee2e6");
-			});
-		},
-		methods: {
-			loginSubmit() {
-				if(this.userEmil == "" || this.userWorld == '') {
-					this.war = true;
-					this.warData = "邮箱或验证码不能为空！";
-					return false
-				}
-				if(this.userWorld != this.identifyCode) {
-					this.war = true;
-					this.warData = "您输入的验证码不正确！";
-					return false
-				} 
-				this.Ajax({
-					userEmail: this.userEmil
-				})
-			},
+    $(".blur_input").on("focus", function() {
+      $(this)
+        .parent()
+        .css("border-color", "#2d76ed");
+    });
+    $(".blur_input").on("blur", function() {
+      $(this)
+        .parent()
+        .css("border-color", "#dee2e6");
+    });
+  },
+  methods: {
+    loginSubmit() {
+      if (this.userEmil == "" || this.userWorld == "") {
+        this.war = true;
+        this.warData = "邮箱或验证码不能为空！";
+        return false;
+      }
+      if (this.userWorld != this.identifyCode) {
+        this.war = true;
+        this.warData = "您输入的验证码不正确！";
+        return false;
+      }
+      this.Ajax({
+        userEmail: this.userEmil
+      });
+    },
 
-			Ajax(obj) {
-				let url = '/api/v1/IntellSearchApi/UserInfo/UserResetPwdEmail'
+    Ajax(obj) {
+      let url = "/api/v1/IntellSearchApi/UserInfo/UserResetPwdEmail";
 
-				this.$https.post(url , JSON.stringify(obj))
-				.then(res=> {
-					if(res.data.resultCode == 2400) {
-						this.war = true;
-						this.warData = res.data.message;
-					}
-					if(res.data.resultCode == 1000) {
-						this.emailShow = false
-					}
-				})
-			},
+      this.$https.post(url, JSON.stringify(obj))
+      .then(res => {
+        if (res.data.resultCode == 2400) {
+          this.war = true;
+          this.warData = res.data.message;
+        }
+        if (res.data.resultCode == 1000) {
+          this.emailShow = false;
+        }
+      });
+    },
 
-			randomNum(min, max) {
-				return Math.floor(Math.random() * (max - min) + min);
-			},
-			refreshCode() {
-				this.identifyCode = "";
-				this.makeCode(this.identifyCodes, 4);
-			},
-			makeCode(o, l) {
-				for(let i = 0; i < l; i++) {
-					this.identifyCode += this.identifyCodes[
-						this.randomNum(0, this.identifyCodes.length)
-					];
-				} 
-			},
-			Mailboxjump() { //邮箱跳转
-				let leftNum = this.userEmil.indexOf('@')
-				let newEmail = this.userEmil.substring(leftNum)
-				let rightNum = newEmail.indexOf('.')
-				let email = newEmail.substring(1, rightNum) 
-				switch(email) {
-					case 'qq':
-						window.location.href = 'http://www.mail.qq.com'
-						break;
-					case '163':
-						window.location.href = 'http://www.mail.163.com'
-						break;
-					case 'sina':
-						window.location.href = 'https://mail.sina.com.cn'
-						break;
-					case 'sohu':
-						window.location.href = 'https://mail.sohu.com/fe/#/login'
-						break;
-					default:
-						window.location.href = 'http://www.mail.163.com'
-				}
-			}
-		}
-	};
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+    },
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
+      }
+    },
+    Mailboxjump() {
+      //邮箱跳转
+      let leftNum = this.userEmil.indexOf("@");
+      let newEmail = this.userEmil.substring(leftNum);
+      let rightNum = newEmail.indexOf(".");
+      let email = newEmail.substring(1, rightNum);
+      switch (email) {
+        case "qq":
+          window.location.href = "http://www.mail.qq.com";
+          break;
+        case "163":
+          window.location.href = "http://www.mail.163.com";
+          break;
+        case "sina":
+          window.location.href = "https://mail.sina.com.cn";
+          break;
+        case "sohu":
+          window.location.href = "https://mail.sohu.com/fe/#/login";
+          break;
+        default:
+          window.location.href = "http://www.mail.163.com";
+      }
+    }
+  }
+};
 </script>

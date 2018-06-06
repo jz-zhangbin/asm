@@ -6,10 +6,10 @@ import https from '@axios'
 Vue.prototype.$https = https
 
 import ls from '@commonJS/localStorage'
-Vue.prototype.$ls = ls 
+Vue.prototype.$ls = ls
 
 import cookie from '@commonJS/cookie'
-Vue.prototype.$cookie = cookie 
+Vue.prototype.$cookie = cookie
 /**
  * 
     "axios": "^0.18.0", 
@@ -24,8 +24,8 @@ import searchTop from '@components/Search-Top'
 import SIdentify from './components/canvas'
 import VueParticles from '@components/vue-particles'
 import Footer from '@components/footer'
-Vue.component('v-footer' , Footer)
-Vue.component('vue-particles' , VueParticles)
+Vue.component('v-footer', Footer)
+Vue.component('vue-particles', VueParticles)
 Vue.component('s-identify', SIdentify)
 Vue.component('v-search-top', searchTop)
 
@@ -38,19 +38,19 @@ Vue.prototype.$echarts = echarts
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
-router.afterEach((to,from,next) => {
-    window.scrollTo(0,0);
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0);
 });
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-	el: '#app',
-	router,
-	store,
-	components: {
-		App
-	},
-	template: '<App/>'
+  el: '#app',
+  router,
+  store,
+  components: {
+    App
+  },
+  template: '<App/>'
 })

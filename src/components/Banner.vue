@@ -1,22 +1,22 @@
 <style lang='less' scoped>
-	//公共banner图
-	//2018-4-23-zb
-	.rl_body {
-		background-image: url(http://static.adjuz.com/asmmaster/img/sl_bgm.png);
-		background-repeat: no-repeat;
-		background-size: 100% 100%;
-		height: 130px;
-		position: relative;
-		overflow: hidden;
-		h1 {
-			position: absolute;
-			top: 52px;
-			left: 50%;
-			transform: translateX(-50%);
-			color: #fff;
-			font-size: 27px;
-		}
-	}
+//公共banner图
+//2018-4-23-zb
+.rl_body {
+  background-image: url(http://static.adjuz.com/asmmaster/img/sl_bgm.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 130px;
+  position: relative;
+  overflow: hidden;
+  h1 {
+    position: absolute;
+    top: 52px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 27px;
+  }
+}
 </style>
 <template>
 	<div class="rl_body min-width">
@@ -27,25 +27,25 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {};
-		},
-		props: {
-			bannerName: {}
-		},
-		components: {},
+export default {
+  data() {
+    return {};
+  },
+  props: {
+    bannerName: {}
+  },
+  components: {},
 
-		computed: {},
+  computed: {},
 
-		created() {},
+  created() {},
 
-		updated() {},
+  updated() {},
 
-		mounted() {},
+  mounted() {},
 
-		destroyed() {},
+  destroyed() {},
 
-		methods: {}
-	};
+  methods: {}
+};
 </script>

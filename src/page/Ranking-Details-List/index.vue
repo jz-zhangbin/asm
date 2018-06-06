@@ -1,111 +1,111 @@
 <style lang='less' scoped>
-	@import url('../../base/commonJS/css.less');
-	.rdl_index {
-		min-height: 100%;
-		margin-bottom: 20px;
-		margin-top: 60px;
-		width: 100%;
-		color: @font_color;
-		.rdl_name {
-			min-width: 1200px;
-			padding: 25px 45px;
-			box-sizing: border-box;
-			div {
-				border-bottom: 1px solid @border;
-				font-size: 24px;
-				height: 40px;
-				width: 100%;
-			}
-		}
-		.rdl_body {
-			min-width: 1200px;
-			box-sizing: border-box;
-			padding: 0 45px;
-		}
-		.rdl_body_top {
-			width: 100%;
-			display: flex;
-			margin-bottom: 25px;
-			p {
-				line-height: 34px;
-				margin-right: 11px;
-			}
-		}
-		.rdl_body_table_top {
-			width: 100%;
-			box-shadow: 0 2px 2px @boxshado;
-		}
-		.sl_table {
-			min-width: 100%;
-			box-sizing: border-box;
-			table {
-				tr {
-					td,
-					th {
-						border: 1px solid @border;
-					}
-				}
-			}
-		}
-		.sl_dt_img {
-			div {
-				display: flex;
-				align-items: center;
-				justify-content: center !important;
-			}
-		}
-		.rdl_key_list {
-			display: flex;
-			flex-wrap: wrap;
-			box-sizing: border-box;
-			padding: 20px 20px 0px 0;
-			max-width: 500px;
-			overflow: hidden;
-			span {
-				display: block;
-				border: 1px solid @border;
-				padding: 10px 12px;
-				border-radius: 6px;
-				cursor: pointer;
-				margin: 2px 0 10px 20px;
-				float: left;
-			}
-		}
-		// table切换
-		.rdl_body_nav {
-			width: 100%;
-			margin-top: 60px;
-			section {
-				display: flex;
-				height: 32px;
-				justify-content: center;
-				span {
-					display: block;
-					margin-right: 45px;
-					font-size: 18px;
-					padding: 0 6px;
-					cursor: pointer;
-					&.rdl_section_is {
-						border-bottom: 2px solid @color;
-						color: @color;
-					}
-				}
-			}
-		}
-	}
+@import url("../../base/commonCSS/table.less");
+.rdl_index {
+  min-height: 100%;
+  margin-bottom: 20px;
+  margin-top: 60px;
+  width: 100%;
+  color: @font_color;
+  .rdl_name {
+    min-width: 1200px;
+    padding: 25px 45px;
+    box-sizing: border-box;
+    div {
+      border-bottom: 1px solid @border;
+      font-size: 24px;
+      height: 40px;
+      width: 100%;
+    }
+  }
+  .rdl_body {
+    min-width: 1200px;
+    box-sizing: border-box;
+    padding: 0 45px;
+  }
+  .rdl_body_top {
+    width: 100%;
+    display: flex;
+    margin-bottom: 25px;
+    p {
+      line-height: 34px;
+      margin-right: 11px;
+    }
+  }
+  .rdl_body_table_top {
+    width: 100%;
+    box-shadow: 0 2px 2px @boxshado;
+  }
+  .sl_table {
+    min-width: 100%;
+    box-sizing: border-box;
+    table {
+      tr {
+        td,
+        th {
+          border: 1px solid @border;
+        }
+      }
+    }
+  }
+  .sl_dt_img {
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center !important;
+    }
+  }
+  .rdl_key_list {
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    padding: 20px 20px 0px 0;
+    max-width: 500px;
+    overflow: hidden;
+    span {
+      display: block;
+      border: 1px solid @border;
+      padding: 10px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 2px 0 10px 20px;
+      float: left;
+    }
+  }
+  // table切换
+  .rdl_body_nav {
+    width: 100%;
+    margin-top: 60px;
+    section {
+      display: flex;
+      height: 32px;
+      justify-content: center;
+      span {
+        display: block;
+        margin-right: 45px;
+        font-size: 18px;
+        padding: 0 6px;
+        cursor: pointer;
+        &.rdl_section_is {
+          border-bottom: 2px solid @color;
+          color: @color;
+        }
+      }
+    }
+  }
+}
 </style>
 <style lang='less'>
-	.rdl_index {
-		.el-select {
-			width: 114px;
-			height: 34px;
-		}
-		.el-input,
-		.el-input--suffix,
-		.el-input__inner {
-			height: 34px;
-		}
-	}
+.rdl_index {
+  .el-select {
+    width: 114px;
+    height: 34px;
+  }
+  .el-input,
+  .el-input--suffix,
+  .el-input__inner {
+    height: 34px;
+  }
+}
 </style>
 
 <template>
@@ -230,241 +230,240 @@
 </template>
 
 <script>
-	import list1 from './list1'
-	import list2 from './list2'
-	import { CountryInit, UserSignType } from '@commonJS/AxiosGet'
-	import { datefn } from '@commonJS/functionJS'
-	import { mapState } from 'vuex'
-	export default {
-		data() {
-			return {
-				//模块的切换
-				components_list: [{
-						name: '历史竞价APP',
-						com: list1
-					},
-					{
-						name: '更多关联词',
-						com: list2
-					}
-				], 
-				components_index: 0,
-				currentView: list1,
-				keyWordType: true, //当前关键词详情是否有内容
-				propDate: 0, //当前自己选中的日期
-				keyName: "", //应用名称 
-				countryNow: "", //当前国家 
-				tableData: { //关键词详情   
-					associatedWords: []
-				},
-				tableMoreData: {}, //更多关联词列表  
-				tableMoreCode: {},
-				tableInner: {}, //历史关联词列表 
-				tableInnerCode: {}, 
-				loadingfirst: true,
-				loadingfirst2: true
-			};
-		},
+import list1 from "./list1";
+import list2 from "./list2";
+import { datefn } from "@commonJS/dateList";
+import { mapState } from "vuex";
+import { AjaxRemove } from "@commonJS/ajaxServes";
+export default {
+  data() {
+    return {
+      //模块的切换
+      components_list: [
+        {
+          name: "历史竞价APP",
+          com: list1
+        },
+        {
+          name: "更多关联词",
+          com: list2
+        }
+      ],
+      components_index: 0,
+      currentView: list1,
+      keyWordType: true, //当前关键词详情是否有内容
+      propDate: 0, //当前自己选中的日期
+      keyName: "", //应用名称
+      countryNow: "", //当前国家
+      tableData: {
+        //关键词详情
+        associatedWords: []
+      },
+      tableMoreData: {}, //更多关联词列表
+      tableMoreCode: {},
+      tableInner: {}, //历史关联词列表
+      tableInnerCode: {},
+      loadingfirst: true,
+      loadingfirst2: true
+    };
+  },
 
-		components: {
-			list1,
-			list2
-		},
+  components: {
+    list1,
+    list2
+  },
 
-		computed: {
-			...mapState({
-				countryList: state => state.Home.countryList,
-				userType: state => state.Sign.userType
-			})
-		},
+  computed: {
+    ...mapState({
+      countryList: state => state.Home.countryList,
+      userType: state => state.Sign.userType
+    })
+  },
 
-		watch: {
-			$route() {
-				this.AJaxKeyWord(this.$route.query.country)
-				this.AjaxHistoryList(1, this.$route.query.country, datefn(3).beginTime, datefn(3).endTime, 'ratio', 0)
-				this.AJaxKeyWordMore(1, this.$route.query.country)
-				this.countryNow = this.$route.query.country
-			}
-		},
+  watch: {
+    $route() {
+      this.AJaxKeyWord(this.$route.query.country);
+      this.AjaxHistoryList(1,this.$route.query.country,datefn(3).beginTime,datefn(3).endTime,"ratio",0);
+      this.AJaxKeyWordMore(1, this.$route.query.country);
+      this.countryNow = this.$route.query.country;
+    }
+  },
 
-		beforeRouteEnter(to, from, next) {
-			let ls = to.query.key
-			next(vm => { 
-			})
-		},
+  beforeRouteEnter(to, from, next) {
+    let ls = to.query.key;
+    next(vm => {});
+  },
 
-		mounted() {
-			this.keyName = this.$route.query.key
+  mounted() {
+    this.keyName = this.$route.query.key;
 
-			this.$store.dispatch('GET_COUNTRYLIST')
-				.then(() => {
-					this.$store.state.Home.countryList.map((ele,index)=>{
-						if(ele.nationId == this.$route.query.country) {
-							this.countryNow = this.$store.state.Home.countryList[index].nationId
-						}
-					}) 
-				})
+    this.$store.dispatch("GET_COUNTRYLIST").then(() => {
+      this.$store.state.Home.countryList.map((ele, index) => {
+        if (ele.nationId == this.$route.query.country) {
+          this.countryNow = this.$store.state.Home.countryList[index].nationId;
+        }
+      });
+    });
 
-			this.AJaxKeyWord(this.$route.query.country)
+    this.AJaxKeyWord(this.$route.query.country);
 
-			this.AjaxHistoryList(1, this.$route.query.country, datefn(3).beginTime, datefn(3).endTime, 'ratio', 0)
+    this.AjaxHistoryList(1,this.$route.query.country,datefn(3).beginTime,datefn(3).endTime,"ratio",0);
 
-			this.AJaxKeyWordMore(1, this.$route.query.country) 
-		},
+    this.AJaxKeyWordMore(1, this.$route.query.country);
+  },
 
-		methods: {
+  methods: {
+    AjaxHistoryList(pageIndex,nationId,beginTime,endTime,sortName,upordown) {
+      // 历史列表
+      this.loadingfirst = true;
+      this.tableInner = [];
+      let GetHistoryAppListUrl = "/api/v1/IntellSearchApi/KeywordDetail/GetHistoryAppList";
+      var sortObj = {};
+      if (sortName == "ratio") {
+        sortObj = {
+          ratio: upordown
+        };
+      } else if (sortName == "searchRank") {
+        sortObj = {
+          searchRank: upordown
+        };
+      }
+      let data = {
+        pageIndex: pageIndex,
+        pageSize: 20,
+        requestPar: {
+          keywordName: this.$route.query.key,
+          nationId: nationId,
+          beginTime: beginTime,
+          endTime: endTime
+        },
+        orderByParDic: sortObj
+      };
 
-			AjaxHistoryList(pageIndex, nationId, beginTime, endTime, sortName, upordown) { // 历史列表
-				this.loadingfirst = true
-				this.tableInner = []
-				let GetHistoryAppListUrl = '/api/v1/IntellSearchApi/KeywordDetail/GetHistoryAppList'
-				var sortObj = {}
-				if(sortName == 'ratio') {
-					sortObj = {
-						ratio: upordown
-					}
-				} else if(sortName == 'searchRank') {
-					sortObj = {
-						searchRank: upordown
-					}
-				}
-				let data = {
-					pageIndex: pageIndex,
-					pageSize: 20,
-					requestPar: {
-						keywordName: this.$route.query.key,
-						nationId: nationId,
-						beginTime: beginTime,
-						endTime: endTime
-					},
-					orderByParDic: sortObj
-				}
+      this.$https.post(GetHistoryAppListUrl, JSON.stringify(data))
+        .then(res => {
+          this.loadingfirst = false;
+          this.tableInnerCode = res.data;
+          this.tableInner = res.data.data.list;
+        })
+        .catch(res => {
+          alert("请求错误！");
+          this.loadingfirst = false;
+        });
+    },
 
-				this.$https.post(GetHistoryAppListUrl, JSON.stringify(data))
-					.then(res => {
-						this.loadingfirst = false
-						this.tableInnerCode = res.data
-						this.tableInner = res.data.data.list 
-					})
-					.catch(res=>{
-						alert('请求错误！')
-						this.loadingfirst = false
-					})
-			},
+    AJaxKeyWord(nationId) {
+      //关键词详情信息
+      let keyWordDateUrl = "/api/v1/IntellSearchApi/KeywordDetail/Getkeywordinfo";
+      let obj = {
+        nationId,
+        keywordName: this.$route.query.key
+      };
 
-			AJaxKeyWord(nationId) { //关键词详情信息
-				let keyWordDateUrl = '/api/v1/IntellSearchApi/KeywordDetail/Getkeywordinfo'
-				let obj = {
-					nationId,
-					keywordName: this.$route.query.key
-				}
+      this.$https.post(keyWordDateUrl, JSON.stringify(obj))
+      .then(res => {
+        if (res.data.resultCode == 1000) {
+          //有内容
+          this.keyWordType = true;
+          this.tableData = res.data.data;
+        } else if (res.data.resultCode == 404) {
+          //无内容
+          this.keyWordType = false;
+          this.tableData = {
+            keywordName: this.$route.query.key,
+            associatedWords: []
+          };
+        }
+        this.keyName = this.$route.query.key;
+      });
+    },
 
-				this.$https.post(keyWordDateUrl, JSON.stringify(obj))
-					.then(res => {
-						if(res.data.resultCode == 1000) { //有内容
-							this.keyWordType = true
-							this.tableData = res.data.data
+    AJaxKeyWordMore(pageIndex, nationId) {
+      //更多关联词
+      this.loadingfirst2 = true;
+      this.tableMoreData = [];
+      let url = "/api/v1/IntellSearchApi/KeywordDetail/GetAssociatedWords";
+      let obj = {
+        pageIndex,
+        pageSize: 20,
+        requestPar: {
+          nationId,
+          keywordName: this.$route.query.key,
+          beginTime: datefn(0).beginTime,
+          endTime: datefn(0).endTime
+        }
+      };
 
-						} else if(res.data.resultCode == 404) { //无内容
-							this.keyWordType = false
-							this.tableData = {
-								keywordName: this.$route.query.key,
-								associatedWords: []
-							}
-						} 
-						this.keyName = this.$route.query.key
-					})
-			},
+      this.$https.post(url, JSON.stringify(obj))
+      .then(res => {
+        this.tableMoreCode = res.data;
+        this.tableMoreData = res.data.data.list;
+        this.loadingfirst2 = false;
+      });
+    },
 
-			AJaxKeyWordMore(pageIndex, nationId) { //更多关联词 
-				this.loadingfirst2 = true
-				this.tableMoreData = []
-				let url = '/api/v1/IntellSearchApi/KeywordDetail/GetAssociatedWords'
-				let obj = {
-					pageIndex,
-					pageSize: 20,
-					requestPar: {
-						nationId,
-						keywordName: this.$route.query.key,
-						beginTime: datefn(0).beginTime,
-						endTime:  datefn(0).endTime
-					}
-				}
-				
-				this.$https.post(url, JSON.stringify(obj))
-					.then(res => { 
-						this.tableMoreCode = res.data
-						this.tableMoreData = res.data.data.list
-						this.loadingfirst2 = false
-					})
-			},
+    changeFun(value) {
+      //切换国家
+      if (this.components_index == 0) {
+        this.$refs.childr.showList.map((ele, index) => {
+          // 切换国家让排序归零
+          ele.one = false;
+          ele.two = false;
+        });
+        this.$refs.childr.showList[0].one = true;
+      }
 
-			AjaxRemove(name, type) { //操作关键词ajax
-				let url = '/api/v1/IntellSearchApi/HotKeyword/OperatKeywords'
-				let data = {
-					"keywordName": name,
-					"hotKeywordActionType": type
-				}
-				let data1 = JSON.stringify(data)
-				return this.$https.post(url, data1)
-			},
+      this.AJaxKeyWord(value);
 
-			changeFun(value) { //切换国家
-				if(this.components_index == 0) {
-					this.$refs.childr.showList.map((ele, index) => { // 切换国家让排序归零
-						ele.one = false
-						ele.two = false
-					})
-					this.$refs.childr.showList[0].one = true
-				} 
-				
-				this.AJaxKeyWord(value)
+      this.AjaxHistoryList(1,value,datefn(2)[this.propDate].data.beginTime,datefn(2)[this.propDate].data.endTime,"ratio",0);
 
-				this.AjaxHistoryList(1, value, datefn(2)[this.propDate].data.beginTime, datefn(2)[this.propDate].data.endTime, 'ratio', 0)
+      this.AJaxKeyWordMore(1, value);
+    },
 
-				this.AJaxKeyWordMore(1, value)
-			},
+    addCiClick(num, name) {
+      //收藏操作
+      if (!this.userType) {
+        this.$message({
+          message: "请先登录！",
+          type: "warning"
+        });
+        return false;
+      }
+      if (num == 0) {
+        this.tableData.hotKeywordTemStatus = 1;
+        AjaxRemove(name, 0); //添加
+      } else {
+        this.tableData.hotKeywordTemStatus = 0;
+        AjaxRemove(name, 1); //删除
+      }
+    },
 
-			addCiClick(num, name) { //收藏操作
-				if(!this.userType) {
-					this.$message({
-						message: '请先登录！',
-						type: 'warning'
-					});
-					return false
-				}
-				if(num == 0) {
-					this.tableData.hotKeywordTemStatus = 1
-					this.AjaxRemove(name, 0) //添加
-				} else {
-					this.tableData.hotKeywordTemStatus = 0
-					this.AjaxRemove(name, 1) //删除
-				}
-			},
+    componentsClick(index) {
+      //table切换
+      this.components_index = index;
+      this.currentView = this.components_list[index].com;
+    },
 
-			componentsClick(index) { //table切换
-				this.components_index = index
-				this.currentView = this.components_list[index].com
-			},
+    peiDate(num, sortData) {
+      //切换日期进行请求
+      this.$refs.childr.showList.map((ele, index) => {
+        // 切换国家让排序归零
+        ele.one = false;
+        ele.two = false;
+      });
+      this.$refs.childr.showList[0].one = true;
 
-			peiDate(num, sortData) { //切换日期进行请求 
-				this.$refs.childr.showList.map((ele, index) => { // 切换国家让排序归零
-					ele.one = false
-					ele.two = false
-				})
-				this.$refs.childr.showList[0].one = true
+      this.AjaxHistoryList(1,this.countryNow,datefn(2)[num].data.beginTime,datefn(2)[num].data.endTime,"ratio",0);
+    },
 
-				this.AjaxHistoryList(1, this.countryNow, datefn(2)[num].data.beginTime, datefn(2)[num].data.endTime, 'ratio', 0)
-				 
-			},
+    pageDate(num, sortData) {
+      //分页请求
+      this.AjaxHistoryList(num,this.countryNow,datefn(2)[this.propDate].data.beginTime,datefn(2)[this.propDate].data.endTime,sortData.one,sortData.two);
+    },
 
-			pageDate(num, sortData) { //分页请求
-				this.AjaxHistoryList(num, this.countryNow, datefn(2)[this.propDate].data.beginTime, datefn(2)[this.propDate].data.endTime, sortData.one, sortData.two)
-			},
-
-			pageMoreDate(num) {
-				this.AJaxKeyWordMore(num, this.countryNow)
-			}
-		}
-	};
+    pageMoreDate(num) {
+      this.AJaxKeyWordMore(num, this.countryNow);
+    }
+  }
+};
 </script>

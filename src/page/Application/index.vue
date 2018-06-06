@@ -1,237 +1,237 @@
 <style lang='less' scoped>
-	@import url('../../base/commonJS/css.less');
-	.apl_index { 
-		min-height: 100%;
-		margin-bottom: 20px;
-		margin-top: 60px;
-		overflow: hidden;
-		.apl_body {
-			min-width: 1200px;
-			padding: 0 45px;
-			box-sizing: border-box;
-		}
-		.apl_body_top {
-			width: 100%;
-			margin: 36px 0 25px;
-			height: 177px;
-			background: #f7f7f7;
-			border: 1px solid @border;
-			box-sizing: border-box;
-			padding: 26px 24px;
-			display: flex;
-			position: relative;
-			box-shadow: 0 2px 2px @boxshado;
-			img {
-				width: 124px;
-				height: 124px;
-				border-radius: 16px;
-				margin-right: 22px;
-			}
-			.apl_bt_ct {
-				box-sizing: border-box;
-				padding-top: 25px;
-				h1 {
-					font-size: 22px;
-					color: @color;
-					margin-bottom: 12px;
-				}
-				div {
-					display: flex;
-				}
-				p {
-					margin-bottom: 6px;
-					span {
-						display: block;
-						margin-bottom: 6px;
-						margin-right: 16px;
-					}
-				}
-			}
-			.apl_bt_btn {
-				position: absolute;
-				top: 26px;
-				right: 34px;
-				width: 150px;
-				height: 40px;
-				cursor: pointer;
-				background: @color;
-				color: #f7f7f7;
-				text-align: center;
-				line-height: 40px;
-				border-radius: 6px;
-				i {
-					margin-right: 6px;
-				}
-			}
-		}
-		.apl_body_cur {
-			width: 100%;
-			display: flex;
-			margin-bottom: 25px;
-			.sl_center_p {
-				margin-right: 11px;
-				line-height: 34px;
-			}
-		}
-		.apl_body_h2 {
-			width: 100%;
-			height: 34px;
-			margin-bottom: 25px;
-			h2 {
-				line-height: 34px;
-				font-size: 18px;
-				color: @color;
-				border-bottom: 2px solid @color;
-				width: 138px;
-				text-align: center;
-				margin: 0 auto;
-			}
-		}
-		.apl_body_date {
-			width: 100%;
-			display: flex;
-			justify-content: space-between;
-			margin-bottom: 25px;
-		}
-		.apl_checketout {
-			width: 100%;
-			display: flex;
-			justify-content: flex-end; 
-			span {
-				display: block;
-				height: 32px;
-				border: 1px solid #dee2e6;
-				border-radius: 4px;
-				line-height: 32px;
-				padding: 0 12px;
-				margin-left: 16px;
-				cursor: pointer;
-			}
-		}
-		.apl_body_search {
-			width: 100%;
-			height: 110px;
-			border: 1px solid @border;
-			border-bottom: none;
-			display: flex;
-			box-sizing: border-box;
-			padding: 27px 0 0 23px;
-			position: relative;
-			.apl_bos_box {
-				margin-right: 20px;
-				p {
-					margin-bottom: 10px;
-				}
-				input {
-					border: 1px solid @border;
-					border-radius: 4px;
-					width: 80px;
-					height: 30px;
-					margin-right: 16px;
-					box-sizing: border-box;
-					padding-left: 12px;
-					&::-webkit-input-placeholder {
-						color: #9a9a9a;
-					}
-				}
-			}
-			button {
-				width: 64px;
-				height: 30px;
-				border: 1px solid #36bead;
-				line-height: 30px;
-				text-align: center;
-				cursor: pointer;
-				border-radius: 4px;
-				background: #fff;
-				color: #36bead;
-				margin-top: 29px;
-				&.btn_null{
-					background: @color;
-					border: 1px solid @border;
-					color: #fff;
-					margin-left: 20px;
-					&:hover{
-						background: #1559c8;
-					}
-				}
-				&:hover {
-					background: #36bead;
-					color: #fff;
-				}
-			}
-			.apl_bos_right {
-				width: 240px;
-				height: 30px;
-				border: 1px solid @border;
-				border-radius: 4px;
-				position: absolute;
-				overflow: hidden;
-				top: 55px;
-				right: 20px;
-				overflow: hidden;
-				.apl_bos_input {
-					width: 100%;
-					height: 100%;
-					position: relative;
-					border-radius: 4px;
-					input {
-						width: 100%;
-						height: 100%;
-						border: none;
-						outline: none;
-						box-sizing: border-box;
-						padding-left: 20px;
-						padding-right: 40px;
-						&::-webkit-input-placeholder {
-							color: #9a9a9a;
-						}
-					}
-					i {
-						position: absolute;
-						top: 7px;
-						right: 14px;
-						cursor: pointer;
-					}
-				}
-			}
-		}
-		.apl_body_table {
-			width: 100%;
-			box-shadow: 0 2px 2px @boxshado;
-			min-height: 400px;
-		}
-		.href_a {
-			color: @color !important;
-			cursor: pointer;
-		}
-	}
+@import url("../../base/commonCSS/table.less");
+.apl_index {
+  min-height: 100%;
+  margin-bottom: 20px;
+  margin-top: 60px;
+  overflow: hidden;
+  .apl_body {
+    min-width: 1200px;
+    padding: 0 45px;
+    box-sizing: border-box;
+  }
+  .apl_body_top {
+    width: 100%;
+    margin: 36px 0 25px;
+    height: 177px;
+    background: #f7f7f7;
+    border: 1px solid @border;
+    box-sizing: border-box;
+    padding: 26px 24px;
+    display: flex;
+    position: relative;
+    box-shadow: 0 2px 2px @boxshado;
+    img {
+      width: 124px;
+      height: 124px;
+      border-radius: 16px;
+      margin-right: 22px;
+    }
+    .apl_bt_ct {
+      box-sizing: border-box;
+      padding-top: 25px;
+      h1 {
+        font-size: 22px;
+        color: @color;
+        margin-bottom: 12px;
+      }
+      div {
+        display: flex;
+      }
+      p {
+        margin-bottom: 6px;
+        span {
+          display: block;
+          margin-bottom: 6px;
+          margin-right: 16px;
+        }
+      }
+    }
+    .apl_bt_btn {
+      position: absolute;
+      top: 26px;
+      right: 34px;
+      width: 150px;
+      height: 40px;
+      cursor: pointer;
+      background: @color;
+      color: #f7f7f7;
+      text-align: center;
+      line-height: 40px;
+      border-radius: 6px;
+      i {
+        margin-right: 6px;
+      }
+    }
+  }
+  .apl_body_cur {
+    width: 100%;
+    display: flex;
+    margin-bottom: 25px;
+    .sl_center_p {
+      margin-right: 11px;
+      line-height: 34px;
+    }
+  }
+  .apl_body_h2 {
+    width: 100%;
+    height: 34px;
+    margin-bottom: 25px;
+    h2 {
+      line-height: 34px;
+      font-size: 18px;
+      color: @color;
+      border-bottom: 2px solid @color;
+      width: 138px;
+      text-align: center;
+      margin: 0 auto;
+    }
+  }
+  .apl_body_date {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+  }
+  .apl_checketout {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    span {
+      display: block;
+      height: 32px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      line-height: 32px;
+      padding: 0 12px;
+      margin-left: 16px;
+      cursor: pointer;
+    }
+  }
+  .apl_body_search {
+    width: 100%;
+    height: 110px;
+    border: 1px solid @border;
+    border-bottom: none;
+    display: flex;
+    box-sizing: border-box;
+    padding: 27px 0 0 23px;
+    position: relative;
+    .apl_bos_box {
+      margin-right: 20px;
+      p {
+        margin-bottom: 10px;
+      }
+      input {
+        border: 1px solid @border;
+        border-radius: 4px;
+        width: 80px;
+        height: 30px;
+        margin-right: 16px;
+        box-sizing: border-box;
+        padding-left: 12px;
+        &::-webkit-input-placeholder {
+          color: #9a9a9a;
+        }
+      }
+    }
+    button {
+      width: 64px;
+      height: 30px;
+      border: 1px solid #36bead;
+      line-height: 30px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 4px;
+      background: #fff;
+      color: #36bead;
+      margin-top: 29px;
+      &.btn_null {
+        background: @color;
+        border: 1px solid @border;
+        color: #fff;
+        margin-left: 20px;
+        &:hover {
+          background: #1559c8;
+        }
+      }
+      &:hover {
+        background: #36bead;
+        color: #fff;
+      }
+    }
+    .apl_bos_right {
+      width: 240px;
+      height: 30px;
+      border: 1px solid @border;
+      border-radius: 4px;
+      position: absolute;
+      overflow: hidden;
+      top: 55px;
+      right: 20px;
+      overflow: hidden;
+      .apl_bos_input {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border-radius: 4px;
+        input {
+          width: 100%;
+          height: 100%;
+          border: none;
+          outline: none;
+          box-sizing: border-box;
+          padding-left: 20px;
+          padding-right: 40px;
+          &::-webkit-input-placeholder {
+            color: #9a9a9a;
+          }
+        }
+        i {
+          position: absolute;
+          top: 7px;
+          right: 14px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .apl_body_table {
+    width: 100%;
+    box-shadow: 0 2px 2px @boxshado;
+    min-height: 400px;
+  }
+  .href_a {
+    color: @color !important;
+    cursor: pointer;
+  }
+}
 </style>
 <style lang="less">
-	.apl_index {
-		.apl_body_cur {
-			.el-select {
-				width: 114px;
-				height: 34px;
-			}
-			.el-input,
-			.el-input--suffix,
-			.el-input__inner {
-				height: 34px;
-			}
-		}
-		.apl_body_date {
-			.el-select {
-				width: 226px;
-				height: 32px;
-			}
-			.el-input,
-			.el-input--suffix,
-			.el-input__inner {
-				height: 32px;
-			}
-		}
-	}
+.apl_index {
+  .apl_body_cur {
+    .el-select {
+      width: 114px;
+      height: 34px;
+    }
+    .el-input,
+    .el-input--suffix,
+    .el-input__inner {
+      height: 34px;
+    }
+  }
+  .apl_body_date {
+    .el-select {
+      width: 226px;
+      height: 32px;
+    }
+    .el-input,
+    .el-input--suffix,
+    .el-input__inner {
+      height: 32px;
+    }
+  }
+}
 </style>
 <template>
 	<div class="apl_index">
@@ -278,8 +278,8 @@
 				</div>
 				<div class="apl_bt_btn" v-if="appData.show">
 					<span @click="keywordRouter">
-                      <i class="iconfont icon-plus-add"></i>竞品对比
-                  </span>
+            <i class="iconfont icon-plus-add"></i>竞品对比
+          </span>
 				</div>
 			</div>
 			<!-- 选择器 -->
@@ -461,575 +461,595 @@
 </template>
 
 <script>
-	import excel from '@commonJS/excelFn'
-	import usersign from '@components/User-Sign'
-	import method1 from "@commonJS/excel";
-	import { CountryInit, UserSignType } from '@commonJS/AxiosGet'
-	import { mapState } from 'vuex'
-	import { datefn } from '@commonJS/functionJS'
-	export default {
-		data() {
-			return {
-				currentPage3: 1, //当前页  
-				appData: {
-					show: true
-				},
-				countryNow: "", //当前国家
-				value1: "", //当前时间
-				options3: [], //世界列表
-				showList: [{ //控制排序的三角
-						one: true,
-						two: false
-					},
-					{
-						one: false,
-						two: false
-					},
-					{
-						one: false,
-						two: false
-					}
-				],
-				tableData: {
-					totalCount: 0
-				},
-				tableShow: true, 
-				loadingfirst: true,
-				sortDate: { //排序
-					one: 'searchIndex',
-					two: 0
-				},
-				seacrchData: {
-					minSearchIndex: '',
-					maxSearchIndex: '',
-					minRatio: '',
-					maxRatio: '',
-					minAppLength: '',
-					maxAppLength: ''
-				},
-				seacrchDataTrue: {
-					minSearchIndex: 0,
-					maxSearchIndex: 0,
-					minRatio: 0,
-					maxRatio: 0,
-					minAppLength: 0,
-					maxAppLength: 0
-				},
-				searchKeyWord: '',
-				searchKeyWordTrue: ''
-			};
-		},
+import excel from "@commonJS/excelFn";
+import usersign from "@components/User-Sign";
+import method1 from "@commonJS/excel";
+import { mapState } from "vuex";
+import { datefn } from "@commonJS/dateList";
+import { AjaxRemove } from "@commonJS/ajaxServes";
+export default {
+  data() {
+    return {
+      currentPage3: 1, //当前页
+      appData: {
+        show: true
+      },
+      countryNow: "", //当前国家
+      value1: "", //当前时间
+      options3: [], //世界列表
+      showList: [
+        {
+          //控制排序的三角
+          one: true,
+          two: false
+        },
+        {
+          one: false,
+          two: false
+        },
+        {
+          one: false,
+          two: false
+        }
+      ],
+      tableData: {
+        totalCount: 0
+      },
+      tableShow: true,
+      loadingfirst: true,
+      sortDate: {
+        //排序
+        one: "searchIndex",
+        two: 0
+      },
+      seacrchData: {
+        minSearchIndex: "",
+        maxSearchIndex: "",
+        minRatio: "",
+        maxRatio: "",
+        minAppLength: "",
+        maxAppLength: ""
+      },
+      seacrchDataTrue: {
+        minSearchIndex: 0,
+        maxSearchIndex: 0,
+        minRatio: 0,
+        maxRatio: 0,
+        minAppLength: 0,
+        maxAppLength: 0
+      },
+      searchKeyWord: "",
+      searchKeyWordTrue: ""
+    };
+  },
 
-		components: {
-			usersign
-		},
+  components: {
+    usersign
+  },
 
-		computed: {
-			...mapState({
-				countryList: state => state.Home.countryList,
-				userType: state => state.Sign.userType
-			}),
-			pagedata() {
-				if(this.currentPage3 * 20 <= this.tableData.totalCount) {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.tableData.totalCount
-					return ls
-				} else {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.tableData.totalCount + ', 共' + this.tableData.totalCount
-					return ls
-				}
-			}
-		}, 
+  computed: {
+    ...mapState({
+      countryList: state => state.Home.countryList,
+      userType: state => state.Sign.userType
+    }),
+    pagedata() {
+      if (this.currentPage3 * 20 <= this.tableData.totalCount) {
+        let ls = "当前第 " + ((this.currentPage3 - 1) * 20 + 1) + "-" + this.currentPage3 * 20 +  ", 共 " +  this.tableData.totalCount;
+        return ls;
+      } else {
+        let ls = "当前第 " + ((this.currentPage3 - 1) * 20 + 1) + "-" + this.tableData.totalCount + ", 共" + this.tableData.totalCount;
+        return ls;
+      }
+    }
+  },
 
-		watch: {
-			$route() { 
-				this.AjaxGetAppHistoryKeywordList({
-					pageIndex: 1,
-					pageSize: 20,
-					requestPar: {
-						appStoreId: this.$route.query.id,
-						nationId: this.$route.query.country,
-						beginTime: datefn(0).beginTime,
-						endTime: datefn(0).endTime,
-						keywordName: this.searchKeyWordTrue,
-						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
-						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						// minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						// maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
-					},
-					orderByParDic: {
-						searchIndex: 0, 
-					}
-				})
+  watch: {
+    $route() {
+      this.AjaxGetAppHistoryKeywordList({
+        pageIndex: 1,
+        pageSize: 20,
+        requestPar: {
+          appStoreId: this.$route.query.id,
+          nationId: this.$route.query.country,
+          beginTime: datefn(0).beginTime,
+          endTime: datefn(0).endTime,
+          keywordName: this.searchKeyWordTrue,
+          minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+          maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+          // minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+          // maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+          minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+          maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+        },
+        orderByParDic: {
+          searchIndex: 0
+        }
+      });
 
-				this.AjaxGetAppInfo()
-			}
-		},
+      this.AjaxGetAppInfo();
+    }
+  },
 
-		filters: {
-			numNull: function(value) {
-				return value == 0 ? '-' : value
-			},
-			percentage: function(value) {
-				let num = (value*100).toFixed(2)
-				return num+"%"
-			},
-			appPriceFilter : function(value) {
-				if(value == 0) {
-					return '免费'
-				}else if(!value){
-					return ''
-				}else{
-					let ls  = (value*1).toFixed(2)
-					return ls
-				}
-			}
-		},
+  filters: {
+    numNull: function(value) {
+      return value == 0 ? "-" : value;
+    },
+    percentage: function(value) {
+      let num = (value * 100).toFixed(2);
+      return num + "%";
+    },
+    appPriceFilter: function(value) {
+      if (value == 0) {
+        return "免费";
+      } else if (!value) {
+        return "";
+      } else {
+        let ls = (value * 1).toFixed(2);
+        return ls;
+      }
+    }
+  },
 
-		created() {
-			this.$store.dispatch('GET_COUNTRYLIST')
-				.then(() => {
-					this.$store.state.Home.countryList.map((ele,index)=>{
-						if(ele.nationId == this.$route.query.country) {
-							this.countryNow = this.$store.state.Home.countryList[index].nationId
-						}
-					}) 
-				})
+  created() {
+    this.$store.dispatch("GET_COUNTRYLIST").then(() => {
+      this.$store.state.Home.countryList.map((ele, index) => {
+        if (ele.nationId == this.$route.query.country) {
+          this.countryNow = this.$store.state.Home.countryList[index].nationId;
+        }
+      });
+    });
 
-			this.options3 = datefn(1)
-			this.value1 = this.options3[0].value 
+    this.options3 = datefn(1);
+    this.value1 = this.options3[0].value;
 
-			this.AjaxGetAppHistoryKeywordList({
-				pageIndex: 1,
-				pageSize: 20,
-				requestPar: {
-					appStoreId: this.$route.query.id,
-					nationId: this.$route.query.country,
-					beginTime: datefn(0).beginTime,
-					endTime: datefn(0).endTime,
-					keywordName: this.searchKeyWordTrue,
-					minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
-					maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-					// minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-					// maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-					minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
-					maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
-				},
-				orderByParDic: {
-					searchIndex: 0, 
-				}
-			})
+    this.AjaxGetAppHistoryKeywordList({
+      pageIndex: 1,
+      pageSize: 20,
+      requestPar: {
+        appStoreId: this.$route.query.id,
+        nationId: this.$route.query.country,
+        beginTime: datefn(0).beginTime,
+        endTime: datefn(0).endTime,
+        keywordName: this.searchKeyWordTrue,
+        minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+        maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+        // minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+        // maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+        minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+        maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+      },
+      orderByParDic: {
+        searchIndex: 0
+      }
+    });
 
-			this.AjaxGetAppInfo()
-		},
-		mounted() {
-			
-		},
- 
+    this.AjaxGetAppInfo();
+  },
+  mounted() {},
 
-		methods: {
-			focusInput() {
-				$('.apl_bos_right').css('border-color', '#2d76ed') 
-			},
-			blurInput() {
-				$('.apl_bos_right').css('border-color', '#dee2e6')
-			},
+  methods: {
+    focusInput() {
+      $(".apl_bos_right").css("border-color", "#2d76ed");
+    },
+    blurInput() {
+      $(".apl_bos_right").css("border-color", "#dee2e6");
+    },
 
-			changeFun(value) { //切换国家
-				this.showList.map(ele => {
-					ele.one = false
-					ele.two = false
-				})
-				this.showList[0].one = true
+    changeFun(value) {
+      //切换国家
+      this.showList.map(ele => {
+        ele.one = false;
+        ele.two = false;
+      });
+      this.showList[0].one = true;
 
-				this.AjaxGetAppHistoryKeywordList({
-					pageIndex: 1,
-					pageSize: 20,
-					requestPar: {
-						appStoreId: this.$route.query.id,
-						nationId: value,
-						beginTime: datefn(1)[this.value1].data.beginTime,
-						endTime: datefn(1)[this.value1].data.endTime,
-						keywordName: this.searchKeyWordTrue,
-						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
-						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						// minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						// maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
-					},
-					orderByParDic: {
-						searchIndex: 0, 
-					}
-				})
-			},
+      this.AjaxGetAppHistoryKeywordList({
+        pageIndex: 1,
+        pageSize: 20,
+        requestPar: {
+          appStoreId: this.$route.query.id,
+          nationId: value,
+          beginTime: datefn(1)[this.value1].data.beginTime,
+          endTime: datefn(1)[this.value1].data.endTime,
+          keywordName: this.searchKeyWordTrue,
+          minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+          maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+          // minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+          // maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+          minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+          maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+        },
+        orderByParDic: {
+          searchIndex: 0
+        }
+      });
+    },
 
-			changeDateFun(value) { //切换日期 
-				this.showList.map(ele => {
-					ele.one = false
-					ele.two = false
-				})
-				this.showList[0].one = true
+    changeDateFun(value) {
+      //切换日期
+      this.showList.map(ele => {
+        ele.one = false;
+        ele.two = false;
+      });
+      this.showList[0].one = true;
 
-				this.AjaxGetAppHistoryKeywordList({
-					pageIndex: 1,
-					pageSize: 20,
-					requestPar: {
-						appStoreId: this.$route.query.id,
-						nationId: this.countryNow,
-						beginTime: datefn(1)[value].data.beginTime,
-						endTime: datefn(1)[value].data.endTime,
-						keywordName: this.searchKeyWordTrue,
-						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
-						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
-					},
-					orderByParDic: {
-						searchIndex: 0, 
-					}
-				})
-			},
+      this.AjaxGetAppHistoryKeywordList({
+        pageIndex: 1,
+        pageSize: 20,
+        requestPar: {
+          appStoreId: this.$route.query.id,
+          nationId: this.countryNow,
+          beginTime: datefn(1)[value].data.beginTime,
+          endTime: datefn(1)[value].data.endTime,
+          keywordName: this.searchKeyWordTrue,
+          minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+          maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+          //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+          //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+          minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+          maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+        },
+        orderByParDic: {
+          searchIndex: 0
+        }
+      });
+    },
 
-			paiClick(num, name) { //排序的按钮
-				this.showList.map((ele, index) => {
-					ele.one = false;
-					ele.two = false;
-				});
-				this.showList[num][name] = true;
-				if(num == 0) {
-					this.sortDate = {
-						one: 'searchIndex',
-						two: name == 'one' ? 0 : 1
-					}
-				} else if(num == 1) {
-					this.sortDate = {
-						one: 'popularityIndex',
-						two: name == 'one' ? 0 : 1
-					}
-				} else {
-					this.sortDate = {
-						one: 'ratio',
-						two: name == 'one' ? 0 : 1
-					}
-				}
-				let obj = {}
-				obj[this.sortDate.one] = this.sortDate.two
-				this.AjaxGetAppHistoryKeywordList({
-					pageIndex: this.currentPage3,
-					pageSize: 20,
-					requestPar: {
-						appStoreId: this.$route.query.id,
-						nationId: this.countryNow,
-						beginTime: datefn(1)[this.value1].data.beginTime,
-						endTime: datefn(1)[this.value1].data.endTime,
-						keywordName: this.searchKeyWordTrue,
-						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
-						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
-					},
-					orderByParDic: obj
-				})
-			},
+    paiClick(num, name) {
+      //排序的按钮
+      this.showList.map((ele, index) => {
+        ele.one = false;
+        ele.two = false;
+      });
+      this.showList[num][name] = true;
+      if (num == 0) {
+        this.sortDate = {
+          one: "searchIndex",
+          two: name == "one" ? 0 : 1
+        };
+      } else if (num == 1) {
+        this.sortDate = {
+          one: "popularityIndex",
+          two: name == "one" ? 0 : 1
+        };
+      } else {
+        this.sortDate = {
+          one: "ratio",
+          two: name == "one" ? 0 : 1
+        };
+      }
+      let obj = {};
+      obj[this.sortDate.one] = this.sortDate.two;
+      this.AjaxGetAppHistoryKeywordList({
+        pageIndex: this.currentPage3,
+        pageSize: 20,
+        requestPar: {
+          appStoreId: this.$route.query.id,
+          nationId: this.countryNow,
+          beginTime: datefn(1)[this.value1].data.beginTime,
+          endTime: datefn(1)[this.value1].data.endTime,
+          keywordName: this.searchKeyWordTrue,
+          minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+          maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+          //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+          //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+          minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+          maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+        },
+        orderByParDic: obj
+      });
+    },
 
-			addCiClick(index, num, name) { //收藏操作
-				if(!this.userType) {
-						this.$message({
-							message: '请先登录！',
-							type: 'warning'
-						});
-						return false
-					}
-				if(num == 0) {
-					this.tableData.list[index].hotKeywordTemStatus = 1
-					this.AjaxRemove(name, 0) //添加
-				} else {
-					this.tableData.list[index].hotKeywordTemStatus = 0
-					this.AjaxRemove(name, 1) //删除
-				}
-			},
+    addCiClick(index, num, name) {
+      //收藏操作
+      if (!this.userType) {
+        this.$message({
+          message: "请先登录！",
+          type: "warning"
+        });
+        return false;
+      }
+      if (num == 0) {
+        this.tableData.list[index].hotKeywordTemStatus = 1;
+        AjaxRemove(name, 0); //添加
+      } else {
+        this.tableData.list[index].hotKeywordTemStatus = 0;
+        AjaxRemove(name, 1); //删除
+      }
+    },
 
-			imgRouterClick(id) {//图片应用跳转
-				this.$router.push({
-					path: '/application',
-					query: {
-						id,
-						country: this.countryNow
-					}
-				})
-				$(window).scrollTop(0)
-			},
+    imgRouterClick(id) {
+      //图片应用跳转
+      this.$router.push({
+        path: "/application",
+        query: {
+          id,
+          country: this.countryNow
+        }
+      });
+      $(window).scrollTop(0);
+    },
 
-			routerClick(id) { //点击跳转，回到顶部，切换回历史列表
-				this.$router.push({
-					path: '/rankingDetails-List',
-					query: {
-						key: id,
-						country: this.countryNow
-					}
-				})
-			},
+    routerClick(id) {
+      //点击跳转，回到顶部，切换回历史列表
+      this.$router.push({
+        path: "/rankingDetails-List",
+        query: {
+          key: id,
+          country: this.countryNow
+        }
+      });
+    },
 
-			searchMoreClick() { //模糊查询
-				this.showList.map(ele => {
-					ele.one = false
-					ele.two = false
-				})
-				this.showList[0].one = true
+    searchMoreClick() {
+      //模糊查询
+      this.showList.map(ele => {
+        ele.one = false;
+        ele.two = false;
+      });
+      this.showList[0].one = true;
 
-				for(var i in this.seacrchData) {
-					if(isNaN(this.seacrchData[i]) && this.seacrchData[i] != '' || parseInt(this.seacrchData[i]) < 0) {
-						this.$message({
-							message: '搜索内容必须为大于等于0的数字',
-							type: 'warning'
-						});
-						return false
-					}
-				}
-				if(this.seacrchData.maxSearchIndex != '') {
-					if(parseInt(this.seacrchData.maxSearchIndex) < parseInt(this.seacrchData.minSearchIndex)) {
-						this.$message({
-							message: '热度：最大值必须大于最小值',
-							type: 'warning'
-						});
-						return false
-					}
-				}
-				if(this.seacrchData.maxRatio != '') {
-					if(parseInt(this.seacrchData.maxRatio) < parseInt(this.seacrchData.minRatio)) {
-						this.$message({
-							message: '展示量占比：最大值必须大于最小值',
-							type: 'warning'
-						});
-						return false
-					}
-				}
-				if(this.seacrchData.maxAppLength != '') {
-					if(parseInt(this.seacrchData.maxAppLength) < parseInt(this.seacrchData.minAppLength)) {
-						this.$message({
-							message: '流行度：最大值必须大于最小值',
-							type: 'warning'
-						});
-						return false
-					}
-				}
-				if(this.zTest(this.seacrchData.maxSearchIndex) || this.zTest(this.seacrchData.minSearchIndex) || this.zTest(this.seacrchData.maxAppLength) || this.zTest(this.seacrchData.minAppLength)) {
-					this.$message({
-						message: '必须为大于等于0的正整数',
-						type: 'warning'
-					});
-					return false
-				}
-				this.seacrchDataTrue = this.seacrchData
+      for (var i in this.seacrchData) {
+        if (
+          (isNaN(this.seacrchData[i]) && this.seacrchData[i] != "") ||
+          parseInt(this.seacrchData[i]) < 0
+        ) {
+          this.$message({
+            message: "搜索内容必须为大于等于0的数字",
+            type: "warning"
+          });
+          return false;
+        }
+      }
+      if (this.seacrchData.maxSearchIndex != "") {
+        if (parseInt(this.seacrchData.maxSearchIndex) < parseInt(this.seacrchData.minSearchIndex)) {
+          this.$message({
+            message: "热度：最大值必须大于最小值",
+            type: "warning"
+          });
+          return false;
+        }
+      }
+      if (this.seacrchData.maxRatio != "") {
+        if (parseInt(this.seacrchData.maxRatio) < parseInt(this.seacrchData.minRatio) ) {
+          this.$message({
+            message: "展示量占比：最大值必须大于最小值",
+            type: "warning"
+          });
+          return false;
+        }
+      }
+      if (this.seacrchData.maxAppLength != "") {
+        if ( parseInt(this.seacrchData.maxAppLength) < parseInt(this.seacrchData.minAppLength) ) {
+          this.$message({
+            message: "流行度：最大值必须大于最小值",
+            type: "warning"
+          });
+          return false;
+        }
+      }
+      if ( this.zTest(this.seacrchData.maxSearchIndex) || this.zTest(this.seacrchData.minSearchIndex) || this.zTest(this.seacrchData.maxAppLength) || this.zTest(this.seacrchData.minAppLength)
+      ) {
+        this.$message({
+          message: "必须为大于等于0的正整数",
+          type: "warning"
+        });
+        return false;
+      }
+      this.seacrchDataTrue = this.seacrchData;
 
-				this.AjaxGetAppHistoryKeywordList({
-					pageIndex: 1,
-					pageSize: 20,
-					requestPar: {
-						appStoreId: this.$route.query.id,
-						nationId: this.countryNow,
-						beginTime: datefn(1)[this.value1].data.beginTime,
-						endTime: datefn(1)[this.value1].data.endTime,
-						keywordName: this.searchKeyWordTrue,
-						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
-						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
-					},
-					orderByParDic: {
-						searchIndex: 0
-					}
-				})
-			},
+      this.currentPage3 = 1
+      this.AjaxGetAppHistoryKeywordList({
+        pageIndex: 1,
+        pageSize: 20,
+        requestPar: {
+          appStoreId: this.$route.query.id,
+          nationId: this.countryNow,
+          beginTime: datefn(1)[this.value1].data.beginTime,
+          endTime: datefn(1)[this.value1].data.endTime,
+          keywordName: this.searchKeyWordTrue,
+          minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+          maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+          //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+          //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+          minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+          maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+        },
+        orderByParDic: {
+          searchIndex: 0
+        }
+      });
+    },
 
-			btnNullClick() {//清空搜索
-				this.seacrchData = {
-					minSearchIndex: '',
-					maxSearchIndex: '',
-					minRatio: '',
-					maxRatio: '',
-					minAppLength: '',
-					maxAppLength: ''
-				}
-			},
+    btnNullClick() {
+      //清空搜索
+      this.seacrchData = {
+        minSearchIndex: "",
+        maxSearchIndex: "",
+        minRatio: "",
+        maxRatio: "",
+        minAppLength: "",
+        maxAppLength: ""
+      };
+    },
 
-			keywordClick() { //input搜索 
-				this.searchKeyWordTrue = this.searchKeyWord
-				this.showList.map(ele => {
-					ele.one = false
-					ele.two = false
-				})
-				this.showList[0].one = true
+    keywordClick() {
+      //input搜索
+      this.searchKeyWordTrue = this.searchKeyWord;
+      this.showList.map(ele => {
+        ele.one = false;
+        ele.two = false;
+      });
+      this.showList[0].one = true;
 
-				this.AjaxGetAppHistoryKeywordList({
-					pageIndex: 1,
-					pageSize: 20,
-					requestPar: {
-						appStoreId: this.$route.query.id,
-						nationId: this.countryNow,
-						beginTime: datefn(1)[this.value1].data.beginTime,
-						endTime: datefn(1)[this.value1].data.endTime,
-						keywordName: this.searchKeyWordTrue,
-						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
-						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
-					},
-					orderByParDic: {
-						searchIndex: 0
-					}
-				})
-				this.searchKeyWord = ''//清空搜索内容
-				this.searchKeyWordTrue = ''
-			},
+      this.currentPage3 = 1
+      this.AjaxGetAppHistoryKeywordList({
+        pageIndex: 1,
+        pageSize: 20,
+        requestPar: {
+          appStoreId: this.$route.query.id,
+          nationId: this.countryNow,
+          beginTime: datefn(1)[this.value1].data.beginTime,
+          endTime: datefn(1)[this.value1].data.endTime,
+          keywordName: this.searchKeyWordTrue,
+          minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+          maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+          //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+          //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+          minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+          maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+        },
+        orderByParDic: {
+          searchIndex: 0
+        }
+      });
+      this.searchKeyWord = ""; //清空搜索内容 
+    },
 
-			zTest(data) { //正则验证
-				let ZZ = /^([1-9]\d*|[0]{1,1})$/
-				if(data != '' && !ZZ.test(data)) {
-					return true
-				} else {
-					return false
-				}
-			},
+    zTest(data) {
+      //正则验证
+      let ZZ = /^([1-9]\d*|[0]{1,1})$/;
+      if (data != "" && !ZZ.test(data)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
 
-			isNull(data) { //判断是否为空
-				if(data == '') {
-					return 0
-				} else {
-					return data
-				}
-			},
+    isNull(data) {
+      //判断是否为空
+      if (data == "") {
+        return 0;
+      } else {
+        return data;
+      }
+    },
 
-			handleSizeChange(val) {
-				let obj = {}
-				obj[this.sortDate.one] = this.sortDate.two
-				this.AjaxGetAppHistoryKeywordList({
-					pageIndex: val,
-					pageSize: 20,
-					requestPar: {
-						appStoreId: this.$route.query.id,
-						nationId: this.countryNow,
-						beginTime: datefn(1)[this.value1].data.beginTime,
-						endTime: datefn(1)[this.value1].data.endTime,
-						keywordName: this.searchKeyWordTrue,
-						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
-						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
-					},
-					orderByParDic: obj
-				})
-				$(window).scrollTop($('#ta2').offset().top)
-			},
+    handleSizeChange(val) {
+      let obj = {};
+      obj[this.sortDate.one] = this.sortDate.two;
+      this.AjaxGetAppHistoryKeywordList({
+        pageIndex: val,
+        pageSize: 20,
+        requestPar: {
+          appStoreId: this.$route.query.id,
+          nationId: this.countryNow,
+          beginTime: datefn(1)[this.value1].data.beginTime,
+          endTime: datefn(1)[this.value1].data.endTime,
+          keywordName: this.searchKeyWordTrue,
+          minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+          maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+          //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+          //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+          minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+          maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+        },
+        orderByParDic: obj
+      });
+      $(window).scrollTop($("#ta2").offset().top);
+    },
 
-			handleCurrentChange(val) {
-				let obj = {}
-				obj[this.sortDate.one] = this.sortDate.two
-				this.AjaxGetAppHistoryKeywordList({
-					pageIndex: val,
-					pageSize: 20,
-					requestPar: {
-						appStoreId: this.$route.query.id,
-						nationId: this.countryNow,
-						beginTime: datefn(1)[this.value1].data.beginTime,
-						endTime: datefn(1)[this.value1].data.endTime,
-						keywordName: this.searchKeyWordTrue,
-						minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
-						maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
-						//minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-						//maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-						minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
-						maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
-					},
-					orderByParDic: obj
-				})
-				$(window).scrollTop($('#ta2').offset().top)
-			},
+    handleCurrentChange(val) {
+      let obj = {};
+      obj[this.sortDate.one] = this.sortDate.two;
+      this.AjaxGetAppHistoryKeywordList({
+        pageIndex: val,
+        pageSize: 20,
+        requestPar: {
+          appStoreId: this.$route.query.id,
+          nationId: this.countryNow,
+          beginTime: datefn(1)[this.value1].data.beginTime,
+          endTime: datefn(1)[this.value1].data.endTime,
+          keywordName: this.searchKeyWordTrue,
+          minSearchIndex: this.isNull(this.seacrchDataTrue.minSearchIndex),
+          maxSearchIndex: this.isNull(this.seacrchDataTrue.maxSearchIndex),
+          //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
+          //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
+          minPopularityIndex: this.isNull(this.seacrchDataTrue.minAppLength),
+          maxPopularityIndex: this.isNull(this.seacrchDataTrue.maxAppLength)
+        },
+        orderByParDic: obj
+      });
+      $(window).scrollTop($("#ta2").offset().top);
+    },
 
-			excelOut() { //表格导出 
-				let title = ['关键词', '搜索指数', '流行度', '展示量占比', '预测出价', '近期竞价APP数量']
-				let arr = []
-				for(var i = 0; i < this.tableData.list.length; i++) {
-					var newarr = []
-					newarr.push(this.tableData.list[i].keywordName)
-					newarr.push(this.tableData.list[i].searchIndex)
-					newarr.push(this.tableData.list[i].popularityIndex)
-					newarr.push(this.tableData.list[i].ratio)
-					newarr.push(this.tableData.list[i].estimatePrice)
-					newarr.push(this.tableData.list[i].appLength)
-					arr.push(newarr)
-				}
-				excel(title, arr, 'tab')
-			},
+    excelOut() {
+      //表格导出
+      let title = [
+        "关键词",
+        "搜索指数",
+        "流行度",
+        "展示量占比",
+        "预测出价",
+        "近期竞价APP数量"
+      ];
+      let arr = [];
+      for (var i = 0; i < this.tableData.list.length; i++) {
+        var newarr = [];
+        newarr.push(this.tableData.list[i].keywordName);
+        newarr.push(this.tableData.list[i].searchIndex);
+        newarr.push(this.tableData.list[i].popularityIndex);
+        newarr.push(this.tableData.list[i].ratio);
+        newarr.push(this.tableData.list[i].estimatePrice);
+        newarr.push(this.tableData.list[i].appLength);
+        arr.push(newarr);
+      }
+      excel(title, arr, "tab");
+    },
 
-			keywordRouter() { //竞品对比跳转
-				this.$router.push({
-					path: '/keyword-comparison-list',
-					query: {
-						key: this.countryNow,
-						id: this.appData.appStoreId
-					}
-				})
-			},
+    keywordRouter() {
+      //竞品对比跳转
+      this.$router.push({
+        path: "/keyword-comparison-list",
+        query: {
+          key: this.countryNow,
+          id: this.appData.appStoreId
+        }
+      });
+    },
 
-			AjaxGetAppInfo() { //初次加载 
-				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=' + this.$route.query.id + '&nationId=' + this.$route.query.country
+    AjaxGetAppInfo() {
+      //初次加载
+      let url =
+        "/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=" +
+        this.$route.query.id +
+        "&nationId=" +
+        this.$route.query.country;
 
-				this.$https.get(url)
-					.then((res) => {
-						//res.data.resultCode = 404
-						if(res.data.resultCode == 1000) {
-							res.data.data.show = true
-							this.appData = res.data.data
-						} else if(res.data.resultCode == 404) {
-							res.data.data.show = false
-							this.appData = res.data.data
-						} 
-					})
-			},
+      this.$https.get(url)
+      .then(res => {
+        //res.data.resultCode = 404
+        if (res.data.resultCode == 1000) {
+          res.data.data.show = true;
+          this.appData = res.data.data;
+        } else if (res.data.resultCode == 404) {
+          res.data.data.show = false;
+          this.appData = res.data.data;
+        }
+      });
+    },
 
-			AjaxGetAppHistoryKeywordList(obj) { //获取历史列表 
-				this.loadingfirst = true
-				this.tableData.list = []
-				let url = '/api/v1/IntellSearchApi/APPDetail/GetAppHistoryKeywordList'
-				this.$https.post(url, JSON.stringify(obj))
-					.then((res) => { 
-						if(res.data.resultCode == 1000) {
-							this.tableShow = true
-						} else if(res.data.resultCode == 404) {
-							this.tableShow = false
-						}
-						this.loadingfirst = false
-						this.tableData = res.data.data 
-					})
-					.catch(()=>{
-						this.loadingfirst = false
-						alert('请求错误！')
-					})
+    AjaxGetAppHistoryKeywordList(obj) {
+      //获取历史列表
+      this.loadingfirst = true;
+      this.tableData.list = [];
+      let url = "/api/v1/IntellSearchApi/APPDetail/GetAppHistoryKeywordList";
 
-			},
-
-			AjaxRemove(name, type) { //操作关键词ajax
-				let url = '/api/v1/IntellSearchApi/HotKeyword/OperatKeywords'
-				let data = {
-					"keywordName": name,
-					"hotKeywordActionType": type
-				}
-				let data1 = JSON.stringify(data)
-				return this.$https.post(url, data1)
-			},
-		}
-	};
+      this.$https .post(url, JSON.stringify(obj))
+      .then(res => {
+        if (res.data.resultCode == 1000) {
+          this.tableShow = true;
+        } else if (res.data.resultCode == 404) {
+          this.tableShow = false;
+        }
+        this.loadingfirst = false;
+        this.tableData = res.data.data;
+      })
+      .catch(() => {
+        this.loadingfirst = false;
+        alert("请求错误！");
+      });
+    }
+  }
+};
 </script>

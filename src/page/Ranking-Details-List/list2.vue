@@ -1,33 +1,33 @@
 <style lang='less' scoped>
-	@import url('../../base/commonJS/css.less');
-	.rdlh_index {
-		width: 100%;
-		margin-top: 25px;
-		.rdlh_checketout {
-			width: 100%;
-			display: flex;
-			justify-content: flex-end;
-			margin-bottom: 25px;
-			span {
-				display: block;
-				height: 32px;
-				border: 1px solid #dee2e6;
-				border-radius: 4px;
-				line-height: 32px;
-				padding: 0 12px;
-				margin-left: 16px;
-				cursor: pointer;
-			}
-		}
-		.rdlh_table {
-			width: 100%;
-			table {
-				width: 100%;
-				border: 1px solid #dee2e6;
-				box-shadow: 0 2px 2px @boxshado;
-			}
-		}
-	}
+@import url("../../base/commonCSS/table.less");
+.rdlh_index {
+  width: 100%;
+  margin-top: 25px;
+  .rdlh_checketout {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 25px;
+    span {
+      display: block;
+      height: 32px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      line-height: 32px;
+      padding: 0 12px;
+      margin-left: 16px;
+      cursor: pointer;
+    }
+  }
+  .rdlh_table {
+    width: 100%;
+    table {
+      width: 100%;
+      border: 1px solid #dee2e6;
+      box-shadow: 0 2px 2px @boxshado;
+    }
+  }
+}
 </style>
 <template>
 	<div class="rdlh_index">
@@ -123,112 +123,107 @@
 </template>
 
 <script>
-	import excel from '@commonJS/excelFn'
-	import usersign from '@components/User-Sign'
-	export default {
-		data() {
-			return {
-				currentPage3: 1, //当前页 
-			};
-		},
+import excel from "@commonJS/excelFn";
+import usersign from "@components/User-Sign";
+import { AjaxRemove } from "@commonJS/ajaxServes";
+export default {
+  data() {
+    return {
+      currentPage3: 1 //当前页
+    };
+  },
 
-		components: {
-			usersign
-		},
-		props: {
-			valueData: {},
-			userType: {},
-			tableMoreData: {},
-			tableMoreCode: {},
-			loadingfirst2: {}
-		},
+  components: {
+    usersign
+  },
+  props: {
+    valueData: {},
+    userType: {},
+    tableMoreData: {},
+    tableMoreCode: {},
+    loadingfirst2: {}
+  },
 
-		computed: {
-			pagedata() {
-				if(this.currentPage3 * 20 <= this.tableMoreCode.data.totalCount) {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.currentPage3 * 20 + ', 共 ' + this.tableMoreCode.data.totalCount
-					return ls
-				} else {
-					let ls = '当前第 ' + (((this.currentPage3 - 1) * 20) + 1) + '-' + this.tableMoreCode.data.totalCount + ', 共' + this.tableMoreCode.data.totalCount
-					return ls
-				}
-			}
-		},
+  computed: {
+    pagedata() {
+      if (this.currentPage3 * 20 <= this.tableMoreCode.data.totalCount) {
+        let ls ="当前第 " +((this.currentPage3 - 1) * 20 + 1) +"-" +this.currentPage3 * 20 + ", 共 " +this.tableMoreCode.data.totalCount;
+        return ls;
+      } else {
+        let ls = "当前第 " + ((this.currentPage3 - 1) * 20 + 1) +"-" +this.tableMoreCode.data.totalCount +", 共" +this.tableMoreCode.data.totalCount;
+        return ls;
+      }
+    }
+  },
 
-		methods: {
-			imgRouterClick(id) {//图片应用跳转
-				this.$router.push({
-					path: '/application',
-					query: {
-						id,
-						country: this.$parent.countryNow
-					}
-				})
-			},
+  methods: {
+    imgRouterClick(id) {
+      //图片应用跳转
+      this.$router.push({
+        path: "/application",
+        query: {
+          id,
+          country: this.$parent.countryNow
+        }
+      });
+    },
 
-			addCiClick(index, num, name) { //收藏操作
-				if(!this.userType) {
-						this.$message({
-							message: '请先登录！',
-							type: 'warning'
-						});
-						return false
-					}
-				if(num == 0) {
-					this.tableMoreData[index].hotKeywordTemStatus = 1
-					this.AjaxRemove(name, 0) //添加
-				} else {
-					this.tableMoreData[index].hotKeywordTemStatus = 0
-					this.AjaxRemove(name, 1) //删除
-				}
-			},
+    addCiClick(index, num, name) {
+      //收藏操作
+      if (!this.userType) {
+        this.$message({
+          message: "请先登录！",
+          type: "warning"
+        });
+        return false;
+      }
+      if (num == 0) {
+        this.tableMoreData[index].hotKeywordTemStatus = 1;
+        AjaxRemove(name, 0); //添加
+      } else {
+        this.tableMoreData[index].hotKeywordTemStatus = 0;
+        AjaxRemove(name, 1); //删除
+      }
+    },
 
-			excelOut() { //表格导出  
-				let title = ['关键词', '流行度', '搜索指数', '近期竞价APP数量']
-				let arr = []
-				for(var i = 0; i < this.tableMoreData.length; i++) {
-					var newarr = []
-					newarr.push(this.tableMoreData[i].keywordName)
-					newarr.push(this.tableMoreData[i].popularityIndex)
-					newarr.push(this.tableMoreData[i].searchIndex)
-					newarr.push(this.tableMoreData[i].appLength)
-					arr.push(newarr)
-				}
-				excel(title, arr, 'tab')
-			},
+    excelOut() {
+      //表格导出
+      let title = ["关键词", "流行度", "搜索指数", "近期竞价APP数量"];
+      let arr = [];
+      for (var i = 0; i < this.tableMoreData.length; i++) {
+        var newarr = [];
+        newarr.push(this.tableMoreData[i].keywordName);
+        newarr.push(this.tableMoreData[i].popularityIndex);
+        newarr.push(this.tableMoreData[i].searchIndex);
+        newarr.push(this.tableMoreData[i].appLength);
+        arr.push(newarr);
+      }
+      excel(title, arr, "tab");
+    },
 
-			routerClick(id) { //点击跳转，回到顶部，切换回历史列表
-				this.$router.push({
-					path: '/rankingDetails-List',
-					query: {
-						key: id,
-						country: this.$parent.countryNow
-					}
-				})
-				$(window).scrollTop(0)
-				this.$parent.components_index = 0
-				this.$parent.currentView = this.$parent.components_list[0].com
-			},
+    routerClick(id) {
+      //点击跳转，回到顶部，切换回历史列表
+      this.$router.push({
+        path: "/rankingDetails-List",
+        query: {
+          key: id,
+          country: this.$parent.countryNow
+        }
+      });
+      $(window).scrollTop(0);
+      this.$parent.components_index = 0;
+      this.$parent.currentView = this.$parent.components_list[0].com;
+    },
 
-			AjaxRemove(name, type) { //操作关键词ajax
-				let url = '/api/v1/IntellSearchApi/HotKeyword/OperatKeywords'
-				let data = {
-					"keywordName": name,
-					"hotKeywordActionType": type
-				}
-				let data1 = JSON.stringify(data)
-				return this.$https.post(url, data1)
-			},
+    handleSizeChange(val) {
+      this.$emit("pageMoreDate", val);
+      $(window).scrollTop($("#table1").offset().top);
+    },
 
-			handleSizeChange(val) {
-				this.$emit('pageMoreDate', val)
-				$(window).scrollTop($('#table1').offset().top)
-			},
-
-			handleCurrentChange(val) {
-				this.$emit('pageMoreDate', val)
-				$(window).scrollTop($('#table1').offset().top)
-			},
-		}
-	};
+    handleCurrentChange(val) {
+      this.$emit("pageMoreDate", val);
+      $(window).scrollTop($("#table1").offset().top);
+    }
+  }
+};
 </script>

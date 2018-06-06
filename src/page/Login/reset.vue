@@ -6,11 +6,11 @@
 @btnhover: #1559c8;
 .reset_index {
   min-height: 100%;
-  margin-top: 60px; 
-    background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0
-        no-repeat,
-      url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right
-        no-repeat;
+  margin-top: 60px;
+  background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0
+      no-repeat,
+    url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right
+      no-repeat;
   .login_body {
     min-width: 1200px;
     min-height: 100%;
@@ -70,20 +70,20 @@
 }
 </style>
 <template>
-  <div class="reset_index">
-      <v-search-top :searchShow='searchShow'></v-search-top>
-      <div class="login_body">
+	<div class="reset_index">
+			<v-search-top :searchShow='searchShow'></v-search-top>
+			<div class="login_body">
 			<div class="login_box">
 				<h1>重置密码</h1>
 				<div class="login_input">
 					<i class="iconfont icon-zhucedenglumima"></i>
-					<input type="text" placeholder="新密码"  v-model="passWord">
+					<input type="password" placeholder="新密码"  v-model="passWord">
 				</div>
 				<div class="login_input">
 					<i class="iconfont icon-zhucedenglumima"></i>
-					<input type="test" placeholder="确认密码"  v-model="nwePassWord">
+					<input type="password" placeholder="确认密码"  v-model="nwePassWord">
 				</div> 
-                <div class="login_input login_input_war" v-if="war">
+								<div class="login_input login_input_war" v-if="war">
 					{{warData}}
 				</div>
 				<div class="login_input login_btn" @click="submitClick">
@@ -91,7 +91,7 @@
 				</div> 
 			</div>
 		</div>
-  </div>
+	</div>
 </template>
 
 <script>
@@ -102,15 +102,15 @@ export default {
       passWord: "",
       nwePassWord: "",
       war: false,
-	  warData: "",
-	  arr: [],
-	  urlData: '',
-	  urlObj: {
-		  uid: '',
-		  key: '',
-		  newPwd: '',
-		  newPwd2: ''
-	  }
+      warData: "",
+      arr: [],
+      urlData: "",
+      urlObj: {
+        uid: "",
+        key: "",
+        newPwd: "",
+        newPwd2: ""
+      }
     };
   },
 
@@ -125,14 +125,14 @@ export default {
       this.urlData = i;
     }
 
-    if(this.urlData[0] == '-') {
-        this.arr = this.urlData.substr(1).split("-") 
-      }else{
-        this.arr = this.urlData.split("-") 
-      } 
-        
-    this.urlObj.uid = this.arr[0]
-    this.urlObj.key = this.arr[1]
+    if (this.urlData[0] == "-") {
+      this.arr = this.urlData.substr(1).split("-");
+    } else {
+      this.arr = this.urlData.split("-");
+    }
+
+    this.urlObj.uid = this.arr[0];
+    this.urlObj.key = this.arr[1];
   },
 
   mounted() {},
@@ -143,50 +143,50 @@ export default {
         this.war = true;
         this.warData = "请输入新密码";
         return false;
-	  }
-	  if(this.passWord.length < 6 || this.passWord.length > 16) {
-		this.war = true;
+      }
+      if (this.passWord.length < 6 || this.passWord.length > 16) {
+        this.war = true;
         this.warData = "密码长度为6-16位";
         return false;
-	  }
+      }
       if (this.passWord != this.nwePassWord) {
         this.war = true;
         this.warData = "两次密码不一致";
         return false;
-	  }
-	  
-	  this.urlObj.newPwd = this.passWord
-	  this.urlObj.newPwd2 = this.nwePassWord
-	  this.Ajax(this.urlObj)
-	},
-	
+      }
+
+      this.urlObj.newPwd = this.passWord;
+      this.urlObj.newPwd2 = this.nwePassWord;
+      this.Ajax(this.urlObj);
+    },
+
     backClick() {
       this.$router.push("/modif-password");
-	},
+    },
 
-	Ajax(obj) {
-		let url = '/api/v1/IntellSearchApi/UserInfo/UserResetPassword'
+    Ajax(obj) {
+      let url = "/api/v1/IntellSearchApi/UserInfo/UserResetPassword";
 
-		this.$https.post(url , JSON.stringify(obj))
-		.then( res=> {
-			if(res.data.resultCode == 2100) {
-				this.war = true;
-        		this.warData = res.data.message;
-			}
-			if(res.data.resultCode == 2300) {
-				this.war = true
-				this.warData = res.data.message
-			}
-			if(res.data.resultCode == 1000) {
-				this.war = true
-				this.warData = '修改成功，正在跳转登录页面。'
-				let _this = this
-				setTimeout(() => {
-					_this.$router.push('/login')
-				}, 1000);
-			}
-		})
-	}
+      this.$https.post(url, JSON.stringify(obj))
+      .then(res => {
+        if (res.data.resultCode == 2100) {
+          this.war = true;
+          this.warData = res.data.message;
+        }
+        if (res.data.resultCode == 2300) {
+          this.war = true;
+          this.warData = res.data.message;
+        }
+        if (res.data.resultCode == 1000) {
+          this.war = true;
+          this.warData = "修改成功，正在跳转登录页面。";
+          let _this = this;
+          setTimeout(() => {
+            _this.$router.push("/login");
+          }, 1000);
+        }
+      });
+    }
   }
 };
 </script>
