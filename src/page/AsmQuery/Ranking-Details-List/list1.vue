@@ -1,5 +1,5 @@
 <style lang='less' scoped>
-@import url("../../base/commonCSS/table.less");
+@import url("../../../base/commonCSS/table.less");
 .key_list1_index {
   width: 100%;
   min-height: 400px;
@@ -205,7 +205,7 @@
 				 <!-- loading -->
 				<tr v-if="loadingfirst">
 					<td colspan="6" style="height: 80px;">
-						<img src="../../images/components/loading.gif" alt="">
+						<img src="../../../images/components/loading.gif" alt="">
 					</td>
 				</tr>
 			</table>
@@ -229,7 +229,7 @@
 <script>
 import excel from "@commonJS/excelFn";
 import pie from "./pie-chart";
-import usersign from "@components/User-Sign";
+import usersign from "@components/AsmQuery/User-Sign";
 import { datefn } from "@commonJS/dateList";
 export default {
   data() {

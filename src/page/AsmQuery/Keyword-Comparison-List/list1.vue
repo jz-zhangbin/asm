@@ -1,5 +1,5 @@
 <style lang='less' scoped>
-@import url("../../base/commonCSS/table.less");
+@import url("../../../base/commonCSS/table.less");
 .kcll1_index {
   width: 100%;
   table {
@@ -91,7 +91,7 @@
 			 <!-- loading -->
 			<tr v-if="loadingfirst">
 				<td colspan="7" style="height: 80px;">
-					<img src="../../images/components/loading.gif" alt="">
+					<img src="../../../images/components/loading.gif" alt="">
 				</td>
 			</tr>
 		</table>

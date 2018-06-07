@@ -5,7 +5,7 @@
 @border: #dee2e6;
 @btnhover: #1559c8;
 @boxshado: #eee;
-@import url("../../base/commonCSS/scroll.css");
+@import url("../../../base/commonCSS/scroll.css");
 .iconfont {
   cursor: pointer;
 }
@@ -172,15 +172,15 @@
 					</div>
 				</div>
 				<button @click="btnClick" class="btnclass">
-                  <i class="iconfont icon-icon-plus-search"></i>
-              </button>
+            <i class="iconfont icon-icon-plus-search"></i>
+        </button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import banner from "@components/Banner";
+import banner from "@components/AsmQuery/Banner";
 import { mapState } from "vuex";
 import qs from "qs";
 export default {

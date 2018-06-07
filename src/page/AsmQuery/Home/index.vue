@@ -4,7 +4,7 @@
 @font_color: #6c757d;
 @border: #dee2e6;
 @btnhover: #1559c8;
-@import url("../../base/commonCSS/scroll.css");
+@import url("../../../base/commonCSS/scroll.css");
 .home_index {
   min-width: 1200px;
   .home_banner {
@@ -78,7 +78,7 @@
       display: block;
       width: 100%;
       height: 100%;
-      background: url(../../images/home/home_magnifier.png) no-repeat center
+      background: url(../../../images/home/home_magnifier.png) no-repeat center
         center;
     }
   }
@@ -249,19 +249,19 @@
       }
     }
     .home_num_i1 {
-      background: url(../../images/home/home_num_1_2.png) no-repeat center
+      background: url(../../../images/home/home_num_1_2.png) no-repeat center
         center;
     }
     .home_num_i2 {
-      background: url(../../images/home/home_num_2_2.png) no-repeat center
+      background: url(../../../images/home/home_num_2_2.png) no-repeat center
         center;
     }
     .home_num_i3 {
-      background: url(../../images/home/home_num_3_2.png) no-repeat center
+      background: url(../../../images/home/home_num_3_2.png) no-repeat center
         center;
     }
     .home_num_i4 {
-      background: url(../../images/home/home_num_4_2.png) no-repeat center
+      background: url(../../../images/home/home_num_4_2.png) no-repeat center
         center;
     }
   }
@@ -271,7 +271,7 @@
       color: @color;
     }
     i {
-      background: url(../../images/home/home_num_1_1.png) no-repeat center
+      background: url(../../../images/home/home_num_1_1.png) no-repeat center
         center !important;
     }
   }
@@ -280,7 +280,7 @@
       color: @color;
     }
     i {
-      background: url(../../images/home/home_num_2_1.png) no-repeat center
+      background: url(../../../images/home/home_num_2_1.png) no-repeat center
         center !important;
     }
   }
@@ -289,7 +289,7 @@
       color: @color;
     }
     i {
-      background: url(../../images/home/home_num_3_1.png) no-repeat center
+      background: url(../../../images/home/home_num_3_1.png) no-repeat center
         center !important;
     }
   }
@@ -298,7 +298,7 @@
       color: @color;
     }
     i {
-      background: url(../../images/home/home_num_4_1.png) no-repeat center
+      background: url(../../../images/home/home_num_4_1.png) no-repeat center
         center !important;
     }
   }
@@ -385,21 +385,21 @@
     }
   }
   .home_center_img1 {
-    background-image: url(../../images/home/home_center_1_1.png);
+    background-image: url(../../../images/home/home_center_1_1.png);
     &:hover {
-      background-image: url(../../images/home/home_center_1_2.png);
+      background-image: url(../../../images/home/home_center_1_2.png);
     }
   }
   .home_center_img2 {
-    background-image: url(../../images/home/home_center_2_1.png);
+    background-image: url(../../../images/home/home_center_2_1.png);
     &:hover {
-      background-image: url(../../images/home/home_center_2_2.png);
+      background-image: url(../../../images/home/home_center_2_2.png);
     }
   }
   .home_center_img3 {
-    background-image: url(../../images/home/home_center_3_1.png);
+    background-image: url(../../../images/home/home_center_3_1.png);
     &:hover {
-      background-image: url(../../images/home/home_center_3_2.png);
+      background-image: url(../../../images/home/home_center_3_2.png);
     }
   }
 }
@@ -516,14 +516,14 @@
 				<h3>客户服务优势</h3>
 				<section>
 					<div class="home_num_right "> 
-						<img src="../../images/home/home_user_1.png" alt="">
+						<img src="../../../images/home/home_user_1.png" alt="">
 						<div>
 							<h4>智能化投放与监测系统</h4>
 							<span>依托苹果后台官方精准数据，基于深厚ASO优化经验让人工智能与经验直觉共同护驾投放与监测</span>
 						</div>
 					</div>
 					<div class="home_num_right "> 
-						<img src="../../images/home/home_user_2.png" alt="">
+						<img src="../../../images/home/home_user_2.png" alt="">
 						<div>
 							<h4>丰富的ASM投放经验</h4>
 							<span>国内最早搜索投放推广团队之一，已为国内外众多客户提供ASM优化服务</span>
@@ -532,14 +532,14 @@
 				</section>
 				<section>
 					<div class="home_num_right "> 
-						<img src="../../images/home/home_user_3.png" alt="">
+						<img src="../../../images/home/home_user_3.png" alt="">
 						<div>
 							<h4>专业团队筛词选词</h4>
 							<span>专注研究App Store，近四年国内外ASO优化经验，让更多词，成为你的词</span>
 						</div>
 					</div>
 					<div class="home_num_right "> 
-						<img src="../../images/home/home_user_4.png" alt="">
+						<img src="../../../images/home/home_user_4.png" alt="">
 						<div>
 							<h4>实时透明进度反馈</h4>
 							<span>投放数据与进度反馈实时跟进，定（方案指定）、投（及时投放）、优（优化投放）、管（数据管理）一站式服务。</span>

@@ -20,10 +20,10 @@ Vue.prototype.$cookie = cookie
 /**
  * 全局组件
  */
-import searchTop from '@components/Search-Top'
-import SIdentify from './components/canvas'
-import VueParticles from '@components/vue-particles'
-import Footer from '@components/footer'
+import searchTop from '@components/AsmQuery/Search-Top'
+import SIdentify from './components/AsmQuery/canvas'
+import VueParticles from '@components/AsmQuery/vue-particles'
+import Footer from '@components/AsmQuery/footer'
 Vue.component('v-footer', Footer)
 Vue.component('vue-particles', VueParticles)
 Vue.component('s-identify', SIdentify)

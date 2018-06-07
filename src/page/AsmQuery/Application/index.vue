@@ -1,5 +1,5 @@
 <style lang='less' scoped>
-@import url("../../base/commonCSS/table.less");
+@import url("../../../base/commonCSS/table.less");
 .apl_index {
   min-height: 100%;
   margin-bottom: 20px;
@@ -240,7 +240,7 @@
 			<!-- 头部表格信息 -->
 			<div class="apl_body_top">
 				<img :src="appData.appImgUrl" alt="" v-if="appData.show">
-				<img src="../../images/moni/appimg_1123_03.png" alt="" v-if="!appData.show">
+				<img src="../../../images/moni/appimg_1123_03.png" alt="" v-if="!appData.show">
 				<div class="apl_bt_ct">
 					<h1>{{appData.appName}}</h1>
 					<div>
@@ -442,7 +442,7 @@
 					 <!-- loading -->
 					<tr v-if="loadingfirst">
 						<td colspan="7" style="height: 80px;">
-							<img src="../../images/components/loading.gif" alt="">
+							<img src="../../../images/components/loading.gif" alt="">
 						</td>
 					</tr>
 				</table>
@@ -462,7 +462,7 @@
 
 <script>
 import excel from "@commonJS/excelFn";
-import usersign from "@components/User-Sign";
+import usersign from "@components/AsmQuery/User-Sign";
 import method1 from "@commonJS/excel";
 import { mapState } from "vuex";
 import { datefn } from "@commonJS/dateList";

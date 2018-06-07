@@ -222,7 +222,7 @@
 				<div class="register_clause">
 					<b @click="ischecked = !ischecked" :class="{b_checked : ischecked}">
                         <i class="iconfont icon-gouxuan" v-if="ischecked"></i>
-                    </b> 我已经阅读并同意 <a href="http://asm.adjuz.net/prov_service"  target="_blank"> 《相关服务和条款》</a> 
+                    </b> 我已经阅读并同意 <a href="http://www.adjuz.net/prov_service"  target="_blank"> 《相关服务和条款》</a> 
 				</div>
 				<div class="register_input login_input_war" v-if="war">
 					{{warData}}

@@ -1,5 +1,5 @@
 <style lang='less' scoped>
-@import url("../../base/commonCSS/table.less");
+@import url("../../../base/commonCSS/table.less");
 .rl_index {
   min-height: 100%;
   margin-bottom: 20px;
@@ -177,7 +177,7 @@
                     <!-- loading -->
                     <tr v-if="loadingfirst">
                         <td colspan="6" style="height: 80px;">
-                            <img src="../../images/components/loading.gif" alt="">
+                            <img src="../../../images/components/loading.gif" alt="">
                         </td>
                     </tr>
                 </table>
@@ -185,10 +185,10 @@
             <!-- 用户登录 -->
             <usersign v-if="!userType"></usersign>
             <!-- loading图片 -->
-            <!-- <div class="sl_loading">
-                                <img src="../../images/components/loading.gif" alt="" v-if="loadingShow">
-                                <p v-if="loadingShow">努力加载中</p>
-                        </div> -->
+            <div class="sl_loading">
+              <img src="../../../images/components/loading.gif" alt="" v-if="loadingShow">
+              <p v-if="loadingShow">努力加载中</p>
+            </div>
             <!-- footer -->
             <div class="sl_from_top" @click="fromTop">
                 <i class="iconfont icon-ico-top1"></i>
@@ -199,8 +199,8 @@
 
 <script>
 import excel from "@commonJS/excelFn";
-import usersign from "@components/User-Sign";
-import banner from "@components/Banner";
+import usersign from "@components/AsmQuery/User-Sign";
+import banner from "@components/AsmQuery/Banner";
 import { mapState } from "vuex";
 import { AjaxRemove } from "@commonJS/ajaxServes";
 export default {

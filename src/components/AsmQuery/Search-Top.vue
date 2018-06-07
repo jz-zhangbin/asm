@@ -5,6 +5,7 @@
 @bgk: #f7f7f7;
 @font_color: #6c757d;
 @btnhover: #1559c8;
+@import url("../../base/commonCSS/scroll.css");
 .st_index {
   position: fixed;
   min-width: 1200px;
@@ -21,7 +22,7 @@
       margin-left: 45px;
       float: left;
       width: 155px;
-      background: url("../images/components/home_logo2.png") no-repeat center
+      background: url("../../images/components/home_logo2.png") no-repeat center
         center;
     }
     ul {

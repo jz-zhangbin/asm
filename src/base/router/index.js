@@ -1,36 +1,29 @@
-/**
- * 引入其他路由表插入主路由
- */
 //Vue.use(Router)
-
-/**
- * 首页、登陆、注册路由
- */
 let routes = [{
 	path: '/',
 	redirect: '/home'
 }, {
 	path: '/home',
-	component: resolve => require(["@page/Home"], resolve),
-	meta: {
-			requiresAuth: true
-	},
+	component: resolve => require(["@page/AsmQuery/Home"], resolve), 
 }, {
 	path: '/rankingList',//关键词
-	component: resolve => require(["@page/Ranking-List"], resolve)
+	component: resolve => require(["@page/AsmQuery/Ranking-List"], resolve)
 }, {
 	path: '/rankingDetails-List',//关键词详情
-	component: resolve => require(["@page/Ranking-Details-List"], resolve)
+	component: resolve => require(["@page/AsmQuery/Ranking-Details-List"], resolve)
 }, {
 	path: '/application',//应用详情
-	component: resolve => require(["@page/Application"], resolve)
+	component: resolve => require(["@page/AsmQuery/Application"], resolve)
 }, {
 	path: '/keyword-comparison',//搜索应用
-	component: resolve => require(["@page/Keyword-Comparison"], resolve)
+	component: resolve => require(["@page/AsmQuery/Keyword-Comparison"], resolve)
 }, {
 	path: '/keyword-comparison-list',//应用对比
-	component: resolve => require(["@page/Keyword-Comparison-List"], resolve)
+	component: resolve => require(["@page/AsmQuery/Keyword-Comparison-List"], resolve)
 }, {
+	path: '/agent',//代理投放
+	component: resolve => require(["@page/AsmQuery/agent"], resolve)
+},{
 	path: '/login',//登陆
 	component: resolve => require(["@page/Login/login"], resolve)
 }, {
@@ -45,19 +38,11 @@ let routes = [{
 }, {
 	path: '/activatingSuccess',//账号激活成功
 	component: resolve => require(["@page/Login/activatingSuccess"], resolve)
-}, {
-	path: '/agent',//代理投放
-	component: resolve => require(["@page/agent"], resolve)
 },
 {
 	path: '*',//404
 	component: resolve => require(["@page/404"], resolve)
-}
-// ,
-// {
-//   path: '/index.html',//404
-//   component: resolve => require(["@page/Home"], resolve)
-// }
+} 
 ]
 
 //routes.push()

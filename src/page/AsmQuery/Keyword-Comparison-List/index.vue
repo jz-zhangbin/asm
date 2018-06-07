@@ -5,7 +5,7 @@
 @border: #dee2e6;
 @btnhover: #1559c8;
 @boxshado: #eeeeee;
-@import url("../../base/commonCSS/scroll.css");
+@import url("../../../base/commonCSS/scroll.css");
 .iconfont {
   cursor: pointer;
 }
@@ -494,7 +494,7 @@
 						</tr>
 						<tr v-if="loadingparent">
 							<td colspan="7" style="height: 80px;">
-								<img src="../../images/components/loading.gif" alt="">
+								<img src="../../../images/components/loading.gif" alt="">
 							</td>
 						</tr>
 					</table>
@@ -514,12 +514,12 @@
 </template>
 
 <script>
-import banner from "@components/Banner";
+import banner from "@components/AsmQuery/Banner";
 import { mapState } from "vuex";
 import list1 from "./list1.vue";
 import list2 from "./list2.vue";
 import list3 from "./list3.vue";
-import usersign from "@components/User-Sign";
+import usersign from "@components/AsmQuery/User-Sign";
 import { datefn } from "@commonJS/dateList";
 export default {
   data() {

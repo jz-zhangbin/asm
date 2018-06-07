@@ -219,7 +219,7 @@
 </template>
 
 <script>
-import banner from "@components/Banner";
+import banner from "@components/AsmQuery/Banner";
 export default {
   data() {
     return {

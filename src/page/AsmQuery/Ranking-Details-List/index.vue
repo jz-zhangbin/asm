@@ -1,5 +1,5 @@
 <style lang='less' scoped>
-@import url("../../base/commonCSS/table.less");
+@import url("../../../base/commonCSS/table.less");
 .rdl_index {
   min-height: 100%;
   margin-bottom: 20px;
@@ -109,7 +109,7 @@
 </style>
 
 <template>
-	<div class="rdl_index">
+	<div class="rdl_index"> 
 		<v-search-top></v-search-top>
 		<!-- 搜索结果 -->
 		<div class="rdl_name">

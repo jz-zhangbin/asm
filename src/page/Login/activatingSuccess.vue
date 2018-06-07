@@ -33,7 +33,7 @@
       cursor: pointer;
       text-align: center;
       justify-content: center;
-      line-height: 40px;
+      line-height: 45px;
       border-radius: 6px;
       &:hover {
         background: @btnhover;
