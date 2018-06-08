@@ -192,10 +192,11 @@
 					<td>{{ele.searchRank}}</td>
 					<td class="table_datr_p">
 						<p>{{ele.appInfoModel.totalRank == 0 ? '-' : ele.appInfoModel.totalRank}}</p>
+            <p>{{ele.appInfoModel.totalRank == 0 ? '免费' : '收费'}}</p>
 					</td>
 					<td class="table_datr_p">
 						<p>{{ele.appInfoModel.classificationRank == 0 ? '-' : ele.appInfoModel.classificationRank}}</p>
-						<p>{{ele.appInfoModel.appTypeName}}</p>
+						<p>{{ele.appInfoModel.appTypeName}}{{',' + ele.appInfoModel.appPrice == 0 ? '免费' : '收费'}}</p>
 					</td>
 				</tr>
 				<!-- 暂无关键词 -->

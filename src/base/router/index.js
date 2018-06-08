@@ -38,8 +38,12 @@ let routes = [{
 }, {
 	path: '/activatingSuccess',//账号激活成功
 	component: resolve => require(["@page/Login/activatingSuccess"], resolve)
-},
-{
+}, 
+// {
+// 	path: '/moni',//404
+// 	component: resolve => require(["@page/AsmLaunch/moni"], resolve)
+// }
+, {
 	path: '*',//404
 	component: resolve => require(["@page/404"], resolve)
 } 
