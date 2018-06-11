@@ -23,8 +23,7 @@
     color: #fff;
     border-radius: 4px;
     background: @color;
-    outline: none;
-    border: 1px solid @border;
+    outline: none; 
     cursor: pointer;
     &:hover {
       background: @btnhover;

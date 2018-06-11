@@ -38,7 +38,14 @@ let routes = [{
 }, {
 	path: '/activatingSuccess',//账号激活成功
 	component: resolve => require(["@page/Login/activatingSuccess"], resolve)
-}, 
+}, {
+	path: '/advertising-center',//广告中心首页
+	component: resolve => require(["@page/AsmLaunch/Advertising-Center"], resolve)
+}, {
+	path: '/key-lexicon',//关键词库
+	component: resolve => require(["@page/AsmLaunch/Key-Lexicon"], resolve)
+} 
+
 // {
 // 	path: '/moni',//404
 // 	component: resolve => require(["@page/AsmLaunch/moni"], resolve)

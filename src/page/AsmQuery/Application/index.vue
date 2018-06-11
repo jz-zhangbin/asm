@@ -1,9 +1,8 @@
 <style lang='less' scoped>
 @import url("../../../base/commonCSS/table.less");
-.apl_index {
-  min-height: 100%;
-  margin-bottom: 20px;
-  margin-top: 60px;
+.apl_index { 
+  box-sizing: border-box;
+  padding: 60px 0 20px;
   overflow: hidden;
   .apl_body {
     min-width: 1200px;
@@ -199,7 +198,7 @@
   .apl_body_table {
     width: 100%;
     box-shadow: 0 2px 2px @boxshado;
-    min-height: 400px;
+    min-height: 60px;
   }
   .href_a {
     color: @color !important;
@@ -222,7 +221,7 @@
   }
   .apl_body_date {
     .el-select {
-      width: 226px;
+      width: 256px;
       height: 32px;
     }
     .el-input,
@@ -266,12 +265,12 @@
 						</p>
 						<p style="min-width: 64px">
 							<span>总榜</span>
-							<span style="color:#000;" v-if="appData.show">{{appData.totalRank}}</span>
+							<span style="color:#000;" v-if="appData.show">{{appData.totalRank == 0 ? '-' : appData.totalRank}}</span>
 							<span style=" color:#000;" v-if="!appData.show">-</span>
 						</p>
 						<p style="min-width: 140px">
 							<span>分类榜</span>
-							<span style="color:#000;" v-if="appData.show">{{appData.classificationRank}}</span>
+							<span style="color:#000;" v-if="appData.show">{{appData.classificationRank == 0 ? '-' : appData.classificationRank}}</span>
 							<span style=" color:#000;" v-if="!appData.show">-</span>
 						</p>
 					</div>
@@ -519,7 +518,14 @@ export default {
         maxAppLength: 0
       },
       searchKeyWord: "",
-      searchKeyWordTrue: ""
+      searchKeyWordTrue: "",
+      loading: null,
+      loadingopaction: {
+        lock: true,
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      }
     };
   },
 
@@ -545,6 +551,8 @@ export default {
 
   watch: {
     $route() {
+      this.loading = this.$loading(this.loadingopaction);
+
       this.AjaxGetAppHistoryKeywordList({
         pageIndex: 1,
         pageSize: 20,
@@ -601,6 +609,7 @@ export default {
 
     this.options3 = datefn(1);
     this.value1 = this.options3[0].value;
+    this.loading = this.$loading(this.loadingopaction);
 
     this.AjaxGetAppHistoryKeywordList({
       pageIndex: 1,
@@ -625,7 +634,9 @@ export default {
 
     this.AjaxGetAppInfo();
   },
-  mounted() {},
+  mounted() {
+    this.$height('.apl_index') 
+  },
 
   methods: {
     focusInput() {
@@ -1026,10 +1037,14 @@ export default {
           res.data.data.show = false;
           this.appData = res.data.data;
         }
+        if(this.loading != null) {
+          this.loading.close()
+        }
       });
     },
 
     AjaxGetAppHistoryKeywordList(obj) {
+      this.tableShow = true;
       //获取历史列表
       this.loadingfirst = true;
       this.tableData.list = [];
@@ -1044,6 +1059,9 @@ export default {
         }
         this.loadingfirst = false;
         this.tableData = res.data.data;
+        if(this.loading != null) {
+          this.loading.close()
+        }
       })
       .catch(() => {
         this.loadingfirst = false;

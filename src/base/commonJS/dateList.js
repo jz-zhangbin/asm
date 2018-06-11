@@ -118,7 +118,27 @@ export function datefn(datenum) {
       beginTime: fn(timerNum1),
       endTime: fn(timerNum1)
     }
-  } else {
+  } else if(datenum == 4) {
+    let arr = [
+      {
+        data: {
+          beginTime: fn(timerNum4),
+          endTime: fn(timerNum1)
+        },
+        value: 0,
+        label: fn(timerNum4) + ' 至 ' + fn(timerNum1)
+      },{
+        data: {
+          beginTime: fn(timerNum3),
+          endTime: fn(timerNum1)
+        },
+        value: 1,
+        label: '近七天'
+      }
+    ]
+
+    return arr
+  }else{
     return arr
   }
 };

@@ -17,6 +17,10 @@
     position: relative;
     animation: animation1 0.5s ease-out;
     -webkit-animation: animation1 0.5s ease-out;
+    img{
+      margin: 180px auto;
+      display: block;
+    }
   }
   @keyframes animation1 {
     0% {
@@ -51,6 +55,7 @@
 <template>
 	<div class="pie_index">
 		<div class="pie_main">
+      <img src="../../../images/components/loading.gif" alt="" v-if="loadingShow">
 			<div id="myChart1"></div>
 			<i class="iconfont icon-cha" @click="$parent.pieShow = false"></i>
 		</div>
@@ -62,7 +67,8 @@ import { datefn } from "@commonJS/dateList";
 export default {
   data() {
     return {
-      myChart: null
+      myChart: null,
+      loadingShow: true
     };
   },
   mounted() {
@@ -72,6 +78,7 @@ export default {
 
   methods: {
     AjaxPie() {
+      this.loadingShow = true
       let url = "api/v1/IntellSearchApi/KeywordDetail/GetAllAppsRatio";
       let obj = {
         nationId: this.$parent.$parent.countryNow,
@@ -83,6 +90,7 @@ export default {
       this.$https.post(url, JSON.stringify(obj))
       .then(res => {
         this.echartsInit(res.data);
+        this.loadingShow = false
       });
     },
     echartsInit(res) {
@@ -106,7 +114,13 @@ export default {
       dataList.push({
         value: others.toFixed(4),
         name: "Other"
-      });
+      }); 
+      dataList.map((ele,index)=>{
+        let num = parseInt(ele.value *10000)/100 + '%'
+        let newName = ele.name + '-' + num
+        ele.name = newName
+      }) 
+      console.log(dataList)
       let myChart = this.$echarts.init(document.getElementById("myChart1"));
       // 绘制图表
       myChart.setOption({
@@ -152,6 +166,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
+            //roseType : 'area',
             data: dataList,
             itemStyle: {
               emphasis: {

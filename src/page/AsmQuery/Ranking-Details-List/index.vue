@@ -1,10 +1,10 @@
 <style lang='less' scoped>
 @import url("../../../base/commonCSS/table.less");
-.rdl_index {
-  min-height: 100%;
-  margin-bottom: 20px;
-  margin-top: 60px;
-  width: 100%;
+@import url("../../../base/commonCSS/scroll.css");
+.rdl_index {  
+  box-sizing: border-box;
+  padding: 60px 0 20px;
+  min-width: 1200px;
   color: @font_color;
   .rdl_name {
     min-width: 1200px;
@@ -60,7 +60,8 @@
     box-sizing: border-box;
     padding: 20px 20px 0px 0;
     max-width: 500px;
-    overflow: hidden;
+    max-height: 150px;
+    overflow-y: auto;  
     span {
       display: block;
       border: 1px solid @border;
@@ -69,6 +70,13 @@
       cursor: pointer;
       margin: 2px 0 10px 20px;
       float: left;
+      &:hover{
+            background: #f7f7f7;
+            color: @color;
+        }
+        &:active{
+            box-shadow: inset 0 3px 3px rgba(0,0,0,0.125);
+        }
     }
   }
   // table切换
@@ -183,7 +191,7 @@
 							</td>
 							<td style="width: 36%;" v-if="tableData.associatedWords.length != 0">
 								<div class="rdl_key_list">
-									<span v-for="(item,index2) in tableData.associatedWords" :key="index2">{{item}}</span>
+									<span v-for="(item,index2) in tableData.associatedWords" :key="index2" @click="keyWorldRouter(index2)">{{item}}</span>
 								</div>
 							</td>
 							<!-- 当列表为空时 -->
@@ -264,7 +272,14 @@ export default {
       tableInner: {}, //历史关联词列表
       tableInnerCode: {},
       loadingfirst: true,
-      loadingfirst2: true
+      loadingfirst2: true,
+      loading: null,
+      loadingopaction: {
+        lock: true,
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      }
     };
   },
 
@@ -282,6 +297,7 @@ export default {
 
   watch: {
     $route() {
+      this.loading = this.$loading(this.loadingopaction);
       this.AJaxKeyWord(this.$route.query.country);
       this.AjaxHistoryList(1,this.$route.query.country,datefn(3).beginTime,datefn(3).endTime,"ratio",0);
       this.AJaxKeyWordMore(1, this.$route.query.country);
@@ -295,6 +311,7 @@ export default {
   },
 
   mounted() {
+    this.$height('.rdl_index') 
     this.keyName = this.$route.query.key;
 
     this.$store.dispatch("GET_COUNTRYLIST").then(() => {
@@ -304,6 +321,8 @@ export default {
         }
       });
     });
+
+    this.loading = this.$loading(this.loadingopaction);
 
     this.AJaxKeyWord(this.$route.query.country);
 
@@ -375,6 +394,9 @@ export default {
           };
         }
         this.keyName = this.$route.query.key;
+        if(this.loading != null) {
+          this.loading.close()
+        }
       });
     },
 
@@ -399,6 +421,9 @@ export default {
         this.tableMoreCode = res.data;
         this.tableMoreData = res.data.data.list;
         this.loadingfirst2 = false;
+        if(this.loading != null) {
+          this.loading.close()
+        }
       });
     },
 
@@ -412,6 +437,8 @@ export default {
         });
         this.$refs.childr.showList[0].one = true;
       }
+
+      this.loading = this.$loading(this.loadingopaction);
 
       this.AJaxKeyWord(value);
 
@@ -446,11 +473,13 @@ export default {
 
     peiDate(num, sortData) {
       //切换日期进行请求
-      this.$refs.childr.showList.map((ele, index) => {
-        // 切换国家让排序归零
+      this.$refs.childr.showList.map((ele, index) => { 
         ele.one = false;
         ele.two = false;
       });
+
+      this.tableInnerCode.resultCode = 1000
+
       this.$refs.childr.showList[0].one = true;
 
       this.AjaxHistoryList(1,this.countryNow,datefn(2)[num].data.beginTime,datefn(2)[num].data.endTime,"ratio",0);
@@ -463,6 +492,17 @@ export default {
 
     pageMoreDate(num) {
       this.AJaxKeyWordMore(num, this.countryNow);
+    },
+
+    keyWorldRouter(index2) {
+      //关键词跳转 
+      this.$router.push({
+        path: "/rankingDetails-List",
+        query: {
+          key: this.tableData.associatedWords[index2],
+          country: this.countryNow
+        }
+      })
     }
   }
 };

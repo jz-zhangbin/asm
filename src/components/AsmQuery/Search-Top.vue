@@ -137,7 +137,7 @@
         .st_chain_box {
           height: 230px;
           margin-top: 9px;
-          width: 227pxs;
+          width: 227px;
           section {
             width: 100%;
             height: 35px;

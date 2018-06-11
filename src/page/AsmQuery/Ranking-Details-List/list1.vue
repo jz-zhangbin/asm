@@ -1,8 +1,7 @@
 <style lang='less' scoped>
 @import url("../../../base/commonCSS/table.less");
 .key_list1_index {
-  width: 100%;
-  min-height: 400px;
+  width: 100%; 
   .kl_top {
     display: flex;
     justify-content: space-between;
@@ -189,14 +188,14 @@
 						<i class="iconfont icon-icon-test" style="color: #2d76ed;" @click="AjaxBroken(index)"></i>
 					</td>
 					<td>{{ele.estimatePrice | numNull}}</td>
-					<td>{{ele.searchRank}}</td>
+					<td>{{ele.searchRank == 0 ? '-' : ele.searchRank}}</td>
 					<td class="table_datr_p">
 						<p>{{ele.appInfoModel.totalRank == 0 ? '-' : ele.appInfoModel.totalRank}}</p>
-            <p>{{ele.appInfoModel.totalRank == 0 ? '免费' : '收费'}}</p>
+            <p>{{ele.appInfoModel.appPrice == 0 ? '免费' : '收费'}}</p>
 					</td>
 					<td class="table_datr_p">
 						<p>{{ele.appInfoModel.classificationRank == 0 ? '-' : ele.appInfoModel.classificationRank}}</p>
-						<p>{{ele.appInfoModel.appTypeName}}{{',' + ele.appInfoModel.appPrice == 0 ? '免费' : '收费'}}</p>
+						<p>{{ele.appInfoModel.appTypeName}} , {{ele.appInfoModel.appPrice == 0 ? '免费' : '收费'}}</p>
 					</td>
 				</tr>
 				<!-- 暂无关键词 -->
@@ -381,8 +380,9 @@ export default {
       let contentList = [];
       for (var i in res.ratioListByDate) {
         dateList.push(i);
-        let ls = res.ratioListByDate[i] * 10000;
+        let ls = parseInt(res.ratioListByDate[i] * 10000);
         contentList.push(ls / 100);
+        console.log(ls,ls/100)
       }
 
       if (this.createBrokenIndex != index) {

@@ -11,10 +11,9 @@
 }
 
 .kcl_index {
-  min-width: 1200px;
-  min-height: 100%;
-  margin-bottom: 20px;
-  margin-top: 60px;
+  min-width: 1200px;  
+  box-sizing: border-box;
+  padding: 60px 0 20px;
   .kcl_body {
     width: 100%;
     .kcl_top {
@@ -65,6 +64,9 @@
           font-size: 21px;
           color: @color;
           margin-bottom: 4px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         p {
           margin-bottom: 4px;
@@ -339,7 +341,7 @@
 			<banner :bannerName='bannerName'></banner>
 			<div class="kcl_top">
 				<p class="sl_center_p">地区</p>
-				<el-select v-model="countryNow" placeholder="请选择">
+				<el-select v-model="countryNow" placeholder="请选择" @change="changeFun(countryNow)">
 					<el-option v-for="item in countryList" :key="item.nationId" :label="item.nationCHSName" :value="item.nationId">
 					</el-option>
 				</el-select>
@@ -349,9 +351,15 @@
 				<div class="kcl_dui_cont">
 					<!-- 从详情页跳转过来的 -->
 					<div class="kcl_duibi_left">
-						<div><img :src="dataLeft.appImgUrl" alt=""></div> 
+						<div>
+              <img :src="dataLeft.appImgUrl" alt="" v-if="dataLeft.appImgUrl != null">
+              <img src="../../../images/moni/comon_loading.png" alt="">
+              <!-- <img src="../../../images/moni/appimg_1123_03.png" alt="" v-if="dataLeft.appImgUrl == null">               -->
+            </div> 
 						<section>
-							<h1>{{dataLeft.appName}}</h1>
+							<h1 v-if="dataLeft.appImgUrl != null">{{dataLeft.appName}}</h1>
+              <h1 v-if="dataLeft.appImgUrl == null">---</h1>
+              <!-- <h1 v-if="dataLeft.appImgUrl == null">该地区未上架</h1> -->
 							<p>
 								<span style="width: 21%;">开发商</span>
 								<span style="width: 13%;">分类</span>
@@ -360,14 +368,22 @@
 								<span style="width: 12%;">总榜</span>
 								<span style="width: 10%;">分类榜</span>
 							</p>
-							<p>
+							<p v-if="dataLeft.appImgUrl != null">
 								<span style="width: 21%; color:#000">{{dataLeft.aristName}}</span>
 								<span style="width: 13%; color:#2d76ed">{{dataLeft.appTypeName}}</span>
 								<span style="width: 22%; color:#2d76ed">{{dataLeft.appStoreId}}</span>
 								<span style="width: 16%; color:#000">{{dataLeft.appPrice | appPriceFilter}}</span>
-								<span style="width: 12%; color:#000">{{dataLeft.totalRank}}</span>
-								<span style="width: 10%; color:#000">{{dataLeft.classificationRank}}</span>
+								<span style="width: 12%; color:#000">{{dataLeft.totalRank == 0 ? '-' : dataLeft.totalRank}}</span>
+								<span style="width: 10%; color:#000">{{dataLeft.classificationRank == 0 ? '-' : dataLeft.classificationRank}}</span>
 							</p>
+              <!-- <p v-if="dataLeft.appImgUrl == null">
+								<span style="width: 21%; color:#000">-</span>
+								<span style="width: 13%; color:#2d76ed">-</span>
+								<span style="width: 22%; color:#2d76ed">-</span>
+								<span style="width: 16%; color:#000">-</span>
+								<span style="width: 12%; color:#000">-</span>
+								<span style="width: 10%; color:#000">-</span>
+							</p> -->
 						</section>
 					</div>
 					<div class="kcl_vs">
@@ -375,9 +391,15 @@
 					</div>
 					<!-- 在对比页选中的 -->
 					<div class="kcl_duibi_left" v-if="appDataShow">
-						<div><img :src="dataRight.appImgUrl" alt="" ></div> 
+						<div>
+              <img :src="dataRight.appImgUrl" alt="" v-if="dataRight.appImgUrl != null">
+              <!-- <img src="../../../images/moni/appimg_1123_03.png" alt="" v-if="dataRight.appImgUrl == null"> -->
+              <img src="../../../images/moni/comon_loading.png" alt="">
+            </div> 
 						<section>
-							<h1>{{dataRight.appName}}</h1>
+							<h1 v-if="dataRight.appImgUrl != null">{{dataRight.appName}}</h1>
+              <h1 v-if="dataRight.appImgUrl == null">---</h1>
+              <!-- <h1 v-if="dataRight.appImgUrl == null">该地区未上架</h1> -->
 							<p>
 								<span style="width: 21%;">开发商</span>
 								<span style="width: 13%;">分类</span>
@@ -386,14 +408,22 @@
 								<span style="width: 12%;">总榜</span>
 								<span style="width: 10%;">分类榜</span>
 							</p>
-							<p>
+							<p v-if="dataRight.appImgUrl != null">
 								<span style="width: 21%; color:#000">{{dataRight.aristName}}</span>
 								<span style="width: 13%; color:#2d76ed">{{dataRight.appTypeName}}</span>
 								<span style="width: 22%; color:#2d76ed">{{dataRight.appStoreId}}</span>
 								<span style="width: 16%; color:#000">{{dataRight.appPrice | appPriceFilter}}</span>
-								<span style="width: 12%; color:#000">{{dataRight.totalRank}}</span>
-								<span style="width: 10%; color:#000">{{dataRight.classificationRank}}</span>
+								<span style="width: 12%; color:#000">{{dataRight.totalRank == 0 ? '-' : dataRight.totalRank}}</span>
+								<span style="width: 10%; color:#000">{{dataRight.classificationRank == 0 ? '-' : dataRight.classificationRank}}</span>
 							</p>
+              <!-- <p v-if="dataRight.appImgUrl == null">
+								<span style="width: 21%; color:#000">-</span>
+								<span style="width: 13%; color:#2d76ed">-</span>
+								<span style="width: 22%; color:#2d76ed">-</span>
+								<span style="width: 16%; color:#000">-</span>
+								<span style="width: 12%; color:#000">-</span>
+								<span style="width: 10%; color:#000">-</span>
+							</p> -->
 						</section>
 						<i class="iconfont icon-cha" @click="close"></i>
 					</div>
@@ -425,11 +455,23 @@
 					<h2>竞品对比结果</h2>
 					<table class="kcl_table1">
 						<tr>
-							<th style="width: 28%">#</th>
+							<th style="width: 28%"></th>
 							<th style="width: 19%">已选APP (左)</th>
 							<th style="width: 15%"></th>
 							<th style="width: 19%">竞品APP (右)</th>
 							<th style="width: 19%">操作</th>
+						</tr>
+            <tr class="td_height"  v-if="ContrastData[idLeft]">
+							<td class="td_weight">竞争度(竞价词重合度) </td>
+							<td class="td_color"></td>
+							<td class="td_animous">
+								<div>
+									<section class="yuan" id="myChart1"> </section>
+									<span>{{percentage}}%</span>
+								</div>
+							</td>
+							<td class="td_color"></td>
+							<td></td>
 						</tr>
 						<tr  v-if="ContrastData[idLeft]">
 							<td>ASM竞价词数 </td>
@@ -451,19 +493,7 @@
 							<td></td>
 							<td class="td_color">{{ContrastData[idRight].unEqualCompetitiveWordNum}}</td>
 							<td></td>
-						</tr>
-						<tr class="td_height"  v-if="ContrastData[idLeft]">
-							<td class="td_weight">竞争度(竞价词重合度) </td>
-							<td class="td_color"></td>
-							<td class="td_animous">
-								<div>
-									<section class="yuan" id="myChart1"> </section>
-									<span>{{percentage}}%</span>
-								</div>
-							</td>
-							<td class="td_color"></td>
-							<td></td>
-						</tr>
+						</tr> 
 						<tr  v-if="ContrastData[idLeft]">
 							<td>8000以上热度竞价词数 </td>
 							<td class="td_color">{{ContrastData[idLeft].hotCompetitiveWords}}</td>
@@ -556,7 +586,15 @@ export default {
       max: "",
       min: "",
       parentAjaxType: false, //父级的对比列表是否请求结束
-      loadingparent: true
+      loadingparent: true,
+      rightAppIndex: '',//存储右面app的索引
+      loading: null, 
+      loadingopaction: {
+        lock: true,
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      }
     };
   },
 
@@ -612,16 +650,12 @@ export default {
   },
 
   mounted() {
+    this.$height('.kcl_index') 
     //关闭搜索列表
     $(document).bind("click", function(e) {
       var target = $(e.target);
       if (target.closest(".btnclass").length == 0) {
-        $(".kc_over").animate(
-          {
-            height: "0px"
-          },
-          200
-        );
+        $(".kc_over").css('height', '0');
       }
     });
   },
@@ -634,6 +668,35 @@ export default {
       $(".kc_ct_search").css("border-color", "#dee2e6");
     },
 
+    
+    changeFun(value) { 
+      this.loading = this.$loading(this.loadingopaction);
+      //切换国家
+      this.AjaxInfor(
+        {
+          key: this.countryNow,
+          id: this.$route.query.id
+        },
+        "left"
+      );
+      if(this.appDataShow) {
+        this.AjaxInfor(
+        {
+          id: this.list[this.rightAppIndex].appStoreId,
+          key: this.countryNow
+        },
+        "right"
+      );
+      }
+      //this.appDataShow = true;
+      this.tableShow = false;
+      this.parentAjaxType = false;
+      this.components_index = 0;
+      this.currentView = list1;
+      this.ContrastData = {};
+      this.loadingparent = true;
+    },
+
     btnClick() {
       if (this.APPinfor == "") {
         this.$message({
@@ -641,6 +704,7 @@ export default {
           type: "warning"
         });
       } else {
+        this.loading = this.$loading(this.loadingopaction);
         this.Ajax();
       }
     },
@@ -648,7 +712,8 @@ export default {
     overLiClick(index) {
       //选中app请求数据，进行比较
       this.appDataShow = true;
-
+      this.rightAppIndex = index
+      this.loading = this.$loading(this.loadingopaction);
       this.AjaxInfor(
         {
           id: this.list[index].appStoreId,
@@ -666,6 +731,7 @@ export default {
       this.components_index = 0;
       this.currentView = list1;
       this.ContrastData = {};
+      this.dataRight = {}
       this.loadingparent = true;
     },
 
@@ -676,8 +742,15 @@ export default {
           message: "对不起相同应用不能进行比较！！！",
           type: "warning"
         });
+      }else if(this.dataLeft.appImgUrl == null ||  this.dataRight.appImgUrl == null) {
+        this.$message({
+          message: "未上架app不能进行比较！！！",
+          type: "warning"
+        });
       } else {
         this.tableShow = true;
+        this.loadingparent = true;
+        this.ContrastData = {}
         this.AjaxAppcontent(
           this.dataLeft.appStoreId,
           this.dataRight.appStoreId
@@ -710,6 +783,7 @@ export default {
       
       this.$https.get(url)
       .then(res => {
+        this.loading.close()
         this.list = res.data.data.list;
         let ls = "";
         if (this.list.length > 5) {
@@ -718,12 +792,7 @@ export default {
           ls = this.list.length * 40;
         }
         if (res.data.resultCode == 1000) {
-          $(".kc_over").animate(
-            {
-              height: ls + "px"
-            },
-            200
-          );
+          $(".kc_over").css('height', ls + "px");
         }
 
         //如果搜索内容为空给一个提醒
@@ -741,7 +810,7 @@ export default {
       let url = "/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=" + obj.id + "&nationId=" + obj.key;
 
       this.$https.get(url)
-      .then(res => {
+      .then(res => { 
         if (num == "left") {
           this.dataLeft = res.data.data;
           this.idLeft = this.$route.query.id;
@@ -749,6 +818,9 @@ export default {
           this.dataRight = res.data.data;
           this.idRight = res.data.data.appStoreId;
         }
+        if(this.loading!= null){
+          this.loading.close()
+        } 
       });
     },
 

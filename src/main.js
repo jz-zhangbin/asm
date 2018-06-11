@@ -6,7 +6,9 @@ import https from '@axios'
 Vue.prototype.$https = https
 
 import ls from '@commonJS/localStorage'
+import height from '@commonJS/windowHeight'
 Vue.prototype.$ls = ls
+Vue.prototype.$height = height
 
 import cookie from '@commonJS/cookie'
 Vue.prototype.$cookie = cookie
@@ -24,6 +26,8 @@ import searchTop from '@components/AsmQuery/Search-Top'
 import SIdentify from './components/AsmQuery/canvas'
 import VueParticles from '@components/AsmQuery/vue-particles'
 import Footer from '@components/AsmQuery/footer'
+import Hdader from '@components/AsmLaunch/header'
+Vue.component('v-header', Hdader)
 Vue.component('v-footer', Footer)
 Vue.component('vue-particles', VueParticles)
 Vue.component('s-identify', SIdentify)

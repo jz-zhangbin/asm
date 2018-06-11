@@ -4,9 +4,9 @@
 @font_color: #6c757d;
 @border: #dee2e6;
 @btnhover: #1559c8;
-.register_index {
-  margin-top: 60px;
-  min-height: 100%;
+.register_index { 
+  box-sizing: border-box;
+  padding-top: 60px;
   background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0
       no-repeat,
     url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right
@@ -284,6 +284,8 @@ export default {
   updated() {},
 
   mounted() {
+    this.$height('.register_index') 
+
     this.identifyCode = "";
     this.makeCode(this.identifyCodes, 4);
     $(".register_input input").on("focus", function() {

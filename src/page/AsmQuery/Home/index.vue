@@ -568,8 +568,8 @@ export default {
       list: [],
       scrooll: null,
       listNum: 0,
-      Appnum: 1000000,
-      Wordnum: 1000000
+      Appnum: 2036213,
+      Wordnum: 1621556
     };
   },
 
@@ -620,8 +620,8 @@ export default {
       }
     });
 
-    this.keyWordNum("Appnum", 2036213, "timer1");
-    this.keyWordNum("Wordnum", 1621556, "timer2");
+    //this.keyWordNum("Appnum", 2036213, "timer1");
+    //this.keyWordNum("Wordnum", 1621556, "timer2");
   },
 
   destroyed() {
@@ -633,7 +633,7 @@ export default {
       //数字滚动增加
       let _this = this;
       timer = setInterval(() => {
-        _this[num] += 12341;
+        _this[num] += 22341;
         if (_this[num] >= maxNum) {
           clearInterval(timer);
           _this[num] = maxNum;

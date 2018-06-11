@@ -4,9 +4,9 @@
 @font_color: #6c757d;
 @border: #dee2e6;
 @btnhover: #1559c8;
-.login_index {
-  min-height: 100%;
-  margin-top: 60px;
+.login_index { 
+  box-sizing: border-box;
+  padding: 60px 0 0 0;
   background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0
       no-repeat,
     url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right
@@ -126,6 +126,8 @@ export default {
   },
 
   mounted() {
+    this.$height('.login_index') 
+
     $(".login_input input").on("focus", function() {
       $(this)
         .parent()
@@ -169,7 +171,7 @@ export default {
             };
             this.$cookie.set("Adjuz_UserInfoNEW",qs.stringify(Adjuz_UserInfoNEW));
             //console.log(reduceCookie(this.$cookie.get('Adjuz_UserInfoNEW')))
-            this.$router.push("/home");
+            this.$router.go(-1)
           } else if (res.data.resultCode == 404) {
             this.war = true;
             this.warData = "账号或密码错误，请重新登录！";

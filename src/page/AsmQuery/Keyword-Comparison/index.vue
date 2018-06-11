@@ -4,16 +4,16 @@
 @font_color: #6c757d;
 @border: #dee2e6;
 @btnhover: #1559c8;
-@boxshado: #eee;
+@boxshado: #eee; 
 @import url("../../../base/commonCSS/scroll.css");
 .iconfont {
   cursor: pointer;
 }
 
 .kc_index {
-  min-width: 1200px;
-  min-height: 100%;
-  margin-top: 60px;
+  min-width: 1200px; 
+  box-sizing: border-box;
+  padding-top: 60px;
   .kc_body {
     width: 100%;
     .kc_top {
@@ -85,6 +85,7 @@
         left: 0;
         box-shadow: 0 2px 2px @boxshado;
         overflow: hidden;
+        border-radius: 6px;
       }
       ul {
         width: 500px;
@@ -211,7 +212,7 @@ export default {
     })
   },
 
-  created() {
+  created() {  
     this.$store.dispatch("GET_COUNTRYLIST")
     .then(() => {
       this.countryNow = this.$store.state.Home.countryList[0].nationId;
@@ -219,15 +220,12 @@ export default {
   },
 
   mounted() {
+    this.$height('.kc_index') 
+    
     $(document).bind("click", function(e) {
       var target = $(e.target);
       if (target.closest(".btnclass").length == 0) {
-        $(".kc_over").animate(
-          {
-            height: "0px"
-          },
-          200
-        );
+        $(".kc_over").css('height','0');
       }
     });
   },
@@ -274,12 +272,7 @@ export default {
           ls = this.list.length * 40;
         }
         if (res.data.resultCode == 1000) {
-          $(".kc_over").animate(
-            {
-              height: ls + "px"
-            },
-            200
-          );
+          $(".kc_over").css('height', ls + "px");
         }
         this.loading.close();
 

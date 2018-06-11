@@ -1,9 +1,8 @@
 <style lang='less' scoped>
 @import url("../../../base/commonCSS/table.less");
 .rl_index {
-  min-height: 100%;
-  margin-bottom: 20px;
-  margin-top: 60px;
+  box-sizing: border-box;
+  padding: 60px 0 20px;
   .sl_center {
     min-width: 1200px;
     padding: 36px 45px 0 45px;
@@ -75,6 +74,10 @@
         color: #fff;
       }
     }
+  }
+  .page_index{
+    min-width: 1200px;
+    margin: 0 45px;
   }
 }
 </style>
@@ -189,7 +192,16 @@
               <img src="../../../images/components/loading.gif" alt="" v-if="loadingShow">
               <p v-if="loadingShow">努力加载中</p>
             </div>
-            <!-- footer -->
+            <!-- 分页 -->
+            <!-- v-if="userType && tableInnerCode.data" -->
+            <!-- <div class="page_index" >
+              <div>{{pagedata}}</div>
+              <div>
+                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="zong">
+                </el-pagination>
+              </div>
+            </div> -->
+            <!-- footer-top -->
             <div class="sl_from_top" @click="fromTop">
                 <i class="iconfont icon-ico-top1"></i>
             </div>
@@ -215,12 +227,14 @@ export default {
       tableData: [], //表格数据
       //loadingfirst: true
       loading: null,
+      currentPage3: 1,
       loadingopaction: {
         lock: true,
         text: "Loading",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
-      }
+      },
+      zong: 0
     };
   },
 
@@ -233,7 +247,16 @@ export default {
     ...mapState({
       countryList: state => state.Home.countryList,
       userType: state => state.Sign.userType
-    })
+    }),
+    pagedata() {
+      if (this.currentPage3 * 20 <= this.zong) {
+        let ls ="当前第 " +((this.currentPage3 - 1) * 50 + 1) + "-" + this.currentPage3 * 50 +", 共 " +this.zong
+        return ls;
+      } else {
+        let ls = "当前第 " + ((this.currentPage3 - 1) * 50 + 1) + "-" +this.zong + ", 共" +this.zong;
+        return ls;
+      }
+    }
   },
 
   created() {
@@ -253,6 +276,8 @@ export default {
   updated() {},
 
   mounted() {
+    this.$height('.rl_index') 
+
     //数据模拟滚动到最下面请求20条
     let _this = this;
     // 滚动事件
@@ -381,7 +406,15 @@ export default {
         this.loadingShow = false;
         this.ajaxnum++;
       });
-    }
+    },
+
+    handleSizeChange(val) {
+      this.$emit("pageDate", val, this.sortDate); 
+    },
+
+    handleCurrentChange(val) {
+      this.$emit("pageDate", val, this.sortDate); 
+    },
   }
 };
 </script>

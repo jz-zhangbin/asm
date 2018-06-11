@@ -16,8 +16,8 @@
 	@import url("./base/commonCSS/common.css"); 
 	@import url("./assets/iconfont/iconfont.css");
 	#app {
-		min-height: 100%;
-		height: 100%;
+		//min-height: 100%;
+		//height: 100%;
 		//position: relative;
 	}
 	

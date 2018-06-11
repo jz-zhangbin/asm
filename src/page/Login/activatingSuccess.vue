@@ -5,8 +5,8 @@
 @border: #dee2e6;
 @btnhover: #1559c8;
 .acitiva_index {
-  min-height: 100%;
-  margin-top: 60px;
+  box-sizing: border-box;
+  padding-top: 60px;
   background: url(http://static.adjuz.com/asmmaster/img/login_left.png) 0 0
       no-repeat,
     url(http://static.adjuz.com/asmmaster/img/login_right.png) bottom right
@@ -93,7 +93,9 @@ export default {
     this.Ajax(this.urlObj);
   },
 
-  mounted() {},
+  mounted() {
+    this.$height('.acitiva_index') 
+  },
 
   methods: {
     backClick() {
