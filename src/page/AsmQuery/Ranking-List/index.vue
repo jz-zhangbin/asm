@@ -107,8 +107,8 @@
                     <el-option v-for="item in countryList" :key="item.nationId" :label="item.nationCHSName" :value="item.nationId">
                     </el-option>
                 </el-select>
-                <p class="sl_center_p2">类别</p>
-                <div class="sl_center_btn">总榜</div>
+                <!-- <p class="sl_center_p2">类别</p>
+                <div class="sl_center_btn">总榜</div> -->
                 <div class="sl_checkeout" @click="excelOut()" v-if="userType">
                     <i class="iconfont icon-xiazaidownload140"></i> 导出
                 </div>

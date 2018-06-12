@@ -110,7 +110,7 @@
 		</div>
 		<div class="kl_table">
 			<!-- 头部表格 -->
-			<table id="ta2">
+			<table id="tan">
 				<tr>
 					<th style="width: 30%">应用</th>
 					<th style="width: 14%" class="sl_table_po">
@@ -129,7 +129,7 @@
 					</th>
 					<th style="width: 14%" class="sl_table_po">
 						<div class="sl_table_flex">
-							预测出价
+							预估价格
 							<div class="sl_t_dis">
 								<i class="iconfont icon-wenhao-fill"> </i>
 								<span class="sl_t_is" style="width:260px;">该APP竞价该关键词的预计投放价格</span>
@@ -271,7 +271,14 @@ export default {
     valueData: {},
     userType: {},
     tableInner: {},
-    tableInnerCode: {},
+    tableInnerCode: {
+      type: Object,
+      default: {
+        data: {
+          totalCount: 0
+        }
+      }
+    },
     loadingfirst: {}
   },
   components: {
@@ -303,6 +310,7 @@ export default {
 
   watch: {
     valueData() {
+      this.tableInnerCode.data.totalCount = 0
       this.$parent.propDate = this.value;
     }
   },
@@ -319,6 +327,7 @@ export default {
 
     changeFun(value) {
       //切换时间进行请求
+      this.tableInnerCode.data.totalCount = 0
       $(".table_datr_broken").remove();
       this.$parent.propDate = this.value;
       this.$emit("peiDate", value, this.sortDate);
@@ -353,7 +362,7 @@ export default {
         "ID",
         "开发商",
         "展示量占比",
-        "预测出价",
+        "预估价格",
         "搜索排名",
         "总榜",
         "分类榜"
@@ -391,7 +400,9 @@ export default {
                               <div style="position: absolute; top:0; left: 0;width: 100%;height: 390px;" id="myChart"></div>  
                             </td> 
                           </tr>`;
-        $("#ta2 tr").eq(index + 1).after(domstring); //添加兄弟节点
+        if($("#tan")) {//如果请求没有结束，跳到其它页面不允许插入
+          $("#tan tr").eq(index + 1).after(domstring); //添加兄弟节点
+        } 
         if (res.length == 0) {
           //当后台数据为空时
           $(".table_datr_broken td div").html("暂时没有数据！").css({
@@ -457,21 +468,24 @@ export default {
 
     handleSizeChange(val) {
       this.$emit("pageDate", val, this.sortDate);
-      $(window).scrollTop($("#ta2").offset().top);
+      $(window).scrollTop($("#tan").offset().top);
     },
 
     handleCurrentChange(val) {
       this.$emit("pageDate", val, this.sortDate);
-      $(window).scrollTop($("#ta2").offset().top);
+      $(window).scrollTop($("#tan").offset().top);
     },
 
     routerClick(id) {
       //应用跳转
+      $(".table_datr_broken").remove(); //删除所有折线
       this.$router.push({
         path: "/application",
         query: {
           id: id,
-          country: this.$parent.countryNow
+          country: this.$parent.countryNow,
+          endTime: datefn(2)[this.value].data.endTime,
+          beginTime: datefn(2)[this.value].data.beginTime
         }
       });
     },

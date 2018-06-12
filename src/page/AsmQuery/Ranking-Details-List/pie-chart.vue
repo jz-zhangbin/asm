@@ -18,7 +18,11 @@
     animation: animation1 0.5s ease-out;
     -webkit-animation: animation1 0.5s ease-out;
     img{
-      margin: 180px auto;
+      position: absolute; 
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+      transform: translateY(-50%);
       display: block;
     }
   }
@@ -111,10 +115,12 @@ export default {
       }
 
       nameList.push("Other");
-      dataList.push({
-        value: others.toFixed(4),
-        name: "Other"
-      }); 
+      if(others != 0) {
+        dataList.push({
+          value: others.toFixed(4),
+          name: "Other"
+        }); 
+      } 
       dataList.map((ele,index)=>{
         let num = parseInt(ele.value *10000)/100 + '%'
         let newName = ele.name + '-' + num

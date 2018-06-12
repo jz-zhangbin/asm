@@ -140,7 +140,14 @@ export default {
     valueData: {},
     userType: {},
     tableMoreData: {},
-    tableMoreCode: {},
+    tableMoreCode: {
+      type: Object,
+      default: {
+        data: {
+          totalCount: 0
+        }
+      }
+    },
     loadingfirst2: {}
   },
 

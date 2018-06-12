@@ -551,6 +551,8 @@ export default {
 
   watch: {
     $route() {
+      this.currentPage3 = 1
+      this.tableData.totalCount = 0
       this.loading = this.$loading(this.loadingopaction);
 
       this.AjaxGetAppHistoryKeywordList({
@@ -648,6 +650,8 @@ export default {
 
     changeFun(value) {
       //切换国家
+      this.currentPage3 = 1
+      this.tableData.totalCount = 0
       this.showList.map(ele => {
         ele.one = false;
         ele.two = false;
@@ -678,6 +682,8 @@ export default {
 
     changeDateFun(value) {
       //切换日期
+      this.currentPage3 = 1
+      this.tableData.totalCount = 0
       this.showList.map(ele => {
         ele.one = false;
         ele.two = false;
@@ -794,6 +800,8 @@ export default {
 
     searchMoreClick() {
       //模糊查询
+      this.currentPage3 = 1
+      this.tableData.totalCount = 0
       this.showList.map(ele => {
         ele.one = false;
         ele.two = false;
@@ -886,6 +894,8 @@ export default {
 
     keywordClick() {
       //input搜索
+      this.currentPage3 = 1
+      this.tableData.totalCount = 0
       this.searchKeyWordTrue = this.searchKeyWord;
       this.showList.map(ele => {
         ele.one = false;
@@ -1019,14 +1029,24 @@ export default {
       });
     },
 
-    AjaxGetAppInfo() {
+    AjaxGetAppInfo() { 
+      let routeObj = this.$route.query 
+      if(routeObj.beginTime == undefined) {
+        routeObj.beginTime = ''
+      }
+      if(routeObj.endTime == undefined) {
+        routeObj.endTime = ''
+      }
       //初次加载
       let url =
         "/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=" +
-        this.$route.query.id +
+        routeObj.id +
         "&nationId=" +
-        this.$route.query.country;
-
+        routeObj.country + 
+        '&beginTime=' +
+         routeObj.beginTime +
+        '&endTime=' + 
+        routeObj.endTime 
       this.$https.get(url)
       .then(res => {
         //res.data.resultCode = 404

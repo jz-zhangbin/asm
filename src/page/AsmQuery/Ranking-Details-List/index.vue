@@ -58,10 +58,10 @@
     display: flex;
     flex-wrap: wrap;
     box-sizing: border-box;
-    padding: 20px 20px 0px 0;
+    padding: 15px 20px 0px 0;
     max-width: 500px;
-    max-height: 150px;
-    overflow-y: auto;  
+    max-height: 224px;
+    overflow: hidden;  
     span {
       display: block;
       border: 1px solid @border;
@@ -297,11 +297,20 @@ export default {
 
   watch: {
     $route() {
+      this.$refs.childr.currentPage3 = 1
+      this.$store.dispatch("GET_COUNTRYLIST").then(() => {
+      this.$store.state.Home.countryList.map((ele, index) => {
+          if (ele.nationId == this.$route.query.country) {
+            this.countryNow = this.$store.state.Home.countryList[index].nationId;
+            console.log(this.countryNow)
+          }
+        });
+      });
+      $(".table_datr_broken").remove(); //删除所有折线
       this.loading = this.$loading(this.loadingopaction);
       this.AJaxKeyWord(this.$route.query.country);
       this.AjaxHistoryList(1,this.$route.query.country,datefn(3).beginTime,datefn(3).endTime,"ratio",0);
       this.AJaxKeyWordMore(1, this.$route.query.country);
-      this.countryNow = this.$route.query.country;
     }
   },
 
@@ -317,7 +326,7 @@ export default {
     this.$store.dispatch("GET_COUNTRYLIST").then(() => {
       this.$store.state.Home.countryList.map((ele, index) => {
         if (ele.nationId == this.$route.query.country) {
-          this.countryNow = this.$store.state.Home.countryList[index].nationId;
+          this.countryNow = this.$store.state.Home.countryList[index].nationId; 
         }
       });
     });
@@ -334,6 +343,7 @@ export default {
   methods: {
     AjaxHistoryList(pageIndex,nationId,beginTime,endTime,sortName,upordown) {
       // 历史列表
+      $(".table_datr_broken").remove(); //删除所有折线
       this.loadingfirst = true;
       this.tableInner = [];
       let GetHistoryAppListUrl = "/api/v1/IntellSearchApi/KeywordDetail/GetHistoryAppList";
@@ -373,6 +383,7 @@ export default {
 
     AJaxKeyWord(nationId) {
       //关键词详情信息
+      $(".table_datr_broken").remove(); //删除所有折线
       let keyWordDateUrl = "/api/v1/IntellSearchApi/KeywordDetail/Getkeywordinfo";
       let obj = {
         nationId,
@@ -402,6 +413,7 @@ export default {
 
     AJaxKeyWordMore(pageIndex, nationId) {
       //更多关联词
+      $(".table_datr_broken").remove(); //删除所有折线
       this.loadingfirst2 = true;
       this.tableMoreData = [];
       let url = "/api/v1/IntellSearchApi/KeywordDetail/GetAssociatedWords";
@@ -420,10 +432,7 @@ export default {
       .then(res => {
         this.tableMoreCode = res.data;
         this.tableMoreData = res.data.data.list;
-        this.loadingfirst2 = false;
-        if(this.loading != null) {
-          this.loading.close()
-        }
+        this.loadingfirst2 = false; 
       });
     },
 
@@ -500,7 +509,7 @@ export default {
         path: "/rankingDetails-List",
         query: {
           key: this.tableData.associatedWords[index2],
-          country: this.countryNow
+          country: JSON.stringify(this.countryNow), 
         }
       })
     }

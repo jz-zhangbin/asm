@@ -16,9 +16,11 @@
 	@import url("./base/commonCSS/common.css"); 
 	@import url("./assets/iconfont/iconfont.css");
 	#app {
-		//min-height: 100%;
+		min-height: 100%;
 		//height: 100%;
-		//position: relative;
+		position: relative;
+		box-sizing: border-box;
+		padding-bottom: 68px; 
 	}
 	
 	.a_router {
@@ -37,5 +39,6 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
+		position: absolute;
 	}
 </style>

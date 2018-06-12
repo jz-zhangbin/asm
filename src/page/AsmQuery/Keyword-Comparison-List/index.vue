@@ -353,13 +353,13 @@
 					<div class="kcl_duibi_left">
 						<div>
               <img :src="dataLeft.appImgUrl" alt="" v-if="dataLeft.appImgUrl != null">
-              <img src="../../../images/moni/comon_loading.png" alt="">
-              <!-- <img src="../../../images/moni/appimg_1123_03.png" alt="" v-if="dataLeft.appImgUrl == null">               -->
+              <img src="../../../images/moni/comon_loading.png" alt="" v-if="dataLeft.appImgUrl == null && leftloadingCode == 1000">
+              <img src="../../../images/moni/appimg_1123_03.png" alt="" v-if="dataLeft.appImgUrl == null && leftloadingCode == 404"> 
             </div> 
 						<section>
 							<h1 v-if="dataLeft.appImgUrl != null">{{dataLeft.appName}}</h1>
-              <h1 v-if="dataLeft.appImgUrl == null">---</h1>
-              <!-- <h1 v-if="dataLeft.appImgUrl == null">该地区未上架</h1> -->
+              <h1 v-if="dataLeft.appImgUrl == null && leftloadingCode == 1000">---</h1>
+              <h1 v-if="dataLeft.appImgUrl == null && leftloadingCode == 404">该地区未上架</h1>
 							<p>
 								<span style="width: 21%;">开发商</span>
 								<span style="width: 13%;">分类</span>
@@ -376,14 +376,14 @@
 								<span style="width: 12%; color:#000">{{dataLeft.totalRank == 0 ? '-' : dataLeft.totalRank}}</span>
 								<span style="width: 10%; color:#000">{{dataLeft.classificationRank == 0 ? '-' : dataLeft.classificationRank}}</span>
 							</p>
-              <!-- <p v-if="dataLeft.appImgUrl == null">
+              <p v-if="dataLeft.appImgUrl == null && leftloadingCode == 404">
 								<span style="width: 21%; color:#000">-</span>
 								<span style="width: 13%; color:#2d76ed">-</span>
 								<span style="width: 22%; color:#2d76ed">-</span>
 								<span style="width: 16%; color:#000">-</span>
 								<span style="width: 12%; color:#000">-</span>
 								<span style="width: 10%; color:#000">-</span>
-							</p> -->
+							</p>
 						</section>
 					</div>
 					<div class="kcl_vs">
@@ -393,13 +393,13 @@
 					<div class="kcl_duibi_left" v-if="appDataShow">
 						<div>
               <img :src="dataRight.appImgUrl" alt="" v-if="dataRight.appImgUrl != null">
-              <!-- <img src="../../../images/moni/appimg_1123_03.png" alt="" v-if="dataRight.appImgUrl == null"> -->
-              <img src="../../../images/moni/comon_loading.png" alt="">
+              <img src="../../../images/moni/appimg_1123_03.png" alt="" v-if="dataRight.appImgUrl == null && rightloadingCode == 404"> 
+              <img src="../../../images/moni/comon_loading.png" alt="" v-if="dataRight.appImgUrl == null && rightloadingCode == 1000">
             </div> 
 						<section>
 							<h1 v-if="dataRight.appImgUrl != null">{{dataRight.appName}}</h1>
-              <h1 v-if="dataRight.appImgUrl == null">---</h1>
-              <!-- <h1 v-if="dataRight.appImgUrl == null">该地区未上架</h1> -->
+              <h1 v-if="dataRight.appImgUrl == null && rightloadingCode == 1000 ">---</h1>
+              <h1 v-if="dataRight.appImgUrl == null && rightloadingCode == 404">该地区未上架</h1>
 							<p>
 								<span style="width: 21%;">开发商</span>
 								<span style="width: 13%;">分类</span>
@@ -416,14 +416,14 @@
 								<span style="width: 12%; color:#000">{{dataRight.totalRank == 0 ? '-' : dataRight.totalRank}}</span>
 								<span style="width: 10%; color:#000">{{dataRight.classificationRank == 0 ? '-' : dataRight.classificationRank}}</span>
 							</p>
-              <!-- <p v-if="dataRight.appImgUrl == null">
+              <p v-if="dataRight.appImgUrl == null && rightloadingCode == 404">
 								<span style="width: 21%; color:#000">-</span>
 								<span style="width: 13%; color:#2d76ed">-</span>
 								<span style="width: 22%; color:#2d76ed">-</span>
 								<span style="width: 16%; color:#000">-</span>
 								<span style="width: 12%; color:#000">-</span>
 								<span style="width: 10%; color:#000">-</span>
-							</p> -->
+							</p>
 						</section>
 						<i class="iconfont icon-cha" @click="close"></i>
 					</div>
@@ -530,7 +530,7 @@
 					</table>
 				</div>
 				<!--三个table的切换  -->
-				<div class="kcl_table_three" v-if="tableShow">
+				<div class="kcl_table_three" v-if="tableCommonsShow">
 					<div class="kcl_table_btn">
 						<span v-for="(ele,index) in components_list" :key="index" :class="{rdl_section_is: index == components_index}" @click="componentsClick(index)">{{ele.name}}</span>
 					</div>
@@ -560,6 +560,7 @@ export default {
       bannerName: "竞品对比",
       appDataShow: false,
       tableShow: false,
+      tableCommonsShow: false,
       components_list: [
         {
           name: "相同竞价词",
@@ -587,14 +588,16 @@ export default {
       min: "",
       parentAjaxType: false, //父级的对比列表是否请求结束
       loadingparent: true,
-      rightAppIndex: '',//存储右面app的索引
+      rightappStoreId: '',//存储右面app的索引
       loading: null, 
       loadingopaction: {
         lock: true,
         text: "Loading",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
-      }
+      },
+      leftloadingCode: 1000,
+      rightloadingCode: 1000,
     };
   },
 
@@ -671,6 +674,7 @@ export default {
     
     changeFun(value) { 
       this.loading = this.$loading(this.loadingopaction);
+      
       //切换国家
       this.AjaxInfor(
         {
@@ -682,18 +686,21 @@ export default {
       if(this.appDataShow) {
         this.AjaxInfor(
         {
-          id: this.list[this.rightAppIndex].appStoreId,
+          id: this.rightappStoreId,
           key: this.countryNow
         },
         "right"
       );
-      }
+      }   
       //this.appDataShow = true;
       this.tableShow = false;
-      this.parentAjaxType = false;
+      this.tableCommonsShow = false;
+      this.parentAjaxType = false; 
       this.components_index = 0;
       this.currentView = list1;
       this.ContrastData = {};
+      this.dataLeft = {}
+      this.dataRight = {}
       this.loadingparent = true;
     },
 
@@ -712,7 +719,8 @@ export default {
     overLiClick(index) {
       //选中app请求数据，进行比较
       this.appDataShow = true;
-      this.rightAppIndex = index
+      this.rightappStoreId = this.list[index].appStoreId
+      console.log(this.rightappStoreId)
       this.loading = this.$loading(this.loadingopaction);
       this.AjaxInfor(
         {
@@ -728,6 +736,7 @@ export default {
       this.appDataShow = false;
       this.tableShow = false;
       this.parentAjaxType = false;
+      this.tableCommonsShow = false
       this.components_index = 0;
       this.currentView = list1;
       this.ContrastData = {};
@@ -810,17 +819,32 @@ export default {
       let url = "/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=" + obj.id + "&nationId=" + obj.key;
 
       this.$https.get(url)
-      .then(res => { 
-        if (num == "left") {
-          this.dataLeft = res.data.data;
-          this.idLeft = this.$route.query.id;
-        } else {
-          this.dataRight = res.data.data;
-          this.idRight = res.data.data.appStoreId;
-        }
+      .then(res => {  
+        if(res.data.resultCode == 1000) {
+          if (num == "left") {
+            this.dataLeft = res.data.data;
+            this.idLeft = this.$route.query.id; 
+            this.leftloadingCode = res.data.resultCode
+          } else {
+            this.dataRight = res.data.data;
+            this.idRight = res.data.data.appStoreId;
+            this.rightloadingCode = res.data.resultCode
+          }
+        }else{
+          if (num == "left") {
+            this.dataLeft = {}
+            this.idLeft = this.$route.query.id; 
+            this.leftloadingCode = res.data.resultCode
+          } else {
+            console.log(res.data.resultCode)
+            this.dataRight = {}
+            this.rightloadingCode = res.data.resultCode
+          }
+        }  
+        
         if(this.loading!= null){
           this.loading.close()
-        } 
+        }  
       });
     },
 
@@ -840,6 +864,10 @@ export default {
         this.loadingparent = false;
         this.ContrastData = res.data.data.appAnalysisResult;
         this.parentAjaxType = true; // 当前请求结束，自己请求
+        
+        if(this.tableShow) {
+          this.tableCommonsShow = true
+        } 
 
         let totalNum = res.data.data.appAnalysisResult[this.idLeft].totalCompetitiveWordNum;
         let identicalNum = res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum;

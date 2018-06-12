@@ -10,7 +10,7 @@ import {
 
 const sign = {
     state: {
-        userType: false,
+        userType: true,
         userName: '', 
     },
     mutations: { 
