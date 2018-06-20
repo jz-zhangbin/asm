@@ -93,14 +93,14 @@
 				</div>
 				<div class="login_input">
 					<i class="iconfont icon-zhucedenglumima"></i>
-					<input type="text" placeholder="请输入密码/至少6位" v-model="userWorld" class="passinput" @focus="changeinput"> 
+					<input type="text" id="login_btn" placeholder="请输入密码/至少6位" v-model="userWorld" class="passinput" @focus="changeinput"> 
 				</div>
 				<div class="login_input login_input_war" v-if="war">
 					{{warData}}
 				</div>
-				<div class="login_input login_btn" @click="loginSubmit">
+				<button class="login_input login_btn"  @click="loginSubmit">
 					登录
-				</div>
+				</button>
 				<div class="login_bottom">
 					<router-link :to="{path: '/modif-password'}">忘记密码？</router-link>
 					<router-link :to="{path: '/register'}">注册</router-link>
@@ -138,6 +138,16 @@ export default {
         .parent()
         .css("border-color", "#dee2e6");
     });
+
+    //回车登录事件
+    let _this = this;
+    $("#login_btn").keydown(function(e) {
+      var curKey = e.which;
+      if (curKey == 13) { 
+        _this.loginSubmit();
+        return false;
+      }
+    });
   },
 
   methods: {
@@ -162,7 +172,7 @@ export default {
           if (res.data.resultCode == 1000) {
             //创建cookie
             let secureId = res.data.data.userId + this.userEmil;
-            console.log(this.getmd5(secureId).toUpperCase());
+            //console.log(this.getmd5(secureId).toUpperCase());
             let Adjuz_UserInfoNEW = {
               Adjuz_SecureId: this.getmd5(secureId).toUpperCase(),
               uid: res.data.data.userId,

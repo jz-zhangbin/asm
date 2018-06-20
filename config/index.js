@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
     	'/api': { 
-        target: 'http://asm.api.adjuz.net:899',
+        target: 'http://10.1.0.136:8989',
         //target: 'http://asm.api.adjuz.net', 
         changeOrigin: true,
         pathRewrite: {

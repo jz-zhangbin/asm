@@ -11,7 +11,7 @@
 }
 
 .kcl_index {
-  min-width: 1200px;  
+  min-width: 1200px;
   box-sizing: border-box;
   padding: 60px 0 20px;
   .kcl_body {
@@ -332,6 +332,9 @@
   .el-input__inner {
     height: 34px;
   }
+  .el-input__icon {
+    line-height: 34px !important;
+  }
 }
 </style>
 <template>
@@ -350,7 +353,7 @@
 			<div class="kcl_duibi">
 				<div class="kcl_dui_cont">
 					<!-- 从详情页跳转过来的 -->
-					<div class="kcl_duibi_left">
+					<div class="kcl_duibi_left" v-if="!leftSearch">
 						<div>
               <img :src="dataLeft.appImgUrl" alt="" v-if="dataLeft.appImgUrl != null">
               <img src="../../../images/moni/comon_loading.png" alt="" v-if="dataLeft.appImgUrl == null && leftloadingCode == 1000">
@@ -385,6 +388,26 @@
 								<span style="width: 10%; color:#000">-</span>
 							</p>
 						</section>
+            <i class="iconfont icon-cha"  @click="close('left')"></i>
+					</div>
+          <!-- 搜索app -->
+					<div class="kcl_duibi_right" v-if="leftSearch">
+						<p>选择APP</p>
+						<div class="kc_ct_search kc_ct_search2">
+							<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinforlefet" @focus="focusInput('.kc_ct_search2')" @blur="blurInput('.kc_ct_search2')">
+							<div class="kc_over kc_over2">
+								<ul>
+									<li @click="overLiClick(index,'left')" v-for="(ele,index) in listLeft" :key="index">
+										<img :src="ele.appImgUrl" alt="">
+										<span>{{ele.appName}}</span>
+										<b>{{ele.aristName}}</b>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<button @click="btnClick(APPinforlefet , 'left')" class="btnclass">
+							<i class="iconfont icon-icon-plus-search"></i>
+						</button>
 					</div>
 					<div class="kcl_vs">
 						vs
@@ -425,16 +448,16 @@
 								<span style="width: 10%; color:#000">-</span>
 							</p>
 						</section>
-						<i class="iconfont icon-cha" @click="close"></i>
+						<i class="iconfont icon-cha" @click="close('right')"></i>
 					</div>
 					<!-- 搜索app -->
 					<div class="kcl_duibi_right" v-if="!appDataShow">
 						<p>选择APP</p>
-						<div class="kc_ct_search">
-							<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor" @focus="focusInput" @blur="blurInput">
-							<div class="kc_over">
+						<div class="kc_ct_search kc_ct_search1">
+							<input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor" @focus="focusInput('.kc_ct_search1')" @blur="blurInput('.kc_ct_search1')">
+							<div class="kc_over kc_over1">
 								<ul>
-									<li @click="overLiClick(index)" v-for="(ele,index) in list" :key="index">
+									<li @click="overLiClick(index,'right')" v-for="(ele,index) in list" :key="index">
 										<img :src="ele.appImgUrl" alt="">
 										<span>{{ele.appName}}</span>
 										<b>{{ele.aristName}}</b>
@@ -442,12 +465,12 @@
 								</ul>
 							</div>
 						</div>
-						<button @click="btnClick" class="btnclass">
+						<button @click="btnClick(APPinfor , 'right')" class="btnclass">
 							<i class="iconfont icon-icon-plus-search"></i>
 						</button>
 					</div>
 				</div>
-				<div class="kcl_dui_star" v-if="appDataShow">
+				<div class="kcl_dui_star" v-if="appDataShowtrue">
 					<button @click="starClick">开始对比</button>
 				</div>
 				<!-- 竞品对比结果-第一个表格 -->
@@ -554,12 +577,15 @@ import { datefn } from "@commonJS/dateList";
 export default {
   data() {
     return {
+      listLeft: [],
       list: [], //搜索列表
       countryNow: "",
       APPinfor: "", //搜索内容
       bannerName: "竞品对比",
       appDataShow: false,
+      appDataShowtrue: false,
       tableShow: false,
+      leftSearch: true,
       tableCommonsShow: false,
       components_list: [
         {
@@ -588,16 +614,18 @@ export default {
       min: "",
       parentAjaxType: false, //父级的对比列表是否请求结束
       loadingparent: true,
-      rightappStoreId: '',//存储右面app的索引
-      loading: null, 
+      rightappStoreId: "", //存储右面app的索引
+      leftappStoreId: "",
+      loading: null,
       loadingopaction: {
         lock: true,
-        text: "Loading",
+        text: "加载中",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
       },
       leftloadingCode: 1000,
       rightloadingCode: 1000,
+      APPinforlefet: "" //左面input
     };
   },
 
@@ -634,8 +662,7 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("GET_COUNTRYLIST")
-    .then(() => {
+    this.$store.dispatch("GET_COUNTRYLIST").then(() => {
       this.$store.state.Home.countryList.map((ele, index) => {
         if (ele.nationId == this.$route.query.key) {
           this.countryNow = this.$store.state.Home.countryList[index].nationId;
@@ -643,104 +670,129 @@ export default {
       });
     });
 
-    this.AjaxInfor(
-      {
-        key: this.$route.query.key,
-        id: this.$route.query.id
-      },
-      "left"
-    );
+    if (this.$route.query.key) {
+      this.loading = this.$loading(this.loadingopaction);
+      this.leftSearch = false;
+      this.leftappStoreId = this.$route.query.id;
+      this.AjaxInfor(
+        {
+          key: this.$route.query.key,
+          id: this.$route.query.id
+        },
+        "left"
+      );
+    }
   },
 
   mounted() {
-    this.$height('.kcl_index') 
+    this.$height(".kcl_index");
     //关闭搜索列表
     $(document).bind("click", function(e) {
       var target = $(e.target);
       if (target.closest(".btnclass").length == 0) {
-        $(".kc_over").css('height', '0');
+        $(".kc_over1").css("height", "0");
+        $(".kc_over2").css("height", "0");
       }
     });
   },
 
   methods: {
-    focusInput() {
-      $(".kc_ct_search").css("border-color", "#2d76ed");
+    focusInput(dom) {
+      $(dom).css("border-color", "#2d76ed");
     },
-    blurInput() {
-      $(".kc_ct_search").css("border-color", "#dee2e6");
+    blurInput(dom) {
+      $(dom).css("border-color", "#dee2e6");
     },
 
-    
-    changeFun(value) { 
+    changeFun(value) {
       this.loading = this.$loading(this.loadingopaction);
-      
+
       //切换国家
-      this.AjaxInfor(
-        {
-          key: this.countryNow,
-          id: this.$route.query.id
-        },
-        "left"
-      );
-      if(this.appDataShow) {
+      if (!this.leftSearch) {
         this.AjaxInfor(
-        {
-          id: this.rightappStoreId,
-          key: this.countryNow
-        },
-        "right"
-      );
-      }   
+          {
+            key: this.countryNow,
+            id: this.leftappStoreId
+          },
+          "left"
+        );
+      }
+      if (this.appDataShow) {
+        this.AjaxInfor(
+          {
+            id: this.rightappStoreId,
+            key: this.countryNow
+          },
+          "right"
+        );
+      }
       //this.appDataShow = true;
+      this.appDataShowtrue = false;
       this.tableShow = false;
       this.tableCommonsShow = false;
-      this.parentAjaxType = false; 
+      this.parentAjaxType = false;
       this.components_index = 0;
       this.currentView = list1;
       this.ContrastData = {};
-      this.dataLeft = {}
-      this.dataRight = {}
+      this.dataLeft = {};
+      this.dataRight = {};
       this.loadingparent = true;
     },
 
-    btnClick() {
-      if (this.APPinfor == "") {
+    btnClick(value, wei) {
+      if (value == "") {
         this.$message({
           message: "搜索内容不能为空！！！",
           type: "warning"
         });
       } else {
         this.loading = this.$loading(this.loadingopaction);
-        this.Ajax();
+        this.Ajax(value, wei);
       }
     },
 
-    overLiClick(index) {
+    overLiClick(index, wei) {
       //选中app请求数据，进行比较
-      this.appDataShow = true;
-      this.rightappStoreId = this.list[index].appStoreId
-      console.log(this.rightappStoreId)
+      if (wei == "left") {
+        this.leftSearch = false;
+        this.leftappStoreId = this.listLeft[index].appStoreId;
+        this.AjaxInfor(
+          {
+            id: this.listLeft[index].appStoreId,
+            key: this.countryNow
+          },
+          "left"
+        );
+      } else {
+        this.appDataShow = true;
+        this.rightappStoreId = this.list[index].appStoreId;
+        this.AjaxInfor(
+          {
+            id: this.list[index].appStoreId,
+            key: this.countryNow
+          },
+          "right"
+        );
+      }
       this.loading = this.$loading(this.loadingopaction);
-      this.AjaxInfor(
-        {
-          id: this.list[index].appStoreId,
-          key: this.countryNow
-        },
-        "right"
-      );
     },
 
-    close() {
+    close(wei) {
+      if (wei == "left") {
+        this.dataLeft = {};
+        this.leftSearch = true;
+      } else {
+        this.dataRight = {};
+        this.appDataShow = false;
+      }
       //关闭选中的app
-      this.appDataShow = false;
       this.tableShow = false;
+      this.appDataShowtrue = false;
       this.parentAjaxType = false;
-      this.tableCommonsShow = false
+      this.tableCommonsShow = false;
       this.components_index = 0;
       this.currentView = list1;
       this.ContrastData = {};
-      this.dataRight = {}
       this.loadingparent = true;
     },
 
@@ -751,7 +803,10 @@ export default {
           message: "对不起相同应用不能进行比较！！！",
           type: "warning"
         });
-      }else if(this.dataLeft.appImgUrl == null ||  this.dataRight.appImgUrl == null) {
+      } else if (
+        this.dataLeft.appImgUrl == null ||
+        this.dataRight.appImgUrl == null
+      ) {
         this.$message({
           message: "未上架app不能进行比较！！！",
           type: "warning"
@@ -759,7 +814,7 @@ export default {
       } else {
         this.tableShow = true;
         this.loadingparent = true;
-        this.ContrastData = {}
+        this.ContrastData = {};
         this.AjaxAppcontent(
           this.dataLeft.appStoreId,
           this.dataRight.appStoreId
@@ -786,71 +841,104 @@ export default {
       this.min = num2;
     },
 
-    Ajax() {
+    Ajax(value, wei) {
       //搜索app
-      let url = "/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId=" + this.countryNow + "&count=10" + "&searchContent=" + this.APPinfor;
-      
-      this.$https.get(url)
-      .then(res => {
-        this.loading.close()
-        this.list = res.data.data.list;
-        let ls = "";
-        if (this.list.length > 5) {
-          ls = "242";
-        } else {
-          ls = this.list.length * 40;
-        }
-        if (res.data.resultCode == 1000) {
-          $(".kc_over").css('height', ls + "px");
-        }
+      let url =
+        "/api/v1/IntellSearchApi/Index/GetCompetitiveAppInfo?nationId=" +
+        this.countryNow +
+        "&count=10" +
+        "&searchContent=" +
+        value;
 
-        //如果搜索内容为空给一个提醒
-        if (this.list.length == 0) {
-          this.$message({
-            message: "对不起没有搜索到对应的APP！",
-            type: "warning"
-          });
+      this.$https.get(url).then(res => {
+        this.loading.close();
+        if (wei == "left") {
+          this.listLeft = res.data.data.list;
+          let ls = "";
+          if (this.listLeft.length > 5) {
+            ls = "242";
+          } else {
+            ls = this.listLeft.length * 40;
+          }
+          if (res.data.resultCode == 1000) {
+            $(".kc_over2").css("height", ls + "px");
+          }
+          //如果搜索内容为空给一个提醒
+          if (this.listLeft.length == 0) {
+            this.$message({
+              message: "对不起没有搜索到对应的APP！",
+              type: "warning"
+            });
+          }
+        } else {
+          this.list = res.data.data.list;
+          let ls = "";
+          if (this.list.length > 5) {
+            ls = "242";
+          } else {
+            ls = this.list.length * 40;
+          }
+          if (res.data.resultCode == 1000) {
+            $(".kc_over1").css("height", ls + "px");
+          }
+          //如果搜索内容为空给一个提醒
+          if (this.list.length == 0) {
+            this.$message({
+              message: "对不起没有搜索到对应的APP！",
+              type: "warning"
+            });
+          }
         }
       });
     },
 
     AjaxInfor(obj, num) {
       //获取需要对比的app
-      let url = "/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=" + obj.id + "&nationId=" + obj.key;
+      let url =
+        "/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=" +
+        obj.id +
+        "&nationId=" +
+        obj.key;
 
-      this.$https.get(url)
-      .then(res => {  
-        if(res.data.resultCode == 1000) {
+      this.$https.get(url).then(res => {
+        if (res.data.resultCode == 1000) {
           if (num == "left") {
             this.dataLeft = res.data.data;
-            this.idLeft = this.$route.query.id; 
-            this.leftloadingCode = res.data.resultCode
+            this.idLeft = this.leftappStoreId;
+            this.leftloadingCode = res.data.resultCode;
           } else {
             this.dataRight = res.data.data;
             this.idRight = res.data.data.appStoreId;
-            this.rightloadingCode = res.data.resultCode
+            this.rightloadingCode = res.data.resultCode;
           }
-        }else{
+        } else {
           if (num == "left") {
-            this.dataLeft = {}
-            this.idLeft = this.$route.query.id; 
-            this.leftloadingCode = res.data.resultCode
+            this.dataLeft = {};
+            this.idLeft = this.$route.query.id;
+            this.leftloadingCode = res.data.resultCode;
           } else {
-            console.log(res.data.resultCode)
-            this.dataRight = {}
-            this.rightloadingCode = res.data.resultCode
+            this.dataRight = {};
+            this.rightloadingCode = res.data.resultCode;
           }
-        }  
-        
-        if(this.loading!= null){
-          this.loading.close()
-        }  
+        }
+
+        if (this.loading != null) {
+          this.loading.close();
+        }
+
+        if (
+          this.dataLeft.appImgUrl != null &&
+          this.dataRight.appImgUrl != null
+        ) {
+          this.appDataShowtrue = true;
+        }
       });
     },
 
     AjaxAppcontent(selectedAppId, competitiveAppId) {
       //获取两个app之间的对比数据
-      let url = "/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppResults";
+      let url =
+        "/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppResults";
       let obj = {
         nationId: this.countryNow,
         selectedAppId,
@@ -859,18 +947,19 @@ export default {
         endTime: datefn(1)[1].data.endTime
       };
 
-      this.$https.post(url, JSON.stringify(obj))
-      .then(res => {
+      this.$https.post(url, JSON.stringify(obj)).then(res => {
         this.loadingparent = false;
         this.ContrastData = res.data.data.appAnalysisResult;
         this.parentAjaxType = true; // 当前请求结束，自己请求
-        
-        if(this.tableShow) {
-          this.tableCommonsShow = true
-        } 
 
-        let totalNum = res.data.data.appAnalysisResult[this.idLeft].totalCompetitiveWordNum;
-        let identicalNum = res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum;
+        if (this.tableShow) {
+          this.tableCommonsShow = true;
+        }
+
+        let totalNum =
+          res.data.data.appAnalysisResult[this.idLeft].totalCompetitiveWordNum;
+        let identicalNum =
+          res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum;
         let lsNum = identicalNum / totalNum * 10000;
         this.percentage = (lsNum / 100).toFixed(2);
         setTimeout(() => {

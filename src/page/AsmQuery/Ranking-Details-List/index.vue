@@ -70,6 +70,9 @@
       cursor: pointer;
       margin: 2px 0 10px 20px;
       float: left;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
       &:hover{
             background: #f7f7f7;
             color: @color;
@@ -107,11 +110,15 @@
   .el-select {
     width: 114px;
     height: 34px;
+    line-height: 34px;
   }
   .el-input,
   .el-input--suffix,
   .el-input__inner {
-    height: 34px;
+    height: 34px; 
+  }
+  .el-input__icon{
+    line-height: 34px !important;
   }
 }
 </style>
@@ -191,7 +198,7 @@
 							</td>
 							<td style="width: 36%;" v-if="tableData.associatedWords.length != 0">
 								<div class="rdl_key_list">
-									<span v-for="(item,index2) in tableData.associatedWords" :key="index2" @click="keyWorldRouter(index2)">{{item}}</span>
+									<span v-for="(item,index2) in tableData.associatedWords" :key="index2" @click="keyWorldRouter(index2)" :title="item">{{item}}</span>
 								</div>
 							</td>
 							<!-- 当列表为空时 -->
@@ -276,7 +283,7 @@ export default {
       loading: null,
       loadingopaction: {
         lock: true,
-        text: "Loading",
+        text: "加载中",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
       }
@@ -301,8 +308,7 @@ export default {
       this.$store.dispatch("GET_COUNTRYLIST").then(() => {
       this.$store.state.Home.countryList.map((ele, index) => {
           if (ele.nationId == this.$route.query.country) {
-            this.countryNow = this.$store.state.Home.countryList[index].nationId;
-            console.log(this.countryNow)
+            this.countryNow = this.$store.state.Home.countryList[index].nationId; 
           }
         });
       });

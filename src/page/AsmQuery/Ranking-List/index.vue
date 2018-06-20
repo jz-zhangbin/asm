@@ -92,6 +92,9 @@
   .el-input__inner {
     height: 34px;
   }
+  .el-input__icon{
+    line-height: 34px !important;
+  }
 }
 </style>
 
@@ -230,7 +233,7 @@ export default {
       currentPage3: 1,
       loadingopaction: {
         lock: true,
-        text: "Loading",
+        text: "加载中",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
       },

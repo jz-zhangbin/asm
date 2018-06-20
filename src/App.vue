@@ -1,6 +1,7 @@
 <template>
 	<div id="app">
 		<router-view/>
+		<!--w-->
 		<footer>©2012-2018 adjuz.net 巨掌互动科技（北京）有限公司 京ICP备14034813号</footer>
 	</div>
 </template>

@@ -27,6 +27,8 @@ import SIdentify from './components/AsmQuery/canvas'
 import VueParticles from '@components/AsmQuery/vue-particles'
 import Footer from '@components/AsmQuery/footer'
 import Hdader from '@components/AsmLaunch/header'
+import Message from '@components/AsmLaunch/Message-Box-Tiip'
+Vue.component('v-message', Message)
 Vue.component('v-header', Hdader)
 Vue.component('v-footer', Footer)
 Vue.component('vue-particles', VueParticles)

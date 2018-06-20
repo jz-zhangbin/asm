@@ -1,0 +1,617 @@
+@color: #2d76ed;
+@bgk: #f7f7f7;
+@font_color: #6c757d;
+@border: #dee2e6;
+@btnhover: #1559c8;
+@boxshado: #eeeeee;
+.createlist_index{
+   box-sizing: border-box;
+    padding: 60px 0 0px;
+    background: #f7f7f7;
+     .adver_nav{
+      margin: 0px 15px 0;
+      min-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+  }
+  .createlist_contant{
+    min-width: 1200px; 
+    box-sizing: border-box; 
+    margin: 0 15px; 
+    background: #fff;
+    padding: 0 16px 60px;
+    h1{
+      font-size: 18px;
+      padding: 15px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+  }
+  .createlist_form{
+    box-sizing: border-box;
+    padding-left: 200px;
+  }
+  .createlist_title{
+    font-size: 16px;
+    margin: 30px 0  10px 0;
+    span{
+      font-size: 12px;
+      color: red;
+    }
+  }
+  .createlist_top_search{
+    position: relative; 
+    display: flex;
+  .top_search_input{
+      width: 400px;
+      height: 40px;
+      border: 1px solid @border;
+      border-radius: 4px;
+      padding: 0 10px;
+      outline: none;
+      margin-right: 10px; 
+    }
+    .top_search_btn{
+      width: 40px;
+      height: 40px;
+      border: 1px solid @border;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+      &:active{
+        border: 1px solid @color;
+      }
+      i{
+        line-height: 42px;
+        text-align: center;
+        font-size: 16px;
+      }
+    }
+    .top_search_a{
+      margin-left: 60px;
+      cursor: pointer;
+      line-height: 40px;
+      color: @color;
+    }
+    .top_search_ul{
+      position: absolute;
+      width: 420px;
+      max-height: 270px;
+      overflow-y: auto; 
+      z-index: 10;
+      top: 42px;
+      left: 0;
+      border: 1px solid @border;
+      border-radius: 4px;  
+    }
+    section , .top_search_li{
+      height: 40px;
+      border-bottom: 1px solid @border;
+      box-sizing: border-box;
+      padding:0 10px;
+      line-height: 40px;
+    }
+    .top_search_li{
+        height: 40px;
+        border-bottom: 1px solid @border;
+        box-sizing: border-box;
+        padding:0 14px;
+        line-height: 40px;
+        background: #fff;
+        &:hover{
+          background:#f7f7f7;
+          cursor: pointer;
+        }
+        p,img{
+          float: left;
+        }
+        span,p{
+          max-width: 260px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        img{
+          display: block;
+          width: 26px;
+          height: 26px;
+          border-radius: 4px;
+          margin-top: 7px;
+          margin-right: 10px;
+        }
+        span{
+          width: 50px;
+          display: block;
+          float: right;
+          font-size: 12px;
+          color: #ccc;
+        }
+      }
+    section{
+      position: relative;
+      width: 474px;
+      height: 40px;
+      border: 1px solid @border;
+      border-radius: 4px;
+      padding: 0 10px; 
+      display: flex;
+      img{
+          display: block;
+          width: 26px;
+          height: 26px;
+          border-radius: 4px;
+          margin-top: 7px;
+          margin-right: 10px;
+        }
+        span{
+          color: #ccc; 
+          max-width: 290px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .close{
+          position: absolute;
+          right: 10px;
+          top: 0;
+          line-height: 40px;
+          cursor: pointer;
+          font-size: 16px;
+        }
+    }
+  }
+  // 已经投放app
+  .yi_tou_app{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    .yitou_app_contant{
+      position: absolute;
+      width: 600px;
+      height: 500px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      margin: auto;
+      border-radius: 6px;
+      border: 1px solid @border;
+      box-sizing: border-box;
+      padding: 20px 30px;
+      h2{
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+      ul{
+        height: 350px;
+        width: 100%;
+        border: 1px solid @border; 
+        overflow-y: auto;
+        li{
+          height: 50px;
+          border-bottom: 1px solid @border;
+          display: flex;
+          align-items: center;
+          position: relative;
+          padding: 0 10px;
+          &:hover{
+            background: #f7f7f7;
+          }
+          img{
+            width: 34px;
+            height: 34px;
+            border-radius: 4px;
+            margin-right: 14px;
+          } 
+          span{
+            position: absolute;
+            right: 40px;
+            line-height: 50px;
+            color: @color;
+            cursor: pointer;
+          } 
+        }
+      }
+      .yitou_btn{
+        display: flex;
+        justify-content: center;
+      }
+        button{
+          margin:  20px auto; 
+          width: 150px;
+        }
+    }
+  }
+  .createlist_contry{
+    display: flex;
+    span{
+      padding: 10px; 
+      display: flex;
+      align-items: center;
+      &.red{
+        color: red;
+        background: #ddd;
+      }
+      &.ccc{
+        background: #ddd;
+      }
+    }
+    .span_box{
+      display: flex;
+      span{
+        margin-right: 20px;
+        padding: 10px 15px;
+      }
+    }
+  }
+  .createlist_yusuan{
+    display: flex;
+    li{
+      position: relative;
+      width: 250px;
+      height: 340px;
+      border: 1px solid @border;
+      margin-right: 20px;
+      background: #f7f7f7;
+      &.yusan_li_true{
+        border: 1px solid @color;  
+        background: #fff;
+        h3{
+          color: @color;
+        }
+        .yusuan_bgm{ 
+          i{ 
+            background: url(../../../../images/components/create_2.png) no-repeat center center;
+          }
+      }
+      }
+      h3{
+        font-size: 16px;
+        text-align: center;
+        margin: 20px 0 22px;
+      }
+      div{
+        height: 40px;
+        display: flex;
+        box-sizing: border-box;
+        padding: 0 16px;
+        align-items: center;
+        margin-bottom: 16px;
+        p{
+          i{
+            color: red;
+          }
+          text-align: right;
+          width: 70px;
+        }
+        input{
+          width: 120px;
+          height: 40px;
+          border: 1px solid @border;
+          box-sizing: border-box;
+          padding: 0 10px;
+          border-radius: 4px;
+          outline: none;
+          background: #fff;
+          margin-left: 14px;
+        }
+      }
+      .yusuan_bgm{
+        display: flex;
+        justify-content: center;
+        i{
+          display: block;
+          height: 35px;
+          width: 35px;
+          cursor: pointer;
+          background: url(../../../../images/components/create_1.png) no-repeat center center;
+        }
+      }
+    }
+  }
+
+  //拖拽创建
+  .create_tuo_box1{
+    width: 850px;
+    border: 1px solid @border;
+    box-sizing: border-box;
+    padding: 20px 20px 0 20px;
+    margin-bottom: 30px;
+    .create_tb_title{
+      line-height: 60px;
+      font-size: 16px;
+      span{
+        color: red;
+        font-size: 12px;
+      }
+    }
+    .create_tb_biao{
+      width: 100%;
+      display: flex; 
+      border-bottom: 1px solid @border;
+      padding-bottom: 16px;
+      .create_tb_biao_div{
+        display: flex;
+         flex-wrap: wrap;
+         width: 726px;
+         div{
+          display: flex;
+          margin-left: 14px; 
+          cursor: pointer;
+          padding: 8px 20px; 
+          color: @color;
+          i{
+            color: @color;
+            margin-right: 4px;
+          }
+        }
+      }
+      p{
+        padding: 8px 20px;
+        color: #ccc;
+        margin-right: 10px;
+      }
+      section{
+        position: relative; 
+        width: 110px;
+        height: 37px;
+        margin-bottom: 12px;
+        span{
+            width: 80px;
+            position: absolute;
+            top: 0;
+            left: 0; 
+            border: 1px solid @border;
+            padding: 8px 8px;
+            text-align: center;
+            margin-right: 8px;
+            cursor: pointer;
+            border-radius: 4px; 
+            &.create_tbb_ja{
+             z-index: 10;
+              opacity: 0;
+              top: 2px;
+              left: 2px;
+              background: transparent;
+              border: 1px dashed #000;
+            }
+          }  
+      } 
+    }
+    .create_tb_cha{
+      width: 100%;
+      min-height: 100px; 
+      padding-top: 14px;
+      .create_tb_cha_div{
+        float: left;
+        display: flex;
+        flex-wrap: wrap;
+        width: 730px;
+      }
+      aside{
+        padding: 8px 20px;
+        color: #ccc;
+        margin-right: 10px;
+        float: left;
+      }
+      p{
+        width: 100%;
+        text-align: center; 
+        line-height: 100px;
+        float: left;
+      }
+      section{
+        position: relative;
+        margin-right: 12px;
+        height: 37px;
+        margin-bottom: 12px;
+        span{
+          display: block;
+          padding: 8px 14px;
+          border: 1px solid @border;
+          background: #ddd;
+          border-radius: 4px;
+        }
+        input{
+          height: 35px;
+          width: 90px;
+          border: 1px solid @border; 
+          border-radius: 4px;
+          padding: 0 6px;
+        }
+        img{
+          display: block;
+          position: absolute;
+          right: -8px;
+          top: -7px;
+          cursor: pointer;
+        }
+      }
+    }
+    .create_tbc_btn{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      button{
+        margin: 30px 0 30px;
+        height: 40px;
+        width: 120px;
+      }
+    }
+  }
+ //受众设置
+ .createlist_audience{
+   .createlist_aud_radio{
+     display: flex;
+   }
+   .createlist_aud_box{
+     width: 500px;
+     height: 260px;
+     box-sizing: border-box;
+     padding: 20px;
+     border: 1px solid @border;
+     margin-top: 10px;
+     .createlist_audb_search{
+       display: flex;
+       input{
+         width: 280px;
+         height: 38px;
+         border: 1px solid @border;
+         border-radius: 4px;
+         margin-right: 16px;
+         outline: none;
+         padding-left: 12px;
+         &:focus{
+           border: 1px solid @color;
+         } 
+       }
+       span{
+           display: block;
+           width: 38px;
+           height: 38px;
+           border: 1px solid @border;
+           display: flex;
+           cursor: pointer;
+           justify-content: center;
+           align-items: center;
+           border-radius: 4px;
+           i{
+             font-size: 16px;
+           }
+           &:active{
+             border: 1px solid @color;
+           }
+         }
+     }
+   }
+ }
+ .createlist_audb_list{
+   margin-top: 20px;
+   p{
+     margin-top: 40px;
+     text-align: center;
+   }
+   h2{
+    margin-bottom: 10px;
+    font-weight: bold;
+   }
+   ul{
+     width: 100%;
+     box-sizing: border-box;
+     padding-right: 15px;
+     max-height: 120px;
+     overflow-y: auto;
+     li{
+       display: flex;
+       justify-content: space-between;
+       height: 30px;
+       align-items: center;
+       div{
+         &:nth-child(2) {
+           i{
+             margin-right: 6px;
+             cursor: pointer;
+           }
+           span{
+             color: @color;
+             cursor: pointer;
+           }
+         }
+       }
+     }
+   }
+ }
+ //编辑模板
+ .aud_set_mo{
+   position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    .aud_set_mo_box{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 600px;
+        height: 500px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+ }
+ //模板选择成功
+ .createlist_mo_ch{
+   width: 380px;
+   height: 38px;
+   border: 1px solid @border;
+   border-radius: 4px;
+   display: flex;
+   position: relative;
+   background: #fafec0;
+   margin-top: 20px;
+   padding-left: 10px;
+   line-height: 38px;
+   .eye{
+     line-height: 42px;
+     margin-left: 10px;
+     cursor: pointer;
+   }
+   .closeiconft{
+     position: absolute;
+     right: 10px;
+     top: 2px;
+     cursor: pointer;
+   }
+ }
+ //关键词设置
+ .createlist_keyword{
+   width: 650px;
+   height: 180px;
+   border: 1px solid @border;
+   span{
+     text-align: center;
+     overflow: hidden;
+   }
+   .section_one{
+     height: 40px;
+      display: flex;
+      align-items: center;
+      background: #f7f7f7;
+   }
+   .createlist_keyword_box{
+     width: 100%;
+     max-height: 140px;
+     overflow-y: auto;
+     .key_wored{
+       color: @color;
+       cursor: pointer;
+     }
+     section{
+       width: 100%;
+       height: 40px;
+       display: flex;
+       align-items: center;
+     }
+   } 
+ }
+ .create_list_btn{
+   padding-left: 200px;
+   margin-top: 70px; 
+   button{
+     width: 150px;
+     margin-right: 14px;
+   }
+ }
+}

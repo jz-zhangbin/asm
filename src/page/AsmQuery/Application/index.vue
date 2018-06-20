@@ -218,6 +218,9 @@
     .el-input__inner {
       height: 34px;
     }
+    .el-input__icon{
+    line-height: 34px !important;
+  }
   }
   .apl_body_date {
     .el-select {
@@ -229,6 +232,9 @@
     .el-input__inner {
       height: 32px;
     }
+    .el-input__icon{
+    line-height: 32px !important;
+  }
   }
 }
 </style>
@@ -436,7 +442,7 @@
 						</td>
 					</tr>
 					<tr v-if="!tableShow">
-						<td colspan="7" style="height: 150px">该关键词暂无竞价数据</td>
+						<td colspan="7" style="height: 150px">该应用暂无竞价关键词数据</td>
 					</tr>
 					 <!-- loading -->
 					<tr v-if="loadingfirst">
@@ -522,7 +528,7 @@ export default {
       loading: null,
       loadingopaction: {
         lock: true,
-        text: "Loading",
+        text: "加载中",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)"
       }
@@ -600,7 +606,7 @@ export default {
     }
   },
 
-  created() {
+  created() { 
     this.$store.dispatch("GET_COUNTRYLIST").then(() => {
       this.$store.state.Home.countryList.map((ele, index) => {
         if (ele.nationId == this.$route.query.country) {
@@ -634,7 +640,7 @@ export default {
       }
     });
 
-    this.AjaxGetAppInfo();
+    this.AjaxGetAppInfo(this.$route.query.country);
   },
   mounted() {
     this.$height('.apl_index') 
@@ -658,6 +664,8 @@ export default {
       });
       this.showList[0].one = true;
 
+      this.AjaxGetAppInfo(value);
+
       this.AjaxGetAppHistoryKeywordList({
         pageIndex: 1,
         pageSize: 20,
@@ -678,6 +686,7 @@ export default {
           searchIndex: 0
         }
       });
+ 
     },
 
     changeDateFun(value) {
@@ -1029,20 +1038,22 @@ export default {
       });
     },
 
-    AjaxGetAppInfo() { 
-      let routeObj = this.$route.query 
+    AjaxGetAppInfo(countryId) { 
+      this.loading = this.$loading(this.loadingopaction);
+      let routeObj = this.$route.query  
       if(routeObj.beginTime == undefined) {
         routeObj.beginTime = ''
       }
       if(routeObj.endTime == undefined) {
         routeObj.endTime = ''
       }
+      
       //初次加载
       let url =
         "/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=" +
         routeObj.id +
         "&nationId=" +
-        routeObj.country + 
+        countryId + 
         '&beginTime=' +
          routeObj.beginTime +
         '&endTime=' + 
@@ -1054,8 +1065,8 @@ export default {
           res.data.data.show = true;
           this.appData = res.data.data;
         } else if (res.data.resultCode == 404) {
-          res.data.data.show = false;
-          this.appData = res.data.data;
+          //res.data.data.show = false;
+          this.appData.show = false; 
         }
         if(this.loading != null) {
           this.loading.close()

@@ -29,7 +29,7 @@ var tableToExcel = (function () {
       worksheet: name || 'Worksheet',
       table: table.innerHTML
     }
-    console.log(format(template, ctx));
+    //console.log(format(template, ctx));
     window.location.href = uri + base64(format(template, ctx))
   }
 })()

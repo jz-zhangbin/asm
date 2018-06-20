@@ -86,6 +86,7 @@
         box-shadow: 0 2px 2px @boxshado;
         overflow: hidden;
         border-radius: 6px;
+        z-index: 100;
       }
       ul {
         width: 500px;
@@ -142,6 +143,9 @@
   .el-input--suffix,
   .el-input__inner {
     height: 34px;
+  }
+  .el-input__icon{
+    line-height: 34px !important;
   }
 }
 </style>

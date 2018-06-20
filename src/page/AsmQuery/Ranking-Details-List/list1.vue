@@ -60,15 +60,15 @@
               }
             }
           }
-          .table_datr_p {
-            p {
-              color: #aaa;
-              &:first-child {
-                color: @color;
-                font-weight: 600;
-              }
-            }
-          }
+          // .table_datr_p {
+          //   p {
+          //     color: #aaa;
+          //     &:first-child {
+          //       color: @color;
+          //       font-weight: 600;
+          //     }
+          //   }
+          // }
         }
       }
     }
@@ -87,6 +87,9 @@
   .el-input--suffix,
   .el-input__inner {
     height: 32px;
+  }
+  .el-input__icon{
+    line-height: 34px !important;
   }
 }
 </style>
@@ -200,7 +203,7 @@
 				</tr>
 				<!-- 暂无关键词 -->
 				<tr v-if="tableInnerCode.resultCode == 404">
-					<td colspan="6" style="height: 150px">该关键词暂无竞价数据</td>
+					<td colspan="6" style="height: 150px">该关键词暂无APP竞价数据</td>
 				</tr> 
 				 <!-- loading -->
 				<tr v-if="loadingfirst">
@@ -310,7 +313,7 @@ export default {
 
   watch: {
     valueData() {
-      this.tableInnerCode.data.totalCount = 0
+      //this.tableInnerCode.data.totalCount = 0
       this.$parent.propDate = this.value;
     }
   },
@@ -390,8 +393,7 @@ export default {
       for (var i in res.ratioListByDate) {
         dateList.push(i);
         let ls = parseInt(res.ratioListByDate[i] * 10000);
-        contentList.push(ls / 100);
-        console.log(ls,ls/100)
+        contentList.push(ls / 100); 
       }
 
       if (this.createBrokenIndex != index) {

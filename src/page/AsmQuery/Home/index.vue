@@ -164,7 +164,7 @@
   .home_keyword_box {
     height: 95px;
     position: absolute;
-    top: 416px;
+    top: 477px;
     bottom: 0;
     left: 0;
     right: 0;

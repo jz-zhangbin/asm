@@ -8,7 +8,7 @@
   background: rgba(0, 0, 0, 0.6);
   z-index: 100;
   .pie_main {
-    width: 600px;
+    width: 630px;
     height: 400px;
     background: #fff;
     border-radius: 6px;
@@ -120,13 +120,7 @@ export default {
           value: others.toFixed(4),
           name: "Other"
         }); 
-      } 
-      dataList.map((ele,index)=>{
-        let num = parseInt(ele.value *10000)/100 + '%'
-        let newName = ele.name + '-' + num
-        ele.name = newName
-      }) 
-      console.log(dataList)
+      }  
       let myChart = this.$echarts.init(document.getElementById("myChart1"));
       // 绘制图表
       myChart.setOption({
@@ -137,7 +131,7 @@ export default {
         },
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+          formatter: "{a} <br/>{b}"
         },
         // legend: {
         // 	orient: "vertical",
@@ -174,6 +168,45 @@ export default {
             center: ["50%", "60%"],
             //roseType : 'area',
             data: dataList,
+            label: {
+                normal: {
+                    show: true, 
+                    formatter: function(v) { 
+                      let name = v.data.name
+                      let num = parseInt(v.value *10000)/100 + '%' 
+                      let weinum1 = null
+                      let weinum2 = null
+                      let weinum3 = null
+                      let tmp = []
+                      if(name.indexOf(':') != -1){ 
+                        weinum1 = name.indexOf(':')
+                        tmp.push(weinum1) 
+                      }
+                      if(name.indexOf('_') != -1){
+                        weinum2 = name.indexOf('_')
+                        tmp.push(weinum2) 
+                      } 
+                      if(name.indexOf('-') != -1){
+                        weinum3 = name.indexOf('-')
+                        tmp.push(weinum3) 
+                      }   
+                      
+                      if(tmp.length == 0 && name.length > 20) { 
+                          var lastStr = name.substring(0,20)
+                          var laster = lastStr.substring(0,(lastStr.lastIndexOf(" ")))   
+                          return laster  + '-' + num
+                      }
+                    
+                      let newstr = name.substring(0,Math.min.apply(null, tmp)) 
+                      if(newstr.length <= 20) { 
+                        return newstr + '-' + num
+                      }else{
+                         var lastStr2 = newstr.substring(0,(newstr.lastIndexOf(""))) 
+                         return lastStr2  + '-' + num
+                      }  
+                    }
+                }, 
+            },
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
