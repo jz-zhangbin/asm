@@ -1,6 +1,7 @@
 <template>
 <div class="table">
      <el-table
+     border
     ref="multipleTable"
     :data="tableData3"
     tooltip-effect="dark"
@@ -8,10 +9,11 @@
     @selection-change="handleSelectionChange">
     <el-table-column
       type="selection"
-      width="55">
+      min-width="55">
     </el-table-column>
     <el-table-column
       label="词组名称"
+      min-width="420"
      show-overflow-tooltip >
       <template slot-scope="scope">
             <span style="color:rgb(0,158,252)">
@@ -25,16 +27,16 @@
     <el-table-column
       prop="KeyNumber"
       label="关键词数"
-      width="158">
+      min-width="158">
     </el-table-column>
     <el-table-column
       prop="CreationTime"
       label="创建时间"
-      width="260">
+      min-width="260">
     </el-table-column>
     <el-table-column
       label="操作"
-      width="150">
+      min-width="150">
        <template slot-scope="scope">
         <el-button
           @click.native.prevent="deleteRow(scope.$index,scope.row.id)"
@@ -69,7 +71,7 @@
 @btnhover: #1559c8;
 @boxshado: #eeeeee;
 .table{
-    padding: 40px 0 0;
+    padding: 50px 0 0;
     tr td,th{
         border-right:1px solid #ebeef5;
         text-align: center;
@@ -86,7 +88,10 @@
         width: 440px;
         margin:30px auto;
     }
-}
+    .el-table{
+      border:1px solid @border;
+    }
+} 
 </style>
 
 
@@ -135,7 +140,6 @@
         }
       },
       handleSelectionChange(val) {
-        console.log(val)
         this.multipleSelection = val;
       },
       deleteRow(index,id){
@@ -143,7 +147,7 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         //   type: 'warning',
-        width:50,
+          width:50,
           center: true
         }).then(() => {
           this.$message({

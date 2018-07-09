@@ -1,6 +1,7 @@
 <template>
 <div class="table">
      <el-table
+     border
     ref="multipleTable"
     :data="tableData3"
     tooltip-effect="dark"
@@ -8,10 +9,11 @@
     @selection-change="handleSelectionChange">
     <el-table-column
       type="selection"
-      width="55">
+      min-width="55">
     </el-table-column>
     <el-table-column
       label="关键词"
+      min-width="420"
      show-overflow-tooltip >
       <template slot-scope="scope">
             <span style="color:rgb(0,158,252)">{{ scope.row.KeyWord }} {{ scope.row.id }}</span>
@@ -20,7 +22,7 @@
     <el-table-column
       prop="SearchIndex"
       label="搜索指数"
-      width="158">
+      min-width="158">
     </el-table-column>
     <el-table-column
       prop="Prevalence"
@@ -30,28 +32,31 @@
     <el-table-column
       prop="RecentBiddingAPP"
       label="近期竞价APP"
-      width="260">
+      min-width="260">
     </el-table-column>
     <el-table-column
       label="操作"
-      width="99">
+      min-width="99">
        <template slot-scope="scope">
         <el-button
           @click.native.prevent="deleteRow(scope.$index,scope.row.id)"
           type="text"
           size="small">
-         <span style="color:#000" >删除</span> 
+         <span >删除</span> 
         </el-button>
       </template>
     </el-table-column>
 
   </el-table>
    
-  <el-pagination 
-  background
-  layout="prev, pager, next"
-  :total="1000">
-</el-pagination>
+            <el-pagination
+              :current-page="pageIndex"
+              background 
+              :page-size="20"
+              @current-change="handleCurrentChange"
+              layout="prev, pager, next"
+              :total="total">
+            </el-pagination>
 </div>
  
 </template>
@@ -63,7 +68,7 @@
 @btnhover: #1559c8;
 @boxshado: #eeeeee;
 .table{
-    padding: 40px 0 0;
+    padding: 50px 0 0;
     tr td,th{
         border-right:1px solid @border;
         text-align: center;
@@ -77,8 +82,10 @@
         width: 440px;
         margin:30px auto;
     }
-}
-.el-message-box{width: 300px;}
+       .el-table{
+      border:1px solid @border;
+    }
+} 
 </style>
 
 
@@ -132,7 +139,6 @@
         }
       },
       handleSelectionChange(val) {
-        console.log(val)
         this.multipleSelection = val;
       },
       deleteRow(index,id){

@@ -1,7 +1,11 @@
  <style lang='less' scoped>
+ .rotuer_view{
+   min-height: 100%;
+   background: #edf1f5;
+ }
  </style>
  <template>
-   <div>
+   <div class="rotuer_view">
      <router-view></router-view>
    </div>
  </template>

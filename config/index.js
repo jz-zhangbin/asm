@@ -9,19 +9,23 @@ module.exports = {
   dev: { 
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-    proxyTable: {
-    	'/api': { 
-        target: 'http://10.1.0.136:8989',
-        //target: 'http://asm.api.adjuz.net', 
+    assetsPublicPath: '/', 
+    proxyTable: { 
+    	'/api': {  
+       //target: 'http://10.1.0.136:8989',//小梦本地IP
+       target: 'http://10.1.0.161',//振亚本地Ip   
+      //target: 'http://asm.api.adjuz.net:988/',//智能投放
+      //target: 'http://asm.api.adjuz.net:8899',//智查询    
         changeOrigin: true,
         pathRewrite: {
             '^/api': ''
         }
      } 
     },
-    // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    // Various Dev Server settings 
+    host: '10.1.2.92',  //can be overwritten by process.env.HOST
+    //shost: '10.1.2.92', 
+    //host: '127.0.0.1', // can be overwritten by process.env.HOST 
     port: 888, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -46,10 +50,10 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     //js&&css  build后的cdn路径
-     assetsPublicPath: '//static.adjuz.com/asmmaster/packages/', 
-     assetsSubDirectory: '', 
-    // assetsSubDirectory: 'static',
-    // assetsPublicPath: './',
+    //  assetsPublicPath: '//static.adjuz.com/asmmaster/packages/', 
+    //  assetsSubDirectory: '', 
+    assetsSubDirectory: 'static',
+    assetsPublicPath: './',
     /**
      * Source Maps文件
      */

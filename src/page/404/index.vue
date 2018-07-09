@@ -5,15 +5,19 @@
 @border: #dee2e6;
 @btnhover: #1559c8;
 .index_404 {
-  width: 100%;
-  height: 550px;
+  width: 100%; 
+  padding: 68px 0;
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  background-image: url(http://static.adjuz.com/asmmaster/img/404.png);
-  background-repeat: no-repeat;
-  background-size: 40% 70%;
-  background-position: center center;
+  flex-direction: column;
+  align-items: center;
+  img{
+    width: 500px;
+
+  }
+  .contant{
+    display: flex;
+    margin-top: 20px;
+  }
   .to_home,
   .to_history {
     width: 150px;
@@ -35,8 +39,12 @@
 </style>
 <template>
   <div class="index_404">
-      <div class="to_home" @click="$router.push('/home')">返回首页</div>
-      <div class="to_history" @click="$router.go(-1)">返回上一页</div>
+      <v-search-top></v-search-top>
+      <img src="../../images/moni/404.png" alt="">
+      <div class="contant">
+        <div class="to_home" @click="$router.push('/home')">返回首页</div>
+        <div class="to_history" @click="$router.go(-1)">返回上一页</div>
+      </div> 
   </div>
 </template>
 
@@ -54,9 +62,9 @@ export default {
   updated() {},
 
   mounted() {
-    setTimeout(() => {
-      this.$router.go(-1);
-    }, 2000);
+    // setTimeout(() => {
+    //   this.$router.go(-1);
+    // }, 3000);
   },
 
   destroyed() {},

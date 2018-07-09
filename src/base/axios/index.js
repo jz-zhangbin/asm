@@ -27,11 +27,13 @@ Axios.interceptors.response.use(data => {
   }
   return data;
 }, err => {
-  if (err.response.status == 500 || err.response.status == 404) {
-    Message.error({
-      message: '服务器出现问题'
-    });
-  }
+  if(err.response) {
+    if (err.response.status == 500 || err.response.status == 404) {
+      Message.error({
+        message: '服务器出现问题'
+      });
+    }
+  } 
 })
 
 //Vue.use(axios)

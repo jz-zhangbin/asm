@@ -1,0 +1,139 @@
+//操作css
+@color: #2d76ed;
+@bgk: #f7f7f7;
+@font_color: #6c757d;
+@border: #dee2e6;
+@btnhover: #1559c8;
+@boxshado: #eeeeee;
+.account_index {
+    box-sizing: border-box;
+    background: #edf1f5;
+    .account_contant {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 30px 16px 40px;
+        background: #fff;
+        overflow: hidden;
+    }
+}
+.account_index{ 
+    .account_search_one{
+      .el-select {
+        width: 120px; 
+      }
+    } 
+    .el-table th{
+        background:#f7f7f7 !important;
+        font-size: large;
+        color: #666 !important;
+        } 
+    .el-table th>.cell{
+      line-height: 34px;
+    }
+    .el-table td, .el-table th{
+      padding: 8px 0;
+    }
+  }
+
+  
+.account_search_cao {
+    cursor: pointer;
+    display: flex;
+    position: relative;
+    margin-right: 30px;
+    i {
+        line-height: 40px;
+        cursor: pointer;
+    }
+    section {
+        width: 80px;
+        position: absolute;
+        top: 42px;
+        left: 0;
+        padding: 6px 0;
+        background: #fff;
+        border: 1px solid @border;
+        border-radius: 4px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        z-index: 10;
+        span {
+            display: block;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+            &:hover {
+                background: #f7f7f7;
+            }
+        }
+    }
+}
+
+.account_table {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.acconut_table_a {
+    width: 100%;
+    margin: 0 auto;
+    color: @color;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.content_page {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.account_search {
+    line-height: 40px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    section {
+        display: flex;
+    }
+    p {
+        margin-right: 10px;
+    }
+}
+
+.account_search_one {
+    margin-right: 10px;
+}
+
+.account_gao {
+    margin-left: 30px;
+    font-weight: 600;
+    color: @color;
+    cursor: pointer;
+}
+
+.add_negative {
+    position: absolute;
+    top: 0px;
+    left: 620px;
+    border: 1px solid @color;
+    height: 38px;
+    width: 150px;
+    text-align: center;
+    line-height: 38px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: @color;
+    &:hover {
+        background: @color;
+        color: #fff;
+    }
+}
+

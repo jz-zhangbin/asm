@@ -1,56 +1,49 @@
 import App from './App'
-import router from '@router'
 import store from '@vuex'
-
 import https from '@axios'
-Vue.prototype.$https = https
-
+import router from '@router'
+import echarts from 'echarts'
+import ElementUI from 'element-ui'
+import cookie from '@commonJS/cookie'  
+import './assets/element-ui/index.css'
 import ls from '@commonJS/localStorage'
 import height from '@commonJS/windowHeight'
-Vue.prototype.$ls = ls
-Vue.prototype.$height = height
-
-import cookie from '@commonJS/cookie'
-Vue.prototype.$cookie = cookie
-/**
- * 
-    "axios": "^0.18.0", 
-	"vue": "^2.5.2", 
-	"vuex": "^3.0.1", 
-    "vue-router": "^3.0.1",
- */
-/**
- * 全局组件
- */
-import searchTop from '@components/AsmQuery/Search-Top'
-import SIdentify from './components/AsmQuery/canvas'
-import VueParticles from '@components/AsmQuery/vue-particles'
 import Footer from '@components/AsmQuery/footer'
 import Hdader from '@components/AsmLaunch/header'
+import SIdentify from './components/AsmQuery/canvas'
+import searchTop from '@components/AsmQuery/Search-Top'
 import Message from '@components/AsmLaunch/Message-Box-Tiip'
-Vue.component('v-message', Message)
+import VueParticles from '@components/AsmQuery/vue-particles'
+Vue.prototype.$ls = ls
+Vue.prototype.$https = https
+Vue.prototype.$cookie = cookie
+Vue.prototype.$height = height
+Vue.prototype.$echarts = echarts
 Vue.component('v-header', Hdader)
 Vue.component('v-footer', Footer)
-Vue.component('vue-particles', VueParticles)
+Vue.component('v-message', Message)
 Vue.component('s-identify', SIdentify)
 Vue.component('v-search-top', searchTop)
-
-/**
- * echarts
- */
-import echarts from 'echarts'
-Vue.prototype.$echarts = echarts
-
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-
+Vue.component('vue-particles', VueParticles)
 router.afterEach((to, from, next) => {
   window.scrollTo(0, 0);
 });
-
+Vue.filter('numTofixed', function (value) {
+  if (value == 0) {
+    return "0";
+  } else {
+    let num = (value * 100).toFixed(2);
+    return num + "%";
+  }
+})
+Vue.filter('numTo$', function (value) {
+  if (value == 0) {
+    return "0";
+  } else {
+    return "$" + (value * 1).toFixed(2);
+  }
+})
 Vue.config.productionTip = false
-
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
@@ -60,3 +53,31 @@ new Vue({
   },
   template: '<App/>'
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+      //匹配元路由中的meta字段，如果设置了需要校验用户信息
+      //如果用户本地没有登录状态，跳转到登录页面
+      if (cookie.get('Adjuz_UserInfoNEW')) {
+          if (cookie.get('Adjuz_UserInfoNEW')) {
+              next()
+          } else {
+              next({
+                  path: '/login',
+                  query: {
+                      redirect: to.fullPath
+                  }
+              })
+          }
+      } else {
+          next({
+              path: '/login',
+              query: {
+                  redirect: to.fullPath
+              }
+          })
+      }
+  } else {
+      next() // 确保一定要调用 next()
+  }
+}) 

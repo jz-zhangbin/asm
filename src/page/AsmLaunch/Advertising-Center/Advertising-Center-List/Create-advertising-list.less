@@ -7,23 +7,27 @@
 .createlist_index{
    box-sizing: border-box;
     padding: 60px 0 0px;
-    background: #f7f7f7;
+    background: #edf1f5;
+    .blue{
+      color: @color;
+    }
      .adver_nav{
-      margin: 0px 15px 0;
+      margin: 0px 12px 0;
       min-width: 1200px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 80px;
+      height: 90px;
   }
   .createlist_contant{
     min-width: 1200px; 
     box-sizing: border-box; 
-    margin: 0 15px; 
+    margin: 0 12px; 
     background: #fff;
-    padding: 0 16px 60px;
+    padding: 0 0px 60px;
     h1{
       font-size: 18px;
+      color: #333;
       padding: 15px;
       margin-bottom: 10px;
       font-weight: bold;
@@ -45,17 +49,17 @@
     position: relative; 
     display: flex;  
     section{
-      height: 40px;
+      height: 44px;
       border-bottom: 1px solid @border;
       box-sizing: border-box;
       padding:0 10px;
-      line-height: 40px;
+      line-height: 44px;
       background: #f7f7f7;
     } 
     section{
       position: relative;
       width: 474px;
-      height: 40px;
+      height: 44px;
       border: 1px solid @border;
       border-radius: 4px;
       padding: 0 10px; 
@@ -65,7 +69,7 @@
           width: 26px;
           height: 26px;
           border-radius: 4px;
-          margin-top: 7px;
+          margin-top: 9px;
           margin-right: 10px;
         }
         span{
@@ -160,11 +164,12 @@
   }
 
   //拖拽创建
+     //拖拽创建
   .create_tuo_box1{
     width: 850px;
     border: 1px solid @border;
     box-sizing: border-box;
-    padding: 20px 20px 0 20px;
+    padding: 0px 20px 0 20px;
     margin-bottom: 30px;
     .create_tb_title{
       line-height: 60px;
@@ -178,7 +183,7 @@
       width: 100%;
       display: flex; 
       border-bottom: 1px solid @border;
-      padding-bottom: 16px;
+      padding-bottom: 4px;
       .create_tb_biao_div{
         display: flex;
          flex-wrap: wrap;
@@ -210,8 +215,10 @@
             position: absolute;
             top: 0;
             left: 0; 
+            height: 40px;
+            line-height: 40px;
             border: 1px solid @border;
-            padding: 8px 8px;
+            padding: 0px 8px;
             text-align: center;
             margin-right: 8px;
             cursor: pointer;
@@ -256,9 +263,11 @@
         margin-bottom: 12px;
         span{
           display: block;
-          padding: 8px 14px;
+          padding: 0px 14px;
+          height: 40px;
+          line-height: 40px;
           border: 1px solid @border;
-          background: #ddd;
+          background: #f7f7f7;
           border-radius: 4px;
         }
         input{
@@ -282,7 +291,7 @@
       display: flex;
       justify-content: center;
       button{
-        margin: 30px 0 30px;
+        margin: 10px 0 20px;
         height: 40px;
         width: 120px;
       }
@@ -292,10 +301,10 @@
  .createlist_audience{
    .createlist_aud_radio{
      display: flex;
+     margin-top: 20px;
    }
    .createlist_aud_box{
-     width: 500px;
-     height: 260px;
+     width: 500px; 
      box-sizing: border-box;
      padding: 20px;
      border: 1px solid @border;
@@ -418,47 +427,47 @@
  }
  //关键词设置
  .createlist_keyword{
-   width: 650px;
-   height: 180px;
-   border: 1px solid @border;
-   span{
-     text-align: center;
-     overflow: hidden;
-   }
-   .section_one{
-     height: 40px;
+  width: 650px;
+  height: 180px;
+  border: 1px solid @border;
+  span{
+    text-align: center;
+    overflow: hidden;
+  }
+  .section_one{
+    height: 40px;
+     display: flex;
+     align-items: center;
+     background: #f7f7f7;
+  }
+  .createlist_keyword_box{
+    width: 100%;
+    max-height: 140px;
+    overflow-y: auto;
+    .key_wored{
+      color: @color;
+      cursor: pointer;
+    }
+    section{
+      width: 100%;
+      height: 40px;
       display: flex;
       align-items: center;
-      background: #f7f7f7;
-   }
-   .createlist_keyword_box{
-     width: 100%;
-     max-height: 140px;
-     overflow-y: auto;
-     .key_wored{
-       color: @color;
-       cursor: pointer;
-     }
-     section{
-       width: 100%;
-       height: 40px;
-       display: flex;
-       align-items: center;
-     }
-   } 
- }
- .create_list_btn{
-   padding-left: 200px;
-   margin-top: 70px; 
-   button{
-     width: 150px;
-     margin-right: 14px;
-   }
- }
+    }
+  } 
+}
+.create_list_btn{
+  padding-left: 200px;
+  margin-top: 70px; 
+  button{
+    width: 150px;
+    margin-right: 14px;
+  }
+}
 }
 .father_head{
   min-width: 1200px; 
-  margin: 0 15px;
+  margin: 0 12px;
   box-sizing: border-box; 
   padding: 30px 30px;
   background: #fff; 
@@ -469,7 +478,7 @@
     width: 100px;
     height: 100px;
     margin-right: 20px;
-    border-radius: 6px;
+    border-radius: 16px;
   }
   h1{
     font-size: 18px;
@@ -488,6 +497,7 @@
         }
         &:nth-child(2){
           color: #333;
+          margin-bottom: 0;
         }
         &.red_type{
           color: red;
@@ -501,4 +511,16 @@
   position: absolute;
   right: 20px;
   top: 30px;
+}
+.user_infor{
+  p{
+    margin: 10px 0;
+  }
+  input{
+    padding-left: 10px;
+    width: 340px;
+    border: 1px solid @border;
+    height: 34px;
+    margin-bottom: 10px;
+  }
 }
