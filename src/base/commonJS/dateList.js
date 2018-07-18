@@ -15,20 +15,13 @@ export function datefn(datenum) {
     d = d < 10 ? ('0' + d) : d;
     return y + '-' + m + '-' + d;
   }
-  let arr = [{
-      data: {
-        beginTime: fn(timerNum3),
-        endTime: fn(timerNum1)
-      },
-      value: 0,
-      label: fn(timerNum3) + ' 至 ' + fn(timerNum1)
-    },
+  let arr = [ 
     {
       data: {
         beginTime: fn(timerNum4),
         endTime: fn(timerNum1)
       },
-      value: 1,
+      value: 0,
       label: '昨天'
     },
     {
@@ -36,7 +29,7 @@ export function datefn(datenum) {
         beginTime: fn(timerNum3),
         endTime: fn(timerNum1)
       },
-      value: 2,
+      value: 1,
       label: '近七天'
     },
     {
@@ -44,7 +37,7 @@ export function datefn(datenum) {
         beginTime: fn(timerNum5),
         endTime: fn(timerNum1)
       },
-      value: 3,
+      value: 2,
       label: '近十五天'
     },
     {
@@ -52,8 +45,8 @@ export function datefn(datenum) {
         beginTime: fn(timerNum6),
         endTime: fn(timerNum1)
       },
-      value: 4,
-      label: '近三十天'
+      value: 3,
+      label: '近三十天' 
     }
   ]
   switch (datenum) {
@@ -74,21 +67,13 @@ export function datefn(datenum) {
           },
           value: 0,
           label: '今天'
-        },
-        {
-          data: {
-            beginTime: fn(timerNum3),
-            endTime: fn(timerNum1)
-          },
-          value: 1,
-          label: fn(timerNum3) + ' 至 ' + fn(timerNum1)
-        },
+        }, 
         {
           data: {
             beginTime: fn(timerNum4),
             endTime: fn(timerNum1)
           },
-          value: 2,
+          value: 1,
           label: '昨天'
         },
         {
@@ -96,7 +81,7 @@ export function datefn(datenum) {
             beginTime: fn(timerNum3),
             endTime: fn(timerNum1)
           },
-          value: 3,
+          value: 2,
           label: '近七天'
         },
         {
@@ -104,7 +89,7 @@ export function datefn(datenum) {
             beginTime: fn(timerNum5),
             endTime: fn(timerNum1)
           },
-          value: 4,
+          value: 3,
           label: '近十五天'
         },
         {
@@ -112,7 +97,7 @@ export function datefn(datenum) {
             beginTime: fn(timerNum6),
             endTime: fn(timerNum1)
           },
-          value: 5,
+          value: 4,
           label: '近三十天'
         }
       ] 
@@ -125,20 +110,13 @@ export function datefn(datenum) {
       }
       break; 
       case 4 :
-      let yeararr = [{
-        data: {
-          beginTime: fn(timerNum1),
-          endTime: fn(timerNum1)
-        },
-        value: 0,
-        label: '今天'
-      }, 
+      let yeararr = [ 
       {
         data: {
           beginTime: fn(timerNum4),
           endTime: fn(timerNum1)
         },
-        value: 1,
+        value: 0,
         label: '昨天'
       },
       {
@@ -146,7 +124,7 @@ export function datefn(datenum) {
           beginTime: fn(timerNum3),
           endTime: fn(timerNum1)
         },
-        value: 2,
+        value: 1,
         label: '近七天'
       },
       {
@@ -154,7 +132,7 @@ export function datefn(datenum) {
           beginTime: fn(timerNum5),
           endTime: fn(timerNum1)
         },
-        value: 3,
+        value: 2,
         label: '近十五天'
       },
       {
@@ -162,16 +140,8 @@ export function datefn(datenum) {
           beginTime: fn(timerNum6),
           endTime: fn(timerNum1)
         },
-        value: 4,
+        value: 3,
         label: '近三十天'
-      },
-      {
-        data: {
-          beginTime: fn(timerNum7),
-          endTime: fn(timerNum1)
-        },
-        value: 5,
-        label: '近一年'
       }
     ]
     return yeararr

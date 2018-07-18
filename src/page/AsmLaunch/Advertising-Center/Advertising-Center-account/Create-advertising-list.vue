@@ -234,7 +234,7 @@
                     <p>公司或产品名称</p>
                     <input type="text" disabled v-model="userType.clientName">
                     <p>订单号</p>
-                    <input type="text" disabled v-model="userType.dingdan">
+                    <input type="text" disabled v-model="userType.orderNumber">
                     <p>主要联系人姓名</p>
                     <input type="text" disabled v-model="userType.buyerName">
                     <p>主要联系人邮箱</p>
@@ -310,9 +310,17 @@
 
                 <!-- 投放时间设置 -->
                 <p class="createlist_title">投放时间设置</p>
-                <el-date-picker v-model="value7" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions2">
-                </el-date-picker>
-
+                <el-date-picker v-model="value7" 
+                    type="daterange" 
+                    align="right" 
+                    unlink-panels 
+                    range-separator="至" 
+                    start-placeholder="开始日期" 
+                    end-placeholder="结束日期" 
+                    value-format='yyyy-MM-dd' 
+                    :picker-options="pickerOptions2" 
+                    >
+                </el-date-picker> 
                 <p class="createlist_title">投放开启</p>
                 <el-switch v-model="upvalue" active-text="开启" inactive-text="关闭">
                 </el-switch>
@@ -456,10 +464,7 @@ export default {
         "v-audience-form": AudienceForm
     },
 
-    computed: {
-        ...mapState({
-            datelist: state => state.Date.DateListAll
-        })
+    computed: { 
     },
 
     filters: {
@@ -496,6 +501,13 @@ export default {
     destroyed() {},
 
     methods: {
+        dateNow() {
+            let date = new Date()
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate(); 
+            return (year+""+month+""+strDate)
+        },
         searchBtn() {
             //点击搜索app
             this.AjaxGetAppList();
@@ -513,16 +525,16 @@ export default {
             this.appName = "";
             this.apptouDataShow = true;
             this.appListShow = false;
-            this.userType.dingdan =
-                this.appDate.adamId +
-                "_" +
-                this.$route.query.orgId +
-                "_" +
-                this.datelist[0].data.endTime;
+            // this.userType.orderNumber =
+            //     this.appDate.adamId +
+            //     "_" +
+            //     this.$route.query.orgId +
+            //     "_" +
+            //     this.dateNow()
         },
         appDataclose() {
             //关闭选中数据
-            this.userType.dingdan = "";
+            //this.userType.orderNumber = "";
             this.checkList = [];
             this.apptouDataShow = false;
         },
@@ -532,12 +544,12 @@ export default {
             this.AjaxGetCountryList(this.appListTou[index].adamId);
             this.apptouDataTouShow = false;
             this.apptouDataShow = true;
-            this.userType.dingdan =
-                this.appDate.adamId +
-                "_" +
-                this.$route.query.orgId +
-                "_" +
-                this.datelist[0].data.endTime;
+            // this.userType.orderNumber =
+            //     this.appDate.adamId +
+            //     "_" +
+            //     this.$route.query.orgId +
+            //     "_" +
+            //     this.dateNow()
         },
         audienceSearchClick() {
             //搜索模板
@@ -685,7 +697,7 @@ export default {
                     type: 3
                 });
                 return false;
-            }
+            } 
             //4.模板设置
             if (!this.audienceListObj.audienceTemplateId) {
                 this.$store.commit("SET_SHOW_TRUE", {
@@ -864,7 +876,9 @@ export default {
                     })
                 )
                 .then(res => {
-                    this.keyWordList = res.data.data.list;
+                    if(res.data.resultCode == 1000) {
+                        this.keyWordList = res.data.data.list;
+                    }
                 });
         },
         AjaxAdd() {
@@ -929,7 +943,7 @@ export default {
                           clientName: this.userType.clientName,
                           buyerName: this.userType.buyerName,
                           buyerEmail: this.userType.buyerEmail,
-                          orderNumber: this.userType.dingdan
+                          orderNumber: this.userType.orderNumber
                       }
                     : null
             };

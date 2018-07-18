@@ -131,10 +131,19 @@
                 </div>
 
                 <div class="content_date">
-                    <el-select v-model="dateData" @change="changeFun(dateData)">
-                        <el-option v-for="item in datelist" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                    <el-date-picker
+                        v-model="dateTime"
+                        type="daterange"
+                        align="right"
+                        unlink-panels
+                        :clearable = false
+                        @change = 'changeDate'
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        value-format='yyyy-MM-dd'
+                        :picker-options="datelist">
+                    </el-date-picker>
                 </div>
 
                 <div class="content_refresh">
@@ -210,8 +219,7 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                </el-table>
-
+                </el-table> 
                 <div class="content_page">
                     <el-pagination :current-page="pageIndex" background :page-size="20" @current-change="handleCurrentChange" layout="prev, pager, next" :total="total">
                     </el-pagination>
@@ -225,7 +233,8 @@
 import NavList from "@components/AsmLaunch/Nav-List";
 import KeySearch from "@components/AsmLaunch/Key-Search";
 import { mapState } from "vuex";
-import { date } from "@commonJS/date";
+import { date , dateUtc} from "@commonJS/date";
+import { datefn } from "@commonJS/dateList";
 export default {
     data() {
         return {
@@ -233,13 +242,14 @@ export default {
             routeList: [], //面包屑
             valuedata: "", //搜索内容
             placevaluedata: "账户名称或ID", //搜索提示
-            dateData: 0, //当前时间
+            //dateData: 0, //当前时间
             dateNow: "", //请求时间段
             pageIndex: 1,
             emptyText: "当前暂无数据",
             total: 0,
             loading: false,
-            tableData: []
+            tableData: [], 
+            dateTime: ''
         };
     },
 
@@ -250,7 +260,7 @@ export default {
 
     computed: {
         ...mapState({
-            datelist: state => state.Date.DateListAll
+            datelist: state => state.Date.DateRange
         })
     },
 
@@ -261,6 +271,13 @@ export default {
     },
 
     created() {
+        //console.log([datefn(3).beginTime , datefn(3).endTime])
+        if(!this.$ss.get('TIME_UTC')) {
+            this.dateTime = [datefn(3).beginTime , datefn(3).endTime]
+            this.$ss.set('TIME_UTC', this.dateTime)
+        }else{
+            this.dateTime = this.$ss.get('TIME_UTC')
+        }  
         this.AjaxGetUserList();
     },
 
@@ -277,14 +294,12 @@ export default {
             this.total = 0;
             this.AjaxGetUserList();
         },
-
-        changeFun(value) {
-            //切换时间进行请求
-            this.dateData = value;
+        changeDate() {
+            this.$ss.set('TIME_UTC',this.dateTime)  
             this.pageIndex = 1;
             this.total = 0;
             this.AjaxGetUserList();
-        },
+        }, 
 
         handleClick(id, index) {
             //删除
@@ -333,8 +348,7 @@ export default {
                 query: {
                     accountName: data.companyName,
                     id: data.orgUserInfoId,
-                    orgId: data.orgId,
-                    date: this.dateData
+                    orgId: data.orgId 
                 }
             });
         },
@@ -348,8 +362,8 @@ export default {
                 pageSize: 20,
                 requestPar: {
                     keyword: this.valuedata,
-                    startTime: this.datelist[this.dateData].data.beginTime,
-                    endTime: this.datelist[this.dateData].data.endTime
+                    startTime: dateUtc(this.dateTime[0]),
+                    endTime: dateUtc(this.dateTime[1])
                 }
             };
 

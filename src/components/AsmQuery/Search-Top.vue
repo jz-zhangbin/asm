@@ -79,10 +79,10 @@
                             &:hover {
                                 background: #f7f7f7;
                             }
-                            &:focus {
-                                background: @color;
-                                color: #fff;
-                            }
+                            // &:focus {
+                            //     background: @color;
+                            //     color: #fff;
+                            // }
                         }
                     }
                 }
@@ -152,7 +152,7 @@
                         cursor: pointer;
                         &:hover {
                             background: @bgk;
-                        }
+                        } 
                         &.st_bgk {
                             background: @color;
                             color: #fff;
@@ -238,8 +238,7 @@
         }
     }
     .st_user_list {
-        width: 120px;
-        height: 80px;
+        width: 120px; 
         overflow: hidden;
         background: #fff;
         position: absolute;
@@ -248,7 +247,8 @@
         transform: translateX(-50%);
         border-radius: 4px;
         z-index: 100;
-        a,
+        padding-bottom: 8px;
+        div,a,
         span {
             line-height: 35px;
             display: block;
@@ -290,7 +290,7 @@
             <transition name="el-zoom-in-top">
               <section class="st_top_hover" v-show="show2" @mouseout="show2 = false">
                 <router-link :to="{path: '/rankingList'}">竞价词榜</router-link>
-                <router-link :to="{path: '/keyword-comparison'}">竞品对比</router-link>
+                <router-link :to="{path: '/keyword-comparison-list'}">竞品对比</router-link>
               </section>
             </transition>
           </div>
@@ -307,9 +307,9 @@
         <i class="st_user_i"></i>
         <transition name="el-zoom-in-top">
           <div class="st_user_list" @mouseout="show3 = false" v-show="show3">
-            <router-link to="/advertising-center">
+            <div @click="toadmain" v-if="vipShow">
               <i class="iconfont icon-huodongzhongxin"></i>广告中心
-            </router-link>
+            </div>
             <span @click="userOut">
               <i class="iconfont icon-tuichu"></i>退出登录</span>
           </div>
@@ -344,6 +344,7 @@
 <script>
 import { mapState } from "vuex";
 import reduceCookie from "@commonJS/reduceCookie";
+import Vip from '@commonJS/Vip'
 export default {
     data() {
         return {
@@ -373,7 +374,8 @@ export default {
         ...mapState({
             countryList: state => state.Home.countryList,
             userType: state => state.Sign.userType,
-            userName: state => state.Sign.userName
+            userName: state => state.Sign.userName,
+            vipShow: state => state.Sign.vipShow
         })
     },
 
@@ -381,12 +383,14 @@ export default {
 
     updated() {},
 
-    mounted() {
+    mounted() { 
+
         this.$store.dispatch("GET_COUNTRYLIST").then(() => {
             this.countryNow = this.$store.state.Home.countryList[0];
         });
 
         this.$store.commit("GET_USERTYPE");
+        this.$store.dispatch("GET_ISMANAGER");
 
         let _this = this;
         $("#top_search").keydown(function(e) {
@@ -399,6 +403,12 @@ export default {
     },
 
     methods: {
+        toadmain() { 
+            let routeData = this.$router.resolve({
+                path: '/advertising-center/home' 
+            });
+            window.open(routeData.href, '_blank')  
+        },
         userOut() {
             //退出登录
             this.$store.commit("SET_USERTYPE");

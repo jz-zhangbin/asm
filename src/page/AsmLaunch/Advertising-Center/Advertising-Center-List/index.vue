@@ -237,7 +237,7 @@
             </section>
 
             <!-- 右面固定 -->
-            <div class="right_absolute_btn" @click="zhinengRouter">智能检测</div>
+            <div class="right_absolute_btn" @click="zhinengRouter">智能监测</div>
             <div class="right_absolute_text">
                 <el-button type="text" @click="routerTosettings">编辑</el-button>
             </div>
@@ -340,7 +340,6 @@ export default {
                     query: {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId,
-                        date: queryData.date,
                         id: queryData.id
                     }
                 },
@@ -360,7 +359,7 @@ export default {
     mounted() {
         documentClick("checket_time", this, "timeNowShow");
         if (this.$ls.get("adjuz_img")) {
-            this.$ls.clear("adjuz_img");
+           // this.$ls.clear("adjuz_img");
         }
         this.AjaxGetCampaignOperateResult();
     },
@@ -401,9 +400,8 @@ export default {
                 if (res.data.resultCode == 1000) {
                     this.topDate = res.data.data;
                     this.adaMid = res.data.data.adaMid;
-                    this.GetImgUrl(res.data.data.adaMid);
-                    this.$ls.set("adaMid", res.data.data.adaMid);
-                    //this.GetImgUrl('364191819')
+                    this.GetImgUrl(res.data.data.adaMid,res.data.data.storefront);
+                    this.$ls.set("adaMid", res.data.data.adaMid); 
                 } else {
                     this.topDate = {
                         img: "",
@@ -414,10 +412,13 @@ export default {
                 }
             });
         },
-        GetImgUrl(id) {
+        GetImgUrl(id,country) {
             this.loadingimg = false;
-            let url = "/api/v1/IntellAdvertiseApi/Campaign/GetAppByAppids";
-            this.$https.post(url, JSON.stringify([id])).then(res => {
+            let url = "/api/v1/IntellAdvertiseApi/Campaign/GetAppByAppidCountrys";
+            this.$https.post(url, JSON.stringify([{
+                 appId: id,
+                 countryCode: country.toLowerCase()
+            }])).then(res => {
                 this.loadingimg = true;
                 if (res.data.resultCode == 1000) {
                     this.adverImg = res.data.data[0].logoAdress;
@@ -431,7 +432,7 @@ export default {
         zhinengRouter() {
             let url =
                 "/api/v1/IntellAdvertiseApi/Monitor/GetIntellMonitorByOrgId?orgId=" +
-                123;
+                this.$route.query.orgId
             this.$https.get(url).then(res => {
                 if (res.data.resultCode == 404) {
                     this.$store.commit('SET_SHOW_TRUE',{
@@ -443,7 +444,7 @@ export default {
                         path: "/intgentMitorLibrary/public",
                         query: {
                             parame: "see",
-                            id: this.topDate.orgId,
+                            id: res.data.data.intelMonitorId,
                             type: "list"
                         }
                     });

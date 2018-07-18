@@ -22,6 +22,7 @@
         white-space: nowrap;
     }
     section {
+        border: 1px solid #ebeef5;
         padding: 20px;
         box-sizing: border-box;
         border-radius: 6px;
@@ -57,7 +58,7 @@
                     align-items: center;
                     height: 46px;
                     p {
-                        max-width: 300px;
+                        max-width: 250px;
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
@@ -305,115 +306,36 @@ export default {
 
     methods: {
         SetData(data) {
-            let arr = [];
-            // data = [
-            //     {
-            //         name: "AU_13",
-            //         useTime: 0,
-            //         adamId: 306583229,
-            //         storefront: "AU",
-            //         errorMsg: '网络原因',
-            //         status: -1,
-            //         startDateTime: "2018-06-29T16:43:23.54",
-            //         endDateTime: "2018-06-29T16:43:23.54"
-            //     },
-            //     {
-            //         name: "AU_14",
-            //         useTime: 0,
-            //         adamId: 306583229,
-            //         storefront: "AU",
-            //         errorMsg: '网络原因',
-            //         status: 0,
-            //         startDateTime: "2018-06-29T16:43:23.61",
-            //         endDateTime: "2018-06-29T16:43:23.61"
-            //     },
-            //     {
-            //         name: "NZ_15",
-            //         useTime: 321,
-            //         adamId: 306583229,
-            //         storefront: "NZ",
-            //         errorMsg: null,
-            //         status: 1,
-            //         startDateTime: "2018-06-29T16:43:23.683",
-            //         endDateTime: "2018-06-29T16:43:23.683"
-            //     },
-            //     {
-            //         name: "NZ_16",
-            //         useTime: 0,
-            //         adamId: 306583229,
-            //         storefront: "NZ",
-            //         errorMsg: null,
-            //         status: 2,
-            //         startDateTime: "2018-06-29T16:43:23.753",
-            //         endDateTime: "2018-06-29T16:43:23.753"
-            //     },
-            //     {
-            //         name: "AU_17",
-            //         useTime: 0,
-            //         adamId: 1202808943,
-            //         storefront: "AU",
-            //         errorMsg: '网络原因',
-            //         status: -1,
-            //         startDateTime: "2018-06-29T17:38:01.013",
-            //         endDateTime: "2018-06-29T17:38:01.013"
-            //     },
-            //     {
-            //         name: "AU_18",
-            //         useTime: 0,
-            //         adamId: 1202808943,
-            //         storefront: "AU",
-            //         errorMsg: '网络原因',
-            //         status: 0,
-            //         startDateTime: "2018-06-29T17:38:01.11",
-            //         endDateTime: "2018-06-29T17:38:01.11"
-            //     },
-            //     {
-            //         name: "NZ_19",
-            //         useTime: 556,
-            //         adamId: 1202808943,
-            //         storefront: "NZ",
-            //         errorMsg: null,
-            //         status: 1,
-            //         startDateTime: "2018-06-29T17:38:01.193",
-            //         endDateTime: "2018-06-29T17:38:01.193"
-            //     },
-            //     {
-            //         name: "NZ_20",
-            //         useTime: 0,
-            //         adamId: 1202808943,
-            //         storefront: "NZ",
-            //         errorMsg: null,
-            //         status: 2,
-            //         startDateTime: "2018-06-29T17:38:01.283",
-            //         endDateTime: "2018-06-29T17:38:01.283"
-            //     }
-            // ];
+            let arr = []; 
             if (this.name == "创建") {
                 data.map(ele => {
-                    arr.push(ele.adamId);
+                    arr.push(ele.adamId+'-'+ele.storefront);
                 });
                 arr = [...new Set(arr)]; //获得去重后的id
                 let newarr = {};
                 arr.map((ele, index) => {
                     newarr[ele] = [];
                     data.map((value, item) => {
-                        if (ele == value.adamId) {
+                        if (ele == value.adamId+'-'+value.storefront) {
                             newarr[ele].push(value);
                         }
                     });
                     if (this.logoShow) {
                         //头部图片跟名字只请求一次
                         this.topimgArr.push({
-                            id: ele,
+                            id: ele.substring(0,ele.indexOf('-')),
+                            country:  ele.substring(ele.indexOf('-')+1,ele.lenght),
                             img: "",
                             name: ""
                         });
                     }
                 });
                 this.list = newarr;
+                console.log(newarr)
+                console.log(this.topimgArr)
                 if (this.logoShow) {
                     this.topimgArr.map((ele, index) => {
-                        this.GetImgUrl(ele.id, index);
+                        this.GetImgUrl(ele.id,ele.country,index);
                     });
                 }
                 this.logoShow = false;
@@ -466,9 +388,12 @@ export default {
                     });
             }, 5000);
         },
-        GetImgUrl(id, index) {
-            let url = "/api/v1/IntellAdvertiseApi/Campaign/GetAppByAppids";
-            this.$https.post(url, JSON.stringify([id])).then(res => {
+        GetImgUrl(id,country, index) {
+            let url = "/api/v1/IntellAdvertiseApi/Campaign/GetAppByAppidCountrys";
+            this.$https.post(url, JSON.stringify([{
+                    appId: id,
+                    countryCode: country
+                }])).then(res => {
                 this.loadingimg = true;
                 if (res.data.resultCode == 1000) {
                     this.topimgArr[index].img = res.data.data[0].logoAdress;

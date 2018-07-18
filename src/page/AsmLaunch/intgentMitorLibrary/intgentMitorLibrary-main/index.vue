@@ -114,8 +114,7 @@
 .table {
     padding: 50px 0 0;
     tr td,
-    th {
-        border-right: 1px solid #dee2e6;
+    th { 
         text-align: center;
         padding: 8px 0;
     }
@@ -144,10 +143,8 @@
 
         <div class="adver_nav">
             <v-nav :pageName='pageName' :routeList='routeList'></v-nav>
-            <div class="btn">
-                <router-link :to="{path: '/intgentMitorLibrary/public?parame=add'}">
-                    <span>添加智能监测</span>
-                </router-link>
+            <div class="btn" @click="$router.push('/intgentMitorLibrary/public?parame=add')"> 
+                    <span>添加智能监测</span> 
             </div>
         </div>
         <div class="advuer_content">
@@ -183,7 +180,7 @@
                             </router-link>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="SearchIndex" label="监测对象" min-width="150" align='center'>
+                    <el-table-column prop="SearchIndex" label="监测对象" min-width="200" align='center'>
                         <template slot-scope="scope">
                             <div style="text-align:left">
                                 账户：
@@ -197,7 +194,7 @@
                     </el-table-column>
                     <el-table-column prop="ruleCount" label="监测规则数" min-width="120">
                     </el-table-column>
-                    <el-table-column prop="createDate" label="创建时间" min-width="180">
+                    <el-table-column prop="createDate"  label="创建时间" min-width="180">
                     </el-table-column>
                     <el-table-column label="操作" min-width="150">
                         <template slot-scope="scope">

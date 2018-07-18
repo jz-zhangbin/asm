@@ -41,13 +41,13 @@
     .advuer_content {
         min-width: 1200px;
         background: #fff;
-        padding: 25px 20px 20px;
+        padding: 0px 20px 20px;
         margin: 0 12px;
         position: relative;
         h2 {
             font-size: 18px;
             font-weight: bold;
-            padding: 15px 0 0 0;
+            padding: 20px 0 0 0;
             color: #333;
         }
         .sostyle {
@@ -245,8 +245,7 @@
     .table {
         padding: 50px 0 0;
         tr td,
-        th {
-            border-right: 1px solid @border;
+        th { 
             text-align: center;
             padding: 8px 0;
         }
@@ -258,10 +257,7 @@
             width: 100%;
             text-align: center;
             margin: 30px auto;
-        }
-        .el-table {
-            border: 1px solid @border;
-        }
+        } 
     }
 }
 .el-message-box {
@@ -494,9 +490,11 @@ export default {
             this.loading = true;
             this.$https.get(url).then(
                 res => {
+                    this.centerDialogVisibles = false;
                     this.loading = false;
                 },
                 err => {
+                    this.centerDialogVisibles = false;
                     console.log(err);
                 }
             );
@@ -658,6 +656,7 @@ export default {
         },
         AjaxUpLoade() {
             this.centerDialogVisible = false;
+            this.loadingAll = this.$loading(this.loadingopaction);
             let url = "/api/v1/IntellAdvertiseApi/KeywordInfo/FileUpload";
             var zipFormData = new FormData();
             this.fileList.map((ele, index) => {
@@ -666,6 +665,7 @@ export default {
             zipFormData.append("groupId", this.$route.query.id);
             let config = { headers: { "Content-Type": "multipart/form-data" } };
             this.$https.post(url, zipFormData).then(res => {
+                this.loadingAll.close()
                 if (res.data.resultCode == 1000) {
                     this.listdata();
                     this.$store.commit("SET_SHOW_TRUE", {
@@ -711,12 +711,11 @@ export default {
         GetGroupList() {
             //获取关键词组列表
             let url = "api/v1/IntellAdvertiseApi/Keyword/GetGroupList";
-            this.$https.get(url).then(
-                res => {
-                    console.log(res.data.data);
+            this.$https.get(url).then( 
+                res => {  
                     this.options = res.data.data;
                 },
-                err => {
+                err => { 
                     console.log(err);
                 }
             );

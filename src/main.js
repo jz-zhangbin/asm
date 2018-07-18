@@ -7,6 +7,7 @@ import ElementUI from 'element-ui'
 import cookie from '@commonJS/cookie'  
 import './assets/element-ui/index.css'
 import ls from '@commonJS/localStorage'
+import ss from '@commonJS/sessionStorage'
 import height from '@commonJS/windowHeight'
 import Footer from '@components/AsmQuery/footer'
 import Hdader from '@components/AsmLaunch/header'
@@ -15,6 +16,7 @@ import searchTop from '@components/AsmQuery/Search-Top'
 import Message from '@components/AsmLaunch/Message-Box-Tiip'
 import VueParticles from '@components/AsmQuery/vue-particles'
 Vue.prototype.$ls = ls
+Vue.prototype.$ss = ss
 Vue.prototype.$https = https
 Vue.prototype.$cookie = cookie
 Vue.prototype.$height = height

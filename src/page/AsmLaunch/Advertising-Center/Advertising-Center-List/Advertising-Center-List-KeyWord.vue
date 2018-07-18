@@ -38,9 +38,19 @@
                     </div>
 
                     <div class="account_search_date">
-                        <el-select v-model="dateData" @change="changeFun(dateData)">
-                            <el-option v-for="item in datelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                        </el-select>
+                        <el-date-picker
+                            v-model="dateTime"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            :clearable = false
+                            @change = 'changeDate'
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            value-format='yyyy-MM-dd'
+                            :picker-options="datelist">
+                        </el-date-picker>
                     </div>
                 </section>
             </div>
@@ -50,7 +60,7 @@
                 <el-table ref="multipleTable" :data="tableData4" style="width: 100%" highlight-current-row border @selection-change="handleSelectionChange" @sort-change='sortchange' v-loading="loading" :default-sort="sortInfor">
                     <el-table-column type="selection" fixed align='center' width="55">
                     </el-table-column>
-                    <el-table-column fixed align='center' label="广告系列名称" min-width="320">
+                    <el-table-column fixed align='center' label="关键词" min-width="320">
                         <template slot-scope="scope">
                             <div>
                                 {{scope.row.name}}
@@ -65,7 +75,7 @@
                     </el-table-column>
                     <el-table-column prop="matchType" label="匹配类型" align='center' min-width="120">
                         <template slot-scope="scope">
-                            <div v-if="scope.row.matchType == 'EXACT'">精准</div>
+                            <div v-if="scope.row.matchtype == 'EXACT'">精准</div>
                             <div v-else>广泛</div>
                         </template>
                     </el-table-column>
@@ -141,6 +151,8 @@
 
 <script>
 import { mapState } from "vuex";
+import { datefn } from "@commonJS/dateList";
+import { date , dateUtc} from "@commonJS/date"; 
 import documentClick from "@commonJS/documentSettings";
 import { excelCheckout } from "@commonJS/excelCheckout";
 import KeySearch from "@components/AsmLaunch/Key-Search";
@@ -184,7 +196,7 @@ export default {
                 "启用所有",
                 "暂停所有"
             ],
-            dateData: 0, //当前时间
+            dateTime: '',
             advanShow: false,
             searchType: "所有关键词", //高级搜索是否要国家
             tableData4: [],
@@ -222,16 +234,22 @@ export default {
 
     computed: {
         ...mapState({
-            datelist: state => state.Date.DateListAll
+             datelist: state => state.Date.DateRange
         })
     },
 
-    created() {},
+    created() {
+        if(!this.$ss.get('TIME_UTC')) {
+            this.dateTime = [datefn(3).beginTime , datefn(3).endTime]
+            this.$ss.set('TIME_UTC', this.dateTime)
+        }else{
+            this.dateTime = this.$ss.get('TIME_UTC')
+        } 
+    },
 
     updated() {},
 
-    mounted() {
-        this.dateData = this.$route.query.date * 1;
+    mounted() { 
         documentClick("account_search_cao", this, "caoShow");
     },
 
@@ -251,13 +269,14 @@ export default {
             this.$refs.multipleTable.sort("status", "descending");
         },
 
-        changeFun(value) {
+        changeDate() {
             //切换时间进行请求
-            this.advancedFunList = [];
-            this.dateData = value;
+            this.$ss.set('TIME_UTC',this.dateTime)  
+            this.advancedFunList = []; 
             this.$refs.multipleTable.clearSort();
             this.$refs.multipleTable.sort("status", "descending");
-        },
+            this.AjaxStatisticCampaign(); 
+        },  
 
         advancedFun(data) {
             //高级搜索
@@ -384,8 +403,8 @@ export default {
                 operator: "inrange",
                 valueType: 1,
                 values: [
-                    this.datelist[this.dateData].data.beginTime,
-                    this.datelist[this.dateData].data.endTime
+                    dateUtc(this.dateTime[0]),
+                    dateUtc(this.dateTime[1])
                 ]
             };
             arr.push(obj2);
@@ -420,11 +439,11 @@ export default {
                 case "启用":
                     if (this.multipleSelection.length == 0) {
                         _this.$store.commit("SET_SHOW_TRUE", {
-                            value: "请选择广告系列",
+                            value: "请选择关键词",
                             type: 3
                         });
                     } else {
-                        this.$confirm("是否启用所选广告系列？", {
+                        this.$confirm("是否启用所选关键词？", {
                             confirmButtonText: "确定",
                             cancelButtonText: "取消",
                             center: true
@@ -446,11 +465,11 @@ export default {
                 case "暂停":
                     if (this.multipleSelection.length == 0) {
                         _this.$store.commit("SET_SHOW_TRUE", {
-                            value: "请选择广告系列",
+                            value: "请选择关键词",
                             type: 3
                         });
                     } else {
-                        this.$confirm("是否暂停所选广告系列？", {
+                        this.$confirm("是否暂停所选关键词？", {
                             confirmButtonText: "确定",
                             cancelButtonText: "取消",
                             center: true
@@ -468,7 +487,7 @@ export default {
                     }
                     break;
                 case "启用所有":
-                    this.$confirm("是否启用所有广告系列？", {
+                    this.$confirm("是否启用所有关键词？", {
                         confirmButtonText: "确定",
                         cancelButtonText: "取消",
                         center: true
@@ -485,7 +504,7 @@ export default {
                     });
                     break;
                 case "暂停所有":
-                    this.$confirm("是否暂停所有广告系列？", {
+                    this.$confirm("是否暂停所有关键词？", {
                         confirmButtonText: "确定",
                         cancelButtonText: "取消",
                         center: true
@@ -504,7 +523,7 @@ export default {
                 case "编辑":
                     if (this.multipleSelection.length == 0) {
                         _this.$store.commit("SET_SHOW_TRUE", {
-                            value: "请选择广告系列",
+                            value: "请选择关键词",
                             type: 3
                         });
                     } else {
@@ -535,7 +554,7 @@ export default {
             //单独操作按钮
             let _this = this;
             let type = rows.status == "ACTIVE" ? "暂停" : "启用";
-            this.$confirm("是否" + type + "所选广告系列？", {
+            this.$confirm("是否" + type + "所选关键词？", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 center: true

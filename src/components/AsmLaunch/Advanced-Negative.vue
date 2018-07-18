@@ -16,12 +16,13 @@
     animation: animation1 0.5s ease-out;
     -webkit-animation: animation1 0.5s ease-out;
     .ad_section {
+        border: 1px solid #ebeef5;
         padding: 20px;
         box-sizing: border-box;
         border-radius: 6px;
         background: #fff;
         width: 600px;
-        height: 540px;
+        height: 510px;
         position: absolute;
         margin: auto;
         left: 0;
@@ -84,7 +85,7 @@
             cursor: pointer;
             color: @color;
             right: 30px;
-            top: 30px;
+            top: 17px;
         }
     }
     .add_index {
@@ -197,7 +198,7 @@
     }
     .file_ul_box {
         width: 100%;
-        max-height: 150px;
+        max-height: 100px;
         overflow-y: auto;
         margin-top: 20px;
     }
@@ -220,6 +221,10 @@
                 cursor: pointer;
             }
         }
+    }
+    .div_kong{
+        text-align: center;
+        line-height: 120px;
     }
 }
 </style>
@@ -259,7 +264,7 @@
             <div class="reaio_index" v-if="type == '广告系列'">
                 <el-radio v-model="radio" label="1">添加至广告系列</el-radio>
                 <el-radio v-model="radio" label="2">添加至广告组</el-radio>
-                <a href="" class="a_class" v-if="commonts == 2">下载样式</a>
+                <a href="" class="a_class" v-if="commonts == 2">下载示例</a>
             </div>
             <div class="add_index">
                 <el-select v-model="value" placeholder="请选择" v-if="radio == '2'">
@@ -277,6 +282,9 @@
                     <span style="width: 30%">匹配类型</span>
                     <span style="width: 20%">操作</span>
                 </li>
+                <div v-if="keywordList.length == 0" class="div_kong">
+                        暂无数据
+                </div>
                 <li v-for="(ele,index) in keywordList" :key="index">
                     <span style="width: 50% ; color: #2d76ed">{{ele.keyName}}</span>
                     <span style="width: 30%">
@@ -291,7 +299,7 @@
 
             <!-- 文件列表 -->
             <div class="file_ul_box" v-if="commonts == 2">
-                <ul class="file_ul">
+                <ul class="file_ul"> 
                     <li v-for="(ele,index) in fileList" :key="index">
                         {{ele.name}}
                         <img src="../../images/components/u132.png" alt="" @click="removefile(index)">

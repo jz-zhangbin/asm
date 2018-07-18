@@ -279,7 +279,7 @@ export default {
         },
 
         submitClick() {
-            let emailTest = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g;
+            let emailTest = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[0-9A-Za-z]{2,10}(\.[0-9A-Za-z]{2,10})?)$/g;
             let telTest = /^[1][3,4,5,7,8][0-9]{9}$/;
             if (
                 this.userName == "" ||

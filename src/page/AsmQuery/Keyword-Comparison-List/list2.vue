@@ -48,169 +48,197 @@
     .kcll2_table_fu {
         width: 50%;
     }
+    .excel_out {
+        display: flex;
+        justify-content: flex-end;
+        .apl_checketout_one  {
+            margin-bottom: 25px; 
+            span {
+                display: block;
+                height: 32px;
+                border: 1px solid #dee2e6;
+                border-radius: 4px;
+                line-height: 32px;
+                padding: 0 12px;
+                cursor: pointer;
+                &.checked {
+                    background: #f7f7f7;
+                    cursor: wait;
+                }
+            }
+        }
+    }
 }
 </style>
 <template>
-  <div class="kcll2_index">
-    <div class="kcll2_table_box">
-      <div class="kcll2_table_fu">
-        <table class="kcll2_table1">
-          <tr class="table_th_wei">
-            <th colspan="5">已选APP关键词(左)</th>
-          </tr>
-          <tr class="table_data_tr">
-            <td style="width: 9%">#</td>
-            <td style="width: 30%">关键词</td>
-            <td style="width: 28%" class="sl_table_po">
-              <div class="sl_table_flex">
-                <div>
-                  <p>搜索指数</p>
-                  <p>流行度</p>
-                </div>
-                <div class="table_tandb table_tandb1">
-                  <span @click="paiClick(0,'one')" :class="{bandb_one: showList[0].one}"></span>
-                  <span @click="paiClick(0,'two')" :class="{bandb_two: showList[0].two}"></span>
-                </div>
-              </div>
-            </td>
-            <td style="width: 18%">
-              <div class="sl_table_flex">
-                展示量占比
-                <!-- <div class="table_tandb">
+    <div class="kcll2_index">
+        <div class="excel_out">
+            <div class="apl_checketout_one">
+                <span @click="excelOut(1)" :class="{checked: checkouting}">
+                    <i class="iconfont icon-download"></i>{{checkouting ? '导出中' : '导出'}}
+                </span>
+            </div> 
+        </div>
+        <div class="kcll2_table_box">
+            <div class="kcll2_table_fu">
+                <table class="kcll2_table1">
+                    <tr class="table_th_wei">
+                        <th colspan="5">已选APP关键词(左)</th>
+                    </tr>
+                    <tr class="table_data_tr">
+                        <td style="width: 9%">#</td>
+                        <td style="width: 30%">关键词</td>
+                        <td style="width: 28%" class="sl_table_po">
+                            <div class="sl_table_flex">
+                                <div>
+                                    <p>搜索指数</p>
+                                    <p>流行度</p>
+                                </div>
+                                <div class="table_tandb table_tandb1">
+                                    <span @click="paiClick(0,'one')" :class="{bandb_one: showList[0].one}"></span>
+                                    <span @click="paiClick(0,'two')" :class="{bandb_two: showList[0].two}"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width: 18%">
+                            <div class="sl_table_flex">
+                                展示量占比
+                                <!-- <div class="table_tandb">
 									<span @click="paiClick(1,'one')" :class="{bandb_one: showList[1].one}"></span>
 									<span @click="paiClick(1,'two')" :class="{bandb_two: showList[1].two}"></span>
 								</div> -->
-              </div>
-              <td style="width: 14%">操作</td>
-          </tr>
+                            </div>
+                            <td style="width: 14%">操作</td>
+                    </tr>
 
-          <!-- 表格内容 -->
-          <tr class="table_data_tr" v-for="(ele,index) in tableInner1" :key="index" v-if="tableShow">
-            <td>{{index | pageNum(currentPage3)}}</td>
-            <td class="rou">
-              <span>{{ele.keywordName}}</span>
-            </td>
-            <td>{{ele.searchIndex}}/{{ele.popularityIndex}}</td>
-            <td>{{ele.selectedAppRatio | percentage}}</td>
-            <td>
-              <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
-                <i class="iconfont icon-plus-add" @click="addCiClick1(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
-                <span class="sl_t_is" style="width:114px;">
-                  添加至新建词组
-                </span>
-                <span class="sl_t_san"></span>
-              </div>
-              <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
-                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick1(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
-                <span class="sl_t_is" style="width:114px;">
-                  从新建词组删除
-                </span>
-                <span class="sl_t_san"></span>
-              </div>
-            </td>
-          </tr>
-          <!-- 暂无关键词 -->
-          <tr v-if="!tableShow">
-            <td colspan="5">该关键词暂无竞价数据</td>
-          </tr>
-          <!-- loading -->
-          <tr v-if="loadingfirst1">
-            <td colspan="7" style="height: 80px;">
-              <img src="../../../images/components/loading.gif" alt="">
-            </td>
-          </tr>
-        </table>
-        <!-- 分页 -->
-        <div class="page_index" v-if="userType">
-          <div>
-            <el-pagination background @size-change="handleSizeChange3" @current-change="handleCurrentChange3" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="total3">
-            </el-pagination>
-          </div>
-        </div>
-      </div>
-
-      <div class="kcll2_table_fu">
-        <table class="kcll2_table1">
-          <tr class="table_th_wei">
-            <th colspan="5">已选APP关键词(右)</th>
-          </tr>
-          <tr class="table_data_tr">
-            <td style="width: 9%">#</td>
-            <td style="width: 30%">关键词</td>
-            <td style="width: 28%" class="sl_table_po">
-              <div class="sl_table_flex">
-                <div>
-                  <p>搜索指数</p>
-                  <p>流行度</p>
+                    <!-- 表格内容 -->
+                    <tr class="table_data_tr" v-for="(ele,index) in tableInner1" :key="index" v-if="tableShow && userType">
+                        <td>{{index | pageNum(currentPage3)}}</td>
+                        <td class="rou">
+                            <span>{{ele.keywordName}}</span>
+                        </td>
+                        <td>{{ele.searchIndex}}/{{ele.popularityIndex}}</td>
+                        <td>{{ele.selectedAppRatio | percentage}}</td>
+                        <td>
+                            <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
+                                <i class="iconfont icon-plus-add" @click="addCiClick1(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
+                                <span class="sl_t_is" style="width:114px;">
+                                    添加至新建词组
+                                </span>
+                                <span class="sl_t_san"></span>
+                            </div>
+                            <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
+                                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick1(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
+                                <span class="sl_t_is" style="width:114px;">
+                                    从新建词组删除
+                                </span>
+                                <span class="sl_t_san"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 暂无关键词 -->
+                    <tr v-if="!tableShow">
+                        <td colspan="5">该关键词暂无竞价数据</td>
+                    </tr>
+                    <!-- loading -->
+                    <tr v-if="loadingfirst1 && userType">
+                        <td colspan="7" style="height: 80px;">
+                            <img src="../../../images/components/loading.gif" alt="">
+                        </td>
+                    </tr>
+                </table>
+                <!-- 分页 -->
+                <div class="page_index" v-if="userType">
+                    <div>
+                        <el-pagination background @size-change="handleSizeChange3" @current-change="handleCurrentChange3" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="total3">
+                        </el-pagination>
+                    </div>
                 </div>
-                <div class="table_tandb table_tandb1">
-                  <span @click="paiClick1(0,'one')" :class="{bandb_one: showList1[0].one}"></span>
-                  <span @click="paiClick1(0,'two')" :class="{bandb_two: showList1[0].two}"></span>
-                </div>
-              </div>
-            </td>
-            <td style="width: 18%">
-              <div class="sl_table_flex">
-                展示量占比
-                <!-- <div class="table_tandb">
-									<span @click="paiClick1(1,'one')" :class="{bandb_one: showList1[1].one}"></span>
-									<span @click="paiClick1(1,'two')" :class="{bandb_two: showList1[1].two}"></span>
-								</div> -->
-              </div>
-              <td style="width: 14%">操作</td>
-          </tr>
+            </div>
 
-          <!-- 表格内容 -->
-          <tr class="table_data_tr" v-for="(ele,index) in tableInner2" :key="index" v-if="tableShow">
-            <td>{{index | pageNum(currentPage4)}}</td>
-            <td class="rou">
-              <span>{{ele.keywordName}}</span>
-            </td>
-            <td>{{ele.searchIndex}}/{{ele.popularityIndex}}</td>
-            <td>{{ele.selectedAppRatio | percentage}}</td>
-            <td>
-              <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
-                <i class="iconfont icon-plus-add" @click="addCiClick2(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
-                <span class="sl_t_is" style="width:114px;">
-                  添加至新建词组
-                </span>
-                <span class="sl_t_san"></span>
-              </div>
-              <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
-                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick2(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
-                <span class="sl_t_is" style="width:114px;">
-                  从新建词组删除
-                </span>
-                <span class="sl_t_san"></span>
-              </div>
-            </td>
-          </tr>
-          <!-- 暂无关键词 -->
-          <tr v-if="!tableShow">
-            <td colspan="5">该关键词暂无竞价数据</td>
-          </tr>
-          <!-- loading -->
-          <tr v-if="loadingfirst2">
-            <td colspan="7" style="height: 80px;">
-              <img src="../../../images/components/loading.gif" alt="">
-            </td>
-          </tr>
-        </table>
-        <!-- 分页 -->
-        <div class="page_index" v-if="userType">
-          <div>
-            <el-pagination background @size-change="handleSizeChange4" @current-change="handleCurrentChange4" :current-page.sync="currentPage4" :page-size="20" layout="prev, pager, next, jumper" :total="total4">
-            </el-pagination>
-          </div>
+            <div class="kcll2_table_fu">
+                <table class="kcll2_table1">
+                    <tr class="table_th_wei">
+                        <th colspan="5">已选APP关键词(右)</th>
+                    </tr>
+                    <tr class="table_data_tr">
+                        <td style="width: 9%">#</td>
+                        <td style="width: 30%">关键词</td>
+                        <td style="width: 28%" class="sl_table_po">
+                            <div class="sl_table_flex">
+                                <div>
+                                    <p>搜索指数</p>
+                                    <p>流行度</p>
+                                </div>
+                                <div class="table_tandb table_tandb1">
+                                    <span @click="paiClick1(0,'one')" :class="{bandb_one: showList1[0].one}"></span>
+                                    <span @click="paiClick1(0,'two')" :class="{bandb_two: showList1[0].two}"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width: 18%">
+                            <div class="sl_table_flex">
+                                展示量占比
+                                <!-- <div class="table_tandb">
+                    <span @click="paiClick1(1,'one')" :class="{bandb_one: showList1[1].one}"></span>
+                    <span @click="paiClick1(1,'two')" :class="{bandb_two: showList1[1].two}"></span>
+                </div> -->
+                            </div>
+                            <td style="width: 14%">操作</td>
+                    </tr>
+
+                    <!-- 表格内容 -->
+                    <tr class="table_data_tr" v-for="(ele,index) in tableInner2" :key="index" v-if="tableShow && userType">
+                        <td>{{index | pageNum(currentPage4)}}</td>
+                        <td class="rou">
+                            <span>{{ele.keywordName}}</span>
+                        </td>
+                        <td>{{ele.searchIndex}}/{{ele.popularityIndex}}</td>
+                        <td>{{ele.selectedAppRatio | percentage}}</td>
+                        <td>
+                            <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
+                                <i class="iconfont icon-plus-add" @click="addCiClick2(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
+                                <span class="sl_t_is" style="width:114px;">
+                                    添加至新建词组
+                                </span>
+                                <span class="sl_t_san"></span>
+                            </div>
+                            <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
+                                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick2(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
+                                <span class="sl_t_is" style="width:114px;">
+                                    从新建词组删除
+                                </span>
+                                <span class="sl_t_san"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 暂无关键词 -->
+                    <tr v-if="!tableShow">
+                        <td colspan="5">该关键词暂无竞价数据</td>
+                    </tr>
+                    <!-- loading -->
+                    <tr v-if="loadingfirst2 && userType">
+                        <td colspan="7" style="height: 80px;">
+                            <img src="../../../images/components/loading.gif" alt="">
+                        </td>
+                    </tr>
+                </table>
+                <!-- 分页 -->
+                <div class="page_index" v-if="userType">
+                    <div>
+                        <el-pagination background @size-change="handleSizeChange4" @current-change="handleCurrentChange4" :current-page.sync="currentPage4" :page-size="20" layout="prev, pager, next, jumper" :total="total4">
+                        </el-pagination>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
 import { datefn } from "@commonJS/dateList";
 import { AjaxRemove } from "@commonJS/ajaxServes";
+import { excelCheckout } from "@commonJS/excelCheckout";
 export default {
     data() {
         return {
@@ -254,7 +282,8 @@ export default {
                 two: 0
             },
             loadingfirst1: true,
-            loadingfirst2: true
+            loadingfirst2: true,
+            checkouting: false, 
         };
     },
 
@@ -278,6 +307,109 @@ export default {
     },
 
     methods: {
+        excelOut(num) {
+            //表格导出
+            if (!this.userType) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "请先登录在操作",
+                    type: 3
+                });
+                return false;
+            }
+            if (this.total3 == 0 || this.total4 == 0) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "暂无数据，无法导出",
+                    type: 3
+                });
+                return false;
+            }
+            if (this.checkouting) {
+                return false;
+            }
+            this.checkouting = true;
+            if (this.$parent.IsManager) {
+                let num = this.total3 / 2000;
+                let num1 = this.total4 / 2000;
+                let ajaxarr = []
+                for (var i = 0; i < num; i++) {
+                    ajaxarr.push(excelCheckout(
+                        this.ajaxEcecl().url,
+                        this.ajaxEcecl(i + 1, 2000 , 'left').obj,
+                        num < 1 ? '不同竞价词（左）' : '不同竞价词（左）' + "第" + (i + 1) + "页"
+                    ))
+                }
+                for (var i = 0; i < num1; i++) {
+                    ajaxarr.push(excelCheckout(
+                        this.ajaxEcecl().url,
+                        this.ajaxEcecl(i + 1, 2000 , 'right').obj,
+                        num1 < 1 ? '不同竞价词（右）' : '不同竞价词（右）' + "第" + (i + 1) + "页"
+                    ))
+                }
+                Promise.all(ajaxarr).then((result) => {
+                    this.checkouting = false 
+                }).catch((error) => { 
+                    this.checkouting = false 
+                })
+            } else {
+                excelCheckout(
+                    this.ajaxEcecl().url,
+                    this.ajaxEcecl(1, 2000 , 'left').obj,
+                    '不同竞价词（左）'
+                ).then(() => {
+                    this.checkouting = false;
+                });
+                excelCheckout(
+                    this.ajaxEcecl().url,
+                    this.ajaxEcecl(1, 2000 , 'right').obj,
+                    '不同竞价词（右）'
+                ).then(() => {
+                    this.checkouting = false;
+                });
+            }
+        },
+        ajaxEcecl(page, count , lorr) {
+            let url =
+                "/api/v1/IntellSearchApi/CompetitiveAppAnalysis/ExportCompetitiveAppAnalysis";
+            var newobj = {};
+            if (lorr == "left") {
+                newobj[this.sortDate3.one] = this.sortDate3.two;
+            } else if (lorr == "right") {
+                newobj[this.sortDate4.one] = this.sortDate4.two;
+            }
+            let obj = { 
+                pageSize: 20,
+                requestPar: {
+                    nationId: this.$parent.countryNow,
+                    selectedAppId: this.$parent.idLeft,
+                    competitiveAppId: this.$parent.idRight,
+                    beginTime: datefn(4)[this.$parent.value1].data.beginTime,
+                    endTime: datefn(4)[this.$parent.value1].data.endTime,
+                    competitiveType: 3,
+                    orderType: lorr == "left" ? 1 : 2
+                },
+                orderByParDic: newobj
+            };  
+            if(lorr == 'left') {
+                if (this.$parent.IsManager) {  
+                    obj.pageIndex = 1
+                }else{
+                    obj.pageIndex = this.currentPage3
+                } 
+            }else{
+                if (this.$parent.IsManager) {  
+                    obj.pageIndex = 1
+                }else{
+                    obj.pageIndex = this.currentPage4
+                } 
+            }
+            if (this.$parent.IsManager) {
+                obj.exportPar = {
+                    exportIndex: page,
+                    exportCount: count
+                }; 
+            }
+            return { url, obj };
+        },
         paiClick(num, name) {
             //排序的按钮
             this.showList.map((ele, index) => {
@@ -372,42 +504,8 @@ export default {
         },
 
         Ajax() {
-            this.loadingfirst1 = true;
-            this.loadingfirst2 = true;
-            this.tableInner1 = [];
-            this.tableInner2 = [];
-            let url =
-                "/api/v1/IntellSearchApi/CompetitiveAppAnalysis/GetCompetitiveAppAnalysisNotAllList";
-            let obj = {
-                pageIndex: 1,
-                pageSize: 20,
-                requestPar: {
-                    nationId: this.$parent.countryNow,
-                    competitiveAppId: this.$parent.idRight,
-                    selectedAppId: this.$parent.idLeft,
-                    beginTime: datefn(1)[1].data.beginTime,
-                    endTime: datefn(1)[1].data.endTime,
-                    competitiveType: 3,
-                    orderType: 0
-                },
-                orderByParDic: {
-                    searchIndex: 0
-                }
-            };
-
-            this.$https.post(url, JSON.stringify(obj)).then(res => {
-                if (res.data.resultCode == 1000) {
-                    this.tableShow = true;
-                } else if (res.data.resultCode == 404) {
-                    this.tableShow = false;
-                }
-                this.loadingfirst1 = false;
-                this.loadingfirst2 = false;
-                this.tableInner1 = res.data.data.list[0][this.$parent.idLeft];
-                this.tableInner2 = res.data.data.list[1][this.$parent.idRight];
-                this.total4 = res.data.data.competitiveTotalCount;
-                this.total3 = res.data.data.selectedTotalCount;
-            });
+            this.AjaxClass(1, "left");
+            this.AjaxClass(1, "right"); 
         },
 
         AjaxClass(pageIndex, lorr) {
@@ -434,8 +532,8 @@ export default {
                     nationId: this.$parent.countryNow,
                     selectedAppId: this.$parent.idLeft,
                     competitiveAppId: this.$parent.idRight,
-                    beginTime: datefn(1)[1].data.beginTime,
-                    endTime: datefn(1)[1].data.endTime,
+                    beginTime: datefn(4)[this.$parent.value1].data.beginTime,
+                    endTime: datefn(4)[this.$parent.value1].data.endTime,
                     competitiveType: 3,
                     orderType: lorr == "left" ? 1 : 2
                 },

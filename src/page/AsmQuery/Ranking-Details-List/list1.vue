@@ -19,6 +19,10 @@
         padding: 0 12px;
         margin-left: 16px;
         cursor: pointer;
+        &.checked {
+            background: #f7f7f7;
+            cursor: wait;
+        }
     }
     .kl_table {
         width: 100%;
@@ -80,7 +84,7 @@
 <style lang='less'>
 .key_list1_index {
     .el-select {
-        width: 226px;
+        width: 160px;
         height: 32px;
     }
     .el-input,
@@ -94,146 +98,146 @@
 }
 </style>
 <template>
-  <div class="key_list1_index">
-    <div class="kl_top">
-      <el-select v-model="value" @change="changeFun(value)">
-        <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
-        </el-option>
-      </el-select>
-      <div class="kl_top_right">
-        <span class="kltr_btn" @click="pieClick" v-if="tableInnerCode.resultCode != 404">
-          <i class="iconfont icon-tongji5"></i>
-          展示量占比图
-        </span>
-        <span class="kltr_btn" @click="excelOut" v-if="userType">
-          <i class="iconfont icon-download"></i>
-          导出
-        </span>
-      </div>
-    </div>
-    <div class="kl_table">
-      <!-- 头部表格 -->
-      <table id="tan">
-        <tr>
-          <th style="width: 30%">应用</th>
-          <th style="width: 14%" class="sl_table_po">
-            <div class="sl_table_flex">
-              展示量占比
-              <div class="table_tandb">
-                <span @click="paiClick(0,'one')" :class="{bandb_one: showList[0].one}"></span>
-                <span @click="paiClick(0,'two')" :class="{bandb_two: showList[0].two}"></span>
-              </div>
-              <div class="sl_t_dis">
-                <i class="iconfont icon-wenhao-fill"> </i>
-                <span class="sl_t_is" style="width:260px;">该APP在该关键词的总体广告展示量中获得的广告展示量比</span>
-                <span class="sl_t_san"></span>
-              </div>
+    <div class="key_list1_index">
+        <div class="kl_top">
+            <el-select v-model="value" @change="changeFun(value)">
+                <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+            </el-select>
+            <div class="kl_top_right">
+                <span class="kltr_btn" @click="pieClick" v-if="tableInnerCode.resultCode != 404">
+                    <i class="iconfont icon-tongji5"></i>
+                    展示量占比图
+                </span>
+                <span :class="{kltr_btn: ls, checked: checkouting}" @click="excelOut">
+                    <i class="iconfont icon-download"></i>
+                    {{checkouting ? '导出中' : '导出'}}
+                </span>
             </div>
-          </th>
-          <th style="width: 14%" class="sl_table_po">
-            <div class="sl_table_flex">
-              预估价格
-              <div class="sl_t_dis">
-                <i class="iconfont icon-wenhao-fill"> </i>
-                <span class="sl_t_is" style="width:260px;">该APP竞价该关键词的预计投放价格</span>
-                <span class="sl_t_san"></span>
-              </div>
-            </div>
-          </th>
-          <th style="width: 14%" class="sl_table_po">
-            <div class="sl_table_flex">
-              搜索排名
-              <!-- <div class="table_tandb">
+        </div>
+        <div class="kl_table">
+            <!-- 头部表格 -->
+            <table id="tan">
+                <tr>
+                    <th style="width: 30%">应用</th>
+                    <th style="width: 14%" class="sl_table_po">
+                        <div class="sl_table_flex">
+                            展示量占比
+                            <div class="table_tandb">
+                                <span @click="paiClick(0,'one')" :class="{bandb_one: showList[0].one}"></span>
+                                <span @click="paiClick(0,'two')" :class="{bandb_two: showList[0].two}"></span>
+                            </div>
+                            <div class="sl_t_dis">
+                                <i class="iconfont icon-wenhao-fill"> </i>
+                                <span class="sl_t_is" style="width:260px;">该APP在该关键词的总体广告展示量中获得的广告展示量比</span>
+                                <span class="sl_t_san"></span>
+                            </div>
+                        </div>
+                    </th>
+                    <th style="width: 14%" class="sl_table_po">
+                        <div class="sl_table_flex">
+                            预估价格
+                            <div class="sl_t_dis">
+                                <i class="iconfont icon-wenhao-fill"> </i>
+                                <span class="sl_t_is" style="width:260px;">该APP竞价该关键词的预计投放价格</span>
+                                <span class="sl_t_san"></span>
+                            </div>
+                        </div>
+                    </th>
+                    <th style="width: 14%" class="sl_table_po">
+                        <div class="sl_table_flex">
+                            搜索排名
+                            <!-- <div class="table_tandb">
 								<span @click="paiClick(1,'one')" :class="{bandb_one: showList[1].one}"></span>
 								<span @click="paiClick(1,'two')" :class="{bandb_two: showList[1].two}"></span>
 							</div> -->
-              <div class="sl_t_dis">
-                <i class="iconfont icon-wenhao-fill"> </i>
-                <span class="sl_t_is" style="width:260px;">该APP在该关键词的App Store搜索结果中的排名</span>
-                <span class="sl_t_san"></span>
-              </div>
-            </div>
-          </th>
-          <th style="width: 14%" class="sl_table_po">
-            <div class="sl_table_flex">
-              总榜
-              <!-- <div class="table_tandb">
+                            <div class="sl_t_dis">
+                                <i class="iconfont icon-wenhao-fill"> </i>
+                                <span class="sl_t_is" style="width:260px;">该APP在该关键词的App Store搜索结果中的排名</span>
+                                <span class="sl_t_san"></span>
+                            </div>
+                        </div>
+                    </th>
+                    <th style="width: 14%" class="sl_table_po">
+                        <div class="sl_table_flex">
+                            总榜
+                            <!-- <div class="table_tandb">
 								<span @click="paiClick(2,'one')" :class="{bandb_one: showList[2].one}"></span>
 								<span @click="paiClick(2,'two')" :class="{bandb_two: showList[2].two}"></span>
 							</div> -->
-            </div>
-          </th>
-          <th style="width: 14%" class="sl_table_po">
-            <div class="sl_table_flex">
-              分类榜
-              <!-- <div class="table_tandb">
+                        </div>
+                    </th>
+                    <th style="width: 14%" class="sl_table_po">
+                        <div class="sl_table_flex">
+                            分类榜
+                            <!-- <div class="table_tandb">
 								<span @click="paiClick(3,'one')" :class="{bandb_one: showList[3].one}"></span>
 								<span @click="paiClick(3,'two')" :class="{bandb_two: showList[3].two}"></span>
 							</div> -->
-            </div>
-          </th>
-        </tr>
+                        </div>
+                    </th>
+                </tr>
 
-        <!-- 表格内容 -->
-        <tr class="table_data_tr" v-for="(ele,index) in tableInner" :key="index" v-if="tableInnerCode.resultCode == 1000">
-          <td>
-            <div class="table_datr_td" @click="routerClick(ele.appInfoModel.appStoreId)">
-              <img :src="ele.appInfoModel.appImgUrl" alt="">
-              <p>
-                <span>{{ele.appInfoModel.appName}}</span>
-                <span>ID: &nbsp;{{ele.appInfoModel.appStoreId}}</span>
-                <span>开发商: &nbsp;{{ele.appInfoModel.aristName}}</span>
-              </p>
+                <!-- 表格内容 -->
+                <tr class="table_data_tr" v-for="(ele,index) in tableInner" :key="index" v-if="tableInnerCode.resultCode == 1000">
+                    <td>
+                        <div class="table_datr_td" @click="routerClick(ele.appInfoModel.appStoreId)">
+                            <img :src="ele.appInfoModel.appImgUrl" alt="">
+                            <p>
+                                <span>{{ele.appInfoModel.appName}}</span>
+                                <span>ID: &nbsp;{{ele.appInfoModel.appStoreId}}</span>
+                                <span>开发商: &nbsp;{{ele.appInfoModel.aristName}}</span>
+                            </p>
+                        </div>
+                    </td>
+                    <td>
+                        {{ele.ratio | percentage}}
+                        <i class="iconfont icon-icon-test" style="color: #2d76ed;" @click="AjaxBroken(index)"></i>
+                    </td>
+                    <td>{{ele.estimatePrice | numNull}}</td>
+                    <td>{{ele.searchRank == 0 ? '-' : ele.searchRank}}</td>
+                    <td class="table_datr_p">
+                        <p>{{ele.appInfoModel.totalRank == 0 ? '-' : ele.appInfoModel.totalRank}}</p>
+                        <p>{{ele.appInfoModel.appPrice == 0 ? '免费' : '收费'}}</p>
+                    </td>
+                    <td class="table_datr_p">
+                        <p>{{ele.appInfoModel.classificationRank == 0 ? '-' : ele.appInfoModel.classificationRank}}</p>
+                        <p>{{ele.appInfoModel.appTypeName}} , {{ele.appInfoModel.appPrice == 0 ? '免费' : '收费'}}</p>
+                    </td>
+                </tr>
+                <!-- 暂无关键词 -->
+                <tr v-if="tableInnerCode.resultCode == 404">
+                    <td colspan="6" style="height: 150px">该关键词暂无APP竞价数据</td>
+                </tr>
+                <!-- loading -->
+                <tr v-if="loadingfirst">
+                    <td colspan="6" style="height: 80px;">
+                        <img src="../../../images/components/loading.gif" alt="">
+                    </td>
+                </tr>
+            </table>
+            <!-- 分页 -->
+            <div class="page_index" v-if="userType && tableInnerCode.data">
+                <div>{{pagedata}}</div>
+                <div>
+                    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="tableInnerCode.data.totalCount">
+                    </el-pagination>
+                </div>
             </div>
-          </td>
-          <td>
-            {{ele.ratio | percentage}}
-            <i class="iconfont icon-icon-test" style="color: #2d76ed;" @click="AjaxBroken(index)"></i>
-          </td>
-          <td>{{ele.estimatePrice | numNull}}</td>
-          <td>{{ele.searchRank == 0 ? '-' : ele.searchRank}}</td>
-          <td class="table_datr_p">
-            <p>{{ele.appInfoModel.totalRank == 0 ? '-' : ele.appInfoModel.totalRank}}</p>
-            <p>{{ele.appInfoModel.appPrice == 0 ? '免费' : '收费'}}</p>
-          </td>
-          <td class="table_datr_p">
-            <p>{{ele.appInfoModel.classificationRank == 0 ? '-' : ele.appInfoModel.classificationRank}}</p>
-            <p>{{ele.appInfoModel.appTypeName}} , {{ele.appInfoModel.appPrice == 0 ? '免费' : '收费'}}</p>
-          </td>
-        </tr>
-        <!-- 暂无关键词 -->
-        <tr v-if="tableInnerCode.resultCode == 404">
-          <td colspan="6" style="height: 150px">该关键词暂无APP竞价数据</td>
-        </tr>
-        <!-- loading -->
-        <tr v-if="loadingfirst">
-          <td colspan="6" style="height: 80px;">
-            <img src="../../../images/components/loading.gif" alt="">
-          </td>
-        </tr>
-      </table>
-      <!-- 分页 -->
-      <div class="page_index" v-if="userType && tableInnerCode.data">
-        <div>{{pagedata}}</div>
-        <div>
-          <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="tableInnerCode.data.totalCount">
-          </el-pagination>
+            <usersign v-if="!userType"></usersign>
         </div>
-      </div>
-      <usersign v-if="!userType"></usersign>
+        <!-- 饼状图 -->
+        <transition name="el-fade-in-linear">
+            <pie v-if="pieShow"></pie>
+        </transition>
     </div>
-    <!-- 饼状图 -->
-    <transition name="el-fade-in-linear">
-      <pie v-if="pieShow"></pie>
-    </transition>
-  </div>
 </template>
 
 <script>
-import excel from "@commonJS/excelFn";
 import pie from "./pie-chart";
-import usersign from "@components/AsmQuery/User-Sign";
 import { datefn } from "@commonJS/dateList";
+import usersign from "@components/AsmQuery/User-Sign";
+import { excelCheckout } from "@commonJS/excelCheckout";
 export default {
     data() {
         return {
@@ -266,7 +270,9 @@ export default {
             sortDate: {
                 one: "ratio",
                 two: 0
-            }
+            },
+            ls: true,
+            checkouting: false
         };
     },
 
@@ -340,6 +346,13 @@ export default {
 
     methods: {
         pieClick() {
+            if (!this.userType) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "请先登录在操作",
+                    type: 3
+                });
+                return false;
+            }
             this.pieShow = true;
         },
 
@@ -375,32 +388,55 @@ export default {
 
         excelOut() {
             //表格导出
-            let title = [
-                "应用",
-                "ID",
-                "开发商",
-                "展示量占比",
-                "预估价格",
-                "搜索排名",
-                "总榜",
-                "分类榜"
-            ];
-            let arr = [];
-            for (var i = 0; i < this.tableInner.length; i++) {
-                var newarr = [];
-                newarr.push(this.tableInner[i].appInfoModel.appName);
-                newarr.push(this.tableInner[i].appInfoModel.appStoreId);
-                newarr.push(this.tableInner[i].appInfoModel.aristName);
-                newarr.push(this.tableInner[i].ratio);
-                newarr.push(this.tableInner[i].estimatePrice);
-                newarr.push(this.tableInner[i].searchRank);
-                newarr.push(this.tableInner[i].appInfoModel.totalRank);
-                newarr.push(this.tableInner[i].appInfoModel.classificationRank);
-                arr.push(newarr);
+            if (!this.userType) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "请先登录在操作",
+                    type: 3
+                });
+                return false;
             }
-            excel(title, arr, "tab");
+            if (this.tableInnerCode.data.totalCount == 0) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "暂无数据，无法导出",
+                    type: 3
+                });
+                return false;
+            }
+            if (this.checkouting) {
+                return false;
+            }
+            this.checkouting = true;
+            excelCheckout(
+                this.ajaxEcecl().url,
+                this.ajaxEcecl().obj,
+                '历史竞价APP（'+this.$route.query.key+'）'
+            ).then(() => {
+                this.checkouting = false;
+            });
         },
-
+        ajaxEcecl() {
+            let url = "/api/v1/IntellSearchApi/KeywordDetail/ExportHistoryApps";
+            let sortObj = {};
+            sortObj[this.sortDate.one] = this.sortDate.two;
+            let obj = {
+                pageIndex: this.$parent.IsManager ? 1 : this.currentPage3,
+                pageSize: 20,
+                requestPar: {
+                    keywordName: this.$route.query.key,
+                    nationId: this.$parent.countryNow,
+                    beginTime: datefn(2)[this.$parent.propDate].data.beginTime,
+                    endTime: datefn(2)[this.$parent.propDate].data.endTime
+                },
+                orderByParDic: sortObj
+            };
+            if (this.$parent.IsManager) {
+                obj.exportPar = {
+                    exportIndex: 1,
+                    exportCount: 2000
+                };
+            }
+            return { url, obj };
+        },
         brokenClick(res, index) {
             //添加折线图
             let dateList = [];
@@ -506,14 +542,31 @@ export default {
 
         routerClick(id) {
             //应用跳转
+            let queryDate;
+            switch (this.value) {
+                case 0:
+                    queryDate = 1;
+                    break;
+                case 1:
+                    queryDate = -1;
+                    break;
+                case 2:
+                    queryDate = 2;
+                    break;
+                case 3:
+                    queryDate = 3;
+                    break;
+                case 4:
+                    queryDate = 4;
+                    break;
+            }
             $(".table_datr_broken").remove(); //删除所有折线
             this.$router.push({
                 path: "/application",
                 query: {
                     id: id,
                     country: this.$parent.countryNow,
-                    endTime: datefn(2)[this.value].data.endTime,
-                    beginTime: datefn(2)[this.value].data.beginTime
+                    date: queryDate
                 }
             });
         },

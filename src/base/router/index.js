@@ -15,9 +15,6 @@ let routes = [{
     path: '/application', //应用详情
     component: resolve => require(["@page/AsmQuery/Application"], resolve)
   }, {
-    path: '/keyword-comparison', //搜索应用
-    component: resolve => require(["@page/AsmQuery/Keyword-Comparison"], resolve)
-  }, {
     path: '/keyword-comparison-list', //应用对比
     component: resolve => require(["@page/AsmQuery/Keyword-Comparison-List"], resolve)
   }, {

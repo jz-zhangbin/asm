@@ -164,9 +164,9 @@
 
         <div class="adver_nav">
             <v-nav :pageName='pageName' :routeList='routeList'></v-nav>
-            <div class="btn">
+            <div class="btn" @click="centerDialogVisible = true,prentemit('1')">
                 <i class="iconfont icon-plus-add"></i>
-                <span @click="centerDialogVisible = true,prentemit('1')">新建词组</span>
+                <span >新建词组</span>
             </div>
         </div>
         <div class="advuer_content">
@@ -197,14 +197,18 @@
                             <span style="color:rgb(0,158,252)">
                                 <router-link :to="{path: '/KeyWordList?id='+scope.row.id+''}">
                                     {{ scope.row.name }}
-                                </router-link>
-
+                                </router-link> 
                             </span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="totalCount" label="关键词数" min-width="158">
                     </el-table-column>
-                    <el-table-column prop="createDate" label="创建时间" min-width="260">
+                    <el-table-column label="创建时间" min-width="260">
+                        <template slot-scope="scope">
+                            <span > 
+                                {{scope.row.createDate | setdate}}
+                            </span>
+                        </template>
                     </el-table-column>
                     <el-table-column label="操作" min-width="150">
                         <template slot-scope="scope">
@@ -240,6 +244,7 @@ import NavList from "@components/AsmLaunch/Nav-List";
 import KeySearch from "@components/AsmLaunch/Key-Search";
 import lexiconList from "@components/AsmLaunch/lexiconList";
 import documentClick from "@commonJS/documentSettings";
+import { date } from '@commonJS/date'
 export default {
     data() {
         return {
@@ -285,6 +290,13 @@ export default {
         "v-lexiconList": lexiconList
     },
 
+    filters: { 
+        setdate: function(value) {
+            console.log(value)
+            return date(value)
+        }
+    },
+    
     computed: {},
 
     created() {},

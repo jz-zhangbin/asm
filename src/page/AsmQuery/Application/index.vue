@@ -105,6 +105,10 @@
             padding: 0 12px;
             margin-left: 16px;
             cursor: pointer;
+            &.checked {
+                background: #f7f7f7;
+                cursor: wait;
+            }
         }
     }
     .apl_body_search {
@@ -224,7 +228,7 @@
     }
     .apl_body_date {
         .el-select {
-            width: 256px;
+            width: 160px;
             height: 32px;
         }
         .el-input,
@@ -239,241 +243,241 @@
 }
 </style>
 <template>
-  <div class="apl_index">
-    <v-search-top></v-search-top>
-    <div class="apl_body">
-      <!-- 头部表格信息 -->
-      <div class="apl_body_top">
-        <img :src="appData.appImgUrl" alt="" v-if="appData.show">
-        <img src="../../../images/moni/appimg_1123_03.png" alt="" v-if="!appData.show">
-        <div class="apl_bt_ct">
-          <h1>{{appData.appName}}</h1>
-          <div>
-            <p style="max-width: 260px ; min-width: 100px;">
-              <span>开发商</span>
-              <span v-if="appData.show">{{appData.aristName}}</span>
-              <span style=" color:#000;" v-if="!appData.show">-</span>
-            </p>
-            <p style="min-width: 74px">
-              <span>分类</span>
-              <span style="color:#2d76ed;" v-if="appData.show">{{appData.appTypeName}}</span>
-              <span style=" color:#2d76ed;" v-if="!appData.show">-</span>
-            </p>
-            <p style="min-width: 110px">
-              <span>AppId</span>
-              <span style="color:#2d76ed;" v-if="appData.show">{{appData.appStoreId}}</span>
-              <span style=" color:#2d76ed;" v-if="!appData.show">-</span>
-            </p>
-            <p style="min-width: 64px">
-              <span>价格</span>
-              <span style="color:#000;" v-if="appData.show">{{appData.appPrice | appPriceFilter}}</span>
-              <span style=" color:#000;" v-if="!appData.show">-</span>
-            </p>
-            <p style="min-width: 64px">
-              <span>总榜</span>
-              <span style="color:#000;" v-if="appData.show">{{appData.totalRank == 0 ? '-' : appData.totalRank}}</span>
-              <span style=" color:#000;" v-if="!appData.show">-</span>
-            </p>
-            <p style="min-width: 140px">
-              <span>分类榜</span>
-              <span style="color:#000;" v-if="appData.show">{{appData.classificationRank == 0 ? '-' : appData.classificationRank}}</span>
-              <span style=" color:#000;" v-if="!appData.show">-</span>
-            </p>
-          </div>
-        </div>
-        <div class="apl_bt_btn" v-if="appData.show">
-          <span @click="keywordRouter">
-            <i class="iconfont icon-plus-add"></i>竞品对比
-          </span>
-        </div>
-      </div>
-      <!-- 选择器 -->
-      <div class="apl_body_cur">
-        <p class="sl_center_p">地区</p>
-        <el-select v-model="countryNow" placeholder="请选择" @change="changeFun(countryNow)">
-          <el-option class="search_input" v-for="item in countryList" :key="item.nationId" :label="item.nationCHSName" :value="item.nationId">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="apl_body_h2">
-        <h2>历史竞价关键词</h2>
-      </div>
-      <div class="apl_body_date">
-        <el-select v-model="value1" @change="changeDateFun(value1)">
-          <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-        <div class="apl_checketout">
-          <span @click="excelOut" v-if="userType">
-            <i class="iconfont icon-download"></i> 导出
-          </span>
-        </div>
-      </div>
-      <!-- 表单详细搜索 -->
-      <div class="apl_body_search">
-        <div class="apl_bos_box">
-          <p>搜索指数</p>
-          <div>
-            <input type="text" placeholder="最小值" v-model="seacrchData.minSearchIndex">
-            <input type="text" placeholder="最大值" v-model="seacrchData.maxSearchIndex">
-          </div>
-        </div>
-        <div class="apl_bos_box">
-          <p>流行度</p>
-          <div>
-            <input type="text" placeholder="最小值" v-model="seacrchData.minAppLength">
-            <input type="text" placeholder="最大值" v-model="seacrchData.maxAppLength">
-          </div>
-        </div>
-        <!-- <div class="apl_bos_box">
+    <div class="apl_index">
+        <v-search-top></v-search-top>
+        <div class="apl_body">
+            <!-- 头部表格信息 -->
+            <div class="apl_body_top">
+                <img :src="appData.appImgUrl" alt="" v-if="appData.show">
+                <img src="../../../images/moni/appimg_1123_03.png" alt="" v-if="!appData.show">
+                <div class="apl_bt_ct">
+                    <h1>{{appData.appName}}</h1>
+                    <div>
+                        <p style="max-width: 300px ; min-width: 100px;">
+                            <span>开发商</span>
+                            <span v-if="appData.show">{{appData.aristName}}</span>
+                            <span style=" color:#000;" v-if="!appData.show">-</span>
+                        </p>
+                        <p style="min-width: 74px">
+                            <span>分类</span>
+                            <span style="color:#2d76ed;" v-if="appData.show">{{appData.appTypeName}}</span>
+                            <span style=" color:#2d76ed;" v-if="!appData.show">-</span>
+                        </p>
+                        <p style="min-width: 110px">
+                            <span>AppId</span>
+                            <span style="color:#2d76ed; cursor: pointer" v-if="appData.show" @click="appIdToRoreter(appData.appStoreId)">{{appData.appStoreId}}</span>
+                            <span style=" color:#2d76ed;" v-if="!appData.show">-</span>
+                        </p>
+                        <p style="min-width: 64px">
+                            <span>价格</span>
+                            <span style="color:#000;" v-if="appData.show">{{appData.appPrice | appPriceFilter}}</span>
+                            <span style=" color:#000;" v-if="!appData.show">-</span>
+                        </p>
+                        <p style="min-width: 64px">
+                            <span>总榜</span>
+                            <span style="color:#000;" v-if="appData.show">{{appData.totalRank == 0 ? '-' : appData.totalRank}}</span>
+                            <span style=" color:#000;" v-if="!appData.show">-</span>
+                        </p>
+                        <p style="min-width: 140px">
+                            <span>分类榜</span>
+                            <span style="color:#000;" v-if="appData.show">{{appData.classificationRank == 0 ? '-' : appData.classificationRank}}</span>
+                            <span style=" color:#000;" v-if="!appData.show">-</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="apl_bt_btn" v-if="appData.show">
+                    <span @click="keywordRouter">
+                        <i class="iconfont icon-plus-add"></i>竞品对比
+                    </span>
+                </div>
+            </div>
+            <!-- 选择器 -->
+            <div class="apl_body_cur">
+                <p class="sl_center_p">地区</p>
+                <el-select v-model="countryNow" placeholder="请选择" @change="changeFun(countryNow)">
+                    <el-option class="search_input" v-for="item in countryList" :key="item.nationId" :label="item.nationCHSName" :value="item.nationId">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="apl_body_h2">
+                <h2>历史竞价关键词</h2>
+            </div>
+            <div class="apl_body_date">
+                <el-select v-model="value1" @change="changeDateFun(value1)">
+                    <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                </el-select>
+                <div class="apl_checketout">
+                    <span :class="{kltr_btn: ls, checked: checkouting}" @click="excelOut">
+                        <i class="iconfont icon-download"></i>
+                        {{checkouting ? '导出中' : '导出'}}
+                    </span>
+                </div>
+            </div>
+            <!-- 表单详细搜索 -->
+            <div class="apl_body_search">
+                <div class="apl_bos_box">
+                    <p>搜索指数</p>
+                    <div>
+                        <input type="text" placeholder="最小值" v-model="seacrchData.minSearchIndex">
+                        <input type="text" placeholder="最大值" v-model="seacrchData.maxSearchIndex">
+                    </div>
+                </div>
+                <div class="apl_bos_box">
+                    <p>流行度</p>
+                    <div>
+                        <input type="text" placeholder="最小值" v-model="seacrchData.minAppLength">
+                        <input type="text" placeholder="最大值" v-model="seacrchData.maxAppLength">
+                    </div>
+                </div>
+                <!-- <div class="apl_bos_box">
 					<p>竞价APP数量</p>
 					<div>
 						<input type="text" placeholder="最小值" v-model="seacrchData.minRatio">
 						<input type="text" placeholder="最大值" v-model="seacrchData.maxRatio">
 					</div>
 				</div> -->
-        <button @click="btnNullClick">清空</button>
-        <button @click="searchMoreClick" class="btn_null">搜索</button>
-        <div class="apl_bos_right">
-          <div class="apl_bos_input">
-            <input type="text" placeholder="查找关键词" v-model="searchKeyWord" @focus="focusInput" @blur="blurInput">
-            <i class="iconfont icon-icon-plus-search" @click="keywordClick"></i>
-          </div>
-        </div>
-      </div>
-      <!-- 表格信息 -->
-      <div class="apl_body_table">
-        <table id="ta2">
-          <tr>
-            <th style="width: 27%">关键词</th>
-            <th style="width: 11%" class="sl_table_po">
-              <div class="sl_table_flex">
-                搜索指数
-                <div class="table_tandb">
-                  <span @click="paiClick(0,'one')" :class="{bandb_one: showList[0].one}"></span>
-                  <span @click="paiClick(0,'two')" :class="{bandb_two: showList[0].two}"></span>
+                <button @click="btnNullClick">清空</button>
+                <button @click="searchMoreClick" class="btn_null">搜索</button>
+                <div class="apl_bos_right">
+                    <div class="apl_bos_input">
+                        <input type="text" placeholder="查找关键词" v-model="searchKeyWord" @focus="focusInput" @blur="blurInput">
+                        <i class="iconfont icon-icon-plus-search" @click="keywordClick"></i>
+                    </div>
                 </div>
-                <div class="sl_t_dis">
-                  <i class="iconfont icon-wenhao-fill"> </i>
-                  <span class="sl_t_is" style="width:260px;">
-                    搜索指数来源于App Store官方数据。该数据代表每个关键词在App Store的搜索热度，一般来说，指数越高，则该词每天被搜索次数也越多
-                  </span>
-                  <span class="sl_t_san"></span>
-                </div>
-              </div>
-            </th>
-            <th style="width: 11%" class="sl_table_po">
-              <div class="sl_table_flex">
-                流行度
-                <div class="table_tandb">
-                  <span @click="paiClick(1,'one')" :class="{bandb_one: showList[1].one}"></span>
-                  <span @click="paiClick(1,'two')" :class="{bandb_two: showList[1].two}"></span>
-                </div>
-                <div class="sl_t_dis">
-                  <i class="iconfont icon-wenhao-fill"> </i>
-                  <span class="sl_t_is" style="width:260px;">
-                    流行度来源于App Store官方数据。该数据代表此关键词在App Store中的搜索流行度，数值最高为100。
-                  </span>
-                  <span class="sl_t_san"></span>
-                </div>
-              </div>
-            </th>
-            <th style="width: 11%" class="sl_table_po">
-              <div class="sl_table_flex">
-                展示量占比
-                <!-- <div class="table_tandb">
+            </div>
+            <!-- 表格信息 -->
+            <div class="apl_body_table">
+                <table id="ta2">
+                    <tr>
+                        <th style="width: 27%">关键词</th>
+                        <th style="width: 11%" class="sl_table_po">
+                            <div class="sl_table_flex">
+                                搜索指数
+                                <div class="table_tandb">
+                                    <span @click="paiClick(0,'one')" :class="{bandb_one: showList[0].one}"></span>
+                                    <span @click="paiClick(0,'two')" :class="{bandb_two: showList[0].two}"></span>
+                                </div>
+                                <div class="sl_t_dis">
+                                    <i class="iconfont icon-wenhao-fill"> </i>
+                                    <span class="sl_t_is" style="width:260px;">
+                                        搜索指数来源于App Store官方数据。该数据代表每个关键词在App Store的搜索热度，一般来说，指数越高，则该词每天被搜索次数也越多
+                                    </span>
+                                    <span class="sl_t_san"></span>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 11%" class="sl_table_po">
+                            <div class="sl_table_flex">
+                                流行度
+                                <div class="table_tandb">
+                                    <span @click="paiClick(1,'one')" :class="{bandb_one: showList[1].one}"></span>
+                                    <span @click="paiClick(1,'two')" :class="{bandb_two: showList[1].two}"></span>
+                                </div>
+                                <div class="sl_t_dis">
+                                    <i class="iconfont icon-wenhao-fill"> </i>
+                                    <span class="sl_t_is" style="width:260px;">
+                                        流行度来源于App Store官方数据。该数据代表此关键词在App Store中的搜索流行度，数值最高为100。
+                                    </span>
+                                    <span class="sl_t_san"></span>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 11%" class="sl_table_po">
+                            <div class="sl_table_flex">
+                                展示量占比
+                                <!-- <div class="table_tandb">
 									<span @click="paiClick(2,'one')" :class="{bandb_one: showList[2].one}"></span>
 									<span @click="paiClick(2,'two')" :class="{bandb_two: showList[2].two}"></span>
 								</div> -->
-                <div class="sl_t_dis">
-                  <i class="iconfont icon-wenhao-fill"> </i>
-                  <span class="sl_t_is" style="width:260px;">
-                    该APP在该关键词的总体广告展示量中获得的广告展示量比例
-                  </span>
-                  <span class="sl_t_san"></span>
+                                <div class="sl_t_dis">
+                                    <i class="iconfont icon-wenhao-fill"> </i>
+                                    <span class="sl_t_is" style="width:260px;">
+                                        该APP在该关键词的总体广告展示量中获得的广告展示量比例
+                                    </span>
+                                    <span class="sl_t_san"></span>
+                                </div>
+                            </div>
+                        </th>
+                        <th style="width: 11%" class="sl_table_po">
+                            <div class="sl_table_flex">
+                                预测出价
+                            </div>
+                        </th>
+                        <th style="width: 20%" class="sl_table_po">
+                            <div class="sl_table_flex">
+                                近期竞价App
+                            </div>
+                        </th>
+                        <th style="width: 9%" class="sl_table_po">
+                            <div class="sl_table_flex">
+                                操作
+                            </div>
+                        </th>
+                    </tr>
+                    <!-- 表格第二行 -->
+                    <tr v-for="(ele,index) in tableData.list" :key="index" class="table_td_cont" v-if="tableShow">
+                        <td class="href_a" @click="routerClick(ele.keywordName)">{{ele.keywordName}}</td>
+                        <td>{{ele.searchIndex}}</td>
+                        <td>{{ele.popularityIndex}}</td>
+                        <td>{{ele.ratio | percentage}}</td>
+                        <td>{{ele.estimatePrice | numNull}}</td>
+                        <td style="width: 20%" class="sl_dt_img">
+                            <div>
+                                <!-- 最多显示四个 -->
+                                <img :src="item.appImgUrl" alt="" v-for="(item,index2) in ele.hotKeywordAppList" :key="index2" v-if="index2<4" @click="imgRouterClick(item.appStoreId)">
+                                <span v-if="ele.appLength>4" @click="routerClick(ele.keywordName)">{{ele.appLength}}
+                                    <i class="iconfont icon-gengduo"></i>
+                                </span>
+                            </div>
+                        </td>
+                        <td style="width: 9%">
+                            <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
+                                <i class="iconfont icon-plus-add" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
+                                <span class="sl_t_is" style="width:114px;">
+                                    添加至新建词组
+                                </span>
+                                <span class="sl_t_san"></span>
+                            </div>
+                            <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
+                                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
+                                <span class="sl_t_is" style="width:114px;">
+                                    从新建词组删除
+                                </span>
+                                <span class="sl_t_san"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr v-if="!tableShow">
+                        <td colspan="7" style="height: 150px">该应用暂无竞价关键词数据</td>
+                    </tr>
+                    <!-- loading -->
+                    <tr v-if="loadingfirst">
+                        <td colspan="7" style="height: 80px;">
+                            <img src="../../../images/components/loading.gif" alt="">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- 分页 -->
+            <div class="page_index" v-if="userType">
+                <div>{{pagedata}}</div>
+                <div>
+                    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="tableData.totalCount">
+                    </el-pagination>
                 </div>
-              </div>
-            </th>
-            <th style="width: 11%" class="sl_table_po">
-              <div class="sl_table_flex">
-                预测出价
-              </div>
-            </th>
-            <th style="width: 20%" class="sl_table_po">
-              <div class="sl_table_flex">
-                近期竞价App
-              </div>
-            </th>
-            <th style="width: 9%" class="sl_table_po">
-              <div class="sl_table_flex">
-                操作
-              </div>
-            </th>
-          </tr>
-          <!-- 表格第二行 -->
-          <tr v-for="(ele,index) in tableData.list" :key="index" class="table_td_cont" v-if="tableShow">
-            <td class="href_a" @click="routerClick(ele.keywordName)">{{ele.keywordName}}</td>
-            <td>{{ele.searchIndex}}</td>
-            <td>{{ele.popularityIndex}}</td>
-            <td>{{ele.ratio | percentage}}</td>
-            <td>{{ele.estimatePrice | numNull}}</td>
-            <td style="width: 20%" class="sl_dt_img">
-              <div>
-                <!-- 最多显示四个 -->
-                <img :src="item.appImgUrl" alt="" v-for="(item,index2) in ele.hotKeywordAppList" :key="index2" v-if="index2<4" @click="imgRouterClick(item.appStoreId)">
-                <span v-if="ele.appLength>4" @click="routerClick(ele.keywordName)">{{ele.appLength}}
-                  <i class="iconfont icon-gengduo"></i>
-                </span>
-              </div>
-            </td>
-            <td style="width: 9%">
-              <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
-                <i class="iconfont icon-plus-add" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
-                <span class="sl_t_is" style="width:114px;">
-                  添加至新建词组
-                </span>
-                <span class="sl_t_san"></span>
-              </div>
-              <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
-                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
-                <span class="sl_t_is" style="width:114px;">
-                  从新建词组删除
-                </span>
-                <span class="sl_t_san"></span>
-              </div>
-            </td>
-          </tr>
-          <tr v-if="!tableShow">
-            <td colspan="7" style="height: 150px">该应用暂无竞价关键词数据</td>
-          </tr>
-          <!-- loading -->
-          <tr v-if="loadingfirst">
-            <td colspan="7" style="height: 80px;">
-              <img src="../../../images/components/loading.gif" alt="">
-            </td>
-          </tr>
-        </table>
-      </div>
-      <!-- 分页 -->
-      <div class="page_index" v-if="userType">
-        <div>{{pagedata}}</div>
-        <div>
-          <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="20" layout="prev, pager, next, jumper" :total="tableData.totalCount">
-          </el-pagination>
+            </div>
+            <usersign v-if="!userType"></usersign>
         </div>
-      </div>
-      <usersign v-if="!userType"></usersign>
     </div>
-  </div>
 </template>
 
 <script>
-import excel from "@commonJS/excelFn";
 import usersign from "@components/AsmQuery/User-Sign";
-import method1 from "@commonJS/excel";
 import { mapState } from "vuex";
 import { datefn } from "@commonJS/dateList";
 import { AjaxRemove } from "@commonJS/ajaxServes";
+import { excelCheckout } from "@commonJS/excelCheckout";
 export default {
     data() {
         return {
@@ -533,7 +537,8 @@ export default {
                 text: "加载中",
                 spinner: "el-icon-loading",
                 background: "rgba(0, 0, 0, 0.7)"
-            }
+            },
+            checkouting: false
         };
     },
 
@@ -544,7 +549,8 @@ export default {
     computed: {
         ...mapState({
             countryList: state => state.Home.countryList,
-            userType: state => state.Sign.userType
+            userType: state => state.Sign.userType,
+            IsManager: state => state.Sign.IsManager
         }),
         pagedata() {
             if (this.currentPage3 * 20 <= this.tableData.totalCount) {
@@ -574,35 +580,15 @@ export default {
             this.currentPage3 = 1;
             this.tableData.totalCount = 0;
             this.loading = this.$loading(this.loadingopaction);
-
-            this.AjaxGetAppHistoryKeywordList({
-                pageIndex: 1,
-                pageSize: 20,
-                requestPar: {
-                    appStoreId: this.$route.query.id,
-                    nationId: this.$route.query.country,
-                    beginTime: datefn(0).beginTime,
-                    endTime: datefn(0).endTime,
-                    keywordName: this.searchKeyWordTrue,
-                    minSearchIndex: this.isNull(
-                        this.seacrchDataTrue.minSearchIndex
-                    ),
-                    maxSearchIndex: this.isNull(
-                        this.seacrchDataTrue.maxSearchIndex
-                    ),
-                    // minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-                    // maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-                    minPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.minAppLength
-                    ),
-                    maxPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.maxAppLength
-                    )
-                },
-                orderByParDic: {
+            this.dateswitch();
+            this.AjaxGetAppHistoryKeywordList(
+                1,
+                this.$route.query.id,
+                this.$route.query.country, 
+                {
                     searchIndex: 0
                 }
-            });
+            );
 
             this.AjaxGetAppInfo(this.$route.query.country);
         }
@@ -640,42 +626,20 @@ export default {
         });
 
         this.options3 = datefn(1);
-        this.value1 = this.options3[0].value;
-        this.loading = this.$loading(this.loadingopaction);
-
-        this.AjaxGetAppHistoryKeywordList({
-            pageIndex: 1,
-            pageSize: 20,
-            requestPar: {
-                appStoreId: this.$route.query.id,
-                nationId: this.$route.query.country,
-                beginTime: datefn(0).beginTime,
-                endTime: datefn(0).endTime,
-                keywordName: this.searchKeyWordTrue,
-                minSearchIndex: this.isNull(
-                    this.seacrchDataTrue.minSearchIndex
-                ),
-                maxSearchIndex: this.isNull(
-                    this.seacrchDataTrue.maxSearchIndex
-                ),
-                // minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-                // maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-                minPopularityIndex: this.isNull(
-                    this.seacrchDataTrue.minAppLength
-                ),
-                maxPopularityIndex: this.isNull(
-                    this.seacrchDataTrue.maxAppLength
-                )
-            },
-            orderByParDic: {
-                searchIndex: 0
-            }
-        });
-
-        this.AjaxGetAppInfo(this.$route.query.country);
+        this.dateswitch();
     },
     mounted() {
-        //this.$height(".apl_index");
+        this.loading = this.$loading(this.loadingopaction);
+        this.AjaxGetAppHistoryKeywordList(
+            1,
+            this.$route.query.id,
+            this.$route.query.country, 
+            {
+                searchIndex: 0
+            }
+        );
+
+        this.AjaxGetAppInfo(this.$route.query.country);
     },
 
     methods: {
@@ -698,34 +662,13 @@ export default {
 
             this.AjaxGetAppInfo(value);
 
-            this.AjaxGetAppHistoryKeywordList({
-                pageIndex: 1,
-                pageSize: 20,
-                requestPar: {
-                    appStoreId: this.$route.query.id,
-                    nationId: value,
-                    beginTime: datefn(1)[this.value1].data.beginTime,
-                    endTime: datefn(1)[this.value1].data.endTime,
-                    keywordName: this.searchKeyWordTrue,
-                    minSearchIndex: this.isNull(
-                        this.seacrchDataTrue.minSearchIndex
-                    ),
-                    maxSearchIndex: this.isNull(
-                        this.seacrchDataTrue.maxSearchIndex
-                    ),
-                    // minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-                    // maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-                    minPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.minAppLength
-                    ),
-                    maxPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.maxAppLength
-                    )
-                },
-                orderByParDic: {
+            this.AjaxGetAppHistoryKeywordList(
+                1,
+                this.$route.query.id, 
+                {
                     searchIndex: 0
                 }
-            });
+            );
         },
 
         changeDateFun(value) {
@@ -737,35 +680,15 @@ export default {
                 ele.two = false;
             });
             this.showList[0].one = true;
-
-            this.AjaxGetAppHistoryKeywordList({
-                pageIndex: 1,
-                pageSize: 20,
-                requestPar: {
-                    appStoreId: this.$route.query.id,
-                    nationId: this.countryNow,
-                    beginTime: datefn(1)[value].data.beginTime,
-                    endTime: datefn(1)[value].data.endTime,
-                    keywordName: this.searchKeyWordTrue,
-                    minSearchIndex: this.isNull(
-                        this.seacrchDataTrue.minSearchIndex
-                    ),
-                    maxSearchIndex: this.isNull(
-                        this.seacrchDataTrue.maxSearchIndex
-                    ),
-                    //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-                    //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-                    minPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.minAppLength
-                    ),
-                    maxPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.maxAppLength
-                    )
-                },
-                orderByParDic: {
+            this.value1 = value
+            this.AjaxGetAppHistoryKeywordList(
+                1,
+                this.$route.query.id,
+                this.countryNow, 
+                {
                     searchIndex: 0
                 }
-            });
+            );
         },
 
         paiClick(num, name) {
@@ -793,32 +716,12 @@ export default {
             }
             let obj = {};
             obj[this.sortDate.one] = this.sortDate.two;
-            this.AjaxGetAppHistoryKeywordList({
-                pageIndex: this.currentPage3,
-                pageSize: 20,
-                requestPar: {
-                    appStoreId: this.$route.query.id,
-                    nationId: this.countryNow,
-                    beginTime: datefn(1)[this.value1].data.beginTime,
-                    endTime: datefn(1)[this.value1].data.endTime,
-                    keywordName: this.searchKeyWordTrue,
-                    minSearchIndex: this.isNull(
-                        this.seacrchDataTrue.minSearchIndex
-                    ),
-                    maxSearchIndex: this.isNull(
-                        this.seacrchDataTrue.maxSearchIndex
-                    ),
-                    //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-                    //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-                    minPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.minAppLength
-                    ),
-                    maxPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.maxAppLength
-                    )
-                },
-                orderByParDic: obj
-            });
+            this.AjaxGetAppHistoryKeywordList(
+                this.currentPage3,
+                this.$route.query.id,
+                this.countryNow, 
+                obj
+            );
         },
 
         addCiClick(index, num, name) {
@@ -845,7 +748,8 @@ export default {
                 path: "/application",
                 query: {
                     id,
-                    country: this.countryNow
+                    country: this.countryNow,
+                    date: this.$route.query.date ? this.$route.query.date : 2
                 }
             });
             $(window).scrollTop(0);
@@ -935,34 +839,14 @@ export default {
             this.seacrchDataTrue = this.seacrchData;
 
             this.currentPage3 = 1;
-            this.AjaxGetAppHistoryKeywordList({
-                pageIndex: 1,
-                pageSize: 20,
-                requestPar: {
-                    appStoreId: this.$route.query.id,
-                    nationId: this.countryNow,
-                    beginTime: datefn(1)[this.value1].data.beginTime,
-                    endTime: datefn(1)[this.value1].data.endTime,
-                    keywordName: this.searchKeyWordTrue,
-                    minSearchIndex: this.isNull(
-                        this.seacrchDataTrue.minSearchIndex
-                    ),
-                    maxSearchIndex: this.isNull(
-                        this.seacrchDataTrue.maxSearchIndex
-                    ),
-                    //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-                    //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-                    minPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.minAppLength
-                    ),
-                    maxPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.maxAppLength
-                    )
-                },
-                orderByParDic: {
+            this.AjaxGetAppHistoryKeywordList(
+                1,
+                this.$route.query.id,
+                this.countryNow, 
+                {
                     searchIndex: 0
                 }
-            });
+            );
         },
 
         btnNullClick() {
@@ -989,34 +873,14 @@ export default {
             this.showList[0].one = true;
 
             this.currentPage3 = 1;
-            this.AjaxGetAppHistoryKeywordList({
-                pageIndex: 1,
-                pageSize: 20,
-                requestPar: {
-                    appStoreId: this.$route.query.id,
-                    nationId: this.countryNow,
-                    beginTime: datefn(1)[this.value1].data.beginTime,
-                    endTime: datefn(1)[this.value1].data.endTime,
-                    keywordName: this.searchKeyWordTrue,
-                    minSearchIndex: this.isNull(
-                        this.seacrchDataTrue.minSearchIndex
-                    ),
-                    maxSearchIndex: this.isNull(
-                        this.seacrchDataTrue.maxSearchIndex
-                    ),
-                    //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-                    //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-                    minPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.minAppLength
-                    ),
-                    maxPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.maxAppLength
-                    )
-                },
-                orderByParDic: {
+            this.AjaxGetAppHistoryKeywordList(
+                1,
+                this.$route.query.id,
+                this.countryNow, 
+                {
                     searchIndex: 0
                 }
-            });
+            );
             this.searchKeyWord = ""; //清空搜索内容
         },
 
@@ -1042,91 +906,107 @@ export default {
         handleSizeChange(val) {
             let obj = {};
             obj[this.sortDate.one] = this.sortDate.two;
-            this.AjaxGetAppHistoryKeywordList({
-                pageIndex: val,
-                pageSize: 20,
-                requestPar: {
-                    appStoreId: this.$route.query.id,
-                    nationId: this.countryNow,
-                    beginTime: datefn(1)[this.value1].data.beginTime,
-                    endTime: datefn(1)[this.value1].data.endTime,
-                    keywordName: this.searchKeyWordTrue,
-                    minSearchIndex: this.isNull(
-                        this.seacrchDataTrue.minSearchIndex
-                    ),
-                    maxSearchIndex: this.isNull(
-                        this.seacrchDataTrue.maxSearchIndex
-                    ),
-                    //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-                    //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-                    minPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.minAppLength
-                    ),
-                    maxPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.maxAppLength
-                    )
-                },
-                orderByParDic: obj
-            });
+            this.AjaxGetAppHistoryKeywordList(
+                val,
+                this.$route.query.id,
+                this.countryNow, 
+                obj
+            );
             $(window).scrollTop($("#ta2").offset().top);
         },
 
         handleCurrentChange(val) {
             let obj = {};
             obj[this.sortDate.one] = this.sortDate.two;
-            this.AjaxGetAppHistoryKeywordList({
-                pageIndex: val,
-                pageSize: 20,
-                requestPar: {
-                    appStoreId: this.$route.query.id,
-                    nationId: this.countryNow,
-                    beginTime: datefn(1)[this.value1].data.beginTime,
-                    endTime: datefn(1)[this.value1].data.endTime,
-                    keywordName: this.searchKeyWordTrue,
-                    minSearchIndex: this.isNull(
-                        this.seacrchDataTrue.minSearchIndex
-                    ),
-                    maxSearchIndex: this.isNull(
-                        this.seacrchDataTrue.maxSearchIndex
-                    ),
-                    //minRatio: this.isNull(this.seacrchDataTrue.minRatio),
-                    //maxRatio: this.isNull(this.seacrchDataTrue.maxRatio),
-                    minPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.minAppLength
-                    ),
-                    maxPopularityIndex: this.isNull(
-                        this.seacrchDataTrue.maxAppLength
-                    )
-                },
-                orderByParDic: obj
-            });
+            this.AjaxGetAppHistoryKeywordList(
+                val,
+                this.$route.query.id,
+                this.countryNow, 
+                obj
+            );
             $(window).scrollTop($("#ta2").offset().top);
         },
 
         excelOut() {
             //表格导出
-            let title = [
-                "关键词",
-                "搜索指数",
-                "流行度",
-                "展示量占比",
-                "预测出价",
-                "近期竞价APP数量"
-            ];
-            let arr = [];
-            for (var i = 0; i < this.tableData.list.length; i++) {
-                var newarr = [];
-                newarr.push(this.tableData.list[i].keywordName);
-                newarr.push(this.tableData.list[i].searchIndex);
-                newarr.push(this.tableData.list[i].popularityIndex);
-                newarr.push(this.tableData.list[i].ratio);
-                newarr.push(this.tableData.list[i].estimatePrice);
-                newarr.push(this.tableData.list[i].appLength);
-                arr.push(newarr);
+            if (!this.userType) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "请先登录在操作",
+                    type: 3
+                });
+                return false;
             }
-            excel(title, arr, "tab");
+            if (this.tableData.totalCount == 0) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "暂无数据，无法导出",
+                    type: 3
+                });
+                return false;
+            }
+            if (this.checkouting) {
+                return false;
+            }
+            if (this.IsManager) {
+                let num = this.tableData.totalCount / 2000;
+                let ajaxarr = [];
+                for (var i = 0; i < num; i++) {
+                    ajaxarr.push(
+                        excelCheckout(
+                            this.ajaxEcecl().url,
+                            this.ajaxEcecl(i + 1, 2000).obj,
+                            num < 1
+                                ? this.appData.appName
+                                : this.appData.appName + "第" + (i + 1) + "页"
+                        )
+                    );
+                }
+                Promise.all(ajaxarr)
+                    .then(result => {
+                        this.checkouting = false;
+                    })
+                    .catch(error => {
+                        this.checkouting = false;
+                    });
+            } else {
+                excelCheckout(
+                    this.ajaxEcecl().url,
+                    this.ajaxEcecl(1, 2000).obj,
+                    this.appData.appName
+                ).then(() => {
+                    this.checkouting = false;
+                });
+            }
+            this.checkouting = true;
         },
-
+        ajaxEcecl(page, count) {
+            let url =
+                "/api/v1/IntellSearchApi/APPDetail/ExportAppHistoryKeywords";
+            let obj = {
+                pageIndex: this.IsManager ? 1 : this.currentPage3,
+                pageSize: 20,
+                requestPar: {
+                    appStoreId: this.$route.query.id,
+                    nationId: this.$route.query.country,
+                    beginTime: datefn(1)[this.value1].data.beginTime,
+                    endTime: datefn(1)[this.value1].data.endTime,
+                    keywordName: this.searchKeyWordTrue,
+                    minSearchIndex: this.isNull( this.seacrchDataTrue.minSearchIndex ),
+                    maxSearchIndex: this.isNull( this.seacrchDataTrue.maxSearchIndex ),
+                    minPopularityIndex: this.isNull( this.seacrchDataTrue.minAppLength ),
+                    maxPopularityIndex: this.isNull( this.seacrchDataTrue.maxAppLength )
+                },
+                orderByParDic: {
+                    searchIndex: 0
+                }
+            };
+            if (this.IsManager) {
+                obj.exportPar = {
+                    exportIndex: page,
+                    exportCount: count
+                };
+            }
+            return { url, obj };
+        },
         keywordRouter() {
             //竞品对比跳转
             this.$router.push({
@@ -1140,31 +1020,38 @@ export default {
 
         AjaxGetAppInfo(countryId) {
             this.loading = this.$loading(this.loadingopaction);
-            let routeObj = this.$route.query;
-            if (routeObj.beginTime == undefined) {
-                routeObj.beginTime = "";
+            let dateNum;
+            if (!this.$route.query.date || this.$route.query.date == "1") {
+                dateNum = 1;
+            } else {
+                if (this.$route.query.date == "-1") {
+                    dateNum = 0;
+                }
+                if (this.$route.query.date == "2") {
+                    dateNum = 1;
+                }
+                if (this.$route.query.date == "3") {
+                    dateNum = 2;
+                }
+                if (this.$route.query.date == "4") {
+                    dateNum = 3;
+                }
             }
-            if (routeObj.endTime == undefined) {
-                routeObj.endTime = "";
-            } 
             //初次加载
             let url =
                 "/api/v1/IntellSearchApi/APPDetail/GetAppInfo?appStoreId=" +
-                routeObj.id +
+                this.$route.query.id +
                 "&nationId=" +
                 countryId +
                 "&beginTime=" +
-                routeObj.beginTime +
+                datefn(1)[dateNum].data.beginTime +
                 "&endTime=" +
-                routeObj.endTime;
-                
+                datefn(1)[dateNum].data.endTime;
             this.$https.get(url).then(res => {
-                //res.data.resultCode = 404
                 if (res.data.resultCode == 1000) {
                     res.data.data.show = true;
                     this.appData = res.data.data;
                 } else if (res.data.resultCode == 404) {
-                    //res.data.data.show = false;
                     this.appData.show = false;
                 }
                 if (this.loading != null) {
@@ -1173,14 +1060,34 @@ export default {
             });
         },
 
-        AjaxGetAppHistoryKeywordList(obj) {
-            this.tableShow = true;
+        AjaxGetAppHistoryKeywordList(
+            pageIndex,
+            appStoreId,
+            nationId, 
+            orderByParDic
+        ) {
             //获取历史列表
+            this.tableShow = true;
             this.loadingfirst = true;
             this.tableData.list = [];
             let url =
                 "/api/v1/IntellSearchApi/APPDetail/GetAppHistoryKeywordList";
-
+            let obj = {
+                pageIndex,
+                pageSize: 20,
+                requestPar: {
+                    appStoreId,
+                    nationId,
+                    beginTime: datefn(1)[this.value1].data.beginTime, 
+                    endTime:datefn(1)[this.value1].data.endTime,
+                    keywordName: this.searchKeyWordTrue,
+                    minSearchIndex: this.isNull( this.seacrchDataTrue.minSearchIndex ),
+                    maxSearchIndex: this.isNull( this.seacrchDataTrue.maxSearchIndex ),
+                    minPopularityIndex: this.isNull( this.seacrchDataTrue.minAppLength ),
+                    maxPopularityIndex: this.isNull( this.seacrchDataTrue.maxAppLength )
+                },
+                orderByParDic
+            };
             this.$https
                 .post(url, JSON.stringify(obj))
                 .then(res => {
@@ -1199,6 +1106,37 @@ export default {
                     this.loadingfirst = false;
                     alert("请求错误！");
                 });
+        },
+        appIdToRoreter(id) {
+            this.countryList.map((ele, index) => {
+                if (ele.nationId == this.$route.query.country) {
+                    window.open(
+                        "https://itunes.apple.com/" +
+                            ele.nationShortName +
+                            "/app/id" +
+                            id +
+                            "?mt=8"
+                    );
+                }
+            });
+        },
+        dateswitch() {
+            if (!this.$route.query.date || this.$route.query.date == "1") {
+                this.value1 = 1;
+            } else {
+                if (this.$route.query.date == "-1") {
+                    this.value1 = 0;
+                }
+                if (this.$route.query.date == "2") {
+                    this.value1 = 1;
+                }
+                if (this.$route.query.date == "3") {
+                    this.value1 = 2;
+                }
+                if (this.$route.query.date == "4") {
+                    this.value1 = 3;
+                }
+            }
         }
     }
 };

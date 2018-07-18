@@ -120,12 +120,12 @@
         }
     }
     .advuser_form_input {
-        height: 40px;
+        height: 36px;
         border: 1px solid @border;
         border-radius: 4px;
         outline: none;
         padding-left: 12px;
-        line-height: 40px;
+        line-height: 36px;
         &::-webkit-input-placeholder {
             color: #9a9a9a;
         }
@@ -251,7 +251,7 @@
         }
     }
     .el-select {
-        width: 100px;
+        width: 120px;
         margin-right: 10px;
     }
     .operation {
@@ -466,15 +466,15 @@
             <v-nav :pageName='pageName' :routeList='routeList'></v-nav>
         </div>
         <div class="advuer_content">
-            <h2>添加</h2>
+            <h2>添加监测规则</h2>
             <div class="advuer_content_top">
                 <div class="advuser_form">
-                    <p class='advuser_form_ps'>智能监测名称：{{topData.monitorOrgUserName}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日预算：
-                        <span v-if="$route.query.parame=='add'">{{topData.operator == '1' ? '≥' : '＜'}} ${{topData.amount}}</span>
+                    <p class='advuser_form_ps'>智能监测名称：{{topData.intelMonitorName}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日预算：
+                        <span v-if="$route.query.parame=='add'">{{topData.operator == '1' ? '≥' : '≤'}} ${{topData.amount}}</span>
                         <span v-else>{{topData.dailyBudget}}</span>
                     </p>
                     <p class='advuser_form_ps_border'>监测账户：
-                        <span>{{topData.intelMonitorName}}</span>
+                        <span>{{topData.monitorOrgUserName}}</span>
                     </p>
 
                     <p class='advuser_form_p'>监测规则</p>
@@ -517,7 +517,7 @@
 
                     <p class='advuser_form_p' style="  border-top: 1px solid #dee2e6;padding-top: 18px;">选择监测对象</p>
                     <div class="bootonstyle">
-                        <el-button v-show="Monitor" @click="centerDialogVisible = true">选择监测对象</el-button>
+                        <el-button v-show="Monitor" @click="btnshowClick">选择监测对象</el-button>
                         <span v-if="detectionObjectList.length != 0">
                             状态：已选择
                             <span class="red">{{detectionObjectList.length}}个</span>对象
@@ -586,16 +586,25 @@
             </div>
         </div>
 
-        <el-dialog title="选择监测对象" :visible.sync="centerDialogVisible" width="527" left>
+        <el-dialog title="选择监测对象" :visible.sync="centerDialogVisible" width="527" left :show-close='false'>
             <h5>所属账户名称：
                 <span style="color:red;">{{topData.intelMonitorName}}</span>
             </h5>
             <div class="boxwidth">
-                <el-tree :props="props1" @check='check' @check-change='checkChange' :load="loadNode1" lazy show-checkbox ref="trees" node-key="id" @node-expand='nodeExpand'>
+                <el-tree 
+                :data="props1" 
+                @check='check' 
+                @check-change='checkChange' 
+                :load="loadNode1" 
+                show-checkbox 
+                ref="trees" 
+                node-key="id"
+                 @node-expand='nodeExpand'
+                  :default-checked-keys=checkedKeys>
                 </el-tree>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="centerDialogVisible = false">取 消</el-button>
+                <!-- <el-button @click="centerDialogVisible = false">取 消</el-button> -->
                 <el-button type="primary" @click="treeokBtn">确 定</el-button>
             </span>
         </el-dialog>
@@ -619,7 +628,7 @@ let moban = {
                 "转化率"
             ],
             fanwei: "≥",
-            fanweiList: ["≥", "＜"],
+            fanweiList: ["≥", "≤"],
             fanweiValue: "",
             type: "调高出价/广告组",
             typeList: [
@@ -728,11 +737,7 @@ export default {
                 }
             ],
             radio: "1",
-            props1: {
-                label: "name",
-                children: "zones",
-                isLeaf: "leaf"
-            },
+            props1: [],
             topData: {},
             detectionObjectList: [],
             ruleList: [],
@@ -791,18 +796,16 @@ export default {
     destroyed() {},
 
     methods: {
+        btnshowClick() {
+            this.centerDialogVisible = true;
+            if (this.$route.query.parame == "add") {
+            } else {
+                let _this = this; 
+            }
+        },
         changeInputList(value) {
             //input-list点击请求
             this.valuedata = this.inputList[value].name;
-        },
-        loadNode1(node, resolve) {
-            //插入子节点
-            if (node.level === 0) {
-                return resolve(this.guroupList);
-            }
-            if (node.level > 1) return resolve([]);
-            //如果下面有子集可以选中，如果没有自己不可选择
-            this.AjaxGetAdGroups(node, resolve, node.data.id);
         },
         typeChange(index1, index2, value) {
             if (value == "并且") {
@@ -825,30 +828,18 @@ export default {
         addrulrList() {
             this.ruleList.push(JSON.parse(JSON.stringify(moban)));
         },
-        nodeExpand(a, node, c) {
-            //节点展开时间
-            node.childNodes.map(ele => {
-                this.detectionObjectList.map(ele2 => {
-                    if (ele.data.id == ele2.adGroupId) {
-                        this.checkedKeys.push(ele2.adGroupId);
-                    }
-                });
-            });
-            this.checkedKeys = [...new Set(this.checkedKeys)];
-            this.$refs.trees.setCheckedKeys(this.checkedKeys);
-        },
-        check(a, b, c) {
-            //复选框被点击时
-            //console.log(a)
-            this.checkedKeys.push(...b.checkedKeys);
-            this.checkedKeys = [...new Set(this.checkedKeys)];
-        },
-        checkChange(a, b, c) { 
-            //节点被取消
-            if (!b) {
-                this.checkedKeys.splice(this.checkedKeys.indexOf(a.id), 1);
-            }
-        },
+        // check(a, b, c) {
+        //     //复选框被点击时
+        //     //console.log(a)
+        //     this.checkedKeys.push(...b.checkedKeys);
+        //     this.checkedKeys = [...new Set(this.checkedKeys)];
+        // },
+        // checkChange(a, b, c) {
+        //     //节点被取消
+        //     if (!b) {
+        //         this.checkedKeys.splice(this.checkedKeys.indexOf(a.id), 1);
+        //     }
+        // },
         treeokBtn() {
             this.detectionObjectList = [];
             this.checkedGroupList = this.$refs.trees.getCheckedNodes();
@@ -866,7 +857,7 @@ export default {
                 let num = 0;
                 let ls = 0;
                 let zheng = /^\d+(?=\.{0,1}\d+$|$)/;
-                var emailTest = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+                var emailTest = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[0-9A-Za-z]{2,10}(\.[0-9A-Za-z]{2,10})?)$/;
                 this.ruleList.map((ele, index) => {
                     if (ele.show) {
                         num++;
@@ -875,18 +866,23 @@ export default {
                         if (!zheng.test(ele2.fanweiValue)) {
                             ls++;
                         }
-                        if (index2 == ele.list.length - 1) {
-                            if (
-                                !zheng.test(ele2.adjustmentValue) &&
-                                ele2.adjustmentValue != ""
-                            ) {
-                                ls++;
-                            }
-                            if (
-                                !zheng.test(ele2.adjustmentNum) &&
-                                ele2.adjustmentNum != ""
-                            ) {
-                                ls++;
+                        if (
+                            ele2.type != "暂停广告组" &&
+                            ele2.type != "暂停关键词"
+                        ) {
+                            if (index2 == ele.list.length - 1) {
+                                if (
+                                    !zheng.test(ele2.adjustmentValue) &&
+                                    ele2.adjustmentValue == ""
+                                ) {
+                                    ls++;
+                                }
+                                if (
+                                    !zheng.test(ele2.adjustmentNum) &&
+                                    ele2.adjustmentNum == ""
+                                ) {
+                                    ls++;
+                                }
                             }
                         }
                     });
@@ -1030,12 +1026,12 @@ export default {
                         value: "创建成功",
                         type: 3
                     });
-                    if (this.$route.query.id) {
-                        this.$router.go(-1);
-                    } else {
+                    if (this.$route.query.type) {
                         this.$router.push({
                             path: "/intgentMitorLibrary/main"
-                        });
+                        }); 
+                    } else {
+                        this.$router.go(-1)
                     }
                 } else {
                     this.$store.commit("SET_SHOW_TRUE", {
@@ -1057,42 +1053,23 @@ export default {
             });
         },
         AjaxGetCampaignObject(id) {
-            let url =
-                "/api/v1/IntellAdvertiseApi/Campaign/GetCampaignObjectByOrgId?orgid=" +
-                id;
-            this.$https.get(url).then(res => {
-                this.loading.close();
-                if (res.data.resultCode == 1000) {
-                    let arr = res.data.data;
-                    arr.map(ele => {
-                        ele.disabled = true;
-                    });
-                    this.guroupList = arr;
-                }
-            });
-        },
-        AjaxGetAdGroups(node, resolve, id) {
-            let url = "/api/v1/IntellAdvertiseApi/Monitor/GetAdGroups?id=" + id;
-            this.$https.get(url).then(res => {
-                if (res.data.resultCode == 1000) {
-                    let data = res.data.data;
-                    data.map(ele => {
-                        ele.leaf = true;
-                    });
-                    resolve(data);
-                    node.data.disabled = false;
-                    data.map(ele => {
-                        this.detectionObjectList.map(ele2 => {
-                            if (ele.id == ele2.adGroupId) {
-                                this.checkedKeys.push(ele2.adGroupId);
-                            }
+            return new Promise(success => {
+                let url =
+                    "/api/v1/IntellAdvertiseApi/Campaign/GetCampaignObjectByOrgId?orgid=" +
+                    id;
+                this.$https.get(url).then(res => {
+                    this.loading.close();
+                    if (res.data.resultCode == 1000) {
+                        res.data.data.map(ele => {
+                            ele.label = ele.name;
+                            ele.children.map(ele2 => {
+                                ele2.label = ele2.name;
+                            });
                         });
-                    });
-                    this.checkedKeys = [...new Set(this.checkedKeys)];
-                    this.$refs.trees.setCheckedKeys(this.checkedKeys);
-                } else {
-                    resolve([]);
-                }
+                        this.props1 = res.data.data;
+                        success()
+                    }
+                });
             });
         },
         AjaxGetRule() {
@@ -1102,17 +1079,21 @@ export default {
                 this.$route.query.intellMonitorRuleId;
             this.$https.get(url).then(res => {
                 let data = res.data.data;
-                this.AjaxGetCampaignObject(data.orgId);
+                 this.detectionObjectList = data.ruleAdGroups;
+                this.AjaxGetCampaignObject(data.orgId).then(()=>{ 
+                    this.detectionObjectList.map(ele3 => { 
+                            this.checkedKeys.push(ele3.adGroupId); 
+                    });  
+                    console.log(this.checkedKeys);
+                })
                 this.intellMonitorRuleId = data.intellMonitorRuleId; //编辑传给后台
                 this.intellMonitorRuleName = data.intellMonitorRuleName;
-                this.value = parseInt(data.iupr / 30) + 1;
+                this.value = parseInt(data.iupr / 30);
                 this.values = data.executeTime * 1;
                 this.startTime = data.monitorStartTime;
                 this.endTime = data.monitorEndTime;
                 this.userName = data.intellMonitorRuleName;
-                this.userEmail = data.feedbackEmail;
-                this.detectionObjectList = data.ruleAdGroups;
-                //this.detectionObjectList = [];
+                this.userEmail = data.feedbackEmail; 
                 this.topData = {
                     monitorOrgUserName: data.monitorOrgUserName,
                     intelMonitorName: data.monitorName,
@@ -1138,7 +1119,7 @@ export default {
                                 "点击率",
                                 "转化率"
                             ],
-                            fanweiList: ["≥", "＜"],
+                            fanweiList: ["≥", "≤"],
                             typeList: [
                                 "调高出价/广告组",
                                 "调低出价/广告组",
@@ -1167,8 +1148,7 @@ export default {
                         obj.list.push(newobj);
                     });
                     this.ruleList.push(obj);
-                });
-                //console.log(this.ruleList)
+                }); 
             });
         }
     }

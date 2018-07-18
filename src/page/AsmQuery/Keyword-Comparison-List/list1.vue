@@ -14,11 +14,18 @@
                 cursor: pointer;
             }
         }
-    }
+    } 
 }
 </style>
 <template>
   <div class="kcll1_index">
+    <div>
+        <div class="apl_checketout">
+            <span @click="excelOut" :class="{checked: checkouting}">
+                <i class="iconfont icon-download"></i>{{checkouting ? '导出中' : '导出'}} 
+            </span>
+        </div>
+    </div>
     <table>
       <tr>
         <th style="width: 8%">#</th>
@@ -60,7 +67,7 @@
       </tr>
 
       <!-- 表格内容 -->
-      <tr class="table_data_tr" v-for="(ele,index) in tableInner" :key="index" v-if="tableShow">
+      <tr class="table_data_tr" v-for="(ele,index) in tableInner" :key="index" v-if="tableShow && userType">
         <td>{{index | pageNum(currentPage3)}}</td>
         <td class="rou">
           <span>{{ele.keywordName}}</span>
@@ -91,7 +98,7 @@
         <td colspan="7">该关键词暂无竞价数据</td>
       </tr>
       <!-- loading -->
-      <tr v-if="loadingfirst">
+      <tr v-if="loadingfirst && userType">
         <td colspan="7" style="height: 80px;">
           <img src="../../../images/components/loading.gif" alt="">
         </td>
@@ -111,6 +118,7 @@
 <script>
 import { datefn } from "@commonJS/dateList";
 import { AjaxRemove } from "@commonJS/ajaxServes";
+import { excelCheckout } from "@commonJS/excelCheckout";
 export default {
     data() {
         return {
@@ -129,12 +137,12 @@ export default {
             tableShow: true,
             currentPage3: 1, //当前页
             total: 0, //总数
-            sortDate: {
-                //排序
+            sortDate: { //排序
                 one: "searchIndex",
                 two: 0
             },
-            loadingfirst: true
+            loadingfirst: true,
+            checkouting: false
         };
     },
 
@@ -192,6 +200,78 @@ export default {
     },
 
     methods: {
+        excelOut() {
+            //表格导出
+             if(!this.userType) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "请先登录在操作",
+                    type: 3
+                });
+                return false
+            }
+            if (this.tableInner.length == 0) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "暂无数据，无法导出",
+                    type: 3
+                });
+                return false;
+            }
+            if (this.checkouting) {
+                return false;
+            }
+            this.checkouting = true;
+            if (this.$parent.IsManager) {
+                let num = this.total / 2000;
+                let ajaxarr = []
+                for (var i = 0; i < num; i++) {
+                    ajaxarr.push(excelCheckout(
+                        this.ajaxEcecl().url,
+                        this.ajaxEcecl(i + 1, 2000).obj,
+                        num < 1 ? '相同竞价词' : '相同竞价词' + "第" + (i + 1) + "页"
+                    ))
+                }
+                Promise.all(ajaxarr).then((result) => {
+                    this.checkouting = false 
+                }).catch((error) => { 
+                    this.checkouting = false 
+                })
+            } else {
+                excelCheckout(
+                    this.ajaxEcecl().url,
+                    this.ajaxEcecl(1, 2000).obj,
+                    '相同竞价词'
+                ).then(() => {
+                    this.checkouting = false;
+                });
+            }
+        },
+        ajaxEcecl(page, count) {
+            let url = 
+                "/api/v1/IntellSearchApi/CompetitiveAppAnalysis/ExportCompetitiveAppAnalysis";
+            let newobj = {};
+            newobj[this.sortDate.one] = this.sortDate.two;
+            let obj = {
+                pageIndex: this.$parent.IsManager ? 1 : this.currentPage3,
+                pageSize: 20,
+                requestPar: {
+                    nationId: this.$parent.countryNow,
+                    selectedAppId: this.$parent.idLeft,
+                    competitiveAppId: this.$parent.idRight,
+                    beginTime: datefn(4)[this.$parent.value1].data.beginTime,
+                    endTime: datefn(4)[this.$parent.value1].data.endTime,
+                    competitiveType: 2,
+                    orderType: 0
+                },
+                orderByParDic: newobj
+            }; 
+            if (this.$parent.IsManager) {
+                obj.exportPar = {
+                    exportIndex: page,
+                    exportCount: count
+                };
+            }
+            return { url, obj };
+        },
         paiClick(num, name) {
             //排序的按钮
             this.showList.map((ele, index) => {
@@ -255,8 +335,8 @@ export default {
                     nationId: this.$parent.countryNow,
                     selectedAppId: this.$parent.idLeft,
                     competitiveAppId: this.$parent.idRight,
-                    beginTime: datefn(1)[1].data.beginTime,
-                    endTime: datefn(1)[1].data.endTime,
+                    beginTime: datefn(4)[this.$parent.value1].data.beginTime,
+                    endTime: datefn(4)[this.$parent.value1].data.endTime,
                     competitiveType: 2,
                     orderType: 0
                 },

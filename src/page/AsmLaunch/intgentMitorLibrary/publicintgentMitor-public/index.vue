@@ -94,12 +94,12 @@
         margin-bottom: 12px;
     }
     .advuser_form_input {
-        height: 40px;
+        height: 36px;
         border: 1px solid @border;
         border-radius: 4px;
         outline: none;
         padding-left: 12px;
-        line-height: 40px;
+        line-height: 36px;
         &::-webkit-input-placeholder {
             color: #9a9a9a;
         }
@@ -215,7 +215,7 @@
         }
     }
     .el-select {
-        width: 100px;
+        width: 120px;
         margin-right: 10px;
     }
     .operation {
@@ -349,7 +349,7 @@
 
           <p class='advuser_form_p'>监测账户花费</p>
           <div class="publicstyle">
-            <span class="pubspan">日预算</span>
+            <span class="pubspan">日花费</span>
             <el-select v-model="value" placeholder="设置" :disabled="isdisabledFn">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" >
               </el-option>
@@ -465,14 +465,10 @@ export default {
                 {
                     //{value: '设置', label: '设置'},
                     value: 1,
-                    label: "≥"
-                },
-                {
-                    value: 2,
-                    label: "≤"
-                }
+                    label: "大于等于"
+                } 
             ],
-            value: "",
+            value: 1,
             tableData4: [],
             Arrayreceiving: "",
             userName: "",
@@ -530,8 +526,7 @@ export default {
 
     methods: {
         changeInput(value) {
-            //input搜索
-            console.log(this.valuedata);
+            //input搜索 
             this.inputList.push({
                 name: "某某某公司",
                 id: "123"
@@ -620,7 +615,8 @@ export default {
                                     path: "/intgentMitorLibrary/MRpublic",
                                     query: {
                                         parame: "add",
-                                        id: res.data.data.status
+                                        id: res.data.data.status,
+                                        type: 'up'
                                     }
                                 });
                             });
@@ -629,50 +625,46 @@ export default {
                 }
             }
         },
-        MonitorSave(orgUserInfoId) {
+        MonitorSave(orgUserInfoId) { 
             return new Promise(success => {
-                let url = "api/v1/IntellAdvertiseApi/Monitor/Save";
+                let url = "api/v1/IntellAdvertiseApi/Monitor/Save"; 
                 let operator;
-                if (this.value == "≥") {
+                if (this.value == 1) {
                     operator = 1;
                 } else {
                     operator = 2;
                 }
+               
                 let obj = {
                     intelMonitorId: this.$route.query.id,
                     intelMonitorName: this.userName,
                     operator: operator,
                     amount: this.budgetvalue,
                     monitorOrgUserId: orgUserInfoId,
-                    userId: 0
-                };
+                    userId: 0,
+                    IsOpen: this.checked ? 1 : 0
+                }; 
+                 console.log(obj)
                 this.$https.post(url, JSON.stringify(obj)).then(res => {
                     success(res);
                 });
             });
         },
         Getmodify() {
-            let url = "";
-            if (this.$route.query.type) {
-                url =
-                    "/api/v1/IntellAdvertiseApi/Monitor/GetIntellMonitorByOrgId?orgId=" +
-                    this.$route.query.id;
-            } else {
-                url =
+            let  url =
                     "/api/v1/IntellAdvertiseApi/Monitor/Get?id=" +
                     this.$route.query.id +
-                    "";
-            }
+                    ""; 
             this.$https.get(url).then(
-                res => {
-                    console.log(res);
+                res => { 
                     this.userName = res.data.data.intelMonitorName;
                     this.budgetvalue = "" + res.data.data.amount;
                     if (res.data.data.operator == 1) {
-                        this.value = "≥";
+                        this.value = 1;
                     } else {
-                        this.value = "≤";
+                        this.value = '小于等于';
                     }
+                    this.checked = res.data.data.isOpen == 0 ? false : true
                     this.users = res.data.data.monitorOrgUserName;
                     this.fullscreenLoading = false;
                     this.MymonitorOrgUserId = res.data.data.monitorOrgUserId;

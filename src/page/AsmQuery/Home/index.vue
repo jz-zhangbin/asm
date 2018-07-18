@@ -568,8 +568,8 @@ export default {
             list: [],
             scrooll: null,
             listNum: 0,
-            Appnum: 2036213,
-            Wordnum: 1621556
+            Appnum:  2036213,
+            Wordnum: 2238074
         };
     },
 

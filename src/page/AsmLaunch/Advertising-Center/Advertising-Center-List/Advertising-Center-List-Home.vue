@@ -92,9 +92,19 @@
                     </div>
 
                     <div class="account_search_date">
-                        <el-select v-model="dateData" @change="changeFun(dateData)">
-                            <el-option v-for="item in datelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                        </el-select>
+                        <el-date-picker
+                            v-model="dateTime"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            :clearable = false
+                            @change = 'changeDate'
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            value-format='yyyy-MM-dd'
+                            :picker-options="datelist">
+                        </el-date-picker>
                     </div>
                 </section>
             </div>
@@ -119,13 +129,13 @@
                     </el-table-column>
                     <el-table-column label="智能监测" align='center' min-width="105">
                         <template slot-scope="scope">
-                            <div v-if="scope.row.monitorCount == '1'" style="color: #2d76ed">监测中</div>
+                            <div v-if="scope.row.monitorCount > 0" style="color: #2d76ed">监测中</div>
                             <div v-else>未监测</div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="id" label="广告系列ID" align='center' min-width="110">
                     </el-table-column>
-                    <el-table-column label="搜索匹配" align='center' min-width="110" prop="automatedKeywordsOptIn">
+                    <el-table-column label="智能匹配" align='center' min-width="110" prop="automatedKeywordsOptIn">
                         <template slot-scope="scope">
                             <span>{{scope.row.automatedKeywordsOptIn == true ? '是' : '否'}}</span>
                         </template>
@@ -208,6 +218,7 @@
 <script>
 import { mapState } from "vuex";
 import { datefn } from "@commonJS/dateList";
+import { date , dateUtc} from "@commonJS/date"; 
 import { countryTwo } from "@commonJS/country";
 import documentClick from "@commonJS/documentSettings";
 import { excelCheckout } from "@commonJS/excelCheckout";
@@ -262,7 +273,7 @@ export default {
                 "启用所有",
                 "暂停所有"
             ],
-            dateData: 0, //当前时间
+            dateTime: '',
             advanShow: false,
             searchType: "所有广告组", //高级搜索是否要国家
             tableData4: [],
@@ -307,16 +318,22 @@ export default {
 
     computed: {
         ...mapState({
-            datelist: state => state.Date.DateListAll
+             datelist: state => state.Date.DateRange
         })
     },
 
-    created() {},
+    created() {
+        if(!this.$ss.get('TIME_UTC')) {
+            this.dateTime = [datefn(3).beginTime , datefn(3).endTime]
+            this.$ss.set('TIME_UTC', this.dateTime)
+        }else{
+            this.dateTime = this.$ss.get('TIME_UTC')
+        } 
+    },
 
     updated() {},
 
-    mounted() {
-        this.dateData = this.$route.query.date * 1;
+    mounted() { 
         documentClick("account_search_cao", this, "caoShow");
         this.AjaxStatisticCampaign();
     },
@@ -344,14 +361,14 @@ export default {
             this.$refs.multipleTable.sort("status", "descending");
             this.AjaxStatisticCampaign();
         },
-        changeFun(value) {
+        changeDate() {
             //切换时间进行请求
-            this.advancedFunList = [];
-            this.dateData = value;
+            this.$ss.set('TIME_UTC',this.dateTime)  
+            this.advancedFunList = []; 
             this.$refs.multipleTable.clearSort();
             this.$refs.multipleTable.sort("status", "descending");
-            this.AjaxStatisticCampaign();
-        },
+            this.AjaxStatisticCampaign(); 
+        },   
         advancedFun(data) {
             //高级搜索
             this.advancedFunList = data;
@@ -501,22 +518,22 @@ export default {
                 obj.cpaGoalamount = -1;
             }
             if (deviceClassType) {
-                obj.deviceClass = this.multipleSelection[0].deviceClass;
+                obj.deviceClass = JSON.parse(this.multipleSelection[0].deviceClass);
             } else {
                 obj.deviceClass = -1;
             }
             if (appDownLoadersType) {
-                obj.appDownLoaders = this.multipleSelection[0].appDownLoaders;
+                obj.appDownLoaders = JSON.parse(this.multipleSelection[0].appDownLoaders);
             } else {
                 obj.appDownLoaders = -1;
             }
             if (ageType) {
-                obj.age = this.multipleSelection[0].age;
+                obj.age = JSON.parse(this.multipleSelection[0].age);
             } else {
                 obj.age = -1;
             }
             if (genderType) {
-                obj.gender = this.multipleSelection[0].gender;
+                obj.gender = JSON.parse(this.multipleSelection[0].gender);
             } else {
                 obj.gender = -1;
             }
@@ -663,7 +680,7 @@ export default {
                 case 3:
                     obj = {
                         code: "monitorcount",
-                        operator: "equals",
+                        operator: "greaterthanorequals",
                         valueType: 2,
                         values: ["1"]
                     };
@@ -682,8 +699,8 @@ export default {
                 operator: "inrange",
                 valueType: 1,
                 values: [
-                    this.datelist[this.dateData].data.beginTime,
-                    this.datelist[this.dateData].data.endTime
+                    dateUtc(this.dateTime[0]),
+                    dateUtc(this.dateTime[1])
                 ]
             };
             arr.push(obj2);
@@ -894,8 +911,7 @@ export default {
                     accountName: this.$route.query.accountName,
                     orgId: this.$route.query.orgId,
                     listName: this.$route.query.listName,
-                    listId: this.$route.query.listId,
-                    date: this.dateData,
+                    listId: this.$route.query.listId, 
                     id: this.$route.query.id,
                     keyName: name,
                     keyId: id

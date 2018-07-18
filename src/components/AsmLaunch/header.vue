@@ -33,14 +33,19 @@
     padding-top: 15px;
     a {
         box-sizing: border-box;
-        padding: 7px 10px; 
+        padding: 7px 10px;
         margin-left: 30px;
         color: #fff;
         font-size: 14px;
         font-weight: 400;
         cursor: pointer;
-        &.headera{
-            background: linear-gradient(to right,@btnhover,  @color , @btnhover); /* 标准的语法 */
+        &.headera {
+            background: linear-gradient(
+                to right,
+                @btnhover,
+                @color,
+                @btnhover
+            ); /* 标准的语法 */
         }
     }
 }
@@ -62,12 +67,12 @@
         top: 29px;
     }
 }
-.header_out {
+.header_out { 
     width: 120px;
     height: 46px;
-    background: #fff;
+    background: #f7f7f7;
     border-radius: 4px;
-    z-index: 100;  
+    z-index: 100;
     color: @font_color;
     line-height: 46px;
     text-align: center;
@@ -114,10 +119,10 @@
         <div class="header_body">
             <div class="header_logo"></div>
             <div class="header_roter">
-                <router-link active-class="headera" :to="{path: '/advertising-center'}">广告中心</router-link>
-                <router-link active-class="headera" :to="{path: '/key-lexicon'}">关键词库</router-link>
-                <router-link active-class="headera" :to="{path: '/intgentMitorLibrary'}">智能监测库</router-link>
-                <router-link active-class="headera" :to="{path: '/home'}">智查工具</router-link>
+                <router-link :to="{path: '/advertising-center'}">广告中心</router-link>
+                <router-link :to="{path: '/key-lexicon'}">关键词库</router-link>
+                <router-link :to="{path: '/intgentMitorLibrary'}">智能监测库</router-link>
+                <a  @click="toHome">智查工具</a>
             </div>
             <div class="header_user" @mouseover="show = true" @mouseout="show = false">
                 <div class="st_sign" v-if="!userType">
@@ -128,7 +133,7 @@
                 <i v-if="userType"></i>
                 <transition name="el-zoom-in-top">
                     <div class="header_out" @click="removeCookie" @mouseout="show = false" v-show="show" v-if="userType">
-                        <span >退出</span>
+                        <span>退出</span>
                     </div>
                 </transition>
             </div>
@@ -167,9 +172,15 @@ export default {
 
     methods: {
         removeCookie() {
-            this.$router.push('/login')
+            this.$router.push("/login");
             this.$store.commit("SET_USERTYPE");
             this.$store.commit("GET_USERTYPE");
+        },
+        toHome() {
+            let routeData = this.$router.resolve({
+                path: '/home' 
+            });
+            window.open(routeData.href, '_blank')
         }
     }
 };

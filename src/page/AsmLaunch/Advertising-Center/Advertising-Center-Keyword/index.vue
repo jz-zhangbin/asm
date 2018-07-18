@@ -190,7 +190,7 @@
                         <span>-</span>
                     </p>
                     <p>
-                        <span>搜索匹配</span>
+                        <span>智能匹配</span>
                         <span>-</span>
                     </p>
                     <p>
@@ -208,10 +208,10 @@
                 <div>
                     <p>
                         <span>默认CPC</span>
-                        <span>{{topDate.defaultCPCBidAmount | numTo}}</span>
+                        <span>{{topDate.defaultCPCBidAmount | numTo$}}</span>
                     </p>
                     <p>
-                        <span>搜索匹配</span>
+                        <span>智能匹配</span>
                         <span>{{topDate.automatedKeywordsOptIn == true ? '是' : '否'}}</span>
                     </p>
                     <p>
@@ -220,13 +220,13 @@
                     </p>
                     <p>
                         <span>投放周期</span>
-                        <span>{{topDate.starttime}}-{{topDate.endtime}}</span>
+                        <span>{{topDate.startTime }}{{topDate.endTime != '' ? '~': ''}}{{topDate.endTime }}</span>
                     </p>
                 </div>
             </section>
 
             <!-- 右面固定 -->
-            <div class="right_absolute_btn" @click="zhinengroute">智能检测</div>
+            <div class="right_absolute_btn" @click="zhinengroute">监测规则</div>
             <div class="right_absolute_text">
                 <el-button type="text" @click="routerTosettings">编辑</el-button>
             </div>
@@ -296,7 +296,12 @@ export default {
 
     filters: {
         dateSet: function(value) {
-            return date(value);
+            if(value != '') {
+                return date(value);
+            }else{
+                return  ''
+            }
+            
         }
     },
 
@@ -311,8 +316,7 @@ export default {
                     path: "/advertising-center/account",
                     query: {
                         accountName: queryData.accountName,
-                        orgId: queryData.orgId,
-                        date: queryData.date,
+                        orgId: queryData.orgId, 
                         id: queryData.id
                     }
                 },
@@ -323,8 +327,7 @@ export default {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId,
                         listName: queryData.listName,
-                        listId: queryData.listId,
-                        date: queryData.date,
+                        listId: queryData.listId, 
                         id: queryData.id
                     }
                 },

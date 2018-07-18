@@ -13,9 +13,11 @@ module.exports = {
     proxyTable: { 
     	'/api': {  
        //target: 'http://10.1.0.136:8989',//小梦本地IP
-       target: 'http://10.1.0.161',//振亚本地Ip   
+      //target: 'http://10.1.0.161',//振亚本地Ip    
       //target: 'http://asm.api.adjuz.net:988/',//智能投放
-      //target: 'http://asm.api.adjuz.net:8899',//智查询    
+      //target: 'http://asm.api.adjuz.net:8899',//智查询 
+      target: 'http://asm.api.adjuz.net:899',// 睿哲
+      //target: 'http://asm.api.adjuz.net:777', //程晓悦  
         changeOrigin: true,
         pathRewrite: {
             '^/api': ''
@@ -23,8 +25,8 @@ module.exports = {
      } 
     },
     // Various Dev Server settings 
-    host: '10.1.2.92',  //can be overwritten by process.env.HOST
-    //shost: '10.1.2.92', 
+    //host: 'localhost',  //can be overwritten by process.env.HOST
+    host: '10.1.2.92', 
     //host: '127.0.0.1', // can be overwritten by process.env.HOST 
     port: 888, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,

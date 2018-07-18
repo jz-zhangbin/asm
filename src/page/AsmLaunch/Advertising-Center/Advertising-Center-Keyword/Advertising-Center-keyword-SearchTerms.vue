@@ -34,9 +34,19 @@
                     </div>
 
                     <div class="account_search_date">
-                        <el-select v-model="dateData" @change="changeFun(dateData)">
-                            <el-option v-for="item in datelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                        </el-select>
+                        <el-date-picker
+                            v-model="dateTime"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            :clearable = false
+                            @change = 'changeDate'
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            value-format='yyyy-MM-dd'
+                            :picker-options="datelist">
+                        </el-date-picker>
                     </div>
                 </section>
             </div>
@@ -46,23 +56,23 @@
                 <el-table ref="multipleTable" :data="tableData4" style="width: 100%" highlight-current-row border @selection-change="handleSelectionChange" @sort-change='sortchange' v-loading="loading" :default-sort="sortInfor">
                     <el-table-column type="selection" fixed align='center' width="55">
                     </el-table-column>
-                    <el-table-column fixed align='center' label="广告系列名称" min-width="260">
+                    <el-table-column fixed align='center' label="搜索词" min-width="260">
                         <template slot-scope="scope">
                             <div  >
-                                {{scope.row.text}}
+                                {{scope.row.searchTermText}}
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="matchType" label="匹配来源" align='center' min-width="120">
                         <template slot-scope="scope">
-                            <div v-if="scope.row.matchType == 'EXACT'">精准</div>
+                            <div v-if="scope.row.matchtype == 'EXACT'">精准</div>
                             <div v-else>广泛</div>
                         </template>
                     </el-table-column>
                     <el-table-column label="关键词" align='center' min-width="260">
                         <template slot-scope="scope">
                             <div  >
-                                {{scope.row.text}}
+                                {{scope.row.keyword}}
                             </div>
                         </template>
                     </el-table-column>
@@ -125,6 +135,8 @@
 
 <script>
 import { mapState } from "vuex";
+import { datefn } from "@commonJS/dateList";
+import { date , dateUtc} from "@commonJS/date"; 
 import documentClick from "@commonJS/documentSettings";
 import { excelCheckout } from "@commonJS/excelCheckout";
 import KeySearch from "@components/AsmLaunch/Key-Search";
@@ -152,7 +164,7 @@ export default {
             placevaluedata: "关键词搜索", //搜索提示
             caoShow: false,
             caoList: ["导出"], //"添加至投放关键词", "添加至否定关键词",
-            dateData: 0, //当前时间
+            dateTime: '',
             advanShow: false,
             searchType: "匹配来源", //高级搜索是否要国家
             tableData4: [],
@@ -185,16 +197,22 @@ export default {
 
     computed: {
         ...mapState({
-            datelist: state => state.Date.DateListAll
+            datelist: state => state.Date.DateRange
         })
     },
 
-    created() {},
+    created() {
+        if(!this.$ss.get('TIME_UTC')) {
+            this.dateTime = [datefn(3).beginTime , datefn(3).endTime]
+            this.$ss.set('TIME_UTC', this.dateTime)
+        }else{
+            this.dateTime = this.$ss.get('TIME_UTC')
+        } 
+    },
 
     updated() {},
 
-    mounted() {
-        this.dateData = this.$route.query.date * 1;
+    mounted() { 
         documentClick("account_search_cao", this, "caoShow");
     },
 
@@ -214,13 +232,14 @@ export default {
             this.$refs.multipleTable.sort("localspendAmount", "descending");
         },
 
-        changeFun(value) {
+        changeDate() {
             //切换时间进行请求
-            this.advancedFunList = [];
-            this.dateData = value;
+            this.$ss.set('TIME_UTC',this.dateTime)  
+            this.advancedFunList = []; 
             this.$refs.multipleTable.clearSort();
             this.$refs.multipleTable.sort("localspendAmount", "descending");
-        },
+            this.AjaxStatisticCampaign(); 
+        }, 
 
         advancedFun(data) {
             //高级搜索
@@ -310,8 +329,8 @@ export default {
                 operator: "inrange",
                 valueType: 1,
                 values: [
-                    this.datelist[this.dateData].data.beginTime,
-                    this.datelist[this.dateData].data.endTime
+                    dateUtc(this.dateTime[0]),
+                    dateUtc(this.dateTime[1])
                 ]
             };
             arr.push(obj2);

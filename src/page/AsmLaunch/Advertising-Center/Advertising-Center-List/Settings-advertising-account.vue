@@ -198,8 +198,7 @@ export default {
                     path: "/advertising-center/account",
                     query: {
                         accountName: queryData.accountName,
-                        orgId: queryData.orgId,
-                        date: queryData.date,
+                        orgId: queryData.orgId, 
                         id: queryData.id
                     }
                 },
@@ -271,14 +270,17 @@ export default {
             this.$https.get(url).then(res => {
                 if (res.data.resultCode == 1000) {
                     this.topAppDate = res.data.data;
-                    this.GetImgUrl(res.data.data.adaMid);
+                    this.GetImgUrl(res.data.data.adaMid,res.data.data.storefront);
                 } else {
                 }
             });
         },
-        GetImgUrl(id) {
-            let url = "/api/v1/IntellAdvertiseApi/Campaign/GetAppByAppids";
-            this.$https.post(url, JSON.stringify([id])).then(res => {
+        GetImgUrl(id,country) {
+            let url = "/api/v1/IntellAdvertiseApi/Campaign/GetAppByAppidCountrys";
+            this.$https.post(url, JSON.stringify([{
+                 appId: id,
+                 countryCode: country.toLowerCase()
+            }])).then(res => {
                 this.loading.close();
                 this.appDate = res.data.data[0];
             });

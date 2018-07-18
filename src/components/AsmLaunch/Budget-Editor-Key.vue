@@ -13,6 +13,7 @@
     animation: animation1 0.5s ease-out;
     -webkit-animation: animation1 0.5s ease-out;
     section {
+        border: 1px solid #ebeef5;
         padding: 20px;
         box-sizing: border-box;
         border-radius: 6px;
@@ -51,7 +52,7 @@
         justify-content: center;
         margin-top: 20px;
         button {
-            margin-right: 20px;
+            margin: 0 15px;
         }
     }
     .budet_cantant {

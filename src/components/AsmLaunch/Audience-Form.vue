@@ -20,6 +20,7 @@
         left: 7px;
     }
     .audience_form_box {
+        border: 1px solid #ebeef5;
         position: absolute;
         left: 0;
         top: 0;
@@ -141,7 +142,7 @@
         color: #000;
     }
     .bom_date {
-        width: 340px;
+        width: 240px;
         line-height: 38px;
         padding-left: 10px;
     }
@@ -255,7 +256,7 @@
             <div class="form_row" v-if="userType.isLoc">
                 <p>发票信息</p> 
                 <div class="fapiao"> 
-                    <h4>订单号:&nbsp;&nbsp;{{userType.dingdan}}</h4>
+                    <h4>订单号:&nbsp;&nbsp;{{userType.orderNumber}}</h4>
                     <h4>主要联系人姓名:&nbsp;&nbsp;{{userType.buyerName}}</h4>
                     <h4>主要联系人邮箱:&nbsp;&nbsp;{{userType.buyerEmail}}</h4>
                     <h4>结算联系人姓名:&nbsp;&nbsp;{{userType.billingContactName}}</h4>
@@ -307,7 +308,7 @@
             <div class="form_row" v-if="value7.length != 0">
                 <p>投放时间</p>
                 <div class="top_input bom_date">
-                    {{value7[0] | dateSet}}至 {{value7[1] | dateSet}}
+                    {{value7[0] }}至 {{value7[1] }}
                 </div>
             </div>
             <div class="form_btn">

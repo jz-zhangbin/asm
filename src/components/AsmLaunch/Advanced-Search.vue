@@ -14,6 +14,7 @@
     right: 0;
     z-index: 1000;
     .advan_search_content {
+        border: 1px solid #ebeef5;
         width: 890px;
         border-radius: 10px;
         background-color: #fff;

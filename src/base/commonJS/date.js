@@ -17,3 +17,28 @@ Date.prototype.Format = function (fmt) { //author: zhengsh 2016-9-5
 export function date(date){
   return new Date(date).Format("yyyy-MM-dd hh:mm:ss")
 };
+
+export function dateUtc(date) {
+    let arr = date.split('-') 
+    var nd = new Date();
+    let h = nd.getHours()*60*60*1000
+    let f = nd.getMinutes()*60*1000
+    let s = nd.getSeconds()*1000
+    let time = new Date(arr[0],arr[1],arr[2])
+    let timenum = time.getTime()  
+    timenum = timenum + h + f + s
+    time = new Date(timenum)
+    let y = time.getUTCFullYear()
+    if( y < 10) {
+        y = '0'+ y
+    }
+    let m = time.getUTCMonth()
+    if( m < 10) {
+        m = '0'+ m
+    }
+    let d = time.getUTCDate()
+    if( d < 10) {
+        d = '0'+ d
+    }
+    return (y+'-'+m+'-'+d) 
+}

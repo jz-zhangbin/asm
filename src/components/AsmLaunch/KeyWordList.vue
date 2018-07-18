@@ -69,8 +69,7 @@
 @boxshado: #eeeeee;
 .table{
     padding: 50px 0 0;
-    tr td,th{
-        border-right:1px solid @border;
+    tr td,th{ 
         text-align: center;
         padding:8px 0;
     }

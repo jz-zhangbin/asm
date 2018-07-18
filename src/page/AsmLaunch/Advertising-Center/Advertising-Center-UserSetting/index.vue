@@ -142,7 +142,7 @@
                     <div class="advuser_form_input advuser_form_fil" style="width: 120px">{{fileDate}}</div>
                     <span class="warning" v-if="warnfile">{{warnfileDate}}</span>
                 </div>
-                <h5 v-if="$route.query.type != 'edit'">上传证书获取Apple ID 广告信息，创建广告主后证书将不可修改，请注意</h5>
+                <h5 v-if="$route.query.type != 'edit'">上传证书获取Apple ID 广告信息，绑定证书后证书将不可修改，请注意</h5>
                 <h6 v-if="$route.query.type != 'edit'">如何获取证书文件？</h6>
                 <h5 v-if="$route.query.type == 'edit'">账户证书文件不可修改，如证书有变化，请删除该账户并重新绑定证书。</h5>
 
@@ -168,6 +168,11 @@
                         <div>
                             <input type="text" class="advuser_form_input" style="width: 300px" placeholder="请填写主要联系人姓名" v-model="buyerName">
                             <span class="warning" v-if="warnbuyerName">主要联系人姓名不能为空</span>
+                        </div>
+                        <p class='advuser_form_p advuser_form_p1'>订单号</p>
+                        <div>
+                            <input type="text" class="advuser_form_input" style="width: 300px" placeholder="请填写订单号" v-model="dingdan">
+                            <span class="warning" v-if="warndingdan">订单号不能为空</span>
                         </div>
                         <p class='advuser_form_p advuser_form_p1'>主要联系人邮箱</p>
                         <div>
@@ -224,6 +229,8 @@ export default {
             warncompany: false,
             buyerName: "", //主要联系人名称
             warnbuyerName: false,
+            dingdan: '',
+            warndingdan: false,
             buyerEmail: "", //主要联系人邮箱
             warnbuyerEmail: false,
             billingContactName: "", //结算联系人姓名
@@ -336,7 +343,7 @@ export default {
         },
 
         btn() {
-            var emailTest = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+            var emailTest = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[0-9A-Za-z]{2,10}(\.[0-9A-Za-z]{2,10})?)$/;
             this.ajaxObj.companyName = this.companyName;
 
             if (this.companyName == "") {
@@ -391,27 +398,39 @@ export default {
                         .css("border-color", "#dee2e6");
                     this.warnbuyerName = false;
                 }
-                if (this.buyerEmail == "" || !emailTest.test(this.buyerEmail)) {
+                 if (this.dingdan == "") {
                     $(".advuser_form_input")
                         .eq(4)
                         .css("border-color", "red");
-                    this.warnbuyerEmail = true;
+                    this.warndingdan = true;
                     return false;
                 } else {
                     $(".advuser_form_input")
                         .eq(4)
                         .css("border-color", "#dee2e6");
+                    this.warndingdan = false;
+                }
+                if (this.buyerEmail == "" || !emailTest.test(this.buyerEmail)) {
+                    $(".advuser_form_input")
+                        .eq(5)
+                        .css("border-color", "red");
+                    this.warnbuyerEmail = true;
+                    return false;
+                } else {
+                    $(".advuser_form_input")
+                        .eq(5)
+                        .css("border-color", "#dee2e6");
                     this.warnbuyerEmail = false;
                 }
                 if (this.billingContactName == "") {
                     $(".advuser_form_input")
-                        .eq(5)
+                        .eq(6)
                         .css("border-color", "red");
                     this.warnbillingContactName = true;
                     return false;
                 } else {
                     $(".advuser_form_input")
-                        .eq(5)
+                        .eq(6)
                         .css("border-color", "#dee2e6");
                     this.warnbillingContactName = false;
                 }
@@ -420,13 +439,13 @@ export default {
                     !emailTest.test(this.billingContactEmail)
                 ) {
                     $(".advuser_form_input")
-                        .eq(6)
+                        .eq(7)
                         .css("border-color", "red");
                     this.warnbillingContactEmail = true;
                     return false;
                 } else {
                     $(".advuser_form_input")
-                        .eq(6)
+                        .eq(7)
                         .css("border-color", "#dee2e6");
                     this.warnbillingContactEmail = false;
                 }
@@ -436,7 +455,8 @@ export default {
                         billingContactEmail: this.billingContactEmail,
                         clientName: this.company,
                         buyerName: this.buyerName,
-                        buyerEmail: this.buyerEmail
+                        buyerEmail: this.buyerEmail,
+                        orderNumber: this.dingdan
                     },
                     this.ajaxObj
                 );
@@ -447,16 +467,14 @@ export default {
                 }
             } else {
                 //对私账户
-                this.ajaxObj = Object.assign(
-                    {
+                this.ajaxObj = Object.assign({
                         billingContactName: "",
                         billingContactEmail: "",
                         clientName: "",
                         buyerName: "",
-                        buyerEmail: ""
-                    },
-                    this.ajaxObj
-                );
+                        buyerEmail: "",
+                        orderNumber: ''
+                    }, this.ajaxObj );
                 if (this.$route.query.type == "edit") {
                     this.AjaxEdit(this.ajaxObj);
                 } else {
@@ -498,6 +516,7 @@ export default {
                 this.company = data.clientName; //公司名称
                 this.buyerName = data.buyerName; //主要联系人名称
                 this.buyerEmail = data.buyerEmail; //主要联系人邮箱
+                this.dingdan = data.orderNumber
                 this.billingContactName = data.billingContactName; //结算联系人姓名
                 this.billingContactEmail = data.billingContactEmail; //结算联系人邮箱
                 this.isLoc = data.isLoc; //对公对私状态

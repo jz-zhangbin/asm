@@ -115,6 +115,7 @@
 import crypto from "crypto";
 import qs from "qs";
 import reduceCookie from "@commonJS/reduceCookie";
+import Vip from '@commonJS/Vip'
 export default {
     data() {
         return {
@@ -205,17 +206,22 @@ export default {
                             Adjuz_SecureId: this.getmd5(secureId).toUpperCase(),
                             uid: res.data.data.userId,
                             urole: res.data.data.userRoles,
-                            useremail: this.userEmil
+                            useremail: this.userEmil,
+                            vip: Vip.indexOf(this.userEmil) != -1 ? true : false
                         };
                         this.$cookie.set(
                             "Adjuz_UserInfoNEW",
                             qs.stringify(Adjuz_UserInfoNEW)
-                        );
+                        ); 
                         //console.log(reduceCookie(this.$cookie.get('Adjuz_UserInfoNEW')))
                         if (this.routerPath) {
                             this.$router.go(-1);
                         } else {
-                            this.$router.push("/advertising-center");
+                            if(Vip.indexOf(this.userEmil) == -1) {
+                                this.$router.push("/home");
+                            }else{
+                                this.$router.push("/advertising-center");
+                            }
                         }
                     } else if (res.data.resultCode == 404) {
                         this.war = true;

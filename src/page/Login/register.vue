@@ -317,7 +317,7 @@ export default {
 
     methods: {
         loginSubmit() {
-            let emailTest = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g;
+            let emailTest = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[0-9A-Za-z]{2,10}(\.[0-9A-Za-z]{2,10})?)$/g;
             let passTest = /[a-zA-Z0-9]{6,16}/;
             if (
                 this.userEmil == "" ||

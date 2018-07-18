@@ -298,7 +298,8 @@ export default {
     computed: {
         ...mapState({
             countryList: state => state.Home.countryList,
-            userType: state => state.Sign.userType
+            userType: state => state.Sign.userType,
+            IsManager: state => state.Sign.IsManager
         })
     },
 

@@ -9,7 +9,12 @@
 .iconfont {
     cursor: pointer;
 }
-
+.apl_body_date {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
 .kcl_index {
     min-width: 1200px;
     box-sizing: border-box;
@@ -335,10 +340,24 @@
     .el-input__icon {
         line-height: 34px !important;
     }
+    .apl_body_date {
+        .el-select {
+            width: 160px;
+            height: 32px;
+        }
+        .el-input,
+        .el-input--suffix,
+        .el-input__inner {
+            height: 32px;
+        }
+        .el-input__icon {
+            line-height: 32px !important;
+        }
+    }
 }
 </style>
 <template>
-    <div class="kcl_index">
+    <div class="kcl_index" v-has="{class:'btn-mod',num:123}">
         <v-search-top></v-search-top>
         <div class="kcl_body">
             <banner :bannerName='bannerName'></banner>
@@ -394,7 +413,7 @@
                     <div class="kcl_duibi_right" v-if="leftSearch">
                         <p>选择APP</p>
                         <div class="kc_ct_search kc_ct_search2">
-                            <input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinforlefet" @focus="focusInput('.kc_ct_search2')" @blur="blurInput('.kc_ct_search2')">
+                            <input id="leftInput" type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinforlefet" @focus="focusInput('.kc_ct_search2')" @blur="blurInput('.kc_ct_search2')">
                             <div class="kc_over kc_over2">
                                 <ul>
                                     <li @click="overLiClick(index,'left')" v-for="(ele,index) in listLeft" :key="index">
@@ -454,7 +473,7 @@
                     <div class="kcl_duibi_right" v-if="!appDataShow">
                         <p>选择APP</p>
                         <div class="kc_ct_search kc_ct_search1">
-                            <input type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor" @focus="focusInput('.kc_ct_search1')" @blur="blurInput('.kc_ct_search1')">
+                            <input type="text" id="rightInput" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor" @focus="focusInput('.kc_ct_search1')" @blur="blurInput('.kc_ct_search1')">
                             <div class="kc_over kc_over1">
                                 <ul>
                                     <li @click="overLiClick(index,'right')" v-for="(ele,index) in list" :key="index">
@@ -473,6 +492,12 @@
                 <div class="kcl_dui_star" v-if="appDataShowtrue">
                     <button @click="starClick">开始对比</button>
                 </div>
+                <div class="apl_body_date" v-if="appDataShowtrue">
+                    <el-select v-model="value1" @change="changeDateFun(value1)">
+                        <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
                 <!-- 竞品对比结果-第一个表格 -->
                 <div class="kcl_table_one" v-if="tableShow">
                     <h2>竞品对比结果</h2>
@@ -484,7 +509,7 @@
                             <th style="width: 19%">竞品APP (右)</th>
                             <th style="width: 19%">操作</th>
                         </tr>
-                        <tr class="td_height" v-if="ContrastData[idLeft]">
+                        <tr class="td_height" v-if="ContrastData[idLeft] && duibitableone">
                             <td class="td_weight">竞争度(竞价词重合度) </td>
                             <td class="td_color"></td>
                             <td class="td_animous">
@@ -496,30 +521,34 @@
                             <td class="td_color"></td>
                             <td></td>
                         </tr>
-                        <tr v-if="ContrastData[idLeft]">
+                        <tr v-if="ContrastData[idLeft] && duibitableone">
                             <td>ASM竞价词数 </td>
-                            <td class="td_color">{{ContrastData[idLeft].totalCompetitiveWordNum}}</td>
+                            <td class="td_color">
+                                {{ContrastData[idLeft].hasAdditionalCompetitiveWord ? '8000+' : ContrastData[idLeft].totalCompetitiveWordNum}}
+                            </td>
                             <td></td>
-                            <td class="td_color">{{ContrastData[idRight].totalCompetitiveWordNum}}</td>
+                            <td class="td_color">
+                                {{ContrastData[idRight].hasAdditionalCompetitiveWord ? '8000+' : ContrastData[idRight].totalCompetitiveWordNum}} 
+                            </td>
                             <td>
                                 <i class="iconfont icon-more" @click="listNav('alike')"></i>
                             </td>
                         </tr>
-                        <tr v-if="ContrastData[idLeft]">
+                        <tr v-if="ContrastData[idLeft] && duibitableone">
                             <td class="td_weight">相同竞价词数 </td>
                             <td class="td_color"></td>
                             <td class="td_color">{{ContrastData[idLeft].equalCompetitiveWordNum}}</td>
                             <td class="td_color"></td>
                             <td></td>
                         </tr>
-                        <tr v-if="ContrastData[idLeft]">
+                        <tr v-if="ContrastData[idLeft] && duibitableone">
                             <td>不同竞价词数 </td>
                             <td class="td_color">{{ContrastData[idLeft].unEqualCompetitiveWordNum}}</td>
                             <td></td>
                             <td class="td_color">{{ContrastData[idRight].unEqualCompetitiveWordNum}}</td>
                             <td></td>
                         </tr>
-                        <tr v-if="ContrastData[idLeft]">
+                        <tr v-if="ContrastData[idLeft] && duibitableone">
                             <td>8000以上热度竞价词数 </td>
                             <td class="td_color">{{ContrastData[idLeft].hotCompetitiveWords}}</td>
                             <td></td>
@@ -528,7 +557,7 @@
                                 <i class="iconfont icon-more" @click="listNav('noalike' , 8000 , '')"></i>
                             </td>
                         </tr>
-                        <tr v-if="ContrastData[idLeft]">
+                        <tr v-if="ContrastData[idLeft] && duibitableone">
                             <td>6000-8000热度竞价词数 </td>
                             <td class="td_color">{{ContrastData[idLeft].lowerHotCompetitiveWords}}</td>
                             <td></td>
@@ -537,7 +566,7 @@
                                 <i class="iconfont icon-more" @click="listNav('noalike' , 8000 , 6000)"></i>
                             </td>
                         </tr>
-                        <tr v-if="ContrastData[idLeft]">
+                        <tr v-if="ContrastData[idLeft] && duibitableone">
                             <td>4605-6000热度竞价词数 </td>
                             <td class="td_color">{{ContrastData[idLeft].middleHotCompetitiveWords}}</td>
                             <td></td>
@@ -546,13 +575,18 @@
                                 <i class="iconfont icon-more" @click="listNav('noalike' , 6000 , 4605)"></i>
                             </td>
                         </tr>
-                        <tr v-if="ContrastData[idLeft]">
+                        <tr v-if="ContrastData[idLeft] && duibitableone">
                             <td>低于4605热度竞价词数 </td>
                             <td class="td_color">{{ContrastData[idLeft].lowCompetitiveWords }}</td>
                             <td></td>
                             <td class="td_color">{{ContrastData[idRight].lowCompetitiveWords}}</td>
                             <td>
                                 <i class="iconfont icon-more" @click="listNav('noalike' , '' , 4605)"></i>
+                            </td>
+                        </tr>
+                        <tr v-if="!duibitableone">
+                            <td colspan="7" style="height: 80px;">
+                                暂无对比数据
                             </td>
                         </tr>
                         <tr v-if="loadingparent">
@@ -635,10 +669,12 @@ export default {
             },
             leftloadingCode: 1000,
             rightloadingCode: 1000,
-            APPinforlefet: "" //左面input
+            APPinforlefet: "", //左面input
+            value1: 0, //当前时间
+            options3: [], //世界列表
+            duibitableone: true
         };
-    },
-
+    }, 
     components: {
         banner,
         list1,
@@ -650,7 +686,8 @@ export default {
     computed: {
         ...mapState({
             countryList: state => state.Home.countryList,
-            userType: state => state.Sign.userType
+            userType: state => state.Sign.userType,
+            IsManager: state => state.Sign.IsManager
         })
     },
 
@@ -679,6 +716,9 @@ export default {
                         index
                     ].nationId;
                 }
+                if (!this.$route.query.key) {
+                    this.countryNow = 2;
+                }
             });
         });
 
@@ -696,8 +736,25 @@ export default {
         }
     },
 
-    mounted() {
-        //this.$height(".kcl_index");
+    mounted() { 
+        //搜索列表的回车事件
+        let _this = this;
+        $("#leftInput").keydown(function(e) {
+            var curKey = e.which;
+            if (curKey == 13) {
+                console.log(1);
+                _this.btnClick(_this.APPinforlefet, "left");
+                return false;
+            }
+        });
+        $("#rightInput").keydown(function(e) {
+            var curKey = e.which;
+            if (curKey == 13) {
+                console.log(2);
+                _this.btnClick(_this.APPinfor, "right");
+                return false;
+            }
+        });
         //关闭搜索列表
         $(document).bind("click", function(e) {
             var target = $(e.target);
@@ -706,6 +763,7 @@ export default {
                 $(".kc_over2").css("height", "0");
             }
         });
+        this.options3 = datefn(4);
     },
 
     methods: {
@@ -715,7 +773,15 @@ export default {
         blurInput(dom) {
             $(dom).css("border-color", "#dee2e6");
         },
-
+        changeDateFun() {
+            //切换日期
+            this.tableShow = false;
+            this.tableCommonsShow = false;
+            this.parentAjaxType = false;
+            this.components_index = 0;
+            this.currentView = list1;
+            this.ContrastData = {};
+        },
         changeFun(value) {
             this.loading = this.$loading(this.loadingopaction);
 
@@ -955,62 +1021,61 @@ export default {
                 nationId: this.countryNow,
                 selectedAppId,
                 competitiveAppId,
-                beginTime: datefn(1)[1].data.beginTime,
-                endTime: datefn(1)[1].data.endTime
+                beginTime: datefn(4)[this.value1].data.beginTime,
+                endTime: datefn(4)[this.value1].data.endTime
             };
 
             this.$https.post(url, JSON.stringify(obj)).then(res => {
-                this.loadingparent = false;
-                this.ContrastData = res.data.data.appAnalysisResult;
-                this.parentAjaxType = true; // 当前请求结束，自己请求
-
-                if (this.tableShow) {
-                    this.tableCommonsShow = true;
-                }
-
-                let totalNum =
-                    res.data.data.appAnalysisResult[this.idLeft]
-                        .totalCompetitiveWordNum;
-                let identicalNum =
-                    res.data.data.appAnalysisResult[this.idLeft]
-                        .equalCompetitiveWordNum;
-                let lsNum = identicalNum / totalNum * 10000;
-                this.percentage = (lsNum / 100).toFixed(2);
-                setTimeout(() => {
-                    // 基于准备好的dom，初始化echarts实例
-                    this.myChart = this.$echarts.init(
-                        document.getElementById("myChart1")
-                    );
-                    this.myChart.setOption({
-                        tooltip: {
-                            trigger: "item",
-                            formatter: "{a} <br/>{b}: {c} ({d}%)"
-                        },
-                        series: [
-                            {
-                                name: "竞价词重合度",
-                                type: "pie",
-                                radius: ["60%", "80%"],
-                                labelLine: {
-                                    normal: {
-                                        show: false
-                                    }
-                                },
-                                color: ["#2d76ed", "#dee2e6"],
-                                data: [
-                                    {
-                                        value: identicalNum,
-                                        name: "相同"
+                this.loadingparent = false; 
+                if (res.data.resultCode == 1000) {
+                    this.duibitableone = true
+                    this.ContrastData = res.data.data.appAnalysisResult;
+                    this.parentAjaxType = true; // 当前请求结束，自己请求
+                    if (this.tableShow) {
+                        this.tableCommonsShow = true;
+                    }
+                    let totalNum =res.data.data.appAnalysisResult[this.idLeft].totalCompetitiveWordNum;
+                    let identicalNum =res.data.data.appAnalysisResult[this.idLeft].equalCompetitiveWordNum;
+                    let lsNum = identicalNum / totalNum * 10000;
+                    this.percentage = (lsNum / 100).toFixed(2);
+                    setTimeout(() => {
+                        // 基于准备好的dom，初始化echarts实例
+                        this.myChart = this.$echarts.init(
+                            document.getElementById("myChart1")
+                        );
+                        this.myChart.setOption({
+                            tooltip: {
+                                trigger: "item",
+                                formatter: "{a} <br/>{b}: {c} ({d}%)"
+                            },
+                            series: [
+                                {
+                                    name: "竞价词重合度",
+                                    type: "pie",
+                                    radius: ["60%", "80%"],
+                                    labelLine: {
+                                        normal: {
+                                            show: false
+                                        }
                                     },
-                                    {
-                                        value: totalNum - identicalNum,
-                                        name: "不相同"
-                                    }
-                                ]
-                            }
-                        ]
-                    });
-                }, 500);
+                                    color: ["#2d76ed", "#dee2e6"],
+                                    data: [
+                                        {
+                                            value: identicalNum,
+                                            name: "相同"
+                                        },
+                                        {
+                                            value: totalNum - identicalNum,
+                                            name: "不相同"
+                                        }
+                                    ]
+                                }
+                            ]
+                        });
+                    }, 500);
+                }else{
+                    this.duibitableone = false
+                }
             });
         }
     }

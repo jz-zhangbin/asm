@@ -217,7 +217,7 @@
                     <p>公司或产品名称</p>
                     <input type="text" disabled v-model="userType.clientName">
                     <p>订单号</p>
-                    <input type="text" disabled v-model="userType.dingdan">
+                    <input type="text" disabled  v-model="userType.orderNumber">
                     <p>主要联系人姓名</p>
                     <input type="text" disabled v-model="userType.buyerName">
                     <p>主要联系人邮箱</p>
@@ -293,7 +293,7 @@
 
                 <!-- 投放时间设置 -->
                 <p class="createlist_title">投放时间设置</p>
-                <el-date-picker v-model="value7" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions2">
+                <el-date-picker v-model="value7" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format='yyyy-MM-dd' :picker-options="pickerOptions2">
                 </el-date-picker>
 
                 <p class="createlist_title">投放开启</p>
@@ -442,10 +442,7 @@ export default {
         }
     },
 
-    computed: {
-        ...mapState({
-            datelist: state => state.Date.DateListAll
-        })
+    computed: { 
     },
 
     created() {
@@ -457,8 +454,7 @@ export default {
                     path: "/advertising-center/account",
                     query: {
                         accountName: queryData.accountName,
-                        orgId: queryData.orgId,
-                        date: queryData.date,
+                        orgId: queryData.orgId, 
                         id: queryData.id
                     }
                 },
@@ -492,6 +488,13 @@ export default {
     destroyed() {},
 
     methods: {
+        dateNow() {
+            let date = new Date()
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate(); 
+            return (year+""+month+""+strDate)
+        },
         audienceSearchClick() {
             //搜索模板
             this.loading = this.$loading(this.loadingopaction);
@@ -601,7 +604,7 @@ export default {
                     type: 3
                 });
                 return false;
-            }
+            } 
             //5.关键词设置
             if (this.widely || this.accurate) {
                 if (!this.keyWordDate.id) {
@@ -657,8 +660,7 @@ export default {
                         res.data.data.dailyBudgetAmount;
                     this.AjaxGetUser(res.data.data.adaMid);
                     if (!this.adjuzimg) {
-                        this.GetImgUrl(res.data.data.adaMid);
-                        //this.GetImgUrl("364191819");
+                        this.GetImgUrl(res.data.data.adaMid,res.data.data.storefront); 
                     }
                 } else {
                     this.topDate = {
@@ -670,9 +672,12 @@ export default {
                 }
             });
         },
-        GetImgUrl(id) {
-            let url = "/api/v1/IntellAdvertiseApi/Campaign/GetAppByAppids";
-            this.$https.post(url, JSON.stringify([id])).then(res => {
+        GetImgUrl(id,country) {
+            let url = "/api/v1/IntellAdvertiseApi/Campaign/GetAppByAppidCountrys";
+            this.$https.post(url, JSON.stringify([{
+                 appId: id,
+                 countryCode: country.toLowerCase()
+            }])).then(res => {
                 this.loadingimg = true;
                 this.appDate = res.data.data[0];
                 this.$ls.set("adjuz_img", res.data.data[0]);
@@ -721,12 +726,12 @@ export default {
                 this.$route.query.id;
             this.$https.get(url).then(res => {
                 this.userType = res.data.data;
-                this.userType.dingdan =
-                    id +
-                    "_" +
-                    this.$route.query.orgId +
-                    "_" +
-                    this.datelist[0].data.endTime;
+                // this.userType.orderNumber =
+                //     id +
+                //     "_" +
+                //     this.$route.query.orgId +
+                //     "_" +
+                //     this.dateNow()
             });
         },
         AjaxGetKeyWord() {
@@ -788,6 +793,7 @@ export default {
             let obj = {
                 orgId: this.$route.query.orgId,
                 adamid: this.appDate.adamId,
+                campaignId: this.$route.query.listId,
                 countrys: this.checkList,
                 budgetSettings: list,
                 adGroupTempName: this.listStrPing(this.newAdvertisementZuArr),
@@ -809,7 +815,7 @@ export default {
                           clientName: this.userType.clientName,
                           buyerName: this.userType.buyerName,
                           buyerEmail: this.userType.buyerEmail,
-                          orderNumber: this.userType.dingdan
+                          orderNumber: this.userType.orderNumber
                       }
                     : null
             };

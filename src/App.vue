@@ -10,7 +10,7 @@
 
 <script>
 import "babel-polyfill";
-import {mapState} from 'vuex'
+import {mapState} from 'vuex' 
 export default {
     name: "App",
     data() {
@@ -32,7 +32,25 @@ export default {
                 this.type = false
             }
         }
-    }
+    }, 
+
+    mounted() { 
+        // //浏览器关闭清楚本地缓存
+        // let _this = this
+        // var READYTOPROCESS = false;
+        // window.onbeforeunload = function closeWindow(e) {
+        //     if (!READYTOPROCESS)
+        //     {
+        //         //message to be returned to the popup box.
+        //         var message = '你确定要关闭吗？',
+        //             e = e || window.event;
+        //         if (e){
+        //             _this.$ls.clear('TIME_UTC')
+        //         } 
+        //         _this.$ls.clear('TIME_UTC') // Safari
+        //     }
+        // };
+    } 
 };
 </script>
 
@@ -68,23 +86,26 @@ export default {
     display: none !important;
 }
 .el-message-box {
-    width: 300px;
-    height: 118px;
+    width: 300px !important;
+    height: 118px !important;
     .el-button--small,
     .el-button--small.is-round {
-        padding: 12px 30px;
-        margin: 0 10px;
+        padding: 12px 30px !important;
+        margin: 0 10px !important;
     }
 }
 .el-message-box__content {
-    padding-top: 30px;
-    padding-bottom: 19px;
+    padding-top: 30px !important;
+    padding-bottom: 19px !important;
 }
 .el-loading-mask {
     z-index: 10 !important;
 }
 .el-table__empty-block{
     min-height: 122px !important;
+}
+.el-date-editor--daterange.el-input__inner{
+    width: 240px !important;
 }
 footer {
     height: 68px;

@@ -292,8 +292,7 @@ export default {
                     path: "/advertising-center/account",
                     query: {
                         accountName: queryData.accountName,
-                        orgId: queryData.orgId,
-                        date: queryData.date,
+                        orgId: queryData.orgId, 
                         id: queryData.id
                     }
                 },
@@ -304,8 +303,7 @@ export default {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId,
                         listName: queryData.listName,
-                        listId: queryData.listId,
-                        date: queryData.date,
+                        listId: queryData.listId, 
                         id: queryData.id
                     }
                 },
@@ -456,7 +454,7 @@ export default {
             if (this.topDate.age != -1) {
                 this.topDate.age = JSON.parse(this.topDate.age);
             }
-            if (this.topDate.deviceClass.length > 1) {
+            if (this.topDate.deviceClass.length > 1 == this.topDate.deviceClass == -1) {
                 this.equipment = "不限";
             } else {
                 this.equipment = this.topDate.deviceClass[0];
@@ -466,7 +464,7 @@ export default {
             } else {
                 this.user = "未下载用户";
             }
-            if (this.topDate.gender.length == 0) {
+            if (this.topDate.gender.length == 0 || this.topDate.gender == -1) {
                 this.sex = "不限";
             } else {
                 if (this.topDate.gender[0] == "M") {
@@ -475,7 +473,7 @@ export default {
                     this.sex = "女";
                 }
             }
-            if (this.topDate.age[0].minAge == -1) {
+            if (this.topDate.age[0].minAge == -1 || this.topDate.age == -1 ) {
                 this.age1 = "不限";
             } else {
                 this.age1 = this.topDate.age[0].minAge;

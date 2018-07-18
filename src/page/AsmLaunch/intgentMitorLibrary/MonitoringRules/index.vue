@@ -114,8 +114,7 @@
 .table {
     padding: 50px 0 0;
     tr td,
-    th {
-        border-right: 1px solid #dee2e6;
+    th { 
         text-align: center;
         padding: 8px 0;
     }
@@ -144,10 +143,9 @@
 
         <div class="adver_nav">
             <v-nav :pageName='pageName' :routeList='routeList'></v-nav>
-            <div class="btn">
-                <router-link :to="{path: '/intgentMitorLibrary/MRpublic?parame=add&id='+$route.query.id}">
-                    <span>添加监测规则</span>
-                </router-link>
+            <div class="btn" @click="$router.push({path: '/intgentMitorLibrary/MRpublic?parame=add&id='+$route.query.id})">
+
+                <span>添加监测规则</span>
             </div>
         </div>
         <div class="advuer_content">
@@ -161,7 +159,7 @@
                 <div class="advuer_settings">
                     <div class="account_search_cao" @click="caoShow = !caoShow">
                         操作：
-                        <i class="iconfont icon-xia" ></i>
+                        <i class="iconfont icon-xia"></i>
                         <transition name="el-zoom-in-top">
                             <section v-show="caoShow" @mouseout="caoShow = false" @mousemove="caoShow = true">
                                 <span v-for="(ele,index) in caoList" :key="index" @click="handleCommand(index)">{{ele}}</span>

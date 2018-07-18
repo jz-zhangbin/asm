@@ -22,4 +22,4 @@ export default {
   clear(key) {
     localStorage.clear(key)
   }
-}
+} 
