@@ -331,8 +331,8 @@ export default {
                     }
                 });
                 this.list = newarr;
-                console.log(newarr)
-                console.log(this.topimgArr)
+                //console.log(newarr)
+                //console.log(this.topimgArr)
                 if (this.logoShow) {
                     this.topimgArr.map((ele, index) => {
                         this.GetImgUrl(ele.id,ele.country,index);
@@ -347,18 +347,19 @@ export default {
             let _this = this;
             var url = null;
             clearInterval(this.timer);
-            if (this.$route.path == "/advertising-center/account") {
+            //console.log(this.$route.name)
+            if (this.$route.name == "account") {
                 url =
                     "/api/v1/IntellAdvertiseApi/Campaign/GetCampaignOperateResultDetail?type=" +
                     _this.listType +
                     "&orgid=" +
-                    this.$route.query.orgId;
+                    this.$route.params.orgId;
             } else {
                 url =
                     "/api/v1/IntellAdvertiseApi/AdGroup/GetAdGroupOperateResultDetail?type=" +
                     _this.listType +
                     "&orgid=" +
-                    this.$route.query.orgId;
+                    this.$route.params.orgId;
             }
             _this
                 .$https({

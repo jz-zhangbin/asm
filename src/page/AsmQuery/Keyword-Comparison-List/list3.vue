@@ -121,14 +121,14 @@
                         <td>{{ele.selectedAppRatio | percentage}}</td>
                         <td>
                             <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
-                                <i class="iconfont icon-plus-add" @click="addCiClick1(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
+                                <i class="iconfont icon-plus-add" @click="addCiClick1(index)"></i>
                                 <span class="sl_t_is" style="width:114px;">
                                     添加至新建词组
                                 </span>
                                 <span class="sl_t_san"></span>
                             </div>
                             <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
-                                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick1(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
+                                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick1(index)"> </i>
                                 <span class="sl_t_is" style="width:114px;">
                                     从新建词组删除
                                 </span>
@@ -361,14 +361,14 @@ export default {
                     ajaxarr.push(excelCheckout(
                         this.ajaxEcecl().url,
                         this.ajaxEcecl(i + 1, 2000 , 'left').obj,
-                        num < 1 ? '所有竞价词（左）' : '所有竞价词（左）' + "第" + (i + 1) + "页"
+                        num < 1 ? '所有竞价词（' + this.$parent.dataLeft.appName +'）' : '所有竞价词（' + this.$parent.dataLeft.appName +'）' + "第" + (i + 1) + "页"
                     )) 
                 }
                 for (var i = 0; i < num1; i++) {
                     ajaxarr.push(excelCheckout(
                         this.ajaxEcecl().url,
                         this.ajaxEcecl(i + 1, 2000 , 'right').obj,
-                        num1 < 1 ? '所有竞价词（右）' : '所有竞价词（右）' + "第" + (i + 1) + "页"
+                        num1 < 1 ? '所有竞价词（' + this.$parent.dataRight.appName +'）' : '所有竞价词（' + this.$parent.dataRight.appName +'）' + "第" + (i + 1) + "页"
                     ))
                 }
                 Promise.all(ajaxarr).then((result) => {
@@ -380,14 +380,14 @@ export default {
                 excelCheckout(
                     this.ajaxEcecl().url,
                     this.ajaxEcecl(1, 2000 , 'left').obj,
-                    '所有竞价词（左）'
+                    '所有竞价词（' + this.$parent.dataLeft.appName +'）'
                 ).then(() => {
                     this.checkouting = false;
                 });
                 excelCheckout(
                     this.ajaxEcecl().url,
                     this.ajaxEcecl(1, 2000 , 'right').obj,
-                    '所有竞价词（右）'
+                    '所有竞价词（' + this.$parent.dataRight.appName +'）'
                 ).then(() => {
                     this.checkouting = false;
                 });
@@ -487,7 +487,7 @@ export default {
         },
 
         //添加至收藏
-        addCiClick1(index, num, name) {
+        addCiClick1(index) {
             if (!this.userType) {
                 this.$message({
                     message: "请先登录！",
@@ -495,16 +495,17 @@ export default {
                 });
                 return false;
             }
-            if (num == 0) {
+            let obj = this.tableInner1[index] 
+            if (this.tableInner1[index].hotKeywordTemStatus == 0) {
                 this.tableInner1[index].hotKeywordTemStatus = 1;
-                AjaxRemove(name, 0); //添加
+                AjaxRemove(obj.keywordName, 0, obj.searchIndex, obj.popularityIndex, 0); //添加
             } else {
                 this.tableInner1[index].hotKeywordTemStatus = 0;
-                AjaxRemove(name, 1); //删除
-            }
+                AjaxRemove(obj.keywordName, 1, obj.searchIndex, obj.popularityIndex, 0); //删除
+            } 
         },
 
-        addCiClick2(index, num, mame) {
+        addCiClick2(index) {
             if (!this.userType) {
                 this.$message({
                     message: "请先登录！",
@@ -512,12 +513,13 @@ export default {
                 });
                 return false;
             }
-            if (num == 0) {
+            let obj = this.tableInner2[index] 
+            if (this.tableInner2[index].hotKeywordTemStatus == 0) {
                 this.tableInner2[index].hotKeywordTemStatus = 1;
-                AjaxRemove(name, 0); //添加
+                AjaxRemove(obj.keywordName, 0, obj.searchIndex, obj.popularityIndex, 0); //添加
             } else {
                 this.tableInner2[index].hotKeywordTemStatus = 0;
-                AjaxRemove(name, 1); //删除
+                AjaxRemove(obj.keywordName, 1, obj.searchIndex, obj.popularityIndex, 0); //删除
             }
         },
 

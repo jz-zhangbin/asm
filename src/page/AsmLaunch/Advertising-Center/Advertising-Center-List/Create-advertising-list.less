@@ -17,7 +17,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 90px;
+      height: 60px;
   }
   .createlist_contant{
     min-width: 1200px; 
@@ -430,6 +430,7 @@
   width: 650px;
   height: 180px;
   border: 1px solid @border;
+  position: relative;
   span{
     text-align: center;
     overflow: hidden;
@@ -522,5 +523,21 @@
     border: 1px solid @border;
     height: 34px;
     margin-bottom: 10px;
+  }
+}
+.key_word{
+  position: absolute;
+  right: 0;
+  top: -32px;
+  display: flex;
+  align-items: center;
+  i{
+    font-size: 26px;
+    cursor: pointer; 
+    margin-right: 14px;
+  }
+  span{
+    color: @color; 
+    cursor: pointer; 
   }
 }

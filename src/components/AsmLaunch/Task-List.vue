@@ -77,6 +77,11 @@
                         <p>{{taskData.pulseCount}}</p> 个广告{{type}}...</aside>
                     <span @click="lookClick('启动','ENABLED')">查看详情</span>
                 </li>
+                <li v-if="taskData.removeCount != 0">
+                    <aside> 正在移除
+                        <p>{{taskData.removeCount}}</p> 个广告{{type}}...</aside>
+                    <span @click="lookClick('移除','Remove')">查看详情</span>
+                </li>
             </ul>
         </div>
         <v-look v-if="lookShow" :name='listName' :listType='listType'></v-look>

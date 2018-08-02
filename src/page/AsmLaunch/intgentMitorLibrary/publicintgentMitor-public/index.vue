@@ -18,7 +18,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 90px;
+        height: 60px;
     }
     .btn {
         width: 158px;
@@ -493,7 +493,7 @@ export default {
         //this.$height('.publicintgentMitor');
         switch (this.$route.query.parame) {
             case "add":
-                this.status = "下一步";
+                this.status = "确定";
                 this.shows = true;
                 this.Monitor = true;
                 this.isdisabledFn = false;
@@ -583,7 +583,7 @@ export default {
                 this.accountnull = true;
                 this.Monitornull = true;
                 if (
-                    this.status == "下一步" ||
+                    this.status == "确定" ||
                     this.$route.query.parame == "modify"
                 ) {
                     if (this.userName != "") {
@@ -610,15 +610,16 @@ export default {
                             this.MonitorSave(
                                 this.Arrayreceiving.orgUserInfoId
                             ).then(res => {
-                                //完成后走下一步
-                                this.$router.push({
-                                    path: "/intgentMitorLibrary/MRpublic",
-                                    query: {
-                                        parame: "add",
-                                        id: res.data.data.status,
-                                        type: 'up'
-                                    }
-                                });
+                                // //完成后走下一步
+                                // this.$router.push({
+                                //     path: "/intgentMitorLibrary/MRpublic",
+                                //     query: {
+                                //         parame: "add",
+                                //         id: res.data.data.status,
+                                //         type: 'up'
+                                //     }
+                                // });
+                                this.$router.go(-1)
                             });
                         }
                     }
@@ -644,7 +645,7 @@ export default {
                     userId: 0,
                     IsOpen: this.checked ? 1 : 0
                 }; 
-                 console.log(obj)
+                 //console.log(obj)
                 this.$https.post(url, JSON.stringify(obj)).then(res => {
                     success(res);
                 });

@@ -22,15 +22,15 @@
         border-radius: 6px;
         background: #fff;
         width: 600px;
-        height: 510px;
+        height: 460px;
         position: absolute;
         margin: auto;
         left: 0;
         top: 0;
         right: 0;
-        bottom: 0; 
+        bottom: 0;
         &.ad_te_section {
-            height: 460px;
+            height: 430px;
         }
         h1 {
             font-size: 16px;
@@ -79,7 +79,14 @@
         width: 100%;
         box-sizing: border-box;
         padding: 20px 30px;
-        position: relative; 
+        position: relative;
+        .a_class {
+            position: absolute;
+            cursor: pointer;
+            color: @color;
+            right: 30px;
+            top: 17px;
+        }
     }
     .add_index {
         box-sizing: border-box;
@@ -115,7 +122,8 @@
             }
         }
     }
-    .keyword_list {
+    .keyword_list,
+    .keyword_list2 {
         width: 100%;
         border: 1px solid @border;
         height: 160px;
@@ -143,6 +151,14 @@
                     cursor: pointer;
                     border-right: none;
                 }
+            }
+        }
+    }
+    .keyword_list2 {
+        li span {
+            &:nth-child(3) {
+                cursor: pointer;
+                border-right: 1px solid @border;
             }
         }
     }
@@ -215,17 +231,29 @@
             }
         }
     }
-    .div_kong{
+    .div_kong {
         text-align: center;
         line-height: 120px;
     }
-    .a_class{
-            position: absolute;
-            cursor: pointer;
-            color: @color;
-            right: 30px;
-            top: 100px;
+    .div_input {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px solid @border;
+        border-bottom: 1px solid @border;
+        input {
+            width: 72px;
+            margin-left: 6px;
+            height: 26px;
+            border: 1px solid @border;
+            border-radius: 4px;
+            outline: none;
+            padding-left: 8px;
+            &:focus {
+                border: 1px solid @color;
+            }
         }
+    }
 }
 </style>
 <style lang="less">
@@ -250,40 +278,43 @@
             height: 32px !important;
         }
     }
+    .keyword_list2 {
+        .el-select {
+            width: 110px;
+            height: 32px !important;
+        }
+        .el-input__inner {
+            height: 32px !important;
+        }
+        .el-input .el-input--suffix .is-focus {
+            height: 32px !important;
+        }
+    }
 }
 </style>
 
 <template>
     <div class="negative_index">
         <div :class="{ad_section: ls, ad_te_section: type == '广告组'}">
-            <h1>添加否定关键词</h1>
-            <h2>
-                <span :class="{span_checked: commonts == 1}" @click="commonts = 1">手动添加</span>
-                <span :class="{span_checked: commonts == 2}" @click="commonts = 2">上传否定关键词</span>
-            </h2>
+            <h1>{{state == '否定' ? '添加至否定关键词' : '添加至投放关键词'}}</h1>
             <div class="reaio_index" v-if="type == '广告系列'">
                 <el-radio v-model="radio" label="1">添加至广告系列</el-radio>
-                <el-radio v-model="radio" label="2">添加至广告组</el-radio> 
+                <el-radio v-model="radio" label="2">添加至广告组</el-radio>
             </div>
             <div class="add_index">
-                <el-select v-model="value" placeholder="请选择" v-if="radio == '2'">
+                <el-select v-model="value" placeholder="请选择广告组" v-if="radio == '2' || type == '广告组'">
                     <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.id">
                     </el-option>
                 </el-select>
-                <div class="add_input" v-if="commonts == 1">
-                    <input type="text" class="add_name" placeholder="请输入关键词" v-model="keyName">
-                    <span @click="addClick">添加</span>
-                </div>
-                <a href="../../../static/否定关键词示例.xlsx" class="a_class" download="" v-if="commonts == 2">下载示例</a>
             </div>
-            <ul class="keyword_list" v-if="commonts == 1">
+            <ul class="keyword_list" v-if="state == '否定'">
                 <li>
                     <span style="width: 50%">关键词</span>
                     <span style="width: 30%">匹配类型</span>
                     <span style="width: 20%">操作</span>
                 </li>
                 <div v-if="keywordList.length == 0" class="div_kong">
-                        暂无数据
+                    暂无数据
                 </div>
                 <li v-for="(ele,index) in keywordList" :key="index">
                     <span style="width: 50% ; color: #2d76ed">{{ele.keyName}}</span>
@@ -296,30 +327,31 @@
                     <span style="width: 20%" @click="remove(index)">删除</span>
                 </li>
             </ul>
-
-            <!-- 文件列表 -->
-            <div class="file_ul_box" v-if="commonts == 2">
-                <ul class="file_ul"> 
-                    <li v-for="(ele,index) in fileList" :key="index">
-                        {{ele.name}}
-                        <img src="../../images/components/u132.png" alt="" @click="removefile(index)">
-                    </li>
-                </ul>
-            </div>
-            <!-- 多个上传 -->
-            <div class="file_input" v-if="commonts == 2">
-                <input type="file" name="" id="" multiple @change="getFile($event)" v-if="commonts == 2">
-                <span>
-                    <i class="iconfont icon-adds"></i>
-                </span>
-            </div> 
-            <div class="btn1" v-if="commonts == 1">
-                <el-button @click="$parent.NegativeShow = false">取消</el-button>
-                <el-button type="primary" @click="ok">确定</el-button>
-            </div>
-            <div class="btn1" v-if="commonts == 2">
-                <el-button @click="$parent.NegativeShow = false">取消</el-button>
-                <el-button type="primary" @click="up">上传</el-button>
+            <ul class="keyword_list2" v-if="state == '非否定'">
+                <li>
+                    <span style="width: 35%">关键词</span>
+                    <span style="width: 25%">CPC出价</span>
+                    <span style="width: 24%">匹配类型</span>
+                    <span style="width: 16%">操作</span>
+                </li>
+                <li v-for="(ele,index) in keywordList" :key="index">
+                    <span style="width: 35% ; color: #2d76ed">{{ele.keyName}}</span>
+                    <div style="width: 25% " class="div_input">
+                        $<input type="text" placeholder="请输入" v-model="ele.CPC">
+                    </div>
+                    <span style="width: 24%">
+                        <el-select v-model="ele.value" placeholder="请选择">
+                            <el-option v-for="item in ele.options" :key="item" :label="item" :value="item">
+                            </el-option>
+                        </el-select>
+                    </span>
+                    <span style="width: 16%" @click="remove(index)">删除</span>
+                </li>
+            </ul>
+            <div class="btn1">
+                <el-button @click="$parent.negativeShow = false">取消</el-button>
+                <el-button type="primary" @click="ok" v-if="state == '否定'">确定</el-button>
+                <el-button type="primary" @click="ok2" v-else>确定</el-button>
             </div>
         </div>
     </div>
@@ -347,7 +379,9 @@ export default {
     },
 
     props: {
-        type: {}
+        type: {},
+        NoKeyWordList: {},
+        state: {}
     },
 
     components: {},
@@ -360,81 +394,38 @@ export default {
 
     updated() {},
 
-    mounted() {},
+    mounted() {
+        this.NoKeyWordList.map(ele => {
+            if (this.state == "否定") {
+                this.keywordList.push({
+                    keyName: ele.Name,
+                    options: ["广泛匹配", "精准匹配"],
+                    value: "广泛匹配"
+                });
+            } else {
+                this.keywordList.push({
+                    keyName: ele.Name,
+                    options: ["广泛匹配", "精准匹配"],
+                    CPC: "",
+                    value: "广泛匹配"
+                });
+            }
+        });
+    },
 
     destroyed() {},
 
     methods: {
-        addClick() {
-            let num = 0;
-            if (this.keyName != "") {
-                this.keywordList.map((ele, index) => {
-                    if (ele.keyName == this.keyName) {
-                        this.$store.commit("SET_SHOW_TRUE", {
-                            value: "不能插入重复关键词",
-                            type: 3
-                        });
-                        num = 1;
-                    }
-                });
-                if (num != 1) {
-                    this.keywordList.push({
-                        keyName: this.keyName,
-                        options: ["广泛匹配", "精准匹配"],
-                        value: "广泛匹配"
-                    });
-                }
-            }
-            this.keyName = "";
-        },
         remove(index) {
             this.keywordList.splice(index, 1);
         },
-        getFile($event) {
-            if (event.target.files.length == 1) {
-                let num = 0;
-                this.fileList.map((ele, index) => {
-                    if (event.target.files[0].name == ele.name) {
-                        num = 1;
-                    }
-                });
-                if (num != 1) {
-                    this.fileList.push(event.target.files[0]);
-                } else {
-                    event.target.files = null;
-                    this.$store.commit("SET_SHOW_TRUE", {
-                        value: "不能上传重复文件",
-                        type: 3
-                    });
-                }
-            } else {
-                let arr = [];
-                let num = 0;
-                for (var i in event.target.files) {
-                    if (i != "length" && i != "item") {
-                        arr.push(event.target.files[i]);
-                    }
-                }
-                this.fileList.map(ele => {
-                    arr.map(ele2 => {
-                        if (ele.name == ele2.name) {
-                            num = 1;
-                        }
-                    });
-                });
-                if (num != 1) {
-                    this.fileList.push(...arr);
-                } else {
-                    event.target.files = null;
-                    this.$store.commit("SET_SHOW_TRUE", {
-                        value: "不能上传重复文件",
-                        type: 3
-                    });
-                }
-            }
-        },
-        removefile(index) {
-            this.fileList.splice(index, 1);
+        AjaxGetList() {
+            let url =
+                "/api/v1/IntellAdvertiseApi/AdGroup/GetAdGroupList?cid=" +
+                this.$route.params.listId;
+            this.$https.get(url).then(res => {
+                this.options = res.data.data;
+            });
         },
         ok() {
             if (this.keywordList.length == 0) {
@@ -444,6 +435,13 @@ export default {
                 });
                 return false;
             }
+            if (this.value == "" && (this.type == "广告组" || this.radio == "2")) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "请选择广告组",
+                    type: 3
+                });
+                return false
+            }
             let arr = [];
             this.keywordList.map(ele => {
                 let obj = {
@@ -451,46 +449,63 @@ export default {
                     MatchType: ele.value == "广泛匹配" ? "EXACT" : "BROAD",
                     Text: ele.keyName
                 };
-                if (this.radio == "2") {
+                if (this.type == "广告组" || this.radio == "2") {
                     obj.AdgroupId = this.value;
-                }
-                if (this.type == "广告组") {
-                    obj.AdgroupId = this.$route.params.keyId;
                 }
                 arr.push(obj);
             });
             this.$emit("callback", { data: arr, type: "添加" });
-            this.$parent.NegativeShow = false;
+            this.$parent.negativeShow = false;
         },
-        up() {
-            if (this.fileList.length == 0) {
+        ok2() {
+            let back = true;
+            this.keywordList.map(ele => {
+                if (ele.CPC == "") {
+                    back = false;
+                }
+            });
+            if (!back) {
                 this.$store.commit("SET_SHOW_TRUE", {
-                    value: "上传文件不能为空",
+                    value: "CPC不能为空",
                     type: 3
                 });
                 return false;
             }
-            let obj = {
-                campaignid: this.$route.params.listId,
-                filelist: this.fileList
-            };
-            if (this.radio == "2") {
-                obj.AdgroupId = this.value;
+            if (this.value == "" && (this.type == "广告组" || this.radio == "2")) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "请选择广告组",
+                    type: 3
+                });
+                return false
             }
-            if (this.type == "广告组") {
-                obj.AdgroupId = this.$route.params.keyId;
-            }
-            //console.log(obj)
-            this.$emit("callback", { data: obj, type: "上传" });
-            this.$parent.NegativeShow = false;
-        },
-        AjaxGetList() {
-            let url =
-                "/api/v1/IntellAdvertiseApi/AdGroup/GetAdGroupList?cid=" +
-                this.$route.params.listId;
-            this.$https.get(url).then(res => {
-                this.options = res.data.data;
+            let arr = [];
+            let zheng = /^\d+(?=\.{0,1}\d+$|$)/;
+            let num = 0;
+            this.keywordList.map(ele => {
+                if (!zheng.test(ele.CPC)) {
+                    num++;
+                }
+                let obj = {
+                    name: ele.keyName,
+                    matchtype: ele.value == "广泛匹配" ? "EXACT" : "BROAD",
+                    bidamount: ele.CPC * 1,
+                    campaignId: this.$route.params.listId
+                };
+                if (this.type == "广告组" || this.radio == "2") {
+                    obj.adGroupId = this.value;
+                }
+                arr.push(obj);
             });
+            if (num != 0) {
+                this.$store.commit("SET_SHOW_TRUE", {
+                    value: "CPC不正确",
+                    type: 3
+                });
+                return false;
+            } else {
+                this.$parent.negativeShow = false;
+                this.$emit("callback", { data: arr, type: "添加" });
+            }
         }
     }
 };

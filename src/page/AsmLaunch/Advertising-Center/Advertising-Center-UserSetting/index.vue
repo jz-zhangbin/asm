@@ -15,7 +15,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 90px;
+        height: 60px;
     }
     .advuser_content {
         min-width: 1200px;

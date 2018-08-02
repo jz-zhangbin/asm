@@ -173,6 +173,9 @@
         bottom: 18px;
         z-index: 10;
     }
+    .stop {
+        cursor: not-allowed !important;
+    }
 }
 </style>
 <template>
@@ -183,7 +186,7 @@
         <!-- 面包屑 -->
         <div class="adver_nav">
             <v-nav :pageName='pageName' :routeList='routeList'></v-nav>
-            <div class="btn" @click="createAdvertising">
+            <div :class="{btn: classBool , stop : isRemove}" @click="createAdvertising">
                 <!-- <i class="iconfont icon-plus-add"></i> -->
                 <span>创建广告组</span>
             </div>
@@ -194,7 +197,7 @@
             <img src="../../../../images/moni/comon_loading.png" alt="" v-if="!loadingimg">
             <img :src="adverImg" alt="" v-else>
             <section v-if="!loading">
-                <h1>广告系列 ：{{$route.query.listName}}</h1>
+                <h1>广告系列 ：{{$route.params.listName}}</h1>
                 <div>
                     <p>
                         <span>投放地区</span>
@@ -215,7 +218,7 @@
                 </div>
             </section>
             <section v-else>
-                <h1>广告系列 ：{{$route.query.listName}}</h1>
+                <h1>广告系列 ：{{$route.params.listName}}</h1>
                 <div>
                     <p>
                         <span>投放地区</span>
@@ -237,9 +240,9 @@
             </section>
 
             <!-- 右面固定 -->
-            <div class="right_absolute_btn" @click="zhinengRouter">智能监测</div>
+            <div :class="{right_absolute_btn: classBool , stop: isRemove}" @click="zhinengRouter">智能监测</div>
             <div class="right_absolute_text">
-                <el-button type="text" @click="routerTosettings">编辑</el-button>
+                <el-button :class="{stop: isRemove}" type="text" @click="routerTosettings">编辑</el-button>
             </div>
             <div class="right_absolute_select">
                 <div class="checket_time">
@@ -260,10 +263,10 @@
 
         <!-- 导航 -->
         <div class="router_list">
-            <router-link :to="{path: '/advertising-center/list/home' , query: $route.query}" active-class="activeclass">所有广告组</router-link>
-            <router-link :to="{path: '/advertising-center/list/keyword' , query: $route.query}" active-class="activeclass">所有关键词</router-link>
-            <router-link :to="{path: '/advertising-center/list/search-terms' , query: $route.query}" active-class="activeclass">Search Terms</router-link>
-            <router-link :to="{path: '/advertising-center/list/negative-keyword' , query: $route.query}" active-class="activeclass">否定关键词</router-link>
+            <router-link :to="{name: 'list-home' , params: $route.params}" active-class="activeclass">所有广告组</router-link>
+            <router-link :to="{name: 'list-keyword' , params: $route.params}" active-class="activeclass">所有关键词</router-link>
+            <router-link :to="{name: 'list-search-terms' , params: $route.params}" active-class="activeclass">Search Terms</router-link>
+            <router-link :to="{name: 'list-negative-keyword' , params: $route.params}" active-class="activeclass">否定关键词</router-link>
         </div>
         <div class="router_box">
             <router-view></router-view>
@@ -314,6 +317,8 @@ export default {
                 pulseCount: 0 //启动
             },
             timer: null, 
+            isRemove: false,//是否是移除广告系列数据
+            classBool: true,
         };
     },
 
@@ -330,14 +335,15 @@ export default {
 
     computed: {},
 
-    created() {
-        let queryData = this.$route.query;
+    created() { 
+        let queryData = this.$route.params;
+        queryData.listType == 'remove' ? this.isRemove = true : this.isRemove = false
         this.routeList.push(
             ...[
                 {
                     name: "账户",
-                    path: "/advertising-center/account",
-                    query: {
+                    routername: "account",
+                    params: {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId,
                         id: queryData.id
@@ -345,8 +351,8 @@ export default {
                 },
                 {
                     name: "广告系列",
-                    path: "/advertising-center/list",
-                    query: queryData
+                    routername: "list",
+                    params: queryData
                 }
             ]
         );
@@ -370,9 +376,12 @@ export default {
 
     methods: {
         createAdvertising() {
+            if(this.isRemove) {
+                return false
+            }
             this.$router.push({
-                path: "/advertising-center/create-list",
-                query: this.$route.query
+                name: 'create-list',
+                params: this.$route.params
             });
         },
         timeNowClick() {
@@ -385,16 +394,19 @@ export default {
             this.timeNowShow = false;
         },
         routerTosettings() {
+            if(this.isRemove) {
+                return false
+            }
             this.$router.push({
-                path: "/advertising-center/settings-list",
-                query: this.$route.query
+                name: 'settings-list', 
+                params: this.$route.params
             });
         },
         GetCampaignObject() {
             this.loading = false;
             let url =
                 "/api/v1/IntellAdvertiseApi/Campaign/GetCampaignObject?id=" +
-                this.$route.query.listId;
+                this.$route.params.listId;
             this.$https.get(url).then(res => {
                 this.loading = true;
                 if (res.data.resultCode == 1000) {
@@ -402,6 +414,10 @@ export default {
                     this.adaMid = res.data.data.adaMid;
                     this.GetImgUrl(res.data.data.adaMid,res.data.data.storefront);
                     this.$ls.set("adaMid", res.data.data.adaMid); 
+                    this.$ls.set('listCountry' , {
+                        name : countryTwo(res.data.data.storefront),
+                        nationShortName: res.data.data.storefront.toLowerCase()
+                    })
                 } else {
                     this.topDate = {
                         img: "",
@@ -430,9 +446,12 @@ export default {
             });
         },
         zhinengRouter() {
+            if(this.isRemove) {
+                return false
+            }
             let url =
                 "/api/v1/IntellAdvertiseApi/Monitor/GetIntellMonitorByOrgId?orgId=" +
-                this.$route.query.orgId
+                this.$route.params.orgId
             this.$https.get(url).then(res => {
                 if (res.data.resultCode == 404) {
                     this.$store.commit('SET_SHOW_TRUE',{
@@ -454,7 +473,7 @@ export default {
         AjaxGetCampaignOperateResult() {
             //5秒一次获取状态列表
             let url =
-                "/api/v1/IntellAdvertiseApi/AdGroup/GetAdGroupOperateResult?orgid=" + this.$route.query.orgId;
+                "/api/v1/IntellAdvertiseApi/AdGroup/GetAdGroupOperateResult?orgid=" + this.$route.params.orgId;
             let _this = this;
             clearInterval(this.timer);
             this.timer = setInterval(() => {

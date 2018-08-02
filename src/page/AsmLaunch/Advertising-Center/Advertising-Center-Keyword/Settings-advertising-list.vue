@@ -15,7 +15,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 90px;
+        height: 60px;
     }
     .createlist_contant {
         min-width: 1200px;
@@ -284,13 +284,13 @@ export default {
 
     created() {
         this.AjaxGetAdgroupObject();
-        let queryData = this.$route.query;
+        let queryData = this.$route.params;
         this.routeList.push(
             ...[
                 {
                     name: "账户",
-                    path: "/advertising-center/account",
-                    query: {
+                    routername: "account",
+                    params: {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId, 
                         id: queryData.id
@@ -298,24 +298,25 @@ export default {
                 },
                 {
                     name: "广告系列",
-                    path: "/advertising-center/list",
-                    query: {
+                    routername: "list",
+                    params: {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId,
                         listName: queryData.listName,
                         listId: queryData.listId, 
-                        id: queryData.id
+                        id: queryData.id,
+                        listType: queryData.listType
                     }
                 },
                 {
                     name: "广告组",
-                    path: "/advertising-center/keyword",
-                    query: queryData
+                    routername: "group",
+                    params: queryData
                 },
                 {
                     name: "编辑广告组",
-                    path: "/advertising-center/settings-keyword",
-                    query: queryData
+                    routername: "settings-keyword",
+                    params: queryData
                 }
             ]
         );
@@ -353,7 +354,7 @@ export default {
                 AppDownLoaders: "",
                 Age: "",
                 Gender: "",
-                CampaignId: this.$route.query.listId
+                CampaignId: this.$route.params.listId
             };
             obj.DefaultCPCBidAmount = this.topDate.defaultCPCBidAmount * 1;
             obj.CPAGoalamount = this.topDate.cpaGoalamount * 1;
@@ -402,7 +403,7 @@ export default {
                 objJson: JSON.stringify([
                     {
                         Name: this.topDate.name,
-                        Id: this.$route.query.keyId,
+                        Id: this.$route.params.keyId,
                         DeviceClass: obj.DeviceClass,
                         AppDownLoaders: obj.AppDownLoaders,
                         Age: obj.Age,
@@ -420,7 +421,7 @@ export default {
             this.loading = this.$loading(this.loadingopaction);
             let url =
                 "/api/v1/IntellAdvertiseApi/AdGroup/GetAdgroupObject?id=" +
-                this.$route.query.keyId;
+                this.$route.params.keyId;
             this.$https.get(url).then(res => {
                 this.loading.close();
                 if (res.data.resultCode == 1000) {

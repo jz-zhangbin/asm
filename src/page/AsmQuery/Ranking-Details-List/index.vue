@@ -205,13 +205,13 @@
               <td v-if="tableData.associatedWords.length == 0" style="height: 224px">暂无搜索关联词</td>
               <td style="width: 11%">
                 <div class="sl_t_dis" v-if="tableData.hotKeywordTemStatus == 0">
-                  <i class="iconfont icon-plus-add" @click="addCiClick( tableData.hotKeywordTemStatus , tableData.keywordName)">
+                  <i class="iconfont icon-plus-add" @click="addCiClick">
                   </i>
                   <span class="sl_t_is" style="width:114px;">添加至新建词组</span>
                   <span class="sl_t_san"></span>
                 </div>
                 <div class="sl_t_dis" v-if="tableData.hotKeywordTemStatus == 1">
-                  <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick( tableData.hotKeywordTemStatus , tableData.keywordName)">
+                  <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick">
                   </i>
                   <span class="sl_t_is" style="width:114px;">从新建词组删除</span>
                   <span class="sl_t_san"></span>
@@ -495,7 +495,7 @@ export default {
             this.AJaxKeyWordMore(1, value);
         },
 
-        addCiClick(num, name) {
+        addCiClick() {
             //收藏操作
             if (!this.userType) {
                 this.$message({
@@ -504,13 +504,14 @@ export default {
                 });
                 return false;
             }
-            if (num == 0) {
+            let obj = this.tableData 
+            if (this.tableData.hotKeywordTemStatus == 0) {
                 this.tableData.hotKeywordTemStatus = 1;
-                AjaxRemove(name, 0); //添加
+                AjaxRemove(obj.keywordName, 0, obj.searchIndex, obj.popularityIndex, obj.currentAppNum); //添加
             } else {
                 this.tableData.hotKeywordTemStatus = 0;
-                AjaxRemove(name, 1); //删除
-            }
+                AjaxRemove(obj.keywordName, 1, obj.searchIndex, obj.popularityIndex, obj.currentAppNum); //删除
+            }  
         },
 
         componentsClick(index) {

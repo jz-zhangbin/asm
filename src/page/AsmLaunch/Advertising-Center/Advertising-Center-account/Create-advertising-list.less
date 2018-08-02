@@ -14,7 +14,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 90px;
+      height: 60px;
   }
   .createlist_contant{
     min-width: 1200px; 
@@ -37,10 +37,11 @@
   .createlist_title{
     font-size: 16px;
     margin: 34px 0  10px 0;
+    display: flex;
     span{
       font-size: 12px;
       color: red;
-    }
+    } 
   }
   .createlist_top_search{
     position: relative; 
@@ -251,6 +252,7 @@
   }
   .createlist_contry{
     display: flex;
+    flex-wrap: wrap;
     span{
       padding: 12px 20px; 
       display: flex;
@@ -265,6 +267,7 @@
     }
     .span_box{
       display: flex;
+      flex-wrap: wrap;
       span{
         margin-right: 20px;
         padding: 10px 15px;
@@ -600,6 +603,7 @@
  }
  //关键词设置
  .createlist_keyword{
+   position: relative;
    width: 650px;
    height: 180px;
    border: 1px solid @border;
@@ -648,5 +652,21 @@
     border: 1px solid @border;
     height: 34px;
     margin-bottom: 10px;
+  }
+}
+.key_word{
+  position: absolute;
+  right: 0;
+  top: -32px;
+  display: flex;
+  align-items: center;
+  i{
+    font-size: 26px;
+    cursor: pointer; 
+    margin-right: 14px;
+  }
+  span{
+    color: @color; 
+    cursor: pointer; 
   }
 }

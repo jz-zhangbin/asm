@@ -207,7 +207,7 @@ export default {
                             uid: res.data.data.userId,
                             urole: res.data.data.userRoles,
                             useremail: this.userEmil,
-                            vip: Vip.indexOf(this.userEmil) != -1 ? true : false
+                            //vip: Vip.indexOf(this.userEmil) != -1 ? true : false
                         };
                         this.$cookie.set(
                             "Adjuz_UserInfoNEW",

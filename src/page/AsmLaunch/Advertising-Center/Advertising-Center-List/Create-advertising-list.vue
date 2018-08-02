@@ -16,7 +16,7 @@
         <div class="father_head">
             <img :src="appDate.logoAdress" alt="">
             <section v-if="!loadingtop">
-                <h1>广告系列 ：{{$route.query.listName}}</h1>
+                <h1>广告系列 ：{{$route.params.listName}}</h1>
                 <div>
                     <p>
                         <span>投放地区</span>
@@ -37,7 +37,7 @@
                 </div>
             </section>
             <section v-else>
-                <h1>广告系列 ：{{$route.query.listName}}</h1>
+                <h1>广告系列 ：{{$route.params.listName}}</h1>
                 <div>
                     <p>
                         <span>投放地区</span>
@@ -270,6 +270,12 @@
                 <!-- 关键词设置 -->
                 <p class="createlist_title" v-if="widely || accurate">关键词设置</p>
                 <div class="createlist_keyword" v-if="!keyWordShow && (widely || accurate)">
+                    <span class="key_word">
+                        <i class="iconfont icon-icon--" @click="pushkeyWord"></i>
+                        <span class='add_keyword' @click="addkeyWord">
+                            添加词组
+                        </span>
+                    </span>
                     <section class="section_one">
                         <span style="width: 30%">词组名称</span>
                         <span style="width: 20%">关键词数</span>
@@ -281,7 +287,10 @@
                             <span style="width: 30%">{{ele.name}}</span>
                             <span style="width: 20%">{{ele.totalCount}}</span>
                             <span style="width: 30%">{{ele.createDate | dateStore}}</span>
-                            <span style="width: 20%" class="key_wored" @click="keyWordClick(index)">选择</span>
+                            <span style="width: 20%" class="key_wored">
+                                <i @click="keyWordlook(ele.id,ele.name)">查看</i>
+                                <i @click="keyWordClick(index)">选择</i>
+                            </span>
                         </section>
                     </div>
                 </div>
@@ -446,13 +455,13 @@ export default {
     },
 
     created() {
-        let queryData = this.$route.query;
+        let queryData = this.$route.params;
         this.routeList.push(
             ...[
                 {
                     name: "账户",
-                    path: "/advertising-center/account",
-                    query: {
+                    routername: "account",
+                    params: {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId, 
                         id: queryData.id
@@ -460,8 +469,8 @@ export default {
                 },
                 {
                     name: "广告系列",
-                    path: "/advertising-center/list",
-                    query: queryData
+                    routername: "list",
+                    params: queryData
                 },
                 {
                     name: "创建广告组",
@@ -535,6 +544,24 @@ export default {
             //关闭关键词
             this.keyWordDate = {};
             this.keyWordShow = false;
+        },
+        pushkeyWord() {
+            //刷新关键词
+            this.AjaxGetKeyWord();
+        },
+        addkeyWord() {
+            //添加关键词组
+            let routeData = this.$router.resolve({
+                path: '/key-lexicon' 
+            });
+            window.open(routeData.href, '_blank')
+        },
+        keyWordlook(id,name) {
+            //查看关键词组
+            let routeData = this.$router.resolve({
+                path: '/KeyWordList?id='+id+'&name=' + name 
+            });
+            window.open(routeData.href, '_blank')
         },
         chuangClick() {
             //点击创建，打开提交表单,验证表单
@@ -641,7 +668,7 @@ export default {
             this.loadingtop = false;
             let url =
                 "/api/v1/IntellAdvertiseApi/Campaign/GetCampaignObject?id=" +
-                this.$route.query.listId;
+                this.$route.params.listId;
             this.$https.get(url).then(res => {
                 this.loadingtop = true;
                 if (res.data.resultCode == 1000) {
@@ -723,13 +750,13 @@ export default {
             //获取用户信息
             let url =
                 "/api/v1/IntellAdvertiseApi/OrgUser/GetUpdateOrgUserInfoModel?id=" +
-                this.$route.query.id;
+                this.$route.params.id;
             this.$https.get(url).then(res => {
                 this.userType = res.data.data;
                 // this.userType.orderNumber =
                 //     id +
                 //     "_" +
-                //     this.$route.query.orgId +
+                //     this.$route.params.orgId +
                 //     "_" +
                 //     this.dateNow()
             });
@@ -791,9 +818,9 @@ export default {
                 });
             }
             let obj = {
-                orgId: this.$route.query.orgId,
+                orgId: this.$route.params.orgId,
                 adamid: this.appDate.adamId,
-                campaignId: this.$route.query.listId,
+                campaignId: this.$route.params.listId,
                 countrys: this.checkList,
                 budgetSettings: list,
                 adGroupTempName: this.listStrPing(this.newAdvertisementZuArr),
@@ -920,7 +947,7 @@ export default {
                             _this.newAdvertisementZuArrSet = true;
                         }
                     } else {
-                        this.$store.commit("SET_SHOW_TRUE", {
+                        _this.$store.commit("SET_SHOW_TRUE", {
                             value: "您插入的有重复",
                             type: 3
                         });

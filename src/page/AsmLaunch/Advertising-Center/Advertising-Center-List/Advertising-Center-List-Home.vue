@@ -28,6 +28,9 @@
         }
     }
 }
+.stop {
+    cursor: not-allowed !important;
+}
 </style> 
 
 <template>
@@ -67,7 +70,7 @@
                 <section>
                     <p>筛选</p>
                     <div class="account_search_one">
-                        <el-select v-model="unlimited" @change='selectchange(unlimited)'>
+                        <el-select v-model="unlimited" :disabled="$route.params.listType == 'remove'" @change='selectchange(unlimited)'>
                             <el-option v-for="(item , index) in unlimitedList" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
@@ -86,24 +89,13 @@
                         <i class="iconfont icon-xia"></i>
                         <transition name="el-zoom-in-top">
                             <section v-show="caoShow" @mouseout="caoShow = false" @mousemove="caoShow = true">
-                                <span v-for="(ele,index) in caoList" :key="index" @click="caoClick(index)">{{ele}}</span>
+                                <span :class="{stop: unlimited == 5 && index != 4}" v-for="(ele,index) in caoList" :key="index" @click="caoClick(index)">{{ele}}</span>
                             </section>
                         </transition>
                     </div>
 
                     <div class="account_search_date">
-                        <el-date-picker
-                            v-model="dateTime"
-                            type="daterange"
-                            align="right"
-                            unlink-panels
-                            :clearable = false
-                            @change = 'changeDate'
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            value-format='yyyy-MM-dd'
-                            :picker-options="datelist">
+                        <el-date-picker v-model="dateTime" type="daterange" align="right" unlink-panels :clearable=false @change='changeDate' range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format='yyyy-MM-dd' :picker-options="datelist">
                         </el-date-picker>
                     </div>
                 </section>
@@ -192,7 +184,7 @@
                     </el-table-column>
                     <el-table-column fixed="right" label="操作" align="center" min-width="120">
                         <template slot-scope="scope">
-                            <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
+                            <el-button :class="{stop : unlimited == 5}" @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
                                 {{scope.row.status != 'ENABLED' ? '启用' : '暂停' }}
                             </el-button>
                         </template>
@@ -218,7 +210,7 @@
 <script>
 import { mapState } from "vuex";
 import { datefn } from "@commonJS/dateList";
-import { date , dateUtc} from "@commonJS/date"; 
+import { date, dateUtc } from "@commonJS/date";
 import { countryTwo } from "@commonJS/country";
 import documentClick from "@commonJS/documentSettings";
 import { excelCheckout } from "@commonJS/excelCheckout";
@@ -258,6 +250,10 @@ export default {
                 {
                     value: 4,
                     label: "未监测"
+                },
+                {
+                    value: 5,
+                    label: "已移除"
                 }
             ],
             unlimited: 0,
@@ -268,12 +264,13 @@ export default {
                 "编辑",
                 "启用",
                 "暂停",
+                "移除",
                 "导出",
                 "编辑所有",
                 "启用所有",
                 "暂停所有"
             ],
-            dateTime: '',
+            dateTime: "",
             advanShow: false,
             searchType: "所有广告组", //高级搜索是否要国家
             tableData4: [],
@@ -285,7 +282,7 @@ export default {
             pageIndex: 1,
             total: 0,
             advancedFunList: [], //高级搜索返回来的数据
-            sortInfor: { prop: "status", order: "descending" },
+            sortInfor: { prop: "status", order: "ascending" },
             sortObj: {
                 prop: "status",
                 order: 1
@@ -302,7 +299,9 @@ export default {
             setType: "",
             messageData: "",
             editObj: {},
-            editObjType: {}
+            editObjType: {},
+            isRemove: false,
+            classBoll: true
         };
     },
     filters: {
@@ -318,22 +317,26 @@ export default {
 
     computed: {
         ...mapState({
-             datelist: state => state.Date.DateRange
+            datelist: state => state.Date.DateRange
         })
     },
 
     created() {
-        if(!this.$ss.get('TIME_UTC')) {
-            this.dateTime = [datefn(3).beginTime , datefn(3).endTime]
-            this.$ss.set('TIME_UTC', this.dateTime)
-        }else{
-            this.dateTime = this.$ss.get('TIME_UTC')
-        } 
+        if (!this.$ss.get("TIME_UTC")) {
+            this.dateTime = [datefn(3).beginTime, datefn(3).endTime];
+            this.$ss.set("TIME_UTC", this.dateTime);
+        } else {
+            this.dateTime = this.$ss.get("TIME_UTC");
+        }
+        if (this.$route.params.listType == "remove") {
+            this.isRemove = true;
+            this.unlimited = 5;
+        }
     },
 
     updated() {},
 
-    mounted() { 
+    mounted() {
         documentClick("account_search_cao", this, "caoShow");
         this.AjaxStatisticCampaign();
     },
@@ -351,29 +354,29 @@ export default {
             //筛选
             this.advancedFunList = [];
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "descending");
+            this.$refs.multipleTable.sort("status", "ascending");
             this.AjaxStatisticCampaign();
         },
         changeInput() {
             //input搜索
             this.advancedFunList = [];
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "descending");
+            this.$refs.multipleTable.sort("status", "ascending");
             this.AjaxStatisticCampaign();
         },
         changeDate() {
             //切换时间进行请求
-            this.$ss.set('TIME_UTC',this.dateTime)  
-            this.advancedFunList = []; 
+            this.$ss.set("TIME_UTC", this.dateTime);
+            this.advancedFunList = [];
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "descending");
-            this.AjaxStatisticCampaign(); 
-        },   
+            this.$refs.multipleTable.sort("status", "ascending");
+            this.AjaxStatisticCampaign();
+        },
         advancedFun(data) {
             //高级搜索
             this.advancedFunList = data;
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "descending");
+            this.$refs.multipleTable.sort("status", "ascending");
             this.AjaxStatisticCampaign();
         },
 
@@ -518,12 +521,16 @@ export default {
                 obj.cpaGoalamount = -1;
             }
             if (deviceClassType) {
-                obj.deviceClass = JSON.parse(this.multipleSelection[0].deviceClass);
+                obj.deviceClass = JSON.parse(
+                    this.multipleSelection[0].deviceClass
+                );
             } else {
                 obj.deviceClass = -1;
             }
             if (appDownLoadersType) {
-                obj.appDownLoaders = JSON.parse(this.multipleSelection[0].appDownLoaders);
+                obj.appDownLoaders = JSON.parse(
+                    this.multipleSelection[0].appDownLoaders
+                );
             } else {
                 obj.appDownLoaders = -1;
             }
@@ -575,9 +582,10 @@ export default {
                 pageSize: 20,
                 requestPar: {
                     keyword: this.valuedata,
-                    authId: this.$route.query.orgId,
-                    campaignId: this.$route.query.listId,
-                    conditions: this.AjaxSetArgument()
+                    authId: this.$route.params.orgId,
+                    campaignId: this.$route.params.listId,
+                    conditions: this.AjaxSetArgument(),
+                    IsRemove: this.isRemove
                 },
                 orderByParDic: obj3
             };
@@ -600,9 +608,10 @@ export default {
                 pageSize: 9,
                 requestPar: {
                     keyword: this.valuedata,
-                    authId: this.$route.query.orgId,
-                     campaignId: this.$route.query.listId,
-                    conditions: this.AjaxSetArgument()
+                    authId: this.$route.params.orgId,
+                    campaignId: this.$route.params.listId,
+                    conditions: this.AjaxSetArgument(),
+                    IsRemove: this.isRemove
                 },
                 orderByParDic: null
             };
@@ -625,10 +634,11 @@ export default {
             this.loadingAll = this.$loading(this.loadingopaction);
             let url = "/api/v1/IntellAdvertiseApi/AdGroup/StatisticAdGroup";
             let obj = {
-                authId: this.$route.query.orgId,
-                 campaignId: this.$route.query.listId,
+                authId: this.$route.params.orgId,
+                campaignId: this.$route.params.listId,
                 keyword: this.valuedata,
-                conditions: this.AjaxSetArgument()
+                conditions: this.AjaxSetArgument(),
+                IsRemove: this.isRemove
             };
 
             this.$https.post(url, JSON.stringify(obj)).then(res => {
@@ -657,6 +667,7 @@ export default {
             //status 1  equals 值 PAUSED/ENABLED
             //monitorcount 2 equals 1/0
             //statisdate 1 inrange 值 "2018-02-01","201802-02"
+            this.isRemove = false
             switch (this.unlimited) {
                 case 0:
                     obj = null;
@@ -693,15 +704,16 @@ export default {
                         values: ["0"]
                     };
                     break;
+                case 5:
+                    obj = null;
+                    this.isRemove = true;
+                    break;
             }
             obj2 = {
                 code: "statisdate",
                 operator: "inrange",
                 valueType: 1,
-                values: [
-                    dateUtc(this.dateTime[0]),
-                    dateUtc(this.dateTime[1])
-                ]
+                values: [dateUtc(this.dateTime[0]), dateUtc(this.dateTime[1])]
             };
             arr.push(obj2);
             if (obj != null) {
@@ -717,10 +729,13 @@ export default {
             this.$refs.multipleTable.clearSelection();
         },
         deleteRow(index, rows) {
+            if (this.isRemove) {
+                return false;
+            }
             //单独操作按钮
             let _this = this;
             let type = rows.status == "ENABLED" ? "暂停" : "启用";
-            this.$confirm("是否" + type + "所选广告系列？", {
+            this.$confirm("是否" + type + "所选广告组？", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 center: true
@@ -729,7 +744,7 @@ export default {
                     objJson: JSON.stringify([{ Name: rows.name, Id: rows.id }]),
                     paramJson: JSON.stringify({
                         Status: rows.status == "ENABLED" ? "PAUSED" : "ENABLED",
-                        CampaignId: this.$route.query.listId
+                        CampaignId: this.$route.params.listId
                     })
                 });
                 this.$store.commit("SET_SHOW_TRUE", {
@@ -744,6 +759,10 @@ export default {
             this.caoShow = false;
             let type = this.caoList[index];
             this.setType = this.caoList[index];
+            if (this.unlimited == 5 && type != "导出") {
+                this.caoShow = false;
+                return false;
+            }
             if (this.tableData4.length == 0) {
                 this.$store.commit("SET_SHOW_TRUE", {
                     value: "无数据无法操作",
@@ -751,7 +770,6 @@ export default {
                 });
                 return false;
             }
-
             switch (type) {
                 case "启用":
                     if (this.multipleSelection.length == 0) {
@@ -770,7 +788,7 @@ export default {
                                     objJson: this.IdStrPin().arr,
                                     paramJson: JSON.stringify({
                                         Status: "ENABLED",
-                                        CampaignId: this.$route.query.listId
+                                        CampaignId: this.$route.params.listId
                                     })
                                 });
                                 _this.$store.commit("SET_SHOW_TRUE", {
@@ -799,7 +817,7 @@ export default {
                                     objJson: this.IdStrPin().arr,
                                     paramJson: JSON.stringify({
                                         Status: "PAUSED",
-                                        CampaignId: this.$route.query.listId
+                                        CampaignId: this.$route.params.listId
                                     })
                                 });
                                 _this.$store.commit("SET_SHOW_TRUE", {
@@ -822,7 +840,7 @@ export default {
                                 objJson: this.userAll,
                                 paramJson: JSON.stringify({
                                     Status: "ENABLED",
-                                    CampaignId: this.$route.query.listId
+                                    CampaignId: this.$route.params.listId
                                 })
                             });
                             _this.$store.commit("SET_SHOW_TRUE", {
@@ -844,7 +862,7 @@ export default {
                                 objJson: this.userAll,
                                 paramJson: JSON.stringify({
                                     Status: "PAUSED",
-                                    CampaignId: this.$route.query.listId
+                                    CampaignId: this.$route.params.listId
                                 })
                             });
                             _this.$store.commit("SET_SHOW_TRUE", {
@@ -872,8 +890,44 @@ export default {
                     break;
                 case "导出":
                     this.AjaxExcelOut();
+                    this.$store.commit("SET_SHOW_TRUE", {
+                        value: "正在导出",
+                        type: 3
+                    });
+                    break;
+                case "移除":
+                    if (this.multipleSelection.length == 0) {
+                        _this.$store.commit("SET_SHOW_TRUE", {
+                            value: "请选择广告组",
+                            type: 3
+                        });
+                    } else {
+                        this.$confirm("是否移除所选广告组？", {
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            center: true
+                        })
+                            .then(() => {
+                                this.AjaxSetDelete({
+                                    objJson: this.IdStrPin().arr,
+                                    paramJson: JSON.stringify({ 
+                                        CampaignId: this.$route.params.listId
+                                    }) 
+                                });
+                                _this.$store.commit("SET_SHOW_TRUE", {
+                                    value: "正在移除请等待",
+                                    type: 3
+                                });
+                                _this.toggleSelection();
+                            })
+                            .catch(() => {});
+                    }
                     break;
             }
+        },
+        AjaxSetDelete(obj) {
+            let url = "/api/v1/IntellAdvertiseApi/AdGroup/RemoveAdGroup";
+            this.$https.post(url, JSON.stringify(obj));
         },
         AjaxEditAdGroup(obj) {
             let url = "/api/v1/IntellAdvertiseApi/AdGroup/EditAdGroup";
@@ -888,33 +942,30 @@ export default {
                 pageSize: 9,
                 requestPar: {
                     keyword: this.valuedata,
-                    authId: this.$route.query.orgId,
-                    conditions: this.AjaxSetArgument()
-                },
+                    authId: this.$route.params.orgId,
+                    conditions: this.AjaxSetArgument(),
+                    campaignId: this.$route.params.listId, 
+                    IsRemove: this.isRemove
+                },  
                 orderByParDic: obj3
             };
-            excelCheckout(url, Ajaxobj);
-        },
-        createAdvertising() {
-            //创建广告组
-            this.$router.push({
-                path: "/advertising-center/advertising-list",
-                query: this.$route.query
-            });
+            excelCheckout(url, Ajaxobj, '广告组列表');
         },
 
         advaerTolist(name, id) {
             //跳转广告组
             this.$router.push({
-                path: "/advertising-center/keyword",
-                query: {
-                    accountName: this.$route.query.accountName,
-                    orgId: this.$route.query.orgId,
-                    listName: this.$route.query.listName,
-                    listId: this.$route.query.listId, 
-                    id: this.$route.query.id,
+                name: "group",
+                params: {
+                    accountName: this.$route.params.accountName,
+                    id: this.$route.params.id,
+                    orgId: this.$route.params.orgId,
+                    listName: this.$route.params.listName,
+                    listId: this.$route.params.listId,
+                    listType: this.$route.params.listType,
                     keyName: name,
-                    keyId: id
+                    keyId: id,
+                    groupType: this.unlimited == 5 ? 'remove' : 'normal'
                 }
             });
         }

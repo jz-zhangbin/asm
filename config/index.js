@@ -12,11 +12,11 @@ module.exports = {
     assetsPublicPath: '/', 
     proxyTable: { 
     	'/api': {  
-       //target: 'http://10.1.0.136:8989',//小梦本地IP
-      //target: 'http://10.1.0.161',//振亚本地Ip    
+      //target: 'http://10.1.0.136:8989',//小梦本地IP
+      target: 'http://10.1.0.161',//振亚本地Ip    
       //target: 'http://asm.api.adjuz.net:988/',//智能投放
       //target: 'http://asm.api.adjuz.net:8899',//智查询 
-      target: 'http://asm.api.adjuz.net:899',// 睿哲
+      //target: 'http://asm.api.adjuz.net:899',// 睿哲
       //target: 'http://asm.api.adjuz.net:777', //程晓悦  
         changeOrigin: true,
         pathRewrite: {
@@ -52,10 +52,10 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     //js&&css  build后的cdn路径
-    //  assetsPublicPath: '//static.adjuz.com/asmmaster/packages/', 
-    //  assetsSubDirectory: '', 
-    assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+     assetsPublicPath: '//static.adjuz.com/asmmaster/packages/', 
+     assetsSubDirectory: '', 
+    // assetsSubDirectory: 'static',
+    // assetsPublicPath: './',
     /**
      * Source Maps文件
      */

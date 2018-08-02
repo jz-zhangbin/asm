@@ -1,5 +1,8 @@
 <style lang='less' scoped>
 @import url("../../../../base/commonCSS/AsmLaunchTable.less");
+.stop {
+    cursor: not-allowed !important;
+}
 </style> 
 <template>
     <div class="account_index">
@@ -9,7 +12,7 @@
                 <section>
                     <p>筛选</p>
                     <div class="account_search_one">
-                        <el-select v-model="unlimited" @change='selectchange(unlimited)'>
+                        <el-select v-model="unlimited" :disabled="$route.params.groupType == 'remove'" @change='selectchange(unlimited)'>
                             <el-option v-for="(item , index) in unlimitedList" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
@@ -28,37 +31,26 @@
                         <i class="iconfont icon-xia"></i>
                         <transition name="el-zoom-in-top">
                             <section style="width:130px;" v-show="caoShow" @mouseout="caoShow = false" @mousemove="caoShow = true">
-                                <span v-for="(ele,index) in caoList" :key="index" @click="caoClick(index)">{{ele}}</span>
+                                <span :class="{stop: $route.params.groupType == 'remove' && index != 0}" v-for="(ele,index) in caoList" :key="index" @click="caoClick(index)">{{ele}}</span>
                             </section>
                         </transition>
                     </div>
 
                     <div class="account_search_date">
-                        <el-date-picker
-                            v-model="dateTime"
-                            type="daterange"
-                            align="right"
-                            unlink-panels
-                            :clearable = false
-                            @change = 'changeDate'
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            value-format='yyyy-MM-dd'
-                            :picker-options="datelist">
+                        <el-date-picker v-model="dateTime" type="daterange" align="right" unlink-panels :clearable=false @change='changeDate' range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format='yyyy-MM-dd' :picker-options="datelist">
                         </el-date-picker>
                     </div>
                 </section>
             </div>
 
             <!-- 表格 -->
-            <div class="account_table">
+            <div class="account_table" id="account_tablete">
                 <el-table ref="multipleTable" :data="tableData4" style="width: 100%" highlight-current-row border @selection-change="handleSelectionChange" @sort-change='sortchange' v-loading="loading" :default-sort="sortInfor">
                     <el-table-column type="selection" fixed align='center' width="55">
                     </el-table-column>
                     <el-table-column fixed align='center' label="搜索词" min-width="260">
                         <template slot-scope="scope">
-                            <div  >
+                            <div>
                                 {{scope.row.searchTermText}}
                             </div>
                         </template>
@@ -71,7 +63,7 @@
                     </el-table-column>
                     <el-table-column label="关键词" align='center' min-width="260">
                         <template slot-scope="scope">
-                            <div  >
+                            <div>
                                 {{scope.row.keyword}}
                             </div>
                         </template>
@@ -108,7 +100,7 @@
                     </el-table-column>
                     <el-table-column label="点击率" align='center' min-width="100" sortable='custom' prop="ttr">
                         <template slot-scope="scope">
-                            <span>{{scope.row.ttr | numTofixed}}</span>
+                            <span style=" display: block;height:34px; line-height: 34px;">{{scope.row.ttr | numTofixed}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="转化率" align='center' min-width="100" sortable='custom' prop="conversionRate">
@@ -127,21 +119,21 @@
         </div>
 
         <!-- 高级搜索 -->
-        <v-advan-search v-if="advanShow" :searchType='searchType' @advancedFun='advancedFun'></v-advan-search>
+        <v-advan-search v-if="advanShow" :searchType='searchType' @advancedFun='advancedFun'></v-advan-search> 
 
-        <v-negative v-if="negativeShow"></v-negative>
+        <v-nokeyword :state='state' @callback='callback' v-if="negativeShow" :type='NoKeyWordType' :NoKeyWordList='NoKeyWordList'></v-nokeyword>
     </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import { datefn } from "@commonJS/dateList";
-import { date , dateUtc} from "@commonJS/date"; 
+import { date, dateUtc } from "@commonJS/date";
 import documentClick from "@commonJS/documentSettings";
 import { excelCheckout } from "@commonJS/excelCheckout";
 import KeySearch from "@components/AsmLaunch/Key-Search";
 import AdvanSearch from "@components/AsmLaunch/Advanced-Search";
-import Negative from "../Advertising-Center-List/Add-searchTerms-Negative";
+import NoKeyWord from '@components/AsmLaunch/removeKeyWord';//移动否定关键词 
 export default {
     data() {
         return {
@@ -163,8 +155,8 @@ export default {
             valuedata: "", //搜索内容
             placevaluedata: "关键词搜索", //搜索提示
             caoShow: false,
-            caoList: ["导出"], //"添加至投放关键词", "添加至否定关键词",
-            dateTime: '',
+            caoList: ["导出","添加至投放关键词","添加至否定关键词"], //"添加至投放关键词", "添加至否定关键词",
+            dateTime: "",
             advanShow: false,
             searchType: "匹配来源", //高级搜索是否要国家
             tableData4: [],
@@ -179,14 +171,17 @@ export default {
             sortObj: {
                 prop: "localspendAmount",
                 order: 1
-            }
+            },
+            isReomve: false,
+            NoKeyWordType: '广告组',
+            NoKeyWordList: []
         };
     },
 
     components: {
         "v-search": KeySearch,
-        "v-advan-search": AdvanSearch,
-        "v-negative": Negative
+        "v-advan-search": AdvanSearch, 
+        "v-nokeyword": NoKeyWord
     },
 
     filters: {
@@ -202,17 +197,21 @@ export default {
     },
 
     created() {
-        if(!this.$ss.get('TIME_UTC')) {
-            this.dateTime = [datefn(3).beginTime , datefn(3).endTime]
-            this.$ss.set('TIME_UTC', this.dateTime)
-        }else{
-            this.dateTime = this.$ss.get('TIME_UTC')
-        } 
+        if (!this.$ss.get("TIME_UTC")) {
+            this.dateTime = [datefn(3).beginTime, datefn(3).endTime];
+            this.$ss.set("TIME_UTC", this.dateTime);
+        } else {
+            this.dateTime = this.$ss.get("TIME_UTC");
+        }
+
+        if(this.$route.params.groupType == 'remove') {
+            this.unlimitedList = [{value:0 , label: '已移除'}]
+        }
     },
 
     updated() {},
 
-    mounted() { 
+    mounted() {
         documentClick("account_search_cao", this, "caoShow");
     },
 
@@ -234,12 +233,12 @@ export default {
 
         changeDate() {
             //切换时间进行请求
-            this.$ss.set('TIME_UTC',this.dateTime)  
-            this.advancedFunList = []; 
+            this.$ss.set("TIME_UTC", this.dateTime);
+            this.advancedFunList = [];
             this.$refs.multipleTable.clearSort();
             this.$refs.multipleTable.sort("localspendAmount", "descending");
-            this.AjaxStatisticCampaign(); 
-        }, 
+            this.AjaxStatisticCampaign();
+        },
 
         advancedFun(data) {
             //高级搜索
@@ -267,6 +266,32 @@ export default {
             this.toggleSelection();
             this.AjaxGetInfor();
         },
+        callback(value) { 
+            this.$store.commit("SET_SHOW_TRUE", {
+                value: "正在添加请等待",
+                type: 3
+            });
+            if(this.state == '否定') {
+                this.AjaxAddNegative({
+                    objJson: JSON.stringify(value.data)
+                });
+            }else{ 
+                this.AjaxSetType({
+                    objJson: JSON.stringify(value.data)
+                });
+            } 
+        },
+        AjaxSetType(obj) {
+            //Ajax编辑
+            let url =
+                "/api/v1/IntellAdvertiseApi/KeywordsSearch/CreateKeywordsRecords";
+            this.$https.post(url, JSON.stringify(obj));
+        },
+        AjaxAddNegative(obj) { 
+            let url =
+                "/api/v1/IntellAdvertiseApi/KeywordsSearch/CreateNegativeTerm";
+            this.$https.post(url, JSON.stringify(obj));
+        },
         AjaxGetInfor() {
             this.loading = true;
             let obj3 = {};
@@ -277,9 +302,10 @@ export default {
                 pageIndex: this.pageIndex,
                 pageSize: 20,
                 requestPar: {
-                    keyword: this.valuedata, 
-                    authId: this.$route.query.orgId,
-                    conditions: this.AjaxSetArgument()
+                    keyword: this.valuedata,
+                    authId: this.$route.params.orgId,
+                    conditions: this.AjaxSetArgument(),
+                    IsRemove: this.isReomve
                 },
                 orderByParDic: obj3
             };
@@ -292,7 +318,7 @@ export default {
                 } else {
                     this.tableData4 = [];
                     this.total = 0;
-                }
+                } 
             });
         },
         AjaxSetArgument() {
@@ -303,35 +329,37 @@ export default {
             //status 1  equals 值 PAUSED/ENABLED
             //monitorcount 2 equals 1/0
             //statisdate 1 inrange 值 "2018-02-01","201802-02"
-            switch (this.unlimited) {
-                case 0:
-                    obj = null;
-                    break;
-                case 1:
-                    obj = {
-                        code: "SearchTermSource ",
-                        operator: "equals",
-                        valueType: 2,
-                        values: [0]
-                    };
-                    break;
-                case 2:
-                    obj = {
-                        code: "SearchTermSource ",
-                        operator: "equals",
-                        valueType: 2,
-                        values: [1]
-                    };
-                    break;
-            }
+            if (this.$route.params.groupType == "remove") {
+                this.isReomve = true;
+                obj = null;
+            } else {
+                switch (this.unlimited) {
+                    case 0:
+                        obj = null;
+                        break;
+                    case 1:
+                        obj = {
+                            code: "SearchTermSource ",
+                            operator: "equals",
+                            valueType: 2,
+                            values: [0]
+                        };
+                        break;
+                    case 2:
+                        obj = {
+                            code: "SearchTermSource ",
+                            operator: "equals",
+                            valueType: 2,
+                            values: [1]
+                        };
+                        break;
+                }
+            } 
             obj2 = {
                 code: "statisdate",
                 operator: "inrange",
                 valueType: 1,
-                values: [
-                    dateUtc(this.dateTime[0]),
-                    dateUtc(this.dateTime[1])
-                ]
+                values: [dateUtc(this.dateTime[0]), dateUtc(this.dateTime[1])]
             };
             arr.push(obj2);
             if (obj != null) {
@@ -343,13 +371,13 @@ export default {
                         code: "ov.campaignid",
                         operator: "equals",
                         valueType: 3,
-                        values: [this.$route.query.listId]
+                        values: [this.$route.params.listId]
                     },
                     {
                         code: "ov.adgroupid",
                         operator: "equals",
                         valueType: 3,
-                        values: [this.$route.query.keyId]
+                        values: [this.$route.params.keyId]
                     }
                 ]
             );
@@ -362,20 +390,37 @@ export default {
             //操作按钮
             this.caoShow = false;
             let type = this.caoList[index];
+            if (this.$route.params.groupType == "remove" && type != "导出") {
+                this.caoShow = false;
+                return false;
+            }
             switch (type) {
                 case "导出":
                     this.AjaxExcelOut();
+                    this.$store.commit("SET_SHOW_TRUE", {
+                        value: "正在导出",
+                        type: 3
+                    });
                     break;
             }
-            if (type == "添加至否定关键词") {
-                this.negativeShow = true;
+            if (type == "添加至否定关键词") {  
                 if (this.multipleSelection.length == 0) {
                     this.$store.commit("SET_SHOW_TRUE", {
                         value: "请选择关键词",
                         type: 3
                     });
-                } else {
-                    this.negativeShow = true;
+                } else { 
+                    this.state = '否定'
+                    this.NoKeyWordList = this.IdStrPin().arr
+                    if(this.NoKeyWordList.length == 0) {
+                        this.$store.commit("SET_SHOW_TRUE", {
+                            value: "所选搜索词全部为空",
+                            type: 3
+                        });
+                        return false
+                    }else{
+                        this.negativeShow = true;
+                    } 
                 }
             }
 
@@ -386,6 +431,17 @@ export default {
                         type: 3
                     });
                 } else {
+                    this.state = '非否定'
+                    this.NoKeyWordList = this.IdStrPin().arr
+                    if(this.NoKeyWordList.length == 0) {
+                        this.$store.commit("SET_SHOW_TRUE", {
+                            value: "所选搜索词全部为空",
+                            type: 3
+                        });
+                        return false
+                    }else{
+                        this.negativeShow = true;
+                    } 
                 }
             }
         },
@@ -394,22 +450,39 @@ export default {
             obj3[this.sortObj.prop] = this.sortObj.order;
 
             let url =
-                "/api/v1/IntellAdvertiseApi/KeywordsSearch/ExportKeywords";
+                "/api/v1/IntellAdvertiseApi/KeywordsSearch/ExportSearchTerm";
             let Ajaxobj = {
                 pageIndex: 1,
                 pageSize: 9,
                 requestPar: {
-                    keyword: this.valuedata, 
-                    authId: this.$route.query.orgId,
-                    conditions: this.AjaxSetArgument()
+                    keyword: this.valuedata,
+                    authId: this.$route.params.orgId,
+                    conditions: this.AjaxSetArgument(),
+                    IsRemove: this.isReomve
                 },
                 orderByParDic: obj3
             };
-            excelCheckout(url, Ajaxobj);
+            excelCheckout(url, Ajaxobj, 'SearchTerms列表');
         },
         handleSelectionChange(val) {
             //选中
             this.multipleSelection = val;
+        },
+        IdStrPin() {
+            //拼接id
+            let id = "";
+            let arr = [];
+            this.multipleSelection.map(ele => {
+                id += ele.id + ",";
+                if(ele.searchTermText != '') {
+                    arr.push({ 
+                        Name: ele.searchTermText, 
+                    });
+                } 
+            });
+            //arr = JSON.stringify(arr);
+            id = id.substring(0, id.length - 1);
+            return { id, arr };
         },
         toggleSelection() {
             //清楚选中

@@ -29,12 +29,12 @@
         } 
     .el-table th>.cell{
       line-height: 34px;
-    }
+    } 
     .el-table td, .el-table th{
       padding: 8px 0;
-    }
+    } 
   }
-
+  
   
 .account_search_cao {
     cursor: pointer;
@@ -137,4 +137,35 @@
         color: #fff;
     }
 }
-
+.sl_dt_img { 
+    display: flex;
+    align-items: center;
+    justify-content: left !important;
+    img {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        margin-right: 12px;
+        cursor: pointer;
+    }
+    span {
+        display: block;
+        width: 50px;
+        height: 28px;
+        border: 1px solid @border;
+        line-height: 28px;
+        text-align: center;
+        border-radius: 6px;
+        cursor: pointer;
+        i{
+            font-size: 12px;
+        }
+        &:hover{
+            background: #f7f7f7;
+            color: @color;
+        }
+        &:active{
+            box-shadow: inset 0 3px 3px rgba(0,0,0,0.125);
+        }
+    }
+}

@@ -22,7 +22,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 90px;
+        height: 60px;
     }
     .btn {
         width: 158px;
@@ -272,7 +272,7 @@
             <v-nav :pageName='pageName' :routeList='routeList'></v-nav>
         </div>
         <div class="advuer_content">
-            <h2>关键词列表</h2>
+            <h2>{{$route.query.name}}</h2>
             <div class="KeyWord">
                 <el-button @click="addkeywork">添加关键词</el-button>
             </div>
@@ -335,7 +335,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="上传关键词" name="second">
                     <div class="Downloadsample">
-                        <a href="https://cdn.shopify.com/s/files/1/1545/3617/files/SH01_User_Manaul.pdf" download="test.pdf"> 下载示例</a>
+                        <a href="../../../../../static/关键词示例.xlsx" download=""> 下载示例</a>
                     </div>
                     <div class="file_ul_box">
                         <ul class="file_ul">
@@ -455,7 +455,7 @@ export default {
     destroyed() {},
     methods: {
         changeid(val) {
-            console.log(val);
+            //console.log(val);
         },
         changeInput(value) {
             //input搜索
@@ -589,7 +589,7 @@ export default {
             } else {
                 let arr = [];
                 let num = 0;
-                console.log(event.target.files);
+                //console.log(event.target.files);
                 for (var i in event.target.files) {
                     if (i != "length" && i != "item") {
                         arr.push(event.target.files[i]);
@@ -624,16 +624,14 @@ export default {
             this.emptyText = "加载中请稍后";
             this.loading = true;
             this.pageIndex = val;
-            this.listdata();
-            console.log(`当前页: ${val}`);
+            this.listdata(); 
         },
         addkeywork() {
             this.centerDialogVisible = true;
             this.fileList = [];
             this.keyWordDate = "";
         },
-        addBtn() {
-            console.log(this);
+        addBtn() { 
             if (this.tabName == "second") {
                 if (this.fileList.length == 0) {
                     this.$store.commit("SET_SHOW_TRUE", {

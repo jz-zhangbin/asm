@@ -98,6 +98,25 @@
             font-weight: bold;
             color: #333;
         }
+        .account_top_right {
+            display: flex;
+            align-items: center;
+        }
+        .add_negative {   
+            border: 1px solid @color;
+            height: 36px;
+            width: 150px;
+            text-align: center;
+            line-height: 38px;
+            cursor: pointer;
+            border-radius: 4px;
+            color: @color;
+            margin-right: 50px;
+            &:hover {
+                background: @color;
+                color: #fff;
+            }
+        }
         .checket_time {
             position: relative;
             display: flex;
@@ -193,6 +212,9 @@
         bottom: 18px;
         z-index: 10;
     }
+    .stop {
+        cursor: not-allowed !important;
+    }
 }
 </style>
 
@@ -234,20 +256,25 @@
 
         <div class="account_contant">
             <div class="account_contant_top">
-                <h1>{{$route.query.accountName}}</h1>
-                <div class="checket_time">
-                    时区：
-                    <!-- @click="timeNowClick" -->
-                    <div >
-                        <span>{{timeNow}}</span>
-                        <i class="iconfont icon-xia"></i>
+                <h1>{{$route.params.accountName}}</h1>
+                <section class="account_top_right">
+                    <div class="add_negative" @click="$router.push({name:'datacenter',params:$route.params})">
+                        数据中心
                     </div>
-                    <transition name="el-zoom-in-top">
-                        <section v-show="timeNowShow" @mouseout="timeNowShow = false" @mousemove="timeNowShow = true">
-                            <span v-for="(ele,index) in timeNowList" :key="index" @click="timeNowListClick(index)">{{ele}}</span>
-                        </section>
-                    </transition>
-                </div>
+                    <div class="checket_time">
+                        时区：
+                        <!-- @click="timeNowClick" -->
+                        <div>
+                            <span>{{timeNow}}</span>
+                            <i class="iconfont icon-xia"></i>
+                        </div>
+                        <transition name="el-zoom-in-top">
+                            <section v-show="timeNowShow" @mouseout="timeNowShow = false" @mousemove="timeNowShow = true">
+                                <span v-for="(ele,index) in timeNowList" :key="index" @click="timeNowListClick(index)">{{ele}}</span>
+                            </section>
+                        </transition>
+                    </div>
+                </section>
             </div>
             <!-- 表头 -->
             <div class="account_ul">
@@ -302,24 +329,13 @@
                         <i class="iconfont icon-xia"></i>
                         <transition name="el-zoom-in-top">
                             <section v-show="caoShow" @mouseout="caoShow = false" @mousemove="caoShow = true">
-                                <span v-for="(ele,index) in caoList" :key="index" @click="caoClick(index)">{{ele}}</span>
+                                <span :class="{stop: unlimited == 5 && index != 4}" v-for="(ele,index) in caoList" :key="index" @click="caoClick(index)">{{ele}}</span>
                             </section>
                         </transition>
                     </div>
 
                     <div class="account_search_date">
-                        <el-date-picker
-                            v-model="dateTime"
-                            type="daterange"
-                            align="right"
-                            unlink-panels
-                            :clearable = false
-                            @change = 'changeDate'
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            value-format='yyyy-MM-dd'
-                            :picker-options="datelist">
+                        <el-date-picker v-model="dateTime" type="daterange" align="right" unlink-panels :clearable=false @change='changeDate' range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format='yyyy-MM-dd' :picker-options="datelist">
                         </el-date-picker>
                     </div>
                 </section>
@@ -408,7 +424,7 @@
                     </el-table-column>
                     <el-table-column fixed="right" label="操作" align="center" min-width="120">
                         <template slot-scope="scope">
-                            <el-button @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
+                            <el-button :class="{stop : unlimited == 5}" @click.native.prevent="deleteRow(scope.$index, scope.row)" type="text" size="small">
                                 {{scope.row.status == 'ENABLED' ? '暂停' : '启用' }}
                             </el-button>
                         </template>
@@ -439,19 +455,18 @@
 </template>
 
 <script>
-import { mapState } from "vuex"; 
+import { mapState } from "vuex";
 import { datefn } from "@commonJS/dateList";
-import { date , dateUtc} from "@commonJS/date";
+import { date, dateUtc } from "@commonJS/date";
 import { countryTwo } from "@commonJS/country";
 import Task from "@components/AsmLaunch/Task-List";
-import NavList from "@components/AsmLaunch/Nav-List";  
+import NavList from "@components/AsmLaunch/Nav-List";
 import documentClick from "@commonJS/documentSettings";
-import { excelCheckout } from "@commonJS/excelCheckout"; 
+import { excelCheckout } from "@commonJS/excelCheckout";
 import KeySearch from "@components/AsmLaunch/Key-Search";
 import Budget from "@components/AsmLaunch/Budget-Editor";
 import AdvanSearch from "@components/AsmLaunch/Advanced-Search";
 
- 
 export default {
     data() {
         return {
@@ -496,6 +511,10 @@ export default {
                 {
                     value: 4,
                     label: "未监测"
+                },
+                {
+                    value: 5,
+                    label: "已移除"
                 }
             ],
             unlimited: 0,
@@ -506,12 +525,13 @@ export default {
                 "编辑",
                 "启用",
                 "暂停",
+                "移除",
                 "导出",
                 "编辑所有",
                 "启用所有",
                 "暂停所有"
             ],
-            dateTime: '',
+            dateTime: "",
             advanShow: false,
             searchType: "国家", //高级搜索是否要国家
             tableData4: [],
@@ -539,7 +559,7 @@ export default {
             pageIndex: 1,
             total: 0,
             advancedFunList: [], //高级搜索返回来的数据
-            sortInfor: { prop: "status", order: "descending" },
+            sortInfor: { prop: "status", order: "ascending" },
             sortObj: {
                 prop: "status",
                 order: 1
@@ -555,7 +575,9 @@ export default {
                 pauseCount: 0, //暂停
                 pulseCount: 0 //启动
             },
-            timer: null
+            timer: null,
+            classBool: true, //类名常量
+            getRemoveType: false // 获取移除数据
         };
     },
 
@@ -580,24 +602,23 @@ export default {
     },
 
     created() {
-        if(!this.$ss.get('TIME_UTC')) {
-            this.dateTime = [datefn(3).beginTime , datefn(3).endTime]
-            this.$ss.set('TIME_UTC', this.dateTime)
-        }else{
-            this.dateTime = this.$ss.get('TIME_UTC')
-        } 
-        let queryData = this.$route.query;
+        if (!this.$ss.get("TIME_UTC")) {
+            this.dateTime = [datefn(3).beginTime, datefn(3).endTime];
+            this.$ss.set("TIME_UTC", this.dateTime);
+        } else {
+            this.dateTime = this.$ss.get("TIME_UTC");
+        }
+        let queryData = this.$route.params;
         this.routeList.push({
             name: "账户",
-            path: "/advertising-center/account",
-            query: queryData
+            routername: "account",
+            params: queryData
         });
     },
 
     updated() {},
 
     mounted() {
-        this.dateData = this.$route.query.date * 1;
         documentClick("account_search_cao", this, "caoShow");
         documentClick("checket_time", this, "timeNowShow");
         this.AjaxStatisticCampaign();
@@ -608,7 +629,7 @@ export default {
         clearInterval(this.timer);
     },
 
-    methods: {  
+    methods: {
         timeNowListClick(index) {
             //切换时区
             this.advancedFunList = [];
@@ -619,29 +640,29 @@ export default {
             //筛选
             this.advancedFunList = [];
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "descending");
+            this.$refs.multipleTable.sort("status", "ascending");
             this.AjaxStatisticCampaign();
         },
         changeInput() {
             //input搜索
             this.advancedFunList = [];
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "descending");
+            this.$refs.multipleTable.sort("status", "ascending");
             this.AjaxStatisticCampaign();
         },
         changeDate() {
             //切换时间进行请求
-            this.$ss.set('TIME_UTC',this.dateTime)  
-            this.advancedFunList = []; 
+            this.$ss.set("TIME_UTC", this.dateTime);
+            this.advancedFunList = [];
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "descending");
-            this.AjaxStatisticCampaign(); 
-        },  
+            this.$refs.multipleTable.sort("status", "ascending");
+            this.AjaxStatisticCampaign();
+        },
         advancedFun(data) {
             //高级搜索
             this.advancedFunList = data;
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "descending");
+            this.$refs.multipleTable.sort("status", "ascending");
             this.AjaxStatisticCampaign();
         },
         budgetBack(value) {
@@ -667,6 +688,9 @@ export default {
         },
         deleteRow(index, rows) {
             //单独操作按钮
+            if (this.unlimited == 5) {
+                return false;
+            }
             let _this = this;
             let type = rows.status == "ENABLED" ? "暂停" : "启用";
             this.$confirm("是否" + type + "所选广告系列？", {
@@ -690,7 +714,7 @@ export default {
             this.multipleSelection = val;
         },
         sortchange(a) {
-            //排序
+            //排序 
             if (a.order != null) {
                 this.sortObj = {
                     prop: a.prop,
@@ -722,8 +746,9 @@ export default {
                 pageSize: 20,
                 requestPar: {
                     keyword: this.valuedata,
-                    authId: this.$route.query.orgId,
-                    conditions: this.AjaxSetArgument()
+                    authId: this.$route.params.orgId,
+                    conditions: this.AjaxSetArgument(),
+                    IsRemove: this.getRemoveType
                 },
                 orderByParDic: obj3
             };
@@ -747,8 +772,9 @@ export default {
                 pageSize: 9,
                 requestPar: {
                     keyword: this.valuedata,
-                    authId: this.$route.query.orgId,
-                    conditions: this.AjaxSetArgument()
+                    authId: this.$route.params.orgId,
+                    conditions: this.AjaxSetArgument(),
+                    IsRemove: this.getRemoveType
                 },
                 orderByParDic: null
             };
@@ -764,11 +790,11 @@ export default {
             this.loadingAll = this.$loading(this.loadingopaction);
             let url = "/api/v1/IntellAdvertiseApi/Campaign/StatisticCampaign";
             let obj = {
-                authId: this.$route.query.orgId,
+                authId: this.$route.params.orgId,
                 keyword: this.valuedata,
-                conditions: this.AjaxSetArgument()
+                conditions: this.AjaxSetArgument(),
+                IsRemove: this.getRemoveType
             };
-
             this.$https.post(url, JSON.stringify(obj)).then(res => {
                 this.loadingAll.close();
                 if (res.data.resultCode == 1000) {
@@ -796,6 +822,7 @@ export default {
             //status 1  equals 值 PAUSED/ENABLED
             //monitorcount 2 equals 1/0
             //statisdate 1 inrange 值 "2018-02-01","201802-02"
+            this.getRemoveType = false;
             switch (this.unlimited) {
                 case 0:
                     obj = null;
@@ -831,15 +858,17 @@ export default {
                         valueType: 2,
                         values: ["0"]
                     };
+                    break;
+                case 5:
+                    obj = null;
+                    this.getRemoveType = true;
+                    break;
             }
             obj2 = {
                 code: "statisdate",
                 operator: "inrange",
                 valueType: 1,
-                values: [
-                    dateUtc(this.dateTime[0]),
-                    dateUtc(this.dateTime[1])
-                ]
+                values: [dateUtc(this.dateTime[0]), dateUtc(this.dateTime[1])]
             };
             arr.push(obj2);
             if (obj != null) {
@@ -854,6 +883,12 @@ export default {
             //操作按钮
             this.caoShow = false;
             this.setType = this.caoList[index];
+            let type = this.caoList[index];
+            let _this = this;
+            if (this.unlimited == 5 && type != "导出") {
+                this.caoShow = false;
+                return false;
+            }
             if (this.tableData4.length == 0) {
                 this.$store.commit("SET_SHOW_TRUE", {
                     value: "无数据无法操作",
@@ -861,9 +896,6 @@ export default {
                 });
                 return false;
             }
-            let type = this.caoList[index];
-            let _this = this;
-
             switch (type) {
                 case "启用":
                     if (this.multipleSelection.length == 0) {
@@ -985,6 +1017,33 @@ export default {
                     break;
                 case "导出":
                     this.AjaxExcelOut();
+                    this.$store.commit("SET_SHOW_TRUE", {
+                        value: "正在导出",
+                        type: 3
+                    });
+                    break;
+                case "移除":
+                    if (this.multipleSelection.length == 0) {
+                        _this.$store.commit("SET_SHOW_TRUE", {
+                            value: "请选择广告系列",
+                            type: 3
+                        });
+                    } else {
+                        this.$confirm("是否移除所选广告系列？", {
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            center: true
+                        }).then(() => {
+                            this.AjaxSetDelete({
+                                id: this.IdStrPin().id,
+                                objJson: this.IdStrPin().arr
+                            });
+                            _this.$store.commit("SET_SHOW_TRUE", {
+                                value: "正在移除请等待",
+                                type: 3
+                            });
+                        });
+                    }
                     break;
             }
         },
@@ -1035,6 +1094,10 @@ export default {
             arr = JSON.stringify(arr);
             return { id, arr };
         },
+        AjaxSetDelete(obj) {
+            let url = "/api/v1/IntellAdvertiseApi/Campaign/DeleteCampaign";
+            this.$https.post(url, JSON.stringify(obj));
+        },
         AjaxSetType(obj) {
             //Ajax编辑
             let url = "/api/v1/IntellAdvertiseApi/Campaign/EditCampaign";
@@ -1049,18 +1112,19 @@ export default {
                 pageSize: 9,
                 requestPar: {
                     keyword: this.valuedata,
-                    authId: this.$route.query.orgId,
-                    conditions: this.AjaxSetArgument()
+                    authId: this.$route.params.orgId,
+                    conditions: this.AjaxSetArgument(),
+                    IsRemove: this.getRemoveType
                 },
                 orderByParDic: obj3
             };
-            excelCheckout(url, Ajaxobj);
+            excelCheckout(url, Ajaxobj, '广告系列列表');
         },
         AjaxGetCampaignOperateResult() {
             //5秒一次获取状态列表
             let url =
                 "/api/v1/IntellAdvertiseApi/Campaign/GetCampaignOperateResult?orgid=" +
-                this.$route.query.orgId;
+                this.$route.params.orgId;
             let _this = this;
             clearInterval(this.timer);
             this.timer = setInterval(() => {
@@ -1088,20 +1152,21 @@ export default {
         createAdvertising() {
             //创建广告系列
             this.$router.push({
-                path: "/advertising-center/advertising-list",
-                query: this.$route.query
+                name: "advertising-list",
+                params: this.$route.params
             });
         },
         advaerTolist(name, id) {
             //跳转广告系列
             this.$router.push({
-                path: "/advertising-center/list",
-                query: {
-                    accountName: this.$route.query.accountName,
-                    orgId: this.$route.query.orgId,
+                name: "list",
+                params: {
+                    accountName: this.$route.params.accountName,
+                    orgId: this.$route.params.orgId,
+                    id: this.$route.params.id,
                     listName: name,
-                    listId: id, 
-                    id: this.$route.query.id
+                    listId: id,
+                    listType: this.unlimited == 5 ? "remove" : "normal"
                 }
             });
         }

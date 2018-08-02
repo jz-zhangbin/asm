@@ -136,18 +136,14 @@
 .table {
     padding: 50px 0 0;
     tr td,
-    th {
-        border-right: 1px solid @border;
+    th { 
         text-align: center;
         padding: 8px 0;
     }
     tr th {
         background: rgb(248, 249, 250);
         line-height: 34px;
-    }
-    //    .el-table{
-    //   border:1px solid @border;
-    // }
+    } 
     a {
         color: @color;
     }
@@ -195,7 +191,7 @@
                     <el-table-column label="词组名称" show-overflow-tooltip min-width="420">
                         <template slot-scope="scope">
                             <span style="color:rgb(0,158,252)">
-                                <router-link :to="{path: '/KeyWordList?id='+scope.row.id+''}">
+                                <router-link :to="{path: '/KeyWordList?id='+scope.row.id+'&name='+scope.row.name}">
                                     {{ scope.row.name }}
                                 </router-link> 
                             </span>
@@ -292,7 +288,7 @@ export default {
 
     filters: { 
         setdate: function(value) {
-            console.log(value)
+            //console.log(value)
             return date(value)
         }
     },

@@ -127,7 +127,7 @@
                 <span :class="{sl_checkeout: ls, checked: checkouting}" @click="excelOut">
                     <i class="iconfont icon-download"></i>
                     {{checkouting ? '导出中' : '导出'}}
-                </span> 
+                </span>
             </div>
             <!-- 表格数据 -->
             <div class="sl_table">
@@ -183,12 +183,12 @@
                         </td>
                         <td style="width: 8%">
                             <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
-                                <i class="iconfont icon-plus-add" @click="addCiClick(index,ele.hotKeywordTemStatus,ele.keywordName)"></i>
+                                <i class="iconfont icon-plus-add" @click="addCiClick(index)"></i>
                                 <span class="sl_t_is" style="width:114px;">添加至新建词组</span>
                                 <span class="sl_t_san"></span>
                             </div>
                             <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
-                                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index,ele.hotKeywordTemStatus,ele.keywordName)"></i>
+                                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index)"></i>
                                 <span class="sl_t_is" style="width:114px;">从新建词组删除</span>
                                 <span class="sl_t_san"></span>
                             </div>
@@ -202,18 +202,12 @@
                         </td>
                     </tr>
                 </table>
-            </div>  
-            <!-- 分页 --> 
+            </div>
+            <!-- 分页 -->
             <div class="page_index">
                 <div>{{pagedata}}</div>
                 <div>
-                    <el-pagination background 
-                    @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange" 
-                     :current-page.sync="currentPage3" 
-                     :page-size="50" 
-                     layout="prev, pager, next, jumper" 
-                     :total="2000">
+                    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="50" layout="prev, pager, next, jumper" :total="2000">
                     </el-pagination>
                 </div>
             </div>
@@ -225,14 +219,14 @@
 </template>
 
 <script>
-import { mapState } from "vuex"; 
-import banner from "@components/AsmQuery/Banner"; 
+import { mapState } from "vuex";
+import banner from "@components/AsmQuery/Banner";
 import { AjaxRemove } from "@commonJS/ajaxServes";
 import usersign from "@components/AsmQuery/User-Sign";
 import { excelCheckout } from "@commonJS/excelCheckout";
 export default {
     data() {
-        return {  
+        return {
             bannerName: "竞价热词榜",
             countryNow: "", //选中的国家
             tableData: [], //表格数据
@@ -289,7 +283,7 @@ export default {
         this.$store.dispatch("GET_COUNTRYLIST").then(() => {
             this.countryNow = this.$store.state.Home.countryList[0].nationId;
 
-            this.AjaxInit(this.countryNow) 
+            this.AjaxInit(this.countryNow);
         });
     },
 
@@ -299,12 +293,12 @@ export default {
         let _this = this;
         // 滚动事件
         $(window).scroll(function() {
-            var scrollTop = $(this).scrollTop(); 
+            var scrollTop = $(this).scrollTop();
             if (scrollTop >= 500) {
                 $(".sl_from_top").css("display", "flex");
             } else {
                 $(".sl_from_top").css("display", "none");
-            } 
+            }
         });
     },
 
@@ -342,7 +336,7 @@ export default {
             );
         },
 
-        addCiClick(index, num, name) {
+        addCiClick(index) {
             //操作关键词
             if (!this.userType) {
                 this.$message({
@@ -351,56 +345,57 @@ export default {
                 });
                 return false;
             }
-            if (num == 0) {
+            let obj = this.tableData[index] 
+            if (this.tableData[index].hotKeywordTemStatus == 0) {
                 this.tableData[index].hotKeywordTemStatus = 1;
-                AjaxRemove(name, 0); //添加
+                AjaxRemove(obj.keywordName, 0, obj.searchIndex, obj.popularityIndex, obj.appLength); //添加
             } else {
                 this.tableData[index].hotKeywordTemStatus = 0;
-                AjaxRemove(name, 1); //删除
+                AjaxRemove(obj.keywordName, 1, obj.searchIndex, obj.popularityIndex, obj.appLength); //删除
             }
         },
 
-        changeFun(countryNow) {  
-            this.tableData = []
-            this.currentPage3 = 1
-            this.AjaxInit(countryNow)
+        changeFun(countryNow) {
+            this.tableData = [];
+            this.currentPage3 = 1;
+            this.AjaxInit(countryNow);
         },
 
         excelOut() {
             //导出
-            if(!this.userType) {
+            if (!this.userType) {
                 this.$store.commit("SET_SHOW_TRUE", {
                     value: "请先登录在操作",
                     type: 3
                 });
-                return false
-            } 
-            if(this.checkouting) {
-                return false
-            } 
-            this.checkouting = true 
-            let url = '/api/v1/IntellSearchApi/HotKeyword/ExportHotKeywords'
+                return false;
+            }
+            if (this.checkouting) {
+                return false;
+            }
+            this.checkouting = true;
+            let url = "/api/v1/IntellSearchApi/HotKeyword/ExportHotKeywords";
             let obj = {
-                pageIndex: this.IsManager? 1 : this.currentPage3,
+                pageIndex: this.IsManager ? 1 : this.currentPage3,
                 pageSize: 50,
                 requestPar: {
                     nationId: this.countryNow
                 }
-            }
-            if(this.IsManager) {
-                obj.exportPar={
+            };
+            if (this.IsManager) {
+                obj.exportPar = {
                     exportIndex: 1,
                     exportCount: 2000
-                }
+                };
             }
-            excelCheckout(url,  obj , '竞价词榜').then(()=>{
-                this.checkouting = false
-            })
+            excelCheckout(url, obj, "竞价词榜").then(() => {
+                this.checkouting = false;
+            });
         },
 
         AjaxInit(id, pageindex) {
-            this.tableData = []
-            this.loadingfirst = true
+            this.tableData = [];
+            this.loadingfirst = true;
             //初始化列表ajax
             let url = "/api/v1/IntellSearchApi/HotKeyword/GetHotKeywordList";
             let data = {
@@ -411,24 +406,24 @@ export default {
                 }
             };
             let data1 = JSON.stringify(data);
-            this.$https.post(url, data1).then(res=>{
-                this.loadingfirst = false
-                if(res.data.resultCode == 1000) {
-                    this.tableData = res.data.data
-                }else{
-                    this.tableData = []
+            this.$https.post(url, data1).then(res => {
+                this.loadingfirst = false;
+                if (res.data.resultCode == 1000) {
+                    this.tableData = res.data.data;
+                } else {
+                    this.tableData = [];
                 }
-            })
+            });
         },
 
         handleSizeChange(val) {
-            this.currentPage3 = val * 1
-            this.AjaxInit(this.countryNow)
+            this.currentPage3 = val * 1;
+            this.AjaxInit(this.countryNow);
         },
 
-        handleCurrentChange(val) { 
-            this.currentPage3 = val * 1
-            this.AjaxInit(this.countryNow)
+        handleCurrentChange(val) {
+            this.currentPage3 = val * 1;
+            this.AjaxInit(this.countryNow);
         }
     }
 };

@@ -9,6 +9,11 @@
 .iconfont {
     cursor: pointer;
 }
+.td_colorte{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .apl_body_date {
     width: 100%;
     display: flex;
@@ -324,6 +329,42 @@
             }
         }
     }
+    .sl_t_dis {
+    color: @font_color;
+    position: relative;
+    height: 16px;
+    margin-left: 8px;
+    margin-top: 0px;
+    &:hover .sl_t_is {
+        display: block;
+    }
+    &:hover .sl_t_san {
+        display: block;
+    }
+    .sl_t_is {
+        background: #30353d;
+        color: #e2e2e3;
+        padding: 10px 15px;
+        position: absolute;
+        text-align: center;
+        bottom: 26px;
+        left: 50%;
+        transform: translateX(-50%);
+        line-height: 24px;
+        border-radius: 6px;
+        display: none;
+        font-size: 12px;
+    }
+    .sl_t_san {
+        display: none;
+        border: 5px solid transparent;
+        border-top: 5px solid #30353d;
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
 }
 </style>
 <style lang="less">
@@ -413,7 +454,7 @@
                     <div class="kcl_duibi_right" v-if="leftSearch">
                         <p>选择APP</p>
                         <div class="kc_ct_search kc_ct_search2">
-                            <input id="leftInput" type="text" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinforlefet" @focus="focusInput('.kc_ct_search2')" @blur="blurInput('.kc_ct_search2')">
+                            <input id="leftInput" type="text" v-inputKeyDown="{lorr:'left'}" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinforlefet" @focus="focusInput('.kc_ct_search2')" @blur="blurInput('.kc_ct_search2')">
                             <div class="kc_over kc_over2">
                                 <ul>
                                     <li @click="overLiClick(index,'left')" v-for="(ele,index) in listLeft" :key="index">
@@ -473,7 +514,7 @@
                     <div class="kcl_duibi_right" v-if="!appDataShow">
                         <p>选择APP</p>
                         <div class="kc_ct_search kc_ct_search1">
-                            <input type="text" id="rightInput" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor" @focus="focusInput('.kc_ct_search1')" @blur="blurInput('.kc_ct_search1')">
+                            <input type="text" id="rightInput" v-inputKeyDown="{lorr: 'right'}" placeholder="请输入应用名称/App ID/应用链接搜索" v-model="APPinfor" @focus="focusInput('.kc_ct_search1')" @blur="blurInput('.kc_ct_search1')">
                             <div class="kc_over kc_over1">
                                 <ul>
                                     <li @click="overLiClick(index,'right')" v-for="(ele,index) in list" :key="index">
@@ -492,7 +533,7 @@
                 <div class="kcl_dui_star" v-if="appDataShowtrue">
                     <button @click="starClick">开始对比</button>
                 </div>
-                <div class="apl_body_date" v-if="appDataShowtrue">
+                <div class="apl_body_date" v-if="tableShow">
                     <el-select v-model="value1" @change="changeDateFun(value1)">
                         <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
@@ -506,7 +547,7 @@
                             <th style="width: 28%"></th>
                             <th style="width: 19%">已选APP (左)</th>
                             <th style="width: 15%"></th>
-                            <th style="width: 19%">竞品APP (右)</th>
+                            <th style="width: 19%">已选APP (右)</th>
                             <th style="width: 19%">操作</th>
                         </tr>
                         <tr class="td_height" v-if="ContrastData[idLeft] && duibitableone">
@@ -523,12 +564,22 @@
                         </tr>
                         <tr v-if="ContrastData[idLeft] && duibitableone">
                             <td>ASM竞价词数 </td>
-                            <td class="td_color">
+                            <td class="td_color td_colorte">
                                 {{ContrastData[idLeft].hasAdditionalCompetitiveWord ? '8000+' : ContrastData[idLeft].totalCompetitiveWordNum}}
+                                <div class="sl_t_dis" v-if="ContrastData[idLeft].hasAdditionalCompetitiveWord">
+                                    <i class="iconfont icon-wenhao-fill"> </i>
+                                    <span class="sl_t_is" style="width:280px;">该APP当前竞价关键词数量较多，上限显示为8000+</span>
+                                    <span class="sl_t_san"></span>
+                                </div>
                             </td>
                             <td></td>
-                            <td class="td_color">
+                            <td class="td_color td_colorte">
                                 {{ContrastData[idRight].hasAdditionalCompetitiveWord ? '8000+' : ContrastData[idRight].totalCompetitiveWordNum}} 
+                                <div class="sl_t_dis" v-if="ContrastData[idRight].hasAdditionalCompetitiveWord">
+                                    <i class="iconfont icon-wenhao-fill"> </i>
+                                    <span class="sl_t_is" style="width:280px;">该APP当前竞价关键词数量较多，上限显示为8000+</span>
+                                    <span class="sl_t_san"></span>
+                                </div>
                             </td>
                             <td>
                                 <i class="iconfont icon-more" @click="listNav('alike')"></i>
@@ -708,6 +759,21 @@ export default {
         }
     },
 
+    directives: {
+        inputKeyDown: {
+            bind(ele,node,vue) { 
+                $(ele).keydown(function(e) {
+                var curKey = e.which;
+                if (curKey == 13) { 
+                    vue.context.btnClick(node.value.lorr == 'left' ? vue.context.APPinforlefet : vue.context.APPinfor, node.value.lorr);
+                    return false;
+                }
+            })
+            }
+        }
+
+    },
+
     created() {
         this.$store.dispatch("GET_COUNTRYLIST").then(() => {
             this.$store.state.Home.countryList.map((ele, index) => {
@@ -738,23 +804,7 @@ export default {
 
     mounted() { 
         //搜索列表的回车事件
-        let _this = this;
-        $("#leftInput").keydown(function(e) {
-            var curKey = e.which;
-            if (curKey == 13) {
-                console.log(1);
-                _this.btnClick(_this.APPinforlefet, "left");
-                return false;
-            }
-        });
-        $("#rightInput").keydown(function(e) {
-            var curKey = e.which;
-            if (curKey == 13) {
-                console.log(2);
-                _this.btnClick(_this.APPinfor, "right");
-                return false;
-            }
-        });
+        let _this = this; 
         //关闭搜索列表
         $(document).bind("click", function(e) {
             var target = $(e.target);
@@ -775,18 +825,24 @@ export default {
         },
         changeDateFun() {
             //切换日期
-            this.tableShow = false;
             this.tableCommonsShow = false;
             this.parentAjaxType = false;
             this.components_index = 0;
             this.currentView = list1;
             this.ContrastData = {};
+            this.tableShow = true;
+            this.loadingparent = true;
+            this.ContrastData = {};
+            this.AjaxAppcontent(
+                this.dataLeft.appStoreId,
+                this.dataRight.appStoreId
+            );
+            // this.tableShow = false; 
         },
-        changeFun(value) {
-            this.loading = this.$loading(this.loadingopaction);
-
+        changeFun(value) { 
             //切换国家
             if (!this.leftSearch) {
+                this.loading = this.$loading(this.loadingopaction);
                 this.AjaxInfor(
                     {
                         key: this.countryNow,
@@ -796,6 +852,7 @@ export default {
                 );
             }
             if (this.appDataShow) {
+                this.loading = this.$loading(this.loadingopaction);
                 this.AjaxInfor(
                     {
                         id: this.rightappStoreId,

@@ -15,7 +15,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 90px;
+        height: 60px;
     }
     .btn {
         width: 158px;
@@ -166,6 +166,9 @@
         font-weight: bold;
         border-bottom: 1px solid @color;
     }
+    .stop {
+        cursor: not-allowed !important;
+    }
 }
 </style>
 <template>
@@ -183,7 +186,7 @@
             <!-- <img src="../../../../images/moni/comon_loading.png" alt="" v-if="!loading"> -->
             <img :src="adjuz_img" alt="">
             <section v-if="!loading">
-                <h1>广告组 ：{{$route.query.keyName}}</h1>
+                <h1>广告组 ：{{$route.params.keyName}}</h1>
                 <div>
                     <p>
                         <span>默认CPC</span>
@@ -191,7 +194,7 @@
                     </p>
                     <p>
                         <span>智能匹配</span>
-                        <span>-</span>
+                        <span>-</span> 
                     </p>
                     <p>
                         <span>广告状态</span>
@@ -204,7 +207,7 @@
                 </div>
             </section>
             <section v-else>
-                <h1>广告组 ：{{$route.query.keyName}}</h1>
+                <h1>广告组 ：{{$route.params.keyName}}</h1>
                 <div>
                     <p>
                         <span>默认CPC</span>
@@ -226,9 +229,9 @@
             </section>
 
             <!-- 右面固定 -->
-            <div class="right_absolute_btn" @click="zhinengroute">监测规则</div>
+            <div :class="{right_absolute_btn: classBool , stop: isRemove}" @click="zhinengroute">监测规则</div>
             <div class="right_absolute_text">
-                <el-button type="text" @click="routerTosettings">编辑</el-button>
+                <el-button :class="{stop: isRemove}" type="text" @click="routerTosettings">编辑</el-button>
             </div>
             <div class="right_absolute_select">
                 <div class="checket_time">
@@ -248,9 +251,9 @@
 
         <!-- 导航 -->
         <div class="router_list">
-            <router-link :to="{path: '/advertising-center/keyword/home' , query: $route.query}" active-class="activeclass">关键词列表</router-link>
-            <router-link :to="{path: '/advertising-center/keyword/search-terms' , query: $route.query}" active-class="activeclass">Search Terms</router-link>
-            <router-link :to="{path: '/advertising-center/keyword/negative-keyword' , query: $route.query}" active-class="activeclass">否定关键词</router-link>
+            <router-link :to="{name: 'group-home' , params: $route.params}" active-class="activeclass">关键词列表</router-link>
+            <router-link :to="{name: 'group-search-terms' , params: $route.params}" active-class="activeclass">Search Terms</router-link>
+            <router-link :to="{name: 'group-negative-keyword' , params: $route.params}" active-class="activeclass">否定关键词</router-link>
 
         </div>
         <div class="router_box">
@@ -286,7 +289,9 @@ export default {
                 starttime: "",
                 endtime: ""
             },
-            adjuz_img: ""
+            adjuz_img: "",
+            isRemove: false,//是否是移除广告系列数据
+            classBool: true,
         };
     },
 
@@ -307,14 +312,15 @@ export default {
 
     computed: {},
 
-    created() {
-        let queryData = this.$route.query;
+    created() { 
+        let queryData = this.$route.params;
+        queryData.groupType == 'remove' ? this.isRemove = true : this.isRemove = false
         this.routeList.push(
             ...[
                 {
                     name: "账户",
-                    path: "/advertising-center/account",
-                    query: {
+                    routername: "account",
+                    params: {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId, 
                         id: queryData.id
@@ -322,19 +328,20 @@ export default {
                 },
                 {
                     name: "广告系列",
-                    path: "/advertising-center/list",
-                    query: {
+                    routername: "list",
+                    params: {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId,
+                        id: queryData.id,
                         listName: queryData.listName,
-                        listId: queryData.listId, 
-                        id: queryData.id
+                        listId: queryData.listId,
+                        listType: queryData.listType
                     }
                 },
                 {
                     name: "广告组",
-                    path: "/advertising-center/keyword",
-                    query: queryData
+                    routername: "group",
+                    params: queryData
                 }
             ]
         );
@@ -354,13 +361,7 @@ export default {
 
     destroyed() {},
 
-    methods: {
-        createAdvertising() {
-            this.$router.push({
-                path: "/advertising-center/create-list",
-                query: this.$route.query
-            });
-        },
+    methods: { 
         timeNowClick() {
             //点击时区
             this.timeNowShow = !this.timeNowShow;
@@ -371,9 +372,12 @@ export default {
             this.timeNowShow = false;
         },
         zhinengroute() {
+            if(this.isRemove) {
+                return false
+            }
             let url =
                 "/api/v1/IntellAdvertiseApi/Monitor/GetRuleIdByAdGroupId?adgroupId=" +
-                this.$route.query.keyId;
+                this.$route.params.keyId;
             this.$https.get(url).then(res => {
                 if (res.data.resultCode == 1000) {
                     if (res.data.data.status == 0) {
@@ -394,15 +398,18 @@ export default {
             });
         },
         routerTosettings() {
+            if(this.isRemove) {
+                return false
+            }
             this.$router.push({
-                path: "/advertising-center/settings-keyword",
-                query: this.$route.query
+                name: "settings-keyword",
+                params: this.$route.params
             });
         },
         AjaxGetAdgroupObject() {
             let url =
                 "/api/v1/IntellAdvertiseApi/AdGroup/GetAdgroupObject?id=" +
-                this.$route.query.keyId;
+                this.$route.params.keyId;
             this.loading = false;
             this.$https.get(url).then(res => {
                 this.loading = true;

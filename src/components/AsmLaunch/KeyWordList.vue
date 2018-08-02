@@ -80,10 +80,7 @@
     .el-pagination{
         width: 440px;
         margin:30px auto;
-    }
-       .el-table{
-      border:1px solid @border;
-    }
+    } 
 } 
 </style>
 

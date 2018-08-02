@@ -143,79 +143,79 @@
 }
 </style>
 <template>
-  <div class="agent_index">
-    <v-search-top></v-search-top>
-    <div class="agent_body">
-      <banner :bannerName='bannerName'></banner>
+    <div class="agent_index">
+        <v-search-top></v-search-top>
+        <div class="agent_body">
+            <banner :bannerName='bannerName'></banner>
 
-      <div class="agent_form" v-if="!success">
-        <h1>提交投放需求，我们将尽快与您联系</h1>
-        <section>
-          <p>姓名：</p>
-          <input type="text" placeholder="请输入你的姓名" v-model="userName">
-        </section>
-        <section>
-          <p>手机：</p>
-          <input type="text" placeholder="请输入你的手机号" v-model="userTel">
-        </section>
-        <section>
-          <p>邮箱：</p>
-          <input type="text" placeholder="请输入你的邮箱" v-model="userEmail">
-        </section>
-        <section>
-          <p>所在公司：</p>
-          <input type="text" placeholder="所在公司名称" v-model="userCompany">
-        </section>
-        <section>
-          <p>职位：</p>
-          <input type="text" placeholder="请输入你的职位名称" v-model="userPosition">
-        </section>
-        <section>
-          <p>产品名称：</p>
-          <input type="text" placeholder="请输入投放的产品名称" v-model="userProduct">
-        </section>
-        <section class="te_se">
-          <p></p>
-          <div>
-            <b @click="checkClick(0)" :class="{checkedbox_b: checkList[0].show }">
-              <i class="iconfont icon-gouxuan" v-if="checkList[0].show"></i>
-            </b>
-            <span :class="{checkedbox: checkList[0].show }">有产品，想立刻投放</span>
-          </div>
-        </section>
-        <section class="te_se">
-          <p></p>
-          <div>
-            <b @click="checkClick(1)" :class="{checkedbox_b: checkList[1].show }">
-              <i class="iconfont icon-gouxuan" v-if="checkList[1].show"></i>
-            </b>
-            <span :class="{checkedbox: checkList[1].show }">暂不投放，了解ASM相关投放信息</span>
-          </div>
-        </section>
-        <section class="te_war" v-if="war">
-          <p></p>
-          <div>
-            {{warData}}
-          </div>
-        </section>
-        <section class="te_btn">
-          <p></p>
-          <div @click="submitClick">
-            提交
-          </div>
-        </section>
-      </div>
+            <div class="agent_form" v-if="!success">
+                <h1>提交投放需求，我们将尽快与您联系</h1>
+                <section>
+                    <p>姓名：</p>
+                    <input type="text" placeholder="请输入你的姓名" v-model="userName">
+                </section>
+                <section>
+                    <p>手机：</p>
+                    <input type="text" placeholder="请输入你的手机号" v-model="userTel">
+                </section>
+                <section>
+                    <p>邮箱：</p>
+                    <input type="text" placeholder="请输入你的邮箱" v-model="userEmail">
+                </section>
+                <section>
+                    <p>所在公司：</p>
+                    <input type="text" placeholder="所在公司名称" v-model="userCompany">
+                </section>
+                <section>
+                    <p>职位：</p>
+                    <input type="text" placeholder="请输入你的职位名称" v-model="userPosition">
+                </section>
+                <section>
+                    <p>产品名称：</p>
+                    <input type="text" placeholder="请输入投放的产品名称" v-model="userProduct">
+                </section>
+                <section class="te_se">
+                    <p></p>
+                    <div>
+                        <b @click="checkClick(0)" :class="{checkedbox_b: checkList[0].show }">
+                            <i class="iconfont icon-gouxuan" v-if="checkList[0].show"></i>
+                        </b>
+                        <span :class="{checkedbox: checkList[0].show }">有产品，想立刻投放</span>
+                    </div>
+                </section>
+                <section class="te_se">
+                    <p></p>
+                    <div>
+                        <b @click="checkClick(1)" :class="{checkedbox_b: checkList[1].show }">
+                            <i class="iconfont icon-gouxuan" v-if="checkList[1].show"></i>
+                        </b>
+                        <span :class="{checkedbox: checkList[1].show }">暂不投放，了解ASM相关投放信息</span>
+                    </div>
+                </section>
+                <section class="te_war" v-if="war">
+                    <p></p>
+                    <div>
+                        {{warData}}
+                    </div>
+                </section>
+                <section class="te_btn">
+                    <p></p>
+                    <div @click="submitClick">
+                        提交
+                    </div>
+                </section>
+            </div>
 
-      <!-- 投放成功 -->
-      <div class="agent_success" v-if="success">
-        <h2>需求提交成功</h2>
-        <p>我们将尽快与您联系，请耐心等待，谢谢配合！</p>
-        <div @click="blackClick">
-          返回
+            <!-- 投放成功 -->
+            <div class="agent_success" v-if="success">
+                <h2>需求提交成功</h2>
+                <p>我们将尽快与您联系，请耐心等待，谢谢配合！</p>
+                <div @click="blackClick">
+                    返回
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>

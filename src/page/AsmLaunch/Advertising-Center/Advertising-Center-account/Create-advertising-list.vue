@@ -1,7 +1,8 @@
 <style lang='less' scoped>
 @import url("./Create-advertising-list.less");
 @import url("../../../../base/commonCSS/scroll.css");
-</style>
+</style> 
+
 <template>
     <div class="createlist_index">
         <!-- 导航 -->
@@ -287,6 +288,12 @@
                 <!-- 关键词设置 -->
                 <p class="createlist_title" v-if="widely || accurate">关键词设置</p>
                 <div class="createlist_keyword" v-if="!keyWordShow && (widely || accurate)">
+                    <span class="key_word">
+                        <i class="iconfont icon-icon--" @click="pushkeyWord"></i>
+                        <span class='add_keyword' @click="addkeyWord">
+                            添加词组
+                        </span>
+                    </span>
                     <section class="section_one">
                         <span style="width: 30%">词组名称</span>
                         <span style="width: 20%">关键词数</span>
@@ -298,7 +305,10 @@
                             <span style="width: 30%">{{ele.name}}</span>
                             <span style="width: 20%">{{ele.totalCount}}</span>
                             <span style="width: 30%">{{ele.createDate | dateStore}}</span>
-                            <span style="width: 20%" class="key_wored" @click="keyWordClick(index)">选择</span>
+                            <span style="width: 20%" class="key_wored">
+                                <i @click="keyWordlook(ele.id,ele.name)">查看</i>
+                                <i @click="keyWordClick(index)">选择</i>
+                            </span>
                         </section>
                     </div>
                 </div>
@@ -474,18 +484,18 @@ export default {
     },
 
     created() {
-        let queryData = this.$route.query;
+        let queryData = this.$route.params;
         this.routeList.push(
             ...[
                 {
                     name: "账户",
-                    path: "/advertising-center/account",
-                    query: queryData
+                    routername: "account",
+                    params: queryData
                 },
                 {
                     name: "创建广告系列",
-                    path: "/advertising-center/advertising-list",
-                    query: queryData
+                    routername: "advertising-list",
+                    params: queryData
                 }
             ]
         );
@@ -528,7 +538,7 @@ export default {
             // this.userType.orderNumber =
             //     this.appDate.adamId +
             //     "_" +
-            //     this.$route.query.orgId +
+            //     this.$route.params.orgId +
             //     "_" +
             //     this.dateNow()
         },
@@ -547,7 +557,7 @@ export default {
             // this.userType.orderNumber =
             //     this.appDate.adamId +
             //     "_" +
-            //     this.$route.query.orgId +
+            //     this.$route.params.orgId +
             //     "_" +
             //     this.dateNow()
         },
@@ -591,6 +601,24 @@ export default {
             //关闭关键词
             this.keyWordDate = {};
             this.keyWordShow = false;
+        },
+        pushkeyWord() {
+            //刷新关键词
+            this.AjaxGetKeyWord();
+        },
+        addkeyWord() {
+            //添加关键词组
+            let routeData = this.$router.resolve({
+                path: '/key-lexicon' 
+            });
+            window.open(routeData.href, '_blank')
+        },
+        keyWordlook(id,name) {
+            //查看关键词组
+            let routeData = this.$router.resolve({
+                path: '/KeyWordList?id='+id+'&name=' + name 
+            });
+            window.open(routeData.href, '_blank')
         },
         chuangClick() {
             //点击创建，打开提交表单,验证表单
@@ -752,7 +780,7 @@ export default {
                 "/api/v1/IntellAdvertiseApi/Campaign/SearchGetApp?searchText=" +
                 this.appName +
                 "&orgId=" +
-                this.$route.query.orgId;
+                this.$route.params.orgId;
             this.$https.get(url).then(res => {
                 this.loading.close();
                 if (res.data.resultCode == 1000) {
@@ -778,7 +806,7 @@ export default {
             this.loading = this.$loading(this.loadingopaction);
             let url =
                 "/api/v1/IntellAdvertiseApi/Campaign/GetAppsByOwn?orgId=" +
-                this.$route.query.orgId;
+                this.$route.params.orgId;
             this.$https.get(url).then(res => {
                 this.loading.close();
                 if (
@@ -801,7 +829,7 @@ export default {
                 "/api/v1/IntellAdvertiseApi/Campaign/GetCountryCodeByAdamid?adamid=" +
                 id +
                 "&orgId=" +
-                this.$route.query.orgId;
+                this.$route.params.orgId;
             this.loading = this.$loading(this.loadingopaction);
             this.$https.get(url).then(res => {
                 this.loading.close();
@@ -855,7 +883,7 @@ export default {
             //获取用户信息
             let url =
                 "/api/v1/IntellAdvertiseApi/OrgUser/GetUpdateOrgUserInfoModel?id=" +
-                this.$route.query.id;
+                this.$route.params.id;
             this.$https.get(url).then(res => {
                 this.userType = res.data.data;
             });
@@ -917,7 +945,7 @@ export default {
                 });
             }
             let obj = {
-                orgId: this.$route.query.orgId,
+                orgId: this.$route.params.orgId,
                 adamid: this.appDate.adamId,
                 countrys: this.checkList,
                 budgetSettings: list,
@@ -947,7 +975,7 @@ export default {
                       }
                     : null
             };
-            console.log(JSON.stringify(obj));
+            //console.log(JSON.stringify(obj));
             this.loading = this.$loading(this.loadingopaction);
             let _this = this;
             let url = "/api/v1/IntellAdvertiseApi/Campaign/CreateCampaigns";
@@ -1061,7 +1089,7 @@ export default {
                                 _this.newAdvertisementListArrSet = true;
                             }
                         } else {
-                            this.$store.commit("SET_SHOW_TRUE", {
+                            _this.$store.commit("SET_SHOW_TRUE", {
                                 value: "您插入的有重复",
                                 type: 3
                             });
@@ -1086,7 +1114,7 @@ export default {
                                 _this.newAdvertisementZuArrSet = true;
                             }
                         } else {
-                            this.$store.commit("SET_SHOW_TRUE", {
+                            _this.$store.commit("SET_SHOW_TRUE", {
                                 value: "您插入的有重复",
                                 type: 3
                             });

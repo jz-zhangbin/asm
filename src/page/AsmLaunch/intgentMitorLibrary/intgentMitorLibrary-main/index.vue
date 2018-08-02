@@ -111,13 +111,14 @@
 }
 </style>
 <style lang="less">
-.table {
-    padding: 50px 0 0;
-    tr td,
-    th { 
-        text-align: center;
-        padding: 8px 0;
-    }
+.tablete2 {
+    padding: 50px 0 0; 
+    .el-table th>.cell{
+      line-height: 34px;
+    } 
+    .el-table td, .el-table th{
+      padding: 8px 0;
+    } 
     tr th {
         background: rgb(248, 249, 250);
         line-height: 34px;
@@ -168,16 +169,23 @@
                 </div>
             </div>
             <!-- 列表 -->
-            <div class="table">
+            <div class="tablete2">
                 <el-table border v-loading="loading" ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                    <el-table-column type="selection" min-width="55">
+                    <el-table-column type="selection" min-width="55" align='center'>
                     </el-table-column>
-                    <el-table-column label="智能监测名称" min-width="350" show-overflow-tooltip>
+                    <el-table-column label="智能监测名称" min-width="320" show-overflow-tooltip align='center'>
                         <template slot-scope="scope">
                             <!--{{ scope.row.intelMonitorId }}-->
-                            <router-link :to="{path: '/intgentMitorLibrary/MonitoringRules?id='+scope.row.intelMonitorId+''}">
+                            <router-link :to="{path: '/intgentMitorLibrary/MonitoringRules?id='+scope.row.intelMonitorId+'&name='+scope.row.intelMonitorName}">
                                 <span style="color:rgb(0,158,252)">{{ scope.row.intelMonitorName }}</span>
                             </router-link>
+                        </template>
+                    </el-table-column>
+                    <el-table-column  label="状态" min-width="90" align='center'>
+                        <template slot-scope="scope"> 
+                            <div>
+                                {{scope.row.isRun == 0 ? '暂停' : '开启'}}
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="SearchIndex" label="监测对象" min-width="200" align='center'>
@@ -191,12 +199,12 @@
                                 <span style="color:red">{{scope.row.campaignCount}}</span>
                             </div>
                         </template>
+                    </el-table-column> 
+                    <el-table-column prop="ruleCount" label="监测规则数" min-width="120" align='center'>
                     </el-table-column>
-                    <el-table-column prop="ruleCount" label="监测规则数" min-width="120">
+                    <el-table-column prop="createDate"  label="创建时间" min-width="180" align='center'>
                     </el-table-column>
-                    <el-table-column prop="createDate"  label="创建时间" min-width="180">
-                    </el-table-column>
-                    <el-table-column label="操作" min-width="150">
+                    <el-table-column label="操作" min-width="150" align='center'>
                         <template slot-scope="scope">
                             <el-button type="text" size="small">
                                 <span class="fonticon">
@@ -212,6 +220,10 @@
                                         <router-link :to="{path: '/intgentMitorLibrary/public?parame=see&id='+scope.row.intelMonitorId+''}">
                                             <i class="icon iconfont icon-eye"></i>
                                         </router-link>
+                                    </el-tooltip>
+                                    <el-tooltip class="item" effect="dark" :content="scope.row.isRun == 0? '开启' : '暂停'" placement="top"> 
+                                            <i class="icon iconfont icon-kaiqi" v-if="scope.row.isRun == 0" @click="openClick(1,scope.$index,scope.row.intelMonitorId)"></i> 
+                                            <i class="icon iconfont icon-zanting" v-if="scope.row.isRun == 1" @click="openClick(0,scope.$index,scope.row.intelMonitorId)"></i> 
                                     </el-tooltip>
                                 </span>
                             </el-button>
@@ -263,7 +275,7 @@ export default {
             pageIndex: 1,
             total: "",
             emptyText: "当前暂无数据",
-            pageSize: 20
+            pageSize: 20, 
         };
     },
 
@@ -314,7 +326,7 @@ export default {
                     .catch(() => {});
             } else {
                 this.$store.commit("SET_SHOW_TRUE", {
-                    value: "请选择智能检测",
+                    value: "请选择智能监测",
                     type: 3
                 });
             }
@@ -322,8 +334,32 @@ export default {
         handleSelectionChange(val) {
             this.multipleSelection = val;
         },
+        openClick(num,index,id) {
+            let _this = this
+            let name = num == 0 ? '暂停' : '开启'
+            this.$confirm("是否"+name+"所选智能监测？", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                width: 50,
+                center: true
+            })
+                .then(() => {
+                   _this.AJaxOpen(id,num)
+                   if(_this.tableData3[index].isRun == 0) { 
+                       _this.tableData3[index].isRun = 1 
+                   }else{
+                       _this.tableData3[index].isRun = 0 
+                   } 
+                   
+                })
+                .catch(() => {});
+        },
+        AJaxOpen(id,num) {
+            let url = '/api/v1/IntellAdvertiseApi/Monitor/UpdateIsRun?IntellMonitorId=' + id + '&isRun=' + num
+            this.$https.get(url)
+        },
         deleteRow(index, id) {
-            this.$confirm("是否删除所选关键词？", {
+            this.$confirm("是否删除所选智能监测？", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 width: 50,
@@ -377,7 +413,7 @@ export default {
                     }
                 },
                 err => {
-                    console.log(err);
+                    //console.log(err);
                 }
             );
         },
@@ -388,7 +424,7 @@ export default {
                     this.intgetMitorLibraryList();
                 },
                 err => {
-                    console.log(err);
+                    //console.log(err);
                 }
             );
         }

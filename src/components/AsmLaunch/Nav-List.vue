@@ -40,7 +40,7 @@
             {{pageName}}
         </p>
         <el-breadcrumb separator-class="el-icon-arrow-right" v-if="routeList.length != 0">
-            <el-breadcrumb-item v-for='(ele,index) in routeList' :key="index" :to="{ path: ele.path , query: ele.query}">{{ele.name}}</el-breadcrumb-item>
+            <el-breadcrumb-item v-for='(ele,index) in routeList' :key="index" :to="{ path: ele.path , name: ele.routername, query: ele.query}">{{ele.name}}</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
 </template>

@@ -1,7 +1,10 @@
 <style lang='less' scoped>
 @import url("../../../../base/commonCSS/AsmLaunchTable.less");
+.stop {
+    cursor: not-allowed !important;
+}
 </style> 
-
+ 
 <template>
     <div class="account_index">
         <div class="account_contant">
@@ -10,7 +13,7 @@
                 <section>
                     <p>筛选</p>
                     <div class="account_search_one">
-                        <el-select v-model="unlimited" @change='selectchange(unlimited)'>
+                        <el-select v-model="unlimited" :disabled="$route.params.groupType == 'remove'" @change='selectchange(unlimited)'>
                             <el-option v-for="(item , index) in unlimitedList" :key="index" :label="item.label" :value="item.value">
                             </el-option>
                         </el-select>
@@ -26,12 +29,12 @@
                         <i class="iconfont icon-xia"></i>
                         <transition name="el-zoom-in-top">
                             <section v-show="caoShow" @mouseout="caoShow = false" @mousemove="caoShow = true">
-                                <span v-for="(ele,index) in caoList" :key="index" @click="caoClick(index)">{{ele}}</span>
+                                <span :class="{stop: $route.params.groupType == 'remove'}" v-for="(ele,index) in caoList" :key="index" @click="caoClick(index)">{{ele}}</span>
                             </section>
                         </transition>
                     </div>
                 </section>
-                <div class="add_negative" @click="addNegative">
+                <div :class="{add_negative: classBool , stop: $route.params.groupType == 'remove'}" @click="addNegative">
                     添加否定关键词
                 </div>
             </div>
@@ -43,14 +46,14 @@
                     </el-table-column>
                     <el-table-column fixed align='center' label="关键词" min-width="300">
                         <template slot-scope="scope">
-                            <div  >
+                            <div>
                                 {{scope.row.text}}
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="adGroupId" label="类型" align='center' min-width="120">
                         <template slot-scope="scope">
-                            <div >
+                            <div>
                                 {{scope.row.adGroupId == 0 ? '广告系列' : '广告组'}}
                             </div>
                         </template>
@@ -67,7 +70,7 @@
                     </el-table-column>
                     <el-table-column fixed="right" label="操作" align="center" min-width="70">
                         <template slot-scope="scope">
-                            <el-button @click.native.prevent="deleteRow(scope.$index,scope.row)" type="text" size="small">
+                            <el-button :class="{stop : $route.params.groupType == 'remove'}" @click.native.prevent="deleteRow(scope.$index,scope.row)" type="text" size="small">
                                 删除
                             </el-button>
                         </template>
@@ -123,7 +126,9 @@ export default {
             total: 0,
             NegativeShow: false,
             setType: "广告组",
-            idAll: ""
+            idAll: "",
+            isRemove: false,
+            classBool: true
         };
     },
 
@@ -134,7 +139,11 @@ export default {
 
     computed: {},
 
-    created() {},
+    created() {
+        if(this.$route.params.groupType == 'remove') {
+            this.unlimitedList = [{value:0 , label: '已移除'}]
+        }
+    },
 
     updated() {},
 
@@ -179,8 +188,9 @@ export default {
                 pageSize: 20,
                 requestPar: {
                     keyword: this.valuedata,
-                    authId: this.$route.query.orgId,
-                    conditions: this.AjaxSetArgument()
+                    authId: this.$route.params.orgId,
+                    conditions: this.AjaxSetArgument(),
+                    IsRemove: this.isRemove
                 }
             };
 
@@ -202,8 +212,9 @@ export default {
                 pageSize: 9,
                 requestPar: {
                     keyword: this.valuedata,
-                    authId: this.$route.query.orgId,
-                    conditions: this.AjaxSetArgument()
+                    authId: this.$route.params.orgId,
+                    conditions: this.AjaxSetArgument(),
+                    IsRemove: this.isRemove
                 }
             };
 
@@ -219,26 +230,31 @@ export default {
             //status 1  equals 值 PAUSED/ENABLED
             //monitorcount 2 equals 1/0
             //statisdate 1 inrange 值 "2018-02-01","201802-02"
-            switch (this.unlimited) {
-                case 0:
-                    obj = null;
-                    break;
-                case 1:
-                    obj = {
-                        code: "MatchType ",
-                        operator: "equals",
-                        valueType: 1,
-                        values: ["BROAD"]
-                    };
-                    break;
-                case 2:
-                    obj = {
-                        code: "MatchType ",
-                        operator: "equals",
-                        valueType: 1,
-                        values: ["EXACT"]
-                    };
-                    break;
+            if (this.$route.params.groupType == "remove") {
+                this.isRemove = true;
+                obj = null;
+            } else {
+                switch (this.unlimited) {
+                    case 0:
+                        obj = null;
+                        break;
+                    case 1:
+                        obj = {
+                            code: "MatchType ",
+                            operator: "equals",
+                            valueType: 1,
+                            values: ["BROAD"]
+                        };
+                        break;
+                    case 2:
+                        obj = {
+                            code: "MatchType ",
+                            operator: "equals",
+                            valueType: 1,
+                            values: ["EXACT"]
+                        };
+                        break;
+                }
             }
             if (obj != null) {
                 arr.push(obj);
@@ -249,13 +265,13 @@ export default {
                         code: "ov.campaignid",
                         operator: "equals",
                         valueType: 3,
-                        values: [this.$route.query.listId]
+                        values: [this.$route.params.listId]
                     },
                     {
                         code: "ov.adgroupid",
                         operator: "equals",
                         valueType: 3,
-                        values: [this.$route.query.keyId]
+                        values: [this.$route.params.keyId]
                     }
                 ]
             );
@@ -264,6 +280,10 @@ export default {
         caoClick(index) {
             //操作按钮
             this.caoShow = false;
+            if (this.$route.params.groupType == "remove") {
+                this.caoShow = false;
+                return false;
+            }
             let type = this.caoList[index];
             let _this = this;
             if (this.tableData4.length == 0) {
@@ -325,6 +345,9 @@ export default {
         },
 
         deleteRow(index, rows) {
+            if (this.$route.params.groupType == "remove") {
+                return false;
+            }
             let _this = this;
             let obj = [
                 {
@@ -355,21 +378,21 @@ export default {
             });
             let url =
                 "/api/v1/IntellAdvertiseApi/KeywordsSearch/CreateNegativeTerm";
-            this.$https.post(url, JSON.stringify(obj)).then(res=>{
-                if(res.data.resultCode == 1000) {
-                    this.$store.commit('SET_SHOW_TRUE',{
-                        value: '上传成功',
+            this.$https.post(url, JSON.stringify(obj)).then(res => {
+                if (res.data.resultCode == 1000) {
+                    this.$store.commit("SET_SHOW_TRUE", {
+                        value: "上传成功",
                         type: 3
-                    })
-                }else{
-                    this.$store.commit('SET_SHOW_TRUE',{
-                        value: '上传失败',
+                    });
+                } else {
+                    this.$store.commit("SET_SHOW_TRUE", {
+                        value: "上传失败",
                         type: 3
-                    })
+                    });
                 }
-            })
+            });
         },
-        AjaxUpNegative(obj) { 
+        AjaxUpNegative(obj) {
             this.$store.commit("SET_SHOW_TRUE", {
                 value: "正在上传请等待",
                 type: 3
@@ -384,19 +407,19 @@ export default {
             if (obj.AdgroupId) {
                 zipFormData.append("AdgroupId", obj.AdgroupId);
             }
-            //zipFormData.append("GroupId", this.$route.query.id);
+            //zipFormData.append("GroupId", this.$route.params.id);
             let config = { headers: { "Content-Type": "multipart/form-data" } };
-            this.$https.post(url, zipFormData).then(res=>{
-                if(res.data.resultCode == 1000) {
-                    this.$store.commit('SET_SHOW_TRUE',{
-                        value: '上传成功',
+            this.$https.post(url, zipFormData).then(res => {
+                if (res.data.resultCode == 1000) {
+                    this.$store.commit("SET_SHOW_TRUE", {
+                        value: "上传成功",
                         type: 3
-                    })
-                }else{
-                    this.$store.commit('SET_SHOW_TRUE',{
-                        value: '上传失败',
+                    });
+                } else {
+                    this.$store.commit("SET_SHOW_TRUE", {
+                        value: "上传失败",
                         type: 3
-                    })
+                    });
                 }
             });
         },
@@ -416,6 +439,9 @@ export default {
         },
         addNegative() {
             //添加否定关键词
+            if(this.$route.params.groupType == 'remove') {
+                return false
+            }
             this.NegativeShow = true;
         }
     }

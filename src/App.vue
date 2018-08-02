@@ -1,22 +1,22 @@
 <template>
-	<div id="app" :class="{app_out_index: type}">
-		<router-view/>
-		<!--w-->
-		<footer>©2012-2018 adjuz.net 巨掌互动科技（北京）有限公司 京ICP备14034813号</footer> 
+    <div id="app" :class="{app_out_index: type}">
+        <router-view/>
+        <!--w-->
+        <footer>©2012-2018 adjuz.net 巨掌互动科技（北京）有限公司 京ICP备14034813号</footer>
         <!-- 弹窗后的状态提示 -->
-        <v-message v-if="messageShow" ></v-message>
-	</div>
+        <v-message v-if="messageShow"></v-message>
+    </div>
 </template>
 
 <script>
 import "babel-polyfill";
-import {mapState} from 'vuex' 
+import { mapState } from "vuex";
 export default {
     name: "App",
     data() {
         return {
-            type: false,//是否为后台
-        }
+            type: false //是否为后台
+        };
     },
     computed: {
         ...mapState({
@@ -26,30 +26,17 @@ export default {
 
     watch: {
         $route() {
-            if(this.$route.matched[0].path == '/advertising-center' || this.$route.matched[0].path == '/key-lexicon' || this.$route.matched[0].path == '/intgentMitorLibrary' ) {
-                this.type = true
-            }else{
-                this.type = false
+            if (
+                this.$route.matched[0].path == "/advertising-center" ||
+                this.$route.matched[0].path == "/key-lexicon" ||
+                this.$route.matched[0].path == "/intgentMitorLibrary" ||
+                this.$route.matched[0].path == "/KeyWordList"
+            ) {
+                this.type = true;
+            } else {
+                this.type = false;
             }
         }
-    }, 
-
-    mounted() { 
-        // //浏览器关闭清楚本地缓存
-        // let _this = this
-        // var READYTOPROCESS = false;
-        // window.onbeforeunload = function closeWindow(e) {
-        //     if (!READYTOPROCESS)
-        //     {
-        //         //message to be returned to the popup box.
-        //         var message = '你确定要关闭吗？',
-        //             e = e || window.event;
-        //         if (e){
-        //             _this.$ls.clear('TIME_UTC')
-        //         } 
-        //         _this.$ls.clear('TIME_UTC') // Safari
-        //     }
-        // };
     } 
 };
 </script>
@@ -64,7 +51,7 @@ export default {
     box-sizing: border-box;
     padding-bottom: 68px;
 }
-.app_out_index{
+.app_out_index {
     background: #edf1f5;
 }
 
@@ -101,10 +88,10 @@ export default {
 .el-loading-mask {
     z-index: 10 !important;
 }
-.el-table__empty-block{
+.el-table__empty-block {
     min-height: 122px !important;
 }
-.el-date-editor--daterange.el-input__inner{
+.el-date-editor--daterange.el-input__inner {
     width: 240px !important;
 }
 footer {

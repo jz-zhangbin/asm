@@ -89,8 +89,7 @@
     .apl_body_date {
         width: 100%;
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 25px;
+        justify-content: space-between; 
     }
     .apl_checketout {
         width: 100%;
@@ -399,11 +398,11 @@
                                 </div>
                             </div>
                         </th>
-                        <th style="width: 11%" class="sl_table_po">
+                        <!-- <th style="width: 11%" class="sl_table_po">
                             <div class="sl_table_flex">
                                 预测出价
                             </div>
-                        </th>
+                        </th> -->
                         <th style="width: 20%" class="sl_table_po">
                             <div class="sl_table_flex">
                                 近期竞价App
@@ -421,7 +420,7 @@
                         <td>{{ele.searchIndex}}</td>
                         <td>{{ele.popularityIndex}}</td>
                         <td>{{ele.ratio | percentage}}</td>
-                        <td>{{ele.estimatePrice | numNull}}</td>
+                        <!-- <td>{{ele.estimatePrice | numNull}}</td> -->
                         <td style="width: 20%" class="sl_dt_img">
                             <div>
                                 <!-- 最多显示四个 -->
@@ -433,14 +432,14 @@
                         </td>
                         <td style="width: 9%">
                             <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
-                                <i class="iconfont icon-plus-add" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
+                                <i class="iconfont icon-plus-add" @click="addCiClick(index)"></i>
                                 <span class="sl_t_is" style="width:114px;">
                                     添加至新建词组
                                 </span>
                                 <span class="sl_t_san"></span>
                             </div>
                             <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
-                                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
+                                <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index)"> </i>
                                 <span class="sl_t_is" style="width:114px;">
                                     从新建词组删除
                                 </span>
@@ -658,13 +657,12 @@ export default {
                 ele.one = false;
                 ele.two = false;
             });
-            this.showList[0].one = true;
-
-            this.AjaxGetAppInfo(value);
-
+            this.showList[0].one = true; 
+            this.AjaxGetAppInfo(value); 
             this.AjaxGetAppHistoryKeywordList(
                 1,
                 this.$route.query.id, 
+                value,
                 {
                     searchIndex: 0
                 }
@@ -733,13 +731,14 @@ export default {
                 });
                 return false;
             }
-            if (num == 0) {
+            let obj = this.tableData.list[index] 
+            if (this.tableData.list[index].hotKeywordTemStatus == 0) {
                 this.tableData.list[index].hotKeywordTemStatus = 1;
-                AjaxRemove(name, 0); //添加
+                AjaxRemove(obj.keywordName, 0, obj.searchIndex, obj.popularityIndex, obj.appLength); //添加
             } else {
                 this.tableData.list[index].hotKeywordTemStatus = 0;
-                AjaxRemove(name, 1); //删除
-            }
+                AjaxRemove(obj.keywordName, 1, obj.searchIndex, obj.popularityIndex, obj.appLength); //删除
+            } 
         },
 
         imgRouterClick(id) {
@@ -774,8 +773,7 @@ export default {
                 ele.one = false;
                 ele.two = false;
             });
-            this.showList[0].one = true;
-
+            this.showList[0].one = true; 
             for (var i in this.seacrchData) {
                 if (
                     (isNaN(this.seacrchData[i]) && this.seacrchData[i] != "") ||
@@ -836,8 +834,7 @@ export default {
                 });
                 return false;
             }
-            this.seacrchDataTrue = this.seacrchData;
-
+            this.seacrchDataTrue = this.seacrchData; 
             this.currentPage3 = 1;
             this.AjaxGetAppHistoryKeywordList(
                 1,
@@ -870,8 +867,7 @@ export default {
                 ele.one = false;
                 ele.two = false;
             });
-            this.showList[0].one = true;
-
+            this.showList[0].one = true; 
             this.currentPage3 = 1;
             this.AjaxGetAppHistoryKeywordList(
                 1,
@@ -981,6 +977,8 @@ export default {
         ajaxEcecl(page, count) {
             let url =
                 "/api/v1/IntellSearchApi/APPDetail/ExportAppHistoryKeywords";
+            let newobj = {}
+                newobj[this.sortDate.one] = this.sortDate.two;
             let obj = {
                 pageIndex: this.IsManager ? 1 : this.currentPage3,
                 pageSize: 20,
@@ -995,9 +993,7 @@ export default {
                     minPopularityIndex: this.isNull( this.seacrchDataTrue.minAppLength ),
                     maxPopularityIndex: this.isNull( this.seacrchDataTrue.maxAppLength )
                 },
-                orderByParDic: {
-                    searchIndex: 0
-                }
+                orderByParDic: newobj
             };
             if (this.IsManager) {
                 obj.exportPar = {

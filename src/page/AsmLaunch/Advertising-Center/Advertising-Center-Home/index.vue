@@ -344,8 +344,8 @@ export default {
         accountRoute(data) {
             //跳转账户详情
             this.$router.push({
-                path: "/advertising-center/account",
-                query: {
+                name: "account",
+                params: {
                     accountName: data.companyName,
                     id: data.orgUserInfoId,
                     orgId: data.orgId 

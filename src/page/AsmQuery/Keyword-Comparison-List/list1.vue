@@ -62,7 +62,7 @@
           </div>
         </th>
         <th style="width: 14%">已选APP展示量占比(左)</th>
-        <th style="width: 14%">竞品APP展示量占比(右)</th>
+        <th style="width: 14%">已选APP展示量占比(右)</th>
         <th style="width: 10%">操作</th>
       </tr>
 
@@ -78,14 +78,14 @@
         <td>{{ele.competitiveAppRatio | percentage}}</td>
         <td>
           <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 0">
-            <i class="iconfont icon-plus-add" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"></i>
+            <i class="iconfont icon-plus-add" @click="addCiClick(index)"></i>
             <span class="sl_t_is" style="width:114px;">
               添加至新建词组
             </span>
             <span class="sl_t_san"></span>
           </div>
           <div class="sl_t_dis" v-if="ele.hotKeywordTemStatus == 1">
-            <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index , ele.hotKeywordTemStatus , ele.keywordName)"> </i>
+            <i class="iconfont icon-xuanze" style="color:#43c2ac;" @click="addCiClick(index)"> </i>
             <span class="sl_t_is" style="width:114px;">
               从新建词组删除
             </span>
@@ -293,7 +293,7 @@ export default {
             this.Ajax(this.currentPage3);
         },
 
-        addCiClick(index, num, name) {
+        addCiClick(index) {
             //收藏操作
             if (!this.userType) {
                 this.$message({
@@ -302,13 +302,14 @@ export default {
                 });
                 return false;
             }
-            if (num == 0) {
+            let obj = this.tableInner[index] 
+            if (this.tableInner[index].hotKeywordTemStatus == 0) {
                 this.tableInner[index].hotKeywordTemStatus = 1;
-                AjaxRemove(name, 0); //添加
+                AjaxRemove(obj.keywordName, 0, obj.searchIndex, obj.popularityIndex, 0); //添加
             } else {
                 this.tableInner[index].hotKeywordTemStatus = 0;
-                AjaxRemove(name, 1); //删除
-            }
+                AjaxRemove(obj.keywordName, 1, obj.searchIndex, obj.popularityIndex, 0); //删除
+            } 
         },
 
         handleSizeChange(val) {

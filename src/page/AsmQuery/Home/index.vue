@@ -596,7 +596,7 @@ export default {
         }
     },
 
-    mounted() {
+    mounted() {  
         let that = this;
 
         //搜索列表的消失事件
@@ -646,9 +646,10 @@ export default {
             var scrollTop =
                 window.pageYOffset ||
                 document.documentElement.scrollTop ||
-                document.body.scrollTop;
-            if (scrollTop >= 60 && scrollTop <= 600) {
-                let opacity = (scrollTop - 60) / 540;
+                document.body.scrollTop; 
+            if (scrollTop <= 600) {
+                let opacity = (scrollTop - 100) / 540; 
+                opacity < 0.1 ? opacity = 0 : opacity
                 $(".st_index").css(
                     "background",
                     "rgba(21,89,200," + opacity + ")"

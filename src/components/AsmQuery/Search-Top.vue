@@ -13,7 +13,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 2000;
     .st_body {
         height: 60px;
         .st_logo {
@@ -118,6 +118,8 @@
                 position: relative;
                 img {
                     margin-top: 9px;
+                    width: 23px;
+                    height: 16px;
                 }
                 i {
                     position: absolute;

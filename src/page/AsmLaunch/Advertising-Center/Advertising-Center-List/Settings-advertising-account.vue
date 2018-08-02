@@ -18,7 +18,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 90px;
+        height: 60px;
     }
     .createlist_contant {
         min-width: 1200px;
@@ -190,13 +190,13 @@ export default {
     computed: {},
 
     created() {
-        let queryData = this.$route.query;
+        let queryData = this.$route.params;
         this.routeList.push(
             ...[
                 {
                     name: "账户",
-                    path: "/advertising-center/account",
-                    query: {
+                    routername: "account",
+                    params: {
                         accountName: queryData.accountName,
                         orgId: queryData.orgId, 
                         id: queryData.id
@@ -204,13 +204,13 @@ export default {
                 },
                 {
                     name: "广告系列",
-                    path: "/advertising-center/list",
-                    query: queryData
+                    routername: "list",
+                    params: queryData
                 },
                 {
                     name: "编辑广告系列",
-                    path: "/advertising-center/settings-list",
-                    query: queryData
+                    routername: "settings-list",
+                    params: queryData
                 }
             ]
         );
@@ -266,7 +266,7 @@ export default {
             this.loading = this.$loading(this.loadingopaction);
             let url =
                 "/api/v1/IntellAdvertiseApi/Campaign/GetCampaignObject?id=" +
-                this.$route.query.listId;
+                this.$route.params.listId;
             this.$https.get(url).then(res => {
                 if (res.data.resultCode == 1000) {
                     this.topAppDate = res.data.data;

@@ -393,7 +393,7 @@ export default {
                 AppDownLoaders: "",
                 Age: "",
                 Gender: "",
-                CampaignId: this.$route.query.listId
+                CampaignId: this.$route.params.listId
             };
             // defaultCPCBidAmount: "",
             // cpaGoalamount: "",

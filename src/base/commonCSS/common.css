@@ -88,6 +88,13 @@ video {
   /*vertical-align: baseline;*/
   font-weight: normal;
   font-style: normal;
+  /* -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; */
+}
+a{
+  /* user-select: all; */
 }
 
 html,

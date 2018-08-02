@@ -113,14 +113,14 @@
 <style lang="less">
 .table {
     padding: 50px 0 0;
-    tr td,
-    th { 
-        text-align: center;
-        padding: 8px 0;
-    }
+    .el-table th>.cell{
+      line-height: 34px;
+    } 
+    .el-table td, .el-table th{
+      padding: 8px 0;
+    } 
     tr th {
-        background: rgb(248, 249, 250);
-        line-height: 34px;
+        background: rgb(248, 249, 250); 
     }
     .el-pagination {
         width: 100%;
@@ -149,7 +149,7 @@
             </div>
         </div>
         <div class="advuer_content">
-            <h2>监测规则</h2>
+            <h2>{{$route.query.name}}</h2>
             <div class="advuer_content_top">
                 <div class="sostyle">
                     <v-search :show='show' :valuedata='valuedata' :placevaluedata='placevaluedata' :inputList='inputList' @changeInputList='changeInputList' @changeInput='changeInput'>
@@ -171,11 +171,18 @@
             <!-- 列表 -->
             <div class="table">
                 <el-table border v-loading="loading" ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-                    <el-table-column type="selection" min-width="55">
+                    <el-table-column type="selection" min-width="55" align='center'>
                     </el-table-column>
-                    <el-table-column label="规则名称" min-width="360" show-overflow-tooltip>
+                    <el-table-column label="规则名称" min-width="320" show-overflow-tooltip align='center'>
                         <template slot-scope="scope">
                             <span style="color:rgb(0,158,252)">{{ scope.row.intellMonitorRuleName }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column  label="状态" min-width="90" align='center'>
+                        <template slot-scope="scope"> 
+                            <div>
+                                {{scope.row.isRun == 0 ? '暂停' : '开启'}}
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column label="监测对象" min-width="200" align='center'>
@@ -186,9 +193,9 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="createDate" label="创建时间" min-width="250">
+                    <el-table-column prop="createDate" label="创建时间" min-width="250" align='center'>
                     </el-table-column>
-                    <el-table-column label="操作" min-width="160">
+                    <el-table-column label="操作" min-width="160" align='center'>
                         <template slot-scope="scope">
                             <el-button type="text" size="small">
                                 <span class="fonticon">
@@ -204,6 +211,10 @@
                                         <router-link :to="{path: '/intgentMitorLibrary/MRpublic?parame=see&id='+$route.query.id + '&intellMonitorRuleId='+ scope.row.intellMonitorRuleId}">
                                             <i class="icon iconfont icon-eye"></i>
                                         </router-link>
+                                    </el-tooltip>
+                                    <el-tooltip class="item" effect="dark" :content="scope.row.isRun == 0? '开启' : '暂停'" placement="top"> 
+                                            <i class="icon iconfont icon-kaiqi" v-if="scope.row.isRun == 0" @click="openClick(1,scope.$index,scope.row.intellMonitorRuleId)"></i> 
+                                            <i class="icon iconfont icon-zanting" v-if="scope.row.isRun == 1" @click="openClick(0,scope.$index,scope.row.intellMonitorRuleId)"></i> 
                                     </el-tooltip>
                                 </span>
                             </el-button>
@@ -293,6 +304,30 @@ export default {
             this.pageIndex = val;
             this.MonitorSearchRule();
         },
+        openClick(num,index,id) {
+            let _this = this
+            let name = num == 0 ? '暂停' : '开启'
+            this.$confirm("是否"+name+"所选智能监测？", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                width: 50,
+                center: true
+            })
+                .then(() => {
+                   _this.AJaxOpen(id,num)
+                   if(_this.tableData3[index].isRun == 0) { 
+                       _this.tableData3[index].isRun = 1 
+                   }else{
+                       _this.tableData3[index].isRun = 0 
+                   } 
+                   
+                })
+                .catch(() => {});
+        },
+        AJaxOpen(id,num) {
+            let url = '/api/v1/IntellAdvertiseApi/Monitor/UpdateRuleIsRun?ruleId=' + id + '&isRun=' + num
+            this.$https.get(url)
+        },
         handleCommand(command) {
             if (this.multipleSelection.length > 0) {
                 this.$confirm("是否删除所选智能监测？", {
@@ -325,7 +360,7 @@ export default {
             this.multipleSelection = val;
         },
         deleteRow(index, id) {
-            this.$confirm("是否删除所选关键词？", {
+            this.$confirm("是否删除所选智能监测？", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 width: 50,

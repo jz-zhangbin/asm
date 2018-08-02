@@ -134,7 +134,7 @@
                             </div>
                         </div>
                     </th>
-                    <th style="width: 14%" class="sl_table_po">
+                    <!-- <th style="width: 14%" class="sl_table_po"  >
                         <div class="sl_table_flex">
                             预估价格
                             <div class="sl_t_dis">
@@ -143,7 +143,7 @@
                                 <span class="sl_t_san"></span>
                             </div>
                         </div>
-                    </th>
+                    </th> -->
                     <th style="width: 14%" class="sl_table_po">
                         <div class="sl_table_flex">
                             搜索排名
@@ -194,7 +194,7 @@
                         {{ele.ratio | percentage}}
                         <i class="iconfont icon-icon-test" style="color: #2d76ed;" @click="AjaxBroken(index)"></i>
                     </td>
-                    <td>{{ele.estimatePrice | numNull}}</td>
+                    <!-- <td>{{ele.estimatePrice | numNull}}</td> -->
                     <td>{{ele.searchRank == 0 ? '-' : ele.searchRank}}</td>
                     <td class="table_datr_p">
                         <p>{{ele.appInfoModel.totalRank == 0 ? '-' : ele.appInfoModel.totalRank}}</p>

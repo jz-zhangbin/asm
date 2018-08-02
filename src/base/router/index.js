@@ -51,60 +51,79 @@ let routes = [{
         component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-UserSetting"], resolve),
       },
       {
-        path: '/advertising-center/account', //账户首页
+        name: 'account',
+        path: '/advertising-center/account/:accountName/:id/:orgId', //账户首页
         component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-account"], resolve),
       },
       {
-        path: '/advertising-center/advertising-list', //创建广告系列
+        name: 'datacenter',
+        path: '/advertising-center/datacenter/:accountName/:id/:orgId', //数据中心
+        component: resolve => require(["@page/AsmLaunch/Advertising-Center/Data-Center"], resolve),
+      },
+      {
+        name: 'advertising-list',
+        path: '/advertising-center/advertising-list/:accountName/:id/:orgId', //创建广告系列
         component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-account/Create-advertising-list"], resolve),
       },
       {
-        path: '/advertising-center/list', //广告系列
-        redirect: '/advertising-center/list/home',
+        name: 'list',
+        path: '/advertising-center/list/:accountName/:id/:orgId/:listName/:listId/:listType', //广告系列
+        redirect: '/advertising-center/list/:accountName/:id/:orgId/:listName/:listId/:listType/home',
         component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-List"], resolve),
         children: [{
-            path: '/advertising-center/list/home', //广告系列首页 
+            name: 'list-home',
+            path: '/advertising-center/list/:accountName/:id/:orgId/:listName/:listId/:listType/home', //广告系列首页 
             component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-List/Advertising-Center-List-Home.vue"], resolve),
           },
           {
-            path: '/advertising-center/list/keyword', //广告系列所有关键词
+            name: 'list-keyword',
+            path: '/advertising-center/list/:accountName/:id/:orgId/:listName/:listId/:listType/keyword', //广告系列所有关键词
             component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-List/Advertising-Center-List-KeyWord.vue"], resolve),
           },
           {
-            path: '/advertising-center/list/search-terms', //广告系列searchTerms
+            name: 'list-search-terms',
+            path: '/advertising-center/list/:accountName/:id/:orgId/:listName/:listId/:listType/search-terms', //广告系列searchTerms
             component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-List/Advertising-Center-List-SearchTerms.vue"], resolve),
           },
           {
-            path: '/advertising-center/list/negative-keyword', //广告系列否定关键词
+            name: 'list-negative-keyword',
+            path: '/advertising-center/list/:accountName/:id/:orgId/:listName/:listId/:listType/negative-keyword', //广告系列否定关键词
             component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-List/Advertising-Center-List-Negative.vue"], resolve),
           }
         ]
       },
       {
-        path: '/advertising-center/create-list', //创建广告组
+        name: 'create-list',
+        path: '/advertising-center/:accountName/:id/:orgId/:listName/:listId/:listType/create-list', //创建广告组
         component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-List/Create-advertising-list"], resolve),
       }, {
-        path: '/advertising-center/settings-list', //编辑广告系列
+        name: 'settings-list',
+        path: '/advertising-center/:accountName/:id/:orgId/:listName/:listId/:listType/settings-list', //编辑广告系列
         component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-List/Settings-advertising-account"], resolve),
       }, {
-        path: '/advertising-center/keyword', //广告组
-        redirect: '/advertising-center/keyword/home',
+        name: 'group',
+        path: '/advertising-center/keyword/:accountName/:id/:orgId/:listName/:listId/:listType/:keyName/:keyId/:groupType', //广告组
+        redirect: '/advertising-center/keyword/:accountName/:id/:orgId/:listName/:listId/:listType/:keyName/:keyId/home/:groupType',
         component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-Keyword"], resolve),
         children: [{
-            path: '/advertising-center/keyword/home',
+            name: 'group-home',
+            path: '/advertising-center/keyword/:accountName/:id/:orgId/:listName/:listId/:listType/:keyName/:keyId/home/:groupType',
             component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-Keyword/Advertising-Center-Keyword-Home.vue"], resolve),
           },
           {
-            path: '/advertising-center/keyword/negative-keyword',
+            name: 'group-negative-keyword',
+            path: '/advertising-center/keyword/:accountName/:id/:orgId/:listName/:listId/:listType/:keyName/:keyId/negative-keyword/:groupType',
             component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-Keyword/Advertising-Center-Keyword-Negative.vue"], resolve),
           },
           {
-            path: '/advertising-center/keyword/search-terms', //广告系列searchTerms
+            name: 'group-search-terms',
+            path: '/advertising-center/keyword/:accountName/:id/:orgId/:listName/:listId/:listType/:keyName/:keyId/search-terms/:groupType', //广告系列searchTerms
             component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-keyword/Advertising-Center-keyword-SearchTerms.vue"], resolve),
           },
         ]
       }, {
-        path: '/advertising-center/settings-keyword', //编辑广告组
+        name: 'settings-keyword',
+        path: '/advertising-center/settings-keyword/:accountName/:id/:orgId/:listName/:listId/:listType/:keyName/:keyId/:groupType', //编辑广告组
         component: resolve => require(["@page/AsmLaunch/Advertising-Center/Advertising-Center-Keyword/Settings-advertising-List.vue"], resolve),
       }
     ]

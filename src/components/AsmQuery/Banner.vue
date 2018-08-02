@@ -8,6 +8,7 @@
     height: 130px;
     position: relative;
     overflow: hidden;
+    z-index: -1;
     h1 {
         position: absolute;
         top: 52px;

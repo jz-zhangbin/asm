@@ -263,7 +263,7 @@
             <!-- <h2>
               <span :class="{span_checked: commonts == 1}" @click="commonts = 1">手动添加</span>
               <span :class="{span_checked: commonts == 2}" @click="commonts = 2">上传否定关键词</span>
-          </h2> -->
+            </h2> -->
             <div class="reaio_index" v-if="type == '广告系列'">
                 <el-radio v-model="radio" label="1">添加至广告系列</el-radio>
                 <el-radio v-model="radio" label="2">添加至广告组</el-radio>
@@ -458,8 +458,8 @@ export default {
                     name: ele.keyName,
                     matchtype: ele.value == "广泛匹配" ? "EXACT" : "BROAD",
                     bidamount: ele.CPC * 1,
-                    campaignId: this.$route.query.listId,
-                    adGroupId: this.$route.query.keyId
+                    campaignId: this.$route.params.listId,
+                    adGroupId: this.$route.params.keyId
                 });
             });
             if (num != 0) {

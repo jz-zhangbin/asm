@@ -146,5 +146,49 @@ export function datefn(datenum) {
     ]
     return yeararr
     break;
+    case 5://智投数据中心
+      let numcenter = [{
+          data: {
+            beginTime: fn(timerNum1),
+            endTime: fn(timerNum1)
+          },
+          value: 0,
+          label: '今天'
+        }, 
+        {
+          data: {
+            beginTime: fn(timerNum4),
+            endTime: fn(timerNum4)
+          },
+          value: 1,
+          label: '昨天'
+        },
+        {
+          data: {
+            beginTime: fn(timerNum3),
+            endTime: fn(timerNum4)
+          },
+          value: 2,
+          label: '近七天'
+        },
+        {
+          data: {
+            beginTime: fn(timerNum5),
+            endTime: fn(timerNum4)
+          },
+          value: 3,
+          label: '近十五天'
+        },
+        {
+          data: {
+            beginTime: fn(timerNum6),
+            endTime: fn(timerNum4)
+          },
+          value: 4,
+          label: '近三十天'
+        }
+      ] 
+      return numcenter
+      break;
   }
 };

@@ -18,7 +18,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 90px;
+        height: 60px;
     }
     .btn {
         width: 158px;
@@ -498,7 +498,8 @@
                                             <label class="radio1"><input :disabled='!ele.show' type="radio" class="radio1" v-model="ele2.adjustment" value='num1' checked="checked" />数值调整</label>
                                             <label class="radio1"><input :disabled='!ele.show' type="radio" class="radio1" v-model="ele2.adjustment" value='num2' checked="checked" />比例调整</label>
                                             <input type="text" :disabled='!ele.show' class="inputs" placeholder="请输入" v-model="ele2.adjustmentValue">
-                                            <span>调整次数</span>
+                                            {{ele2.adjustment == 'num2' ? '%' : ''}}
+                                            <span>调整次数</span> 
                                             <input type="text" :disabled='!ele.show' class="inputs" placeholder="请输入" v-model="ele2.adjustmentNum">
                                         </span>
                                     </div>
@@ -968,7 +969,7 @@ export default {
                                 ele2.typeList.indexOf(ele2.type) == 2 ||
                                 ele2.typeList.indexOf(ele2.type) == 5
                             ) {
-                                obj.NumberOfOperations = 1;
+                                obj.DailyOperationTimes = 1;
                                 obj.OperateType =
                                     ele2.typeList.indexOf(ele2.type) + 1;
                             } else {
@@ -977,10 +978,10 @@ export default {
                                 obj.AdjustType =
                                     ele2.adjustment == "num1" ? 1 : 2;
                                 obj.AdjustVal = ele2.adjustmentValue;
-                                obj.NumberOfOperations =
+                                obj.DailyOperationTimes =
                                     ele2.adjustmentNum == ""
                                         ? 1
-                                        : ele2.adjustmentNum;
+                                        : ele2.adjustmentNum*1
                             }
                         }
                     });
@@ -994,10 +995,12 @@ export default {
                             ruleId: 0,
                             monitorId: this.topData.intelMonitorId,
                             campaignId: ele.campaignId,
-                            adGroupId: ele.id
+                            // 如果不打开监测对象，数据格式不同
+                            adGroupId: ele.id ? ele.id : ele.adGroupId
                         });
                     }
                 });
+                console.log(ruleAdGroups)
                 let ajaxObj = {
                     feedbackEmail: this.userEmail,
                     iupr: this.value * 30, //检测频率
@@ -1023,7 +1026,7 @@ export default {
                 this.loading.close();
                 if (res.data.resultCode == 1000) {
                     this.$store.commit("SET_SHOW_TRUE", {
-                        value: "创建成功",
+                        value: this.$route.query.parame == "modify" ? "保存成功" :"创建成功",
                         type: 3
                     });
                     if (this.$route.query.type) {
@@ -1035,7 +1038,7 @@ export default {
                     }
                 } else {
                     this.$store.commit("SET_SHOW_TRUE", {
-                        value: "创建失败",
+                        value: this.$route.query.parame == "modify" ? "保存失败" :"创建失败",
                         type: 3
                     });
                 }
@@ -1079,12 +1082,11 @@ export default {
                 this.$route.query.intellMonitorRuleId;
             this.$https.get(url).then(res => {
                 let data = res.data.data;
-                 this.detectionObjectList = data.ruleAdGroups;
+                this.detectionObjectList = data.ruleAdGroups;
                 this.AjaxGetCampaignObject(data.orgId).then(()=>{ 
                     this.detectionObjectList.map(ele3 => { 
                             this.checkedKeys.push(ele3.adGroupId); 
                     });  
-                    console.log(this.checkedKeys);
                 })
                 this.intellMonitorRuleId = data.intellMonitorRuleId; //编辑传给后台
                 this.intellMonitorRuleName = data.intellMonitorRuleName;
@@ -1129,7 +1131,7 @@ export default {
                                 "暂停关键词",
                                 "并且"
                             ],
-                            adjustmentNum: ele.numberOfOperations,
+                            adjustmentNum: ele.dailyOperationTimes,
                             adjustmentValue: ele.adjustVal,
                             adjustment: ele.adjustType == 1 ? "num1" : "num2",
                             type:
