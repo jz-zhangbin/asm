@@ -59,7 +59,7 @@ new Vue({
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
       //匹配元路由中的meta字段，如果设置了需要校验用户信息
-      //如果用户本地没有登录状态，跳转到登录页面
+      //如果用户本地没有登录状态，跳转到登录页面  
       if (cookie.get('Adjuz_UserInfoNEW')) {
           if (cookie.get('Adjuz_UserInfoNEW')) {
               next()

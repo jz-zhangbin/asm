@@ -103,7 +103,6 @@ export default {
         },
         Ajax(obj) {
             let url = "/api/v1/IntellSearchApi/Register/UserRegisterActive";
-
             this.$https.post(url, JSON.stringify(obj)).then(res => {
                 this.messages = res.data.message;
             });

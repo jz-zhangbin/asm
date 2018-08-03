@@ -160,7 +160,11 @@ export default {
         })
     },
 
-    created() {
+    created() { 
+        if(cookie.get('Adjuz_Vip') == 'false') {
+            this.$router.push('/login')
+        }
+        
         this.$store.commit("GET_USERTYPE");
     },
 

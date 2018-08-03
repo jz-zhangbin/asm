@@ -333,8 +333,7 @@ export default {
         $route() {
             this.value = this.options3[0].value;
         },
-        valueData() {
-            //this.tableInnerCode.data.totalCount = 0
+        valueData() { 
             this.$parent.propDate = this.value;
         }
     },
@@ -415,8 +414,8 @@ export default {
             });
         },
         ajaxEcecl() {
-            let url = "/api/v1/IntellSearchApi/KeywordDetail/ExportHistoryApps";
             let sortObj = {};
+            let url = "/api/v1/IntellSearchApi/KeywordDetail/ExportHistoryApps"; 
             sortObj[this.sortDate.one] = this.sortDate.two;
             let obj = {
                 pageIndex: this.$parent.IsManager ? 1 : this.currentPage3,

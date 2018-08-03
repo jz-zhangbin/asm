@@ -36,11 +36,10 @@
                             </section>
                         </transition>
                     </div>
-
                     <div class="account_search_date">
                         <el-date-picker v-model="dateTime" type="daterange" align="right" unlink-panels :clearable=false @change='changeDate' range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format='yyyy-MM-dd' :picker-options="datelist">
                         </el-date-picker>
-                    </div>
+                    </div> 
                 </section>
 
                 <div :class="{add_negative: classBool, stop: $route.params.groupType == 'remove'}" @click="addNegative">
@@ -242,7 +241,8 @@ export default {
             classBool: true,
             negativeShow: false,
             NoKeyWordType: "广告组",
-            NoKeyWordList: []
+            NoKeyWordList: [],
+            dateTime: "",
         };
     },
 
@@ -320,13 +320,12 @@ export default {
             this.$refs.multipleTable.clearSort();
             this.$refs.multipleTable.sort("status", "ascending");
         },
-        changeDate() {
+        changeDate() { 
             //切换时间进行请求
             this.$ss.set("TIME_UTC", this.dateTime);
             this.advancedFunList = [];
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "ascending");
-            this.AjaxStatisticCampaign();
+            this.$refs.multipleTable.sort("status", "ascending"); 
         },
         advancedFun(data) {
             //高级搜索

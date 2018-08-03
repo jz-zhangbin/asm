@@ -40,6 +40,7 @@ const sign = {
         }
         //reduceCookie(cookie.get('Adjuz_UserInfoNEW')).vip == 'true' ? state.vipShow = true : state.vipShow = false
       } else {
+        state.vipShow = false
         state.userType = false
       }
     } 

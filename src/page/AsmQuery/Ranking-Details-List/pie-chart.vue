@@ -76,8 +76,7 @@ export default {
         };
     },
     mounted() {
-        this.AjaxPie();
-        // 基于准备好的dom，初始化echarts实例
+        this.AjaxPie(); 
     },
 
     methods: {
@@ -134,12 +133,7 @@ export default {
                 tooltip: {
                     trigger: "item",
                     formatter: "{a} <br/>{b}"
-                },
-                // legend: {
-                // 	orient: "vertical",
-                // 	left: "left",
-                // 	data: nameList
-                // },
+                }, 
                 toolbox: {
                     show: true,
                     feature: {

@@ -200,20 +200,17 @@ export default {
                 .then(res => {
                     if (res.data.resultCode == 1000) {
                         //创建cookie
-                        let secureId = res.data.data.userId + this.userEmil;
-                        //console.log(this.getmd5(secureId).toUpperCase());
+                        let secureId = res.data.data.userId + this.userEmil; 
                         let Adjuz_UserInfoNEW = {
                             Adjuz_SecureId: this.getmd5(secureId).toUpperCase(),
                             uid: res.data.data.userId,
                             urole: res.data.data.userRoles,
-                            useremail: this.userEmil,
-                            //vip: Vip.indexOf(this.userEmil) != -1 ? true : false
+                            useremail: this.userEmil, 
                         };
                         this.$cookie.set(
                             "Adjuz_UserInfoNEW",
                             qs.stringify(Adjuz_UserInfoNEW)
-                        ); 
-                        //console.log(reduceCookie(this.$cookie.get('Adjuz_UserInfoNEW')))
+                        );  
                         if (this.routerPath) {
                             this.$router.go(-1);
                         } else {

@@ -236,8 +236,7 @@ export default {
         },
 
         Ajax(obj) {
-            let url = "/api/v1/IntellSearchApi/UserInfo/UserResetPwdEmail";
-
+            let url = "/api/v1/IntellSearchApi/UserInfo/UserResetPwdEmail"; 
             this.$https.post(url, JSON.stringify(obj)).then(res => {
                 if (res.data.resultCode == 2400) {
                     this.war = true;

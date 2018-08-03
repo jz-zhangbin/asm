@@ -318,8 +318,7 @@ export default {
             this.$ss.set("TIME_UTC", this.dateTime);
             this.advancedFunList = [];
             this.$refs.multipleTable.clearSort();
-            this.$refs.multipleTable.sort("status", "ascending");
-            this.AjaxStatisticCampaign();
+            this.$refs.multipleTable.sort("status", "ascending"); 
         },
 
         advancedFun(data) {

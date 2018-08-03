@@ -637,7 +637,6 @@ export default {
             this.appIndex = index;
             this.checkedAll = true;
             this.listName = "所有广告系列";
-            this.dataValue = 0;
             this.listAllId = [];
             this.appadimad = this.appList[index].appId;
             this.$refs.tablerefs.orderInfor();
@@ -887,15 +886,15 @@ export default {
             });
         },
         echartInfor(arr) {
-            let dateList = [];
+            let ttr = [];
+            let taps = []; 
             let avgCPA = [];
-            let avgCPC = [];
-            let conversionRate = [];
+            let avgCPC = []; 
+            let dateList = [];
+            let localSpend = [];
             let conversions = [];
             let impressions = [];
-            let localSpend = [];
-            let taps = [];
-            let ttr = [];
+            let conversionRate = [];
             arr.map(ele => {
                 dateList.push(ele.statisdate);
                 avgCPA.push((ele.avgCPA * 1).toFixed(2));
@@ -1085,11 +1084,9 @@ export default {
                 $(".account_table1")
                     .eq(0)
                     .offset().top - 60;
-            if (scrollTop >= topnum) {
-                //$("#nav_header").show(300);
+            if (scrollTop >= topnum) { 
                 this.nav_header = true
-            } else {
-                //$("#nav_header").hide(300);
+            } else { 
                 this.nav_header = false
             }
         },

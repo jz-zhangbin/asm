@@ -836,8 +836,7 @@ export default {
             this.AjaxAppcontent(
                 this.dataLeft.appStoreId,
                 this.dataRight.appStoreId
-            );
-            // this.tableShow = false; 
+            ); 
         },
         changeFun(value) { 
             //切换国家
@@ -860,8 +859,7 @@ export default {
                     },
                     "right"
                 );
-            }
-            //this.appDataShow = true;
+            } 
             this.appDataShowtrue = false;
             this.tableShow = false;
             this.tableCommonsShow = false;

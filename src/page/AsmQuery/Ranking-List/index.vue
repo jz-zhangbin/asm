@@ -281,8 +281,7 @@ export default {
 
     created() {
         this.$store.dispatch("GET_COUNTRYLIST").then(() => {
-            this.countryNow = this.$store.state.Home.countryList[0].nationId;
-
+            this.countryNow = this.$store.state.Home.countryList[0].nationId; 
             this.AjaxInit(this.countryNow);
         });
     },
@@ -395,8 +394,7 @@ export default {
 
         AjaxInit(id, pageindex) {
             this.tableData = [];
-            this.loadingfirst = true;
-            //初始化列表ajax
+            this.loadingfirst = true; 
             let url = "/api/v1/IntellSearchApi/HotKeyword/GetHotKeywordList";
             let data = {
                 pageIndex: this.currentPage3,

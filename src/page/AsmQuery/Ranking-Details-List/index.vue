@@ -15,6 +15,9 @@
             font-size: 24px;
             height: 40px;
             width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
     .rdl_body {
@@ -297,9 +300,9 @@ export default {
 
     computed: {
         ...mapState({
-            countryList: state => state.Home.countryList,
             userType: state => state.Sign.userType,
-            IsManager: state => state.Sign.IsManager
+            IsManager: state => state.Sign.IsManager,
+            countryList: state => state.Home.countryList 
         })
     },
 
@@ -336,10 +339,8 @@ export default {
         next(vm => {});
     },
 
-    mounted() {
-       // this.$height(".rdl_index");
-        this.keyName = this.$route.query.key;
-
+    mounted() { 
+        this.keyName = this.$route.query.key; 
         this.$store.dispatch("GET_COUNTRYLIST").then(() => {
             this.$store.state.Home.countryList.map((ele, index) => {
                 if (ele.nationId == this.$route.query.country) {
@@ -350,10 +351,8 @@ export default {
             });
         });
 
-        this.loading = this.$loading(this.loadingopaction);
-
-        this.AJaxKeyWord(this.$route.query.country);
-
+        this.loading = this.$loading(this.loadingopaction); 
+        this.AJaxKeyWord(this.$route.query.country); 
         this.AjaxHistoryList(
             1,
             this.$route.query.country,
@@ -434,8 +433,7 @@ export default {
                 } else if (res.data.resultCode == 404) {
                     //无内容
                     this.keyWordType = false;
-                    this.tableData = res.data.data;
-                     
+                    this.tableData = res.data.data; 
                 } 
                 if (this.loading != null) {
                     this.loading.close();
@@ -471,18 +469,15 @@ export default {
         changeFun(value) {
             //切换国家
             if (this.components_index == 0) {
-                this.$refs.childr.showList.map((ele, index) => {
-                    // 切换国家让排序归零
+                this.$refs.childr.showList.map((ele, index) => { 
                     ele.one = false;
                     ele.two = false;
                 });
                 this.$refs.childr.showList[0].one = true;
             }
 
-            this.loading = this.$loading(this.loadingopaction);
-
-            this.AJaxKeyWord(value);
-
+            this.loading = this.$loading(this.loadingopaction); 
+            this.AJaxKeyWord(value); 
             this.AjaxHistoryList(
                 1,
                 value,
@@ -490,8 +485,7 @@ export default {
                 datefn(2)[this.propDate].data.endTime,
                 "ratio",
                 0
-            );
-
+            ); 
             this.AJaxKeyWordMore(1, value);
         },
 
@@ -527,10 +521,8 @@ export default {
                 ele.two = false;
             });
 
-            this.tableInnerCode.resultCode = 1000;
-
-            this.$refs.childr.showList[0].one = true;
-
+            this.tableInnerCode.resultCode = 1000; 
+            this.$refs.childr.showList[0].one = true; 
             this.AjaxHistoryList(
                 1,
                 this.countryNow,

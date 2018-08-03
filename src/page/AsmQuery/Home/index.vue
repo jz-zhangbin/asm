@@ -569,7 +569,7 @@ export default {
             scrooll: null,
             listNum: 0,
             Appnum:  2036213,
-            Wordnum: 2238074
+            Wordnum: 2563096
         };
     },
 
@@ -620,8 +620,8 @@ export default {
             }
         });
 
-        //this.keyWordNum("Appnum", 2036213, "timer1");
-        //this.keyWordNum("Wordnum", 1621556, "timer2");
+        // this.keyWordNum("Appnum", 2036213, "timer1");
+        // this.keyWordNum("Wordnum", 1621556, "timer2");
     },
 
     destroyed() {

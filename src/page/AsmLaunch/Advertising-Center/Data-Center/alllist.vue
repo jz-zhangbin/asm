@@ -155,8 +155,7 @@ export default {
 
     destroyed() {},
 
-    methods: {
-        //changeInput() { },
+    methods: { 
         checkedClick() {
             let num = 0;
             this.list.map(ele => {
